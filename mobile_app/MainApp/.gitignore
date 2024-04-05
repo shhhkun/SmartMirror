@@ -1,3 +1,8 @@
+# Erik-added stuff for iOS builds
+#
+Gemfile.lock
+Podfile.lock
+
 # OSX
 #
 .DS_Store

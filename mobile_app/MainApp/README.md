@@ -1,11 +1,13 @@
 To run on Erik's machine:
 
-run source ~/.zshrc
+run
+   source ~/.zshrc
 
 start android studio and have emulator device running
 
-run npm start from MainApp directory
-
+run
+   npm start
+from MainApp directory
 
 
 
