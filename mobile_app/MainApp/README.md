@@ -1,3 +1,18 @@
+To run on Erik's machine:
+
+run source ~/.zshrc
+
+start android studio and have emulator device running
+
+run npm start from MainApp directory
+
+
+
+
+# ----------
+Starter content below here:
+# ----------
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started

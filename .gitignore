@@ -1,0 +1,24 @@
+# General .gitignore for the entire project.
+# Sub-project gitignores can be found in each folder.
+
+# Ignore macOS specific files
+.DS_Store
+
+# Ignore editor and IDE files
+# .vscode/
+# .idea/
+
+# Ignore build output
+build/
+dist/
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+
+# Ignore package lock files
+package-lock.json
+yarn.lock
