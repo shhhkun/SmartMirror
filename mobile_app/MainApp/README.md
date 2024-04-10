@@ -1,3 +1,6 @@
+Mobile app to send a config JSON file to the smart mirror via bluetooth.
+Uses react-native-ble-manager for BLE functionality and react navigator for pages.
+
 Docs for this bluetooth manager library:
 http://innoveit.github.io/react-native-ble-manager/methods/#startoptions
 
@@ -17,7 +20,9 @@ from MainApp directory
 
 
 # ----------
+
 Starter content below here:
+
 # ----------
 
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
