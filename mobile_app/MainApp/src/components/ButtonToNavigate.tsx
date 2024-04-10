@@ -1,5 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { globalStyles } from '../common/globalStyles';
 
 interface ButtonToNavigate {
   onPress: () => void; // Function to be called when the button is pressed
@@ -9,16 +10,18 @@ interface ButtonToNavigate {
 
 const ButtonToNavigate: React.FC<ButtonToNavigate> = ({ onPress, title }) => {
   return (
-
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-
+    <View style={styles.buttonContainer}>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
+        <Text style={styles.buttonText}>{title}</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-
+  buttonContainer: {
+    backgroundColor: globalStyles.lightBackground,
+  },
   button: {
     paddingVertical: 12,
     paddingHorizontal: 30,

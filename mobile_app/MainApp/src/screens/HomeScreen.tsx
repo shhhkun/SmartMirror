@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, StyleSheet, Text, View } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { globalStyles } from '../common/globalStyles';
 
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
@@ -13,7 +13,6 @@ const HomeScreen = () => {
       <StatusBar></StatusBar>
 
       <View style={styles.mainStyle}>
-
         <NiceTextArea title="Team 3 Smart Mirror">
           This mobile app is an interface for sending a JSON configuration file
           to the Smart Mirror via BLE. Press the button below to begin the flow.
@@ -30,14 +29,16 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   mainStyle: {
-    backgroundColor: Colors.lighter,
+    backgroundColor: globalStyles.lightBackground,
   },
 
   buttonContainer: {
-    // flex: 1, // using flexbox here is cursed
+    // flex: 1, // using flexbox here is cursed; don't do
+    paddingTop: 15,
+    paddingBottom: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.white,
+    backgroundColor: globalStyles.lightBackground,
   },
 
 });
