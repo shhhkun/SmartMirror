@@ -1,3 +1,8 @@
+Docs for this bluetooth manager library:
+http://innoveit.github.io/react-native-ble-manager/methods/#startoptions
+
+# ----------
+
 To run on Erik's machine:
 
 run
