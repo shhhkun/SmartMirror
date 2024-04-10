@@ -2,16 +2,14 @@ import React from 'react';
 import {
   SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View
 } from 'react-native';
-import {
-  Colors, DebugInstructions, Header, ReloadInstructions
-} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 type SectionProps = {
   title: string;
   children: React.ReactNode;
 };
 
-const Section = ({ children, title }: SectionProps) => {
+const NiceTextArea = ({ children, title }: SectionProps) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -46,31 +44,21 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
+        // top bar with time, battery, etc.
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits. Erik was here.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
 
+      <View
+        style={{
+          backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        }}>
+        <NiceTextArea title="Team 3 Smart Mirror">
+          This mobile app is an interface for sending a JSON configuration file
+          to the Smart Mirror via BLE. Press the button below to begin the flow.
+        </NiceTextArea>
+      </View>
 
-        </View>
-      </ScrollView>
     </SafeAreaView>
   );
 };
