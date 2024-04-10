@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, StyleSheet, Text, View } from 'react-native';
-import { globalStyles } from '../common/globalStyles';
+import { GlobalStyles } from '../common/GlobalStyles';
 
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
@@ -29,7 +29,7 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   mainStyle: {
-    backgroundColor: globalStyles.lightBackground,
+    backgroundColor: GlobalStyles.lightBackground,
   },
 
   buttonContainer: {
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: globalStyles.lightBackground,
+    backgroundColor: GlobalStyles.lightBackground,
   },
 
 });

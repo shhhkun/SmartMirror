@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { globalStyles } from '../common/globalStyles';
+import { GlobalStyles } from '../common/GlobalStyles';
 
 type SectionProps = {
   title: string;
@@ -31,13 +31,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: '600',
-    color: globalStyles.blackText,
+    color: GlobalStyles.blackText,
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
-    color: globalStyles.darkText,
+    color: GlobalStyles.darkText,
   },
 });
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import { globalStyles } from '../common/globalStyles';
+import { GlobalStyles } from '../common/GlobalStyles';
 
 interface ButtonToNavigate {
   onPress: () => void; // Function to be called when the button is pressed
@@ -20,7 +20,7 @@ const ButtonToNavigate: React.FC<ButtonToNavigate> = ({ onPress, title }) => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    backgroundColor: globalStyles.lightBackground,
+    backgroundColor: GlobalStyles.lightBackground,
   },
   button: {
     paddingVertical: 12,
