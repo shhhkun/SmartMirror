@@ -1,6 +1,6 @@
 // library imports
 import React from 'react';
-import { StatusBar, StyleSheet, Text, View, SafeAreaView, PermissionsAndroid, Platform } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, SafeAreaView, PermissionsAndroid, Platform, useState } from 'react-native';
 
 // my imports
 import { GlobalStyles } from '../common/GlobalStyles';
@@ -11,8 +11,6 @@ import BluetoothService from '../services/BluetoothService';
 
 
 async function requestLocationPermission() {
-
-  // the normal way of prompting the user for location permission
   // make sure that permisisons are all granted in device settings!
   try {
     const granted = await PermissionsAndroid.request(
@@ -42,19 +40,19 @@ const doUponStartButtonPress = () => {
   BluetoothService.initialize();
 
   requestLocationPermission();
-
 }
 
-const doUponScanButtonPress = () => {
+const doUponScanButtonPress = (): Promise<any> => {
   console.log("Scan button pressed on scan screen");
 
   BluetoothService.scan()
     .then(results => {
       console.log('Discovered devices:', results);
-      // Process discovered devices here
+      return results;
     })
     .catch(error => {
       console.error('Error scanning:', error);
+      return error;
     });
 }
 
@@ -75,6 +73,12 @@ const ScanScreen = () => {
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponScanButtonPress()} title="Scan" />
+      </View>
+
+      <View style={styles.mainStyle}>
+        <NiceTextArea title="Output of Scan">
+          todo
+        </NiceTextArea>
       </View>
 
     </SafeAreaView >
