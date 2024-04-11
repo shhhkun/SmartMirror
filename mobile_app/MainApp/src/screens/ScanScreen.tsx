@@ -11,13 +11,9 @@ import BluetoothService from '../services/BluetoothService';
 
 
 async function requestLocationPermission() {
-  // hack to get through permission issues for now
-  if (Platform.OS === 'android') {
-    console.log('Location permission bypassed for Android');
-    return true; // Simulate permission being granted on Android
-  }
 
   // the normal way of prompting the user for location permission
+  // make sure that permisisons are all granted in device settings!
   try {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
