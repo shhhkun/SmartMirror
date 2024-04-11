@@ -1,15 +1,20 @@
+// library imports
 import React from 'react';
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
-import { GlobalStyles } from '../common/GlobalStyles';
-// import { useNavigation } from '@react-navigation/native';
+import { StatusBar, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 
-// import ButtonToNavigate from '../components/ButtonToNavigate';
+// my imports
+import { GlobalStyles } from '../common/GlobalStyles';
+import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 
+const doUponButtonPress = () => {
+  console.log("Button pressed on scan screen");
+  // do bluetooth scan
+}
 
 const ScanScreen = () => {
   return (
-    <View style={styles.mainStyle}>
+    <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
 
       <View style={styles.mainStyle}>
@@ -18,11 +23,11 @@ const ScanScreen = () => {
         </NiceTextArea>
       </View>
 
-      {/* <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={console.log("hi")} title="Action Button" />
-      </View> */}
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponButtonPress()} title="Action Button" />
+      </View>
 
-    </View >
+    </SafeAreaView >
   );
 };
 

@@ -1,21 +1,20 @@
+// library imports
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-// import { SafeAreaView } from 'react-native';
-
 import { createStackNavigator } from '@react-navigation/stack';
-const Stack = createStackNavigator();
 
+// my imports
 import HomeScreen from './src/screens/HomeScreen';
+import ScanScreen from './src/screens/ScanScreen';
 
-// import AppNavigator from './src/components/AppNavigator';
-
-
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Scan" component={ScanScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
