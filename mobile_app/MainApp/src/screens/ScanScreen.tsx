@@ -1,6 +1,7 @@
 import React from 'react';
 import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { GlobalStyles } from '../common/GlobalStyles';
+import { useNavigation } from '@react-navigation/native';
 
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';

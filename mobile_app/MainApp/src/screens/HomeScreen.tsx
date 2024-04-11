@@ -1,13 +1,18 @@
 import React from 'react';
 import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { GlobalStyles } from '../common/GlobalStyles';
+import { useNavigation } from '@react-navigation/native';
 
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 
+const buttonPress = () => {
+  console.log("Button pressed");
+  // start bluetooth stuff
+  // navigate to scan screen
+}
 
 const HomeScreen = () => {
-
   return (
     <View style={styles.mainStyle}>
       <StatusBar></StatusBar>
@@ -20,7 +25,7 @@ const HomeScreen = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={console.log("hi")} title="Action Button" />
+        <ButtonToNavigate onPress={() => buttonPress()} title="Go To Device Scan" />
       </View>
 
     </View >
