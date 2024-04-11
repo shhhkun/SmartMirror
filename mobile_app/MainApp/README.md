@@ -6,6 +6,16 @@ http://innoveit.github.io/react-native-ble-manager/methods/#startoptions
 
 # ----------
 
+Description of functionality:
+
+Pressing "start/go" from home screen will initialize the bluetooth manager. This might trigger some system dialogue box for bluetooth permission.
+
+Next screen will be scan screen. Upon pressing button, should show a list of nearby devices. Clicking one should initiate pairing with that device. Bottom button should become clickable once a device is connected, and takes you to next page.
+
+Final data-send page provides text boxes to put inputs into, and has a button to "send" data. Exact format, bluetooth characteristic, etc. tbd until we figure out the listener.
+
+# ----------
+
 Todo / notes
 
 Plan is to have a separate page for each step of the process.
