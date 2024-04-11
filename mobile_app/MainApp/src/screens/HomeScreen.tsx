@@ -1,7 +1,6 @@
 // library imports
 import React from 'react';
 import { StatusBar, StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 // my imports
 import { GlobalStyles } from '../common/GlobalStyles';
@@ -14,7 +13,7 @@ const doUponButtonPress = () => {
   // navigate to scan screen
 }
 
-const HomeScreen = () => {
+const HomeScreen = ({ }) => {
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>

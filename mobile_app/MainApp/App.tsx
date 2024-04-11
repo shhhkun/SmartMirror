@@ -12,24 +12,12 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Scan">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Scan" component={ScanScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-
-// const App = () => {
-//   return (
-//     <NavigationContainer>
-//       {/* <SafeAreaView > */}
-//         <AppNavigator />
-
-//         {/* <HomeScreen /> */}
-//       {/* </SafeAreaView> */}
-//     </NavigationContainer>
-//   );
-// };
 
 export default App;

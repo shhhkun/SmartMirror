@@ -7,8 +7,13 @@ import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 
-const doUponButtonPress = () => {
-  console.log("Button pressed on scan screen");
+const doUponStartButtonPress = () => {
+  console.log("Start button pressed on scan screen");
+  // do bluetooth scan
+}
+
+const doUponScanButtonPress = () => {
+  console.log("Scan button pressed on scan screen");
   // do bluetooth scan
 }
 
@@ -19,12 +24,16 @@ const ScanScreen = () => {
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Scan for Devices">
-          testrr
+          instructions and window of nearby devices will go here
         </NiceTextArea>
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponButtonPress()} title="Action Button" />
+        <ButtonToNavigate onPress={() => doUponStartButtonPress()} title="Start Driver" />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponScanButtonPress()} title="Scan" />
       </View>
 
     </SafeAreaView >
