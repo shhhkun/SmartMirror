@@ -1,17 +1,17 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../screens/HomeScreen';
-import ScanScreen from '../screens/ScanScreen';
+// import React from 'react';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import HomeScreen from '../screens/HomeScreen';
 
-const Stack = createStackNavigator();
 
-const AppNavigator = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Scan" component={ScanScreen} />
-    </Stack.Navigator>
-  );
-};
+// const Stack = createNativeStackNavigator();
 
-export default AppNavigator;
+// const AppNavigator = () => {
+//   return (
+//     <Stack.Navigator initialRouteName="Home">
+//       <Stack.Screen name="Home" component={HomeScreen} />
+//     </Stack.Navigator>
+//   );
+// };
+
+// export default AppNavigator;

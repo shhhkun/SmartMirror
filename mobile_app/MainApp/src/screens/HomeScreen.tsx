@@ -7,7 +7,7 @@ import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 
 const buttonPress = () => {
-  console.log("Button pressed");
+  console.log("Button pressed on home screen");
   // start bluetooth stuff
   // navigate to scan screen
 }

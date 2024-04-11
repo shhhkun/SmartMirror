@@ -1,9 +1,9 @@
 import React from 'react';
 import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { GlobalStyles } from '../common/GlobalStyles';
-import { useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 
-import ButtonToNavigate from '../components/ButtonToNavigate';
+// import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 
 
@@ -14,13 +14,13 @@ const ScanScreen = () => {
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Scan for Devices">
-          test
+          testrr
         </NiceTextArea>
       </View>
 
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={console.log("hi")} title="Action Button" />
-      </View>
+      </View> */}
 
     </View >
   );
