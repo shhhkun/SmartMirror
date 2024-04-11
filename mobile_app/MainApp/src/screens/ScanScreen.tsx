@@ -6,15 +6,26 @@ import { StatusBar, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
+import BluetoothService from '../services/BluetoothService';
 
 const doUponStartButtonPress = () => {
   console.log("Start button pressed on scan screen");
-  // do bluetooth scan
+
+  BluetoothService.initialize();
+
 }
 
 const doUponScanButtonPress = () => {
   console.log("Scan button pressed on scan screen");
-  // do bluetooth scan
+
+  BluetoothService.scan()
+    .then(results => {
+      console.log('Discovered devices:', results);
+      // Process discovered devices here
+    })
+    .catch(error => {
+      console.error('Error scanning:', error);
+    });
 }
 
 const ScanScreen = () => {
