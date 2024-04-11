@@ -2,6 +2,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- permissions required for bluetooth stuff -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> <!-- Required for Bluetooth scanning -->
+
+
+
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
