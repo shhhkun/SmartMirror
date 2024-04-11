@@ -1,6 +1,6 @@
 // library imports
 import React from 'react';
-import { StatusBar, StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, SafeAreaView, PermissionsAndroid, Platform } from 'react-native';
 
 // my imports
 import { GlobalStyles } from '../common/GlobalStyles';
@@ -8,10 +8,44 @@ import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 import BluetoothService from '../services/BluetoothService';
 
+
+
+async function requestLocationPermission() {
+  // hack to get through permission issues for now
+  if (Platform.OS === 'android') {
+    console.log('Location permission bypassed for Android');
+    return true; // Simulate permission being granted on Android
+  }
+
+  // the normal way of prompting the user for location permission
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Location Permission',
+        message: 'This app needs access to your location to perform Bluetooth scanning.',
+        buttonPositive: 'OK',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('Location permission granted');
+    } else {
+      console.log('Location permission denied');
+    }
+  } catch (error) {
+    console.error('Error requesting location permission:', error);
+  }
+}
+
+
+
+
 const doUponStartButtonPress = () => {
   console.log("Start button pressed on scan screen");
 
   BluetoothService.initialize();
+
+  requestLocationPermission();
 
 }
 
