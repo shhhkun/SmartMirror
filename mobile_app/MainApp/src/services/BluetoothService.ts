@@ -3,12 +3,26 @@
 import BleManager from 'react-native-ble-manager';
 
 class BluetoothService {
-  static initialize(): void {
-    BleManager.start();
+  static async initialize(): Promise<void> {
+    try {
+      await BleManager.start({ showAlert: true });
+      console.log("BLE manager initialized");
+
+    } catch (error) {
+      console.error('Error initializing BLE manager:', error);
+      throw error; // Re-throw the error to propagate it to the caller if needed
+    }
   }
 
-  static scan(): Promise<any> {
-    return BleManager.scan([], 5, true);
+  static async scan(serviceUUIDs: string[], seconds: number, allowDuplicates: boolean): Promise<void> {
+    try {
+      await BleManager.scan(serviceUUIDs, seconds, allowDuplicates);
+      console.log("Scan started");
+
+    } catch (error) {
+      console.error('Error starting scan:', error);
+      throw error; // Re-throw the error to propagate it to the caller if needed
+    }
   }
 
   static connect(deviceUUID: string): Promise<void> {
