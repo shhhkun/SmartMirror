@@ -19,56 +19,54 @@ import NiceTextArea from '../components/NiceTextArea';
 import BluetoothService from '../services/BluetoothService';
 
 
+const requestAndroidLocationPermission = async (): Promise<void> => {
+  PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,)
+    .then(result => {
+      if (result) {
+        console.log("Android fine location permission is granted");
+        return;
+      }
 
-async function requestLocationPermission() {
+      // if we get here, we need to request location permission, or something's broken
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Location Permission',
+          message: 'This app needs access to your location to perform Bluetooth scanning.',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK'
+        }
+      )
+        .then(result => {
+          if (result) {
+            console.log('Prompted user for location. User accepted.');
+          } else {
+            console.log('Prompted user for location. User denied.');
+          }
+        });
+    }
+    );
+};
+
+const requestPermissions = async (): Promise<void> => {
   // make sure that permisisons are all granted in device settings!
-
-  // this is the worst function I've ever written.
-  // need to break this into several functions.
 
   BluetoothService.requestBluetoothPermission();
 
   if (Platform.OS === 'android' && Platform.Version >= 23) {
-    PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,)
-      .then(result => {
-        if (result) {
-          console.log("Android fine location permission is granted");
-          return;
-        }
-
-        // need to request location permission, or something's broken
-        PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: 'Location Permission',
-            message: 'This app needs access to your location to perform Bluetooth scanning.',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK'
-          }
-        )
-          .then(result => {
-            if (result) {
-              console.log('User accept');
-            } else {
-              console.log('User refuse');
-            }
-          });
-      }
-      );
+    requestAndroidLocationPermission();
   };
-}
-
-
+};
 
 const doUponStartButtonPress = () => {
   console.log("Start button pressed on scan screen");
 
   BluetoothService.initialize();
 
-  requestLocationPermission();
-}
+  requestPermissions();
+};
 
-const doUponScanButtonPress = (): Promise<any> => {
+const doUponScanButtonPress = (): Promise<void> => {
   console.log("Scan button pressed on scan screen");
 
   // BluetoothService.scan()
@@ -80,7 +78,7 @@ const doUponScanButtonPress = (): Promise<any> => {
   //     console.error('Error scanning:', error);
   //     return error;
   //   });
-}
+};
 
 const ScanScreen = () => {
   return (
