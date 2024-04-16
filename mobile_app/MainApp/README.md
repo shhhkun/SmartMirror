@@ -41,4 +41,9 @@ run
    npm start
 from MainApp directory
 
+To run on physical android device:
+
+run
+   DEBUG=react-native* npx react-native start
+
 # ----------
