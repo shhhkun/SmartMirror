@@ -3,6 +3,17 @@
 import BleManager from 'react-native-ble-manager';
 
 class BluetoothService {
+  static async requestBluetoothPermission(): Promise<void> {
+    try {
+      await BleManager.enableBluetooth();
+      console.log("(BluetoothService.requestBluetoothPermission) Bluetooth permission granted");
+
+    } catch (error) {
+      console.error('(BluetoothService.requestBluetoothPermission) Error requesting Bluetooth permission:', error);
+      throw error; // Re-throw the error to propagate it to the caller if needed
+    }
+  }
+
   static async initialize(): Promise<void> {
     try {
       await BleManager.start({ showAlert: true });

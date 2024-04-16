@@ -4,6 +4,9 @@ Uses react-native-ble-manager for BLE functionality and react navigator for page
 Docs for this bluetooth manager library:
 http://innoveit.github.io/react-native-ble-manager/methods/#startoptions
 
+Good example project to refer to:
+https://blog.logrocket.com/using-react-native-ble-manager-mobile-app/
+
 # ----------
 
 Description of functionality:
