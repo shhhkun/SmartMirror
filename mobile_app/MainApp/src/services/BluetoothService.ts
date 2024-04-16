@@ -6,10 +6,10 @@ class BluetoothService {
   static async requestBluetoothPermission(): Promise<void> {
     try {
       await BleManager.enableBluetooth();
-      console.log("(BluetoothService.requestBluetoothPermission) Bluetooth permission granted");
+      console.log("Bluetooth permission granted (BluetoothService.requestBluetoothPermission)");
 
     } catch (error) {
-      console.error('(BluetoothService.requestBluetoothPermission) Error requesting Bluetooth permission:', error);
+      console.error('Error requesting Bluetooth permission: ${error} (BluetoothService.requestBluetoothPermission)');
       throw error; // Re-throw the error to propagate it to the caller if needed
     }
   }
@@ -17,10 +17,10 @@ class BluetoothService {
   static async initialize(): Promise<void> {
     try {
       await BleManager.start({ showAlert: true });
-      console.log("(BluetoothService.initialize) BLE manager initialized");
+      console.log("BLE manager initialized (BluetoothService.initialize)");
 
     } catch (error) {
-      console.error('(BluetoothService.initialize) Error initializing BLE manager:', error);
+      console.error('Error initializing BLE manager: ${error} (BluetoothService.initialize)');
       throw error; // Re-throw the error to propagate it to the caller if needed
     }
   }
@@ -28,10 +28,10 @@ class BluetoothService {
   static async scan(): Promise<void> {
     try {
       await BleManager.scan([], 5, true);
-      console.log("(BluetoothService.initialize) Scan started");
+      console.log("Scan started (BluetoothService.scan)");
 
     } catch (error) {
-      console.error('(BluetoothService.initialize) Error starting scan:', error);
+      console.error('Error starting scan: ${error} (BluetoothService.scan)');
       throw error; // Re-throw the error to propagate it to the caller if needed
     }
   }

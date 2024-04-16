@@ -23,72 +23,40 @@ import BluetoothService from '../services/BluetoothService';
 async function requestLocationPermission() {
   // make sure that permisisons are all granted in device settings!
 
+  // this is the worst function I've ever written.
+  // need to break this into several functions.
+
   BluetoothService.requestBluetoothPermission();
-
-  // if (Platform.OS === 'android' && Platform.Version >= 23) {
-  //   PermissionsAndroid.check(
-  //     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //   ).then(result => {
-  //     if (result) {
-  //       console.log('Permission is OK');
-  //     } else {
-  //       PermissionsAndroid.request(
-  //         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //       ).then(result => {
-  //         if (result) {
-  //           console.log('User accept');
-  //         } else {
-  //           console.log('User refuse');
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
-
-
 
   if (Platform.OS === 'android' && Platform.Version >= 23) {
     PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,)
       .then(result => {
         if (result) {
           console.log("Android fine location permission is granted");
+          return;
         }
 
-        else {
-          // need to request location permission, or something's broken
-          PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            {
-              title: 'Location Permission',
-              message: 'This app needs access to your location to perform Bluetooth scanning.',
-              buttonNegative: 'Cancel',
-              buttonPositive: 'OK'
+        // need to request location permission, or something's broken
+        PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Location Permission',
+            message: 'This app needs access to your location to perform Bluetooth scanning.',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK'
+          }
+        )
+          .then(result => {
+            if (result) {
+              console.log('User accept');
+            } else {
+              console.log('User refuse');
             }
-          )
-          // should add a check here
-        }
-      })
+          });
+      }
+      );
   };
-
-  //   try {
-  //     const android_location_granted = await PermissionsAndroid.request(
-  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //       {
-  //         title: 'Location Permission',
-  //         message: 'This app needs access to your location to perform Bluetooth scanning.',
-  //         buttonPositive: 'OK',
-  //       },
-  //     );
-  //     if (android_location_granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //       console.log('Location permission granted');
-  //     } else {
-  //       console.log('Location permission denied');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error requesting location permission:', error);
-  //   }
-  // }
-};
+}
 
 
 
