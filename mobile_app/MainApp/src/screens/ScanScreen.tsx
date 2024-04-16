@@ -20,32 +20,32 @@ import BluetoothService from '../services/BluetoothService';
 
 
 const requestAndroidLocationPermission = async (): Promise<void> => {
+  // check if existing permission is granted
   PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,)
     .then(result => {
       if (result) {
         console.log("Android fine location permission is granted");
         return;
       }
+    });
 
-      // if we get here, we need to request location permission, or something's broken
-      PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Location Permission',
-          message: 'This app needs access to your location to perform Bluetooth scanning.',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK'
-        }
-      )
-        .then(result => {
-          if (result) {
-            console.log('Prompted user for location. User accepted.');
-          } else {
-            console.log('Prompted user for location. User denied.');
-          }
-        });
+  // if we get here, we need to request location permission
+  PermissionsAndroid.request(
+    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    {
+      title: 'Location Permission',
+      message: 'This app needs access to your location to perform Bluetooth scanning.',
+      buttonNegative: 'Cancel',
+      buttonPositive: 'OK'
     }
-    );
+  )
+    .then(result => {
+      if (result) {
+        console.log('Prompted Android user for location. User accepted.');
+      } else {
+        console.log('Prompted Android user for location. User denied.');
+      }
+    });
 };
 
 const requestPermissions = async (): Promise<void> => {
