@@ -18,9 +18,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
   const [isScanning, setIsScanning] = useState(false);
 
   // function to call bluetooth service scan upon button press
-  const doUponScanButtonPress = async () => {
-    console.log("Scan button pressed on scan screen");
-
+  const doUponScanButton = async () => {
     if (isScanning) {
       console.log("Already scanning; ignoring button press");
       return;
@@ -37,23 +35,39 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  const doUponConnectedDevicesButton = async () => {
+    BluetoothService.getConnectedPeripherals()
+
+      .then(peripheralsArray => {
+        console.log("connected peripherals array returned: " + peripheralsArray);
+      })
+
+      .catch(error => {
+        console.error('Error getting connected peripherals:', error);
+      });
+  };
+
   // UI stuff here
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
 
-      <View style={styles.mainStyle}>
-        <NiceTextArea title="Scan for Devices">
-          instructions and window of nearby devices will go here
-        </NiceTextArea>
+      {/* <View style={styles.mainStyle}>
+        <NiceTextArea title="Nearby and Connected Devices">
+          {/* prob can leave blank */}
+      {/* </NiceTextArea>
+      </View> */}
+
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponScanButton()} title="Scan" />
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponScanButtonPress()} title="Scan" />
+        <ButtonToNavigate onPress={() => doUponConnectedDevicesButton()} title="Show Connected Devices" />
       </View>
 
       <View style={styles.mainStyle}>
-        <NiceTextArea title="Output of Scan">
+        <NiceTextArea title="Devices List">
           todo
         </NiceTextArea>
       </View>

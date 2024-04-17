@@ -39,7 +39,7 @@ class BluetoothService {
   static async getConnectedPeripherals(): Promise<any[]> {
     return BleManager.getConnectedPeripherals([])
       .then((peripheralsArray) => {
-        console.log("Connected peripherals: " + peripheralsArray.length);
+        console.log("Connected peripherals count: " + peripheralsArray.length);
         return peripheralsArray;
       })
 
