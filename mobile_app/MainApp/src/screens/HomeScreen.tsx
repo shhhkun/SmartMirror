@@ -5,17 +5,61 @@ import {
   StyleSheet,
   View,
   SafeAreaView,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 
 // my imports
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
+import BluetoothService from '../services/BluetoothService';
+
+const requestAndroidLocationPermission = async (): Promise<void> => {
+  // check if existing permission is granted
+  PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,)
+    .then(result => {
+      if (result) {
+        console.log("Android fine location permission is granted");
+        return;
+      }
+    });
+
+  // if we get here, we need to request location permission
+  PermissionsAndroid.request(
+    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    {
+      title: 'Location Permission',
+      message: 'This app needs access to your location to perform Bluetooth scanning.',
+      buttonNegative: 'Cancel',
+      buttonPositive: 'OK'
+    }
+  )
+    .then(result => {
+      if (result) {
+        console.log('Prompted Android user for location. User accepted.');
+      } else {
+        console.log('Prompted Android user for location. User denied.');
+      }
+    });
+};
+
+const requestPermissions = async (): Promise<void> => {
+  // make sure that permisisons are all granted in device settings!
+
+  BluetoothService.requestBluetoothPermission();
+
+  if (Platform.OS === 'android' && Platform.Version >= 23) {
+    requestAndroidLocationPermission();
+  };
+};
 
 const doUponRequestPermissionsButtonPress = () => {
-  console.log("Request Permissions pressed on home screen");
-  // request permissions
-  // bring in stuff from the scan screen to here
+  console.log("Start bluetooth driver pressed on home screen");
+
+  BluetoothService.initialize();
+
+  requestPermissions();
 };
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
@@ -31,7 +75,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponRequestPermissionsButtonPress()} title="Request Bluetooth Permissions" />
+        <ButtonToNavigate onPress={() => doUponRequestPermissionsButtonPress()} title="Enable Bluetooth Driver" />
       </View>
 
       <View style={styles.buttonContainer}>

@@ -3,13 +3,10 @@ import React from 'react';
 import {
   StatusBar,
   StyleSheet,
-  // Text,
   View,
   SafeAreaView,
   PermissionsAndroid,
-  // NativeEventEmitter,
   Platform,
-  // useState
 } from 'react-native';
 
 // my imports
@@ -78,9 +75,11 @@ const doUponScanButtonPress = (): Promise<void> => {
   //     console.error('Error scanning:', error);
   //     return error;
   //   });
+
+  return Promise.resolve();
 };
 
-const ScanScreen = () => {
+const ScanScreen = ({ navigation }: { navigation: any }) => {
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
