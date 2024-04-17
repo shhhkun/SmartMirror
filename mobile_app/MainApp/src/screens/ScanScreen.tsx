@@ -5,8 +5,6 @@ import {
   StyleSheet,
   View,
   SafeAreaView,
-  PermissionsAndroid,
-  Platform,
 } from 'react-native';
 
 // my imports
@@ -16,65 +14,9 @@ import NiceTextArea from '../components/NiceTextArea';
 import BluetoothService from '../services/BluetoothService';
 
 
-const requestAndroidLocationPermission = async (): Promise<void> => {
-  // check if existing permission is granted
-  PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,)
-    .then(result => {
-      if (result) {
-        console.log("Android fine location permission is granted");
-        return;
-      }
-    });
-
-  // if we get here, we need to request location permission
-  PermissionsAndroid.request(
-    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    {
-      title: 'Location Permission',
-      message: 'This app needs access to your location to perform Bluetooth scanning.',
-      buttonNegative: 'Cancel',
-      buttonPositive: 'OK'
-    }
-  )
-    .then(result => {
-      if (result) {
-        console.log('Prompted Android user for location. User accepted.');
-      } else {
-        console.log('Prompted Android user for location. User denied.');
-      }
-    });
-};
-
-const requestPermissions = async (): Promise<void> => {
-  // make sure that permisisons are all granted in device settings!
-
-  BluetoothService.requestBluetoothPermission();
-
-  if (Platform.OS === 'android' && Platform.Version >= 23) {
-    requestAndroidLocationPermission();
-  };
-};
-
-const doUponStartButtonPress = () => {
-  console.log("Start button pressed on scan screen");
-
-  BluetoothService.initialize();
-
-  requestPermissions();
-};
 
 const doUponScanButtonPress = (): Promise<void> => {
   console.log("Scan button pressed on scan screen");
-
-  // BluetoothService.scan()
-  //   .then(results => {
-  //     console.log('Discovered devices:', results);
-  //     return results;
-  //   })
-  //   .catch(error => {
-  //     console.error('Error scanning:', error);
-  //     return error;
-  //   });
 
   return Promise.resolve();
 };
@@ -88,10 +30,6 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
         <NiceTextArea title="Scan for Devices">
           instructions and window of nearby devices will go here
         </NiceTextArea>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponStartButtonPress()} title="Start Driver" />
       </View>
 
       <View style={styles.buttonContainer}>
