@@ -70,7 +70,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.mainStyle}>
         <NiceTextArea title="Team 3 Smart Mirror">
           This mobile app is an interface for sending a JSON configuration file
-          to the Smart Mirror via BLE. Press the button below to begin the flow.
+          to the Smart Mirror via BLE. Press the button to enable Bluetooth,
+          then continue to the scan screen.
         </NiceTextArea>
       </View>
 

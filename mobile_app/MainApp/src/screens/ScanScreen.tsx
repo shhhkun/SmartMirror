@@ -35,6 +35,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  // function to retireve connected devices upon button press
   const doUponConnectedDevicesButton = async () => {
     BluetoothService.getConnectedPeripherals()
 

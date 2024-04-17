@@ -30,18 +30,22 @@ Functionality for these operations will be contained in BluetoothService.tx, as 
 
 # ----------
 
-To run on Erik's machine:
+To run in emulator on Erik's machine:
 
 run
    source ~/.zshrc
 
 start android studio and have emulator device running
 
-run
+from MainApp directory, run
    npm start
-from MainApp directory
 
-To run on physical android device:
+# ----------
+
+To run on Erik's physical android device:
+
+check that connected evice is recognized. run
+   adb devices
 
 run
    DEBUG=react-native* npx react-native start
