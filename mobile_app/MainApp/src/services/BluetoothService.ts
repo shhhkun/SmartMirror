@@ -36,6 +36,19 @@ class BluetoothService {
     }
   }
 
+  static async getConnectedPeripherals(): Promise<any[]> {
+    return BleManager.getConnectedPeripherals([])
+      .then((peripheralsArray) => {
+        console.log("Connected peripherals: " + peripheralsArray.length);
+        return peripheralsArray;
+      })
+
+      .catch((error) => {
+        console.error('Error getting connected peripherals:', error);
+        throw error; // Re-throw the error to propagate it to the caller
+      });
+  }
+
   static connect(deviceUUID: string): Promise<void> {
     return BleManager.connect(deviceUUID);
   }
