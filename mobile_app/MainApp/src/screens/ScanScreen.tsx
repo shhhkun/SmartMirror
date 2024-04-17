@@ -1,5 +1,5 @@
 // library imports
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -13,15 +13,31 @@ import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 import BluetoothService from '../services/BluetoothService';
 
-
-
-const doUponScanButtonPress = (): Promise<void> => {
-  console.log("Scan button pressed on scan screen");
-
-  return Promise.resolve();
-};
-
 const ScanScreen = ({ navigation }: { navigation: any }) => {
+  // state variables
+  const [isScanning, setIsScanning] = useState(false);
+
+  // function to call bluetooth service scan upon button press
+  const doUponScanButtonPress = async () => {
+    console.log("Scan button pressed on scan screen");
+
+    if (isScanning) {
+      console.log("Already scanning; ignoring button press");
+      return;
+    }
+
+    try {
+      await BluetoothService.scan();
+      console.log("Scan started in ScanScreen.doUponScanButtonPress");
+      setIsScanning(true);
+    }
+
+    catch (error) {
+      console.error('Error starting scan:', error);
+    }
+  };
+
+  // UI stuff here
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
