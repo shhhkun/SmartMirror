@@ -27,15 +27,18 @@ Scan action on scan screen seems to be working. I'm not entirely sure what this 
 
 Get connected peripherals in scan screen doesn't seem to be actually working. Tried on physical android with my heart rate sensor connected, and it didn't detect it. Could be some issue wiht the scan not stopping, or some state issue.
 
+I'm not sure if it's actually necessary to implement scanning and bonding functionality in out app. Maybe for now we can have users connect through their device settings, and then once it's connected, the app just allows them to display info about it and send it data.
+
 Next steps:
-- get connected peripherals to actually show up with their UUIDs
+- get connected peripherals to actually show up with their UUIDs with the getConnectedPeripherals function
+- remove scan stuff from the scan page. (this page can just tell the user to go connect in their device settings. and it can run the getConnectedPeripherals continuously until something shows up, and then the user should be able to click a device and go to the details page)
 - try running the function that gets info about a connected peripheral, including the characteristics it is advertising
 - try reading the value out of a specific characteristic
 - implement some UI functionality (maybe another page) that shows details of the device. and maybe a text box form
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 
-- implement command to write to a characteristic on the peripheral
+- implement command to write data to a characteristic on the peripheral
 - come up with a data format to send to the peripheral (whatever the JSON config thing should look like)
 - hook up text box form to the ability to send this JSON config to the peripheral
 

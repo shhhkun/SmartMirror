@@ -14,27 +14,6 @@ import NiceTextArea from '../components/NiceTextArea';
 import BluetoothService from '../services/BluetoothService';
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
-  // state variables
-  const [isScanning, setIsScanning] = useState(false);
-
-  // function to call bluetooth service scan upon button press
-  const doUponScanButton = async () => {
-    if (isScanning) {
-      console.log("Already scanning; ignoring button press");
-      return;
-    }
-
-    try {
-      await BluetoothService.scan();
-      console.log("Scan started in ScanScreen.doUponScanButtonPress");
-      setIsScanning(true);
-    }
-
-    catch (error) {
-      console.error('Error starting scan:', error);
-    }
-  };
-
   // function to retireve connected devices upon button press
   const doUponConnectedDevicesButton = async () => {
     BluetoothService.getConnectedPeripherals()
@@ -53,14 +32,11 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
 
-      {/* <View style={styles.mainStyle}>
-        <NiceTextArea title="Nearby and Connected Devices">
-          {/* prob can leave blank */}
-      {/* </NiceTextArea>
-      </View> */}
-
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponScanButton()} title="Scan" />
+      <View style={styles.mainStyle}>
+        <NiceTextArea title="Connected Devices">
+          Pair to a peripheral in your device settings,
+          then press the "show connected devices" button.
+        </NiceTextArea>
       </View>
 
       <View style={styles.buttonContainer}>

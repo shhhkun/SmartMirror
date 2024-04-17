@@ -25,17 +25,6 @@ class BluetoothService {
     }
   }
 
-  static async scan(): Promise<void> {
-    try {
-      await BleManager.scan([], 5, true);
-      console.log("Scan started (BluetoothService.scan)");
-
-    } catch (error) {
-      console.error('Error starting scan: ${error} (BluetoothService.scan)');
-      throw error; // Re-throw the error to propagate it to the caller if needed
-    }
-  }
-
   static async getConnectedPeripherals(): Promise<any[]> {
     return BleManager.getConnectedPeripherals([])
       .then((peripheralsArray) => {
@@ -58,6 +47,9 @@ class BluetoothService {
   }
 
   static write(deviceUUID: string, serviceUUID: string, characteristicUUID: string, data: number[]): Promise<void> {
+    // this should run isPeripheralConnected before we attempt to write.
+    // if it's not, throw some kind of error or notify the user.
+
     return BleManager.write(deviceUUID, serviceUUID, characteristicUUID, data);
   }
 
