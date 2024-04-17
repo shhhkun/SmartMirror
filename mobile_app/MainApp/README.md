@@ -21,12 +21,23 @@ Final data-send page provides text boxes to put inputs into, and has a button to
 
 Todo / notes
 
-Plan is to have a separate page for each step of the process.
-Home screen (or permissions screen?) initializes the bluetooth library/driver.
-Scan screen shows a list of devices and gives the option to connect.
-Finally, data send screen gives the user the option to send text-box entries to the device.
+Permisisons on home screen are working. Navigation from home screen to scan screen works.
 
-Functionality for these operations will be contained in BluetoothService.tx, as a wrapper for the library. Then call these functions from the respective pages.
+Scan action on scan screen seems to be working. I'm not entirely sure what this is doing, though.
+
+Get connected peripherals in scan screen doesn't seem to be actually working. Tried on physical android with my heart rate sensor connected, and it didn't detect it. Could be some issue wiht the scan not stopping, or some state issue.
+
+Next steps:
+- get connected peripherals to actually show up with their UUIDs
+- try running the function that gets info about a connected peripheral, including the characteristics it is advertising
+- try reading the value out of a specific characteristic
+- implement some UI functionality (maybe another page) that shows details of the device. and maybe a text box form
+
+- !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
+
+- implement command to write to a characteristic on the peripheral
+- come up with a data format to send to the peripheral (whatever the JSON config thing should look like)
+- hook up text box form to the ability to send this JSON config to the peripheral
 
 # ----------
 
