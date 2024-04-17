@@ -14,7 +14,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Scan" component={ScanScreen} />
+        <Stack.Screen name="Devices" component={ScanScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
