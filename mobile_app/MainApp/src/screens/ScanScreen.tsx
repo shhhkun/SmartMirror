@@ -4,6 +4,7 @@ import {
   StatusBar,
   StyleSheet,
   View,
+  Text,
   SafeAreaView,
 } from 'react-native';
 import { Peripheral } from 'react-native-ble-manager';
@@ -17,7 +18,7 @@ import BluetoothService from '../services/BluetoothService';
 const ScanScreen = ({ navigation }: { navigation: any }) => {
   // state variables to show info about last connected devices status
   const [numberOfDevices, setNumberOfDevices] = useState(0);
-  const [lastScanTime, setLastScanTime] = useState('');
+  const [lastScanTime, setLastScanTime] = useState('never');
 
   // function to retireve connected devices upon button press
   const doUponConnectedDevicesButton = async () => {
@@ -60,8 +61,12 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Devices List">
+
           Current number of connected devices: {numberOfDevices}
-          Last scan time: {lastScanTime}
+          {"\n"}
+          {"\n"}
+          Last update time: {lastScanTime}
+
         </NiceTextArea>
       </View>
 
