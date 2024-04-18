@@ -1,6 +1,6 @@
 // wrapper class for react-native-ble-manager
 
-import BleManager from 'react-native-ble-manager';
+import BleManager, { Peripheral } from 'react-native-ble-manager';
 
 class BluetoothService {
   static async requestBluetoothPermission(): Promise<void> {
@@ -25,18 +25,21 @@ class BluetoothService {
     }
   }
 
-  static async getConnectedPeripherals(): Promise<any[]> {
-    return BleManager.getConnectedPeripherals([])
-      .then((peripheralsArray) => {
-        console.log("Connected peripherals count: " + peripheralsArray.length);
-        return peripheralsArray;
-      })
+  static async getConnectedPeripherals(): Promise<Peripheral[]> {
+    try {
+      const peripheralsArray = await BleManager.getConnectedPeripherals([]);
 
-      .catch((error) => {
-        console.error('Error getting connected peripherals:', error);
-        throw error; // Re-throw the error to propagate it to the caller
-      });
+      console.log("Connected peripherals count: " + peripheralsArray.length);
+
+      return peripheralsArray as Peripheral[];
+
+    } catch (error) {
+      console.error('Error getting connected peripherals:', error);
+
+      throw error; // Re-throw the error to propagate it to the caller
+    }
   }
+
 
   static connect(deviceUUID: string): Promise<void> {
     return BleManager.connect(deviceUUID);

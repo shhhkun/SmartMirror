@@ -31,7 +31,6 @@ I'm not sure if it's actually necessary to implement scanning and bonding functi
 
 Next steps:
 - get connected peripherals to actually show up with their UUIDs with the getConnectedPeripherals function
-- remove scan stuff from the scan page. (this page can just tell the user to go connect in their device settings. and it can run the getConnectedPeripherals continuously until something shows up, and then the user should be able to click a device and go to the details page)
 - try running the function that gets info about a connected peripheral, including the characteristics it is advertising
 - try reading the value out of a specific characteristic
 - implement some UI functionality (maybe another page) that shows details of the device. and maybe a text box form
@@ -41,6 +40,7 @@ Next steps:
 - implement command to write data to a characteristic on the peripheral
 - come up with a data format to send to the peripheral (whatever the JSON config thing should look like)
 - hook up text box form to the ability to send this JSON config to the peripheral
+- maybe maybe the show connected devices function only show devices with our kind of specific service UUIDs
 
 # ----------
 

@@ -80,7 +80,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => navigation.navigate("Scan")} title="Go To Devices Page" />
+        <ButtonToNavigate onPress={() => navigation.navigate("Devices")} title="Go To Devices Page" />
       </View>
 
     </SafeAreaView >
