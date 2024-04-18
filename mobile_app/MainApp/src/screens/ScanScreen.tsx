@@ -4,7 +4,6 @@ import {
   StatusBar,
   StyleSheet,
   View,
-  Text,
   SafeAreaView,
 } from 'react-native';
 import { Peripheral } from 'react-native-ble-manager';
@@ -15,10 +14,17 @@ import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 import BluetoothService from '../services/BluetoothService';
 
+
+
+
+
+
 const ScanScreen = ({ navigation }: { navigation: any }) => {
   // state variables to show info about last connected devices status
   const [numberOfDevices, setNumberOfDevices] = useState(0);
   const [lastScanTime, setLastScanTime] = useState('never');
+  const [connectedDeviceInfo, setConnectedDeviceInfo] = useState('none');
+
 
   // function to retireve connected devices upon button press
   const doUponConnectedDevicesButton = async () => {
@@ -35,12 +41,22 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       setNumberOfDevices(peripheralsArray.length);
       setLastScanTime(new Date().toLocaleTimeString());
 
+      if (peripheralsArray.length > 0) {
+        const successfulDeviceInfo: string = JSON.stringify(peripheralsArray, null, 2)
+        setConnectedDeviceInfo(successfulDeviceInfo);
+        console.log("Connected peripherals array returned:", successfulDeviceInfo);
+      } else {
+        setConnectedDeviceInfo('none');
+      }
+
     } catch (error) {
       console.error('Error getting connected peripherals:', error);
       setNumberOfDevices(0);
       setLastScanTime(`Error on scan: ${new Date().toLocaleString()}`);
+      setConnectedDeviceInfo('none');
     }
   };
+
 
   // UI stuff here
   return (
@@ -59,20 +75,29 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
           title="Show Connected Devices" />
       </View>
 
+
       <View style={styles.mainStyle}>
         <NiceTextArea title="Devices List">
-
           Current number of connected devices: {numberOfDevices}
           {"\n"}
-          {"\n"}
           Last update time: {lastScanTime}
-
+          {"\n"}
+          Connected devices info:
+          {"\n"}
+          {connectedDeviceInfo}
         </NiceTextArea>
       </View>
+
 
     </SafeAreaView >
   );
 };
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
   mainStyle: {
@@ -89,5 +114,10 @@ const styles = StyleSheet.create({
   },
 
 });
+
+
+
+
+
 
 export default ScanScreen;
