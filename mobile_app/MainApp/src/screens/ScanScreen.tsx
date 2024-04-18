@@ -6,6 +6,7 @@ import {
   View,
   SafeAreaView,
 } from 'react-native';
+import { Peripheral } from 'react-native-ble-manager';
 
 // my imports
 import { GlobalStyles } from '../common/GlobalStyles';
@@ -16,15 +17,18 @@ import BluetoothService from '../services/BluetoothService';
 const ScanScreen = ({ navigation }: { navigation: any }) => {
   // function to retireve connected devices upon button press
   const doUponConnectedDevicesButton = async () => {
-    BluetoothService.getConnectedPeripherals()
+    try {
+      const peripheralsArray: Peripheral[] =
+        await BluetoothService.getConnectedPeripherals();
 
-      .then(peripheralsArray => {
-        console.log("connected peripherals array returned: " + peripheralsArray);
-      })
+      console.log("Connected peripherals count:", peripheralsArray.length);
 
-      .catch(error => {
-        console.error('Error getting connected peripherals:', error);
-      });
+      console.log("Connected peripherals array returned:",
+        JSON.stringify(peripheralsArray, null, 2));
+
+    } catch (error) {
+      console.error('Error getting connected peripherals:', error);
+    }
   };
 
   // UI stuff here
@@ -40,7 +44,8 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponConnectedDevicesButton()} title="Show Connected Devices" />
+        <ButtonToNavigate onPress={() => doUponConnectedDevicesButton()}
+          title="Show Connected Devices" />
       </View>
 
       <View style={styles.mainStyle}>
