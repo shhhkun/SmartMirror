@@ -15,6 +15,10 @@ import NiceTextArea from '../components/NiceTextArea';
 import BluetoothService from '../services/BluetoothService';
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
+  // state variables to show info about last connected devices status
+  const [numberOfDevices, setNumberOfDevices] = useState(0);
+  const [lastScanTime, setLastScanTime] = useState('');
+
   // function to retireve connected devices upon button press
   const doUponConnectedDevicesButton = async () => {
     try {
@@ -26,8 +30,14 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       console.log("Connected peripherals array returned:",
         JSON.stringify(peripheralsArray, null, 2));
 
+      // update our state variables and thus the UI
+      setNumberOfDevices(peripheralsArray.length);
+      setLastScanTime(new Date().toLocaleTimeString());
+
     } catch (error) {
       console.error('Error getting connected peripherals:', error);
+      setNumberOfDevices(0);
+      setLastScanTime(`Error on scan: ${new Date().toLocaleString()}`);
     }
   };
 
@@ -50,7 +60,8 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Devices List">
-          todo
+          Current number of connected devices: {numberOfDevices}
+          Last scan time: {lastScanTime}
         </NiceTextArea>
       </View>
 
