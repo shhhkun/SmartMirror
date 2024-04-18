@@ -40,12 +40,8 @@ class BluetoothService {
     }
   }
 
-
-  static connect(deviceUUID: string): Promise<void> {
-    return BleManager.connect(deviceUUID);
-  }
-
   static read(deviceUUID: string, serviceUUID: string, characteristicUUID: string): Promise<any> {
+    // this isn't really implemented yet
     return BleManager.read(deviceUUID, serviceUUID, characteristicUUID);
   }
 
@@ -53,10 +49,12 @@ class BluetoothService {
     // this should run isPeripheralConnected before we attempt to write.
     // if it's not, throw some kind of error or notify the user.
 
+    // this isn't really implemented yet
     return BleManager.write(deviceUUID, serviceUUID, characteristicUUID, data);
   }
 
   static disconnect(deviceUUID: string): Promise<void> {
+    // this isn't really implemented yet
     return BleManager.disconnect(deviceUUID);
   }
 }

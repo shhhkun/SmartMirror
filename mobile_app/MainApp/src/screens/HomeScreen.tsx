@@ -15,6 +15,11 @@ import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 import BluetoothService from '../services/BluetoothService';
 
+
+
+
+
+
 const requestAndroidLocationPermission = async (): Promise<void> => {
   // check if existing permission is granted
   PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,)
@@ -44,6 +49,11 @@ const requestAndroidLocationPermission = async (): Promise<void> => {
     });
 };
 
+
+
+
+
+
 const requestPermissions = async (): Promise<void> => {
   // make sure that permisisons are all granted in device settings!
 
@@ -54,6 +64,11 @@ const requestPermissions = async (): Promise<void> => {
   };
 };
 
+
+
+
+
+
 const doUponRequestPermissionsButtonPress = () => {
   console.log("Start bluetooth driver pressed on home screen");
 
@@ -61,6 +76,11 @@ const doUponRequestPermissionsButtonPress = () => {
 
   requestPermissions();
 };
+
+
+
+
+
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   return (
@@ -87,6 +107,11 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   );
 };
 
+
+
+
+
+
 const styles = StyleSheet.create({
   mainStyle: {
     backgroundColor: GlobalStyles.lightBackground,
@@ -102,5 +127,6 @@ const styles = StyleSheet.create({
   },
 
 });
+
 
 export default HomeScreen;

@@ -7,7 +7,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/screens/HomeScreen';
 import ScanScreen from './src/screens/ScanScreen';
 
+
+
+
+
+
 const Stack = createStackNavigator();
+
 
 const App = () => {
   return (
@@ -19,5 +25,6 @@ const App = () => {
     </NavigationContainer>
   );
 };
+
 
 export default App;
