@@ -30,7 +30,7 @@ Get connected devices is working. Seems quite brittle though. Could be due to th
 Next steps:
 - try running the function that gets info about a connected peripheral, including the characteristics it is advertising
 - try reading the value out of a specific characteristic
-- implement some UI functionality (maybe another page) that shows details of the device. and maybe a text box form
+- implement some UI functionality (maybe another page) that shows details of the device. and maybe a text box form. maybe store the data from the prior page with some context api thing?
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 
