@@ -1,21 +1,23 @@
 Mobile app to send a config JSON file to the smart mirror via bluetooth.
-Uses react-native-ble-manager for BLE functionality and react navigator for pages.
+Uses react-native-ble-manager for BLE functionality.
 
 Docs for this bluetooth manager library:
 http://innoveit.github.io/react-native-ble-manager/methods/#startoptions
 
-Good example project to refer to:
+Example project to refer to for getting bonded devices:
 https://blog.logrocket.com/using-react-native-ble-manager-mobile-app/
 
 # ----------
 
 Description of functionality:
 
-Pressing "start/go" from home screen will initialize the bluetooth manager. This might trigger some system dialogue box for bluetooth permission.
+Pressing "enable bluetooth" from home screen will initialize the bluetooth manager. This might trigger some system popup for bluetooth permission.
 
-Next screen will be scan screen. Upon pressing button, should show a list of nearby devices. Clicking one should initiate pairing with that device. Bottom button should become clickable once a device is connected, and takes you to next page.
+Next screen has a button that checks for currently connected devices. It is assumed that the user will have paired to a device in their device settings, then will come back here.
 
-Final data-send page provides text boxes to put inputs into, and has a button to "send" data. Exact format, bluetooth characteristic, etc. tbd until we figure out the listener.
+Upon a smart mirror device being found (as determined by UUID somehow?), or any device for now, the user can click it and get taken to a page for that device.
+
+On that next page, they can read from a characteristic and send data to it with a text box.
 
 # ----------
 
@@ -23,14 +25,9 @@ Todo / notes
 
 Permisisons on home screen are working. Navigation from home screen to scan screen works.
 
-Scan action on scan screen seems to be working. I'm not entirely sure what this is doing, though.
-
-Get connected peripherals in scan screen doesn't seem to be actually working. Tried on physical android with my heart rate sensor connected, and it didn't detect it. Could be some issue wiht the scan not stopping, or some state issue.
-
-I'm not sure if it's actually necessary to implement scanning and bonding functionality in out app. Maybe for now we can have users connect through their device settings, and then once it's connected, the app just allows them to display info about it and send it data.
+Get connected devices is working. Seems quite brittle though. Could be due to the nrf peripheral on my iPhone being jank. But it does print out info about the connected device.
 
 Next steps:
-- get connected peripherals to actually show up with their UUIDs with the getConnectedPeripherals function
 - try running the function that gets info about a connected peripheral, including the characteristics it is advertising
 - try reading the value out of a specific characteristic
 - implement some UI functionality (maybe another page) that shows details of the device. and maybe a text box form
@@ -63,5 +60,8 @@ check that connected evice is recognized. run
 
 run
    DEBUG=react-native* npx react-native start
+
+or if that doesn't work, can also just try running
+   npm start
 
 # ----------
