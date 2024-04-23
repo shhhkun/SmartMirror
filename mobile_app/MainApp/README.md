@@ -28,14 +28,14 @@ Permisisons on home screen are working. Navigation from home screen to scan scre
 Get connected devices is working. Seems quite brittle though. Could be due to the nrf peripheral on my iPhone being jank. But it does print out info about the connected device.
 
 Next steps:
-- try running the function that gets info about a connected peripheral, including the characteristics it is advertising
-- set up the context API to manage bluetooth state. like to hold the UUID of the current device and info about its characteristic we'll want to write to
+- refactor stuff to use the context API for bluetooth state management. to hold on to the UUID of our current device
+- call the method that gets info about a connected peripheral - its characteristics and services it is advertising
 - try reading the value out of a specific characteristic
+- implement command to write data to a characteristic on the peripheral
 - implement some UI functionality (maybe another page) that shows details of the device. and maybe a text box form. maybe store the data from the prior page with some context api thing?
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 
-- implement command to write data to a characteristic on the peripheral
 - come up with a data format to send to the peripheral (whatever the JSON config thing should look like)
 - hook up text box form to the ability to send this JSON config to the peripheral
 - maybe maybe the show connected devices function only show devices with our kind of specific service UUIDs
@@ -66,3 +66,8 @@ or if that doesn't work, can also just try running
    npm start
 
 # ----------
+
+Future enhancements that I'm not going to implement, but would be nice for the final sellable product: (none actually issues yet, but will be issues after this prototype is done)
+- This only works if there is one BLE device connected. Things will break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned, and I don't want to deal with the complexity of managing multiple bluetooth devices being connected and selecting the right one.
+- Have the user be able to drag and drop rectangles on the screen, instead of just sending coordinates as text.
+- A way for the user to authenticate for their apps. Like have this app make a call to a web server of ours, that server goes and gets a token for some site, gives us the token, and we pass that token along with BLE to the Raspi.
