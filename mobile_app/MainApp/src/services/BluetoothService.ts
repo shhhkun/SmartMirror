@@ -1,6 +1,6 @@
 // wrapper class for react-native-ble-manager
 
-import BleManager, { Peripheral } from 'react-native-ble-manager';
+import BleManager, { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
 
 class BluetoothService {
   static async requestBluetoothPermission(): Promise<void> {
@@ -40,11 +40,13 @@ class BluetoothService {
     }
   }
 
-  static async retrieveServices(deviceUUID: string): Promise<Peripheral> {
+  static async retrieveServices(deviceUUID: string): Promise<PeripheralInfo> {
+    // returns an object that contains this peripheral's
+    // services and characteristics.
     try {
-      const peripheral = await BleManager.retrieveServices(deviceUUID);
+      const peripheralInfo = await BleManager.retrieveServices(deviceUUID);
 
-      return peripheral as Peripheral;
+      return peripheralInfo as PeripheralInfo;
 
     } catch (error) {
       console.error('Error retrieving services:', error);
