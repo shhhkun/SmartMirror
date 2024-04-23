@@ -44,13 +44,18 @@ const defaultDeviceInfo: ConnectedDeviceInfo = {
 };
 
 interface BluetoothContextType {
+  bluetoothPermissionsOK: boolean;
   deviceIsConnected: boolean;
   deviceInfo: ConnectedDeviceInfo;
 }
 
-const BluetoothContext = createContext<BluetoothContextType>({
+const defaultBluetoothContext: BluetoothContextType = {
+  bluetoothPermissionsOK: false,
   deviceIsConnected: false,
   deviceInfo: defaultDeviceInfo,
-});
+};
+
+const BluetoothContext = createContext<BluetoothContextType>(
+  defaultBluetoothContext);
 
 export default BluetoothContext;
