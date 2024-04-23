@@ -29,6 +29,7 @@ Get connected devices is working. Seems quite brittle though. Could be due to th
 
 Next steps:
 - try running the function that gets info about a connected peripheral, including the characteristics it is advertising
+- set up the context API to manage bluetooth state. like to hold the UUID of the current device and info about its characteristic we'll want to write to
 - try reading the value out of a specific characteristic
 - implement some UI functionality (maybe another page) that shows details of the device. and maybe a text box form. maybe store the data from the prior page with some context api thing?
 

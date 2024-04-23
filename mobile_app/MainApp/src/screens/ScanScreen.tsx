@@ -42,9 +42,11 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       setLastScanTime(new Date().toLocaleTimeString());
 
       if (peripheralsArray.length > 0) {
+        // a peripheral is connected
         const successfulDeviceInfo: string = JSON.stringify(peripheralsArray, null, 2)
         setConnectedDeviceInfo(successfulDeviceInfo);
         console.log("Connected peripherals array returned:", successfulDeviceInfo);
+
       } else {
         setConnectedDeviceInfo('none');
       }
