@@ -40,6 +40,21 @@ class BluetoothService {
     }
   }
 
+  static async retrieveServices(deviceUUID: string): Promise<Peripheral> {
+    try {
+      const peripheral = await BleManager.retrieveServices(deviceUUID);
+
+      return peripheral as Peripheral;
+
+    } catch (error) {
+      console.error('Error retrieving services:', error);
+
+      throw error; // Re-throw the error to propagate it to the caller
+    }
+  }
+
+  // stuff below here isn't really implemented yet
+
   static read(deviceUUID: string, serviceUUID: string, characteristicUUID: string): Promise<any> {
     // this isn't really implemented yet
     return BleManager.read(deviceUUID, serviceUUID, characteristicUUID);
