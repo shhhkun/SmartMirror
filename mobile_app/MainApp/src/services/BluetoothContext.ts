@@ -10,11 +10,15 @@ import BleManager, {
   PeripheralInfo
 } from 'react-native-ble-manager';
 
+import BluetoothService from './BluetoothService';
 
-interface infoAboutConnectedDevice {
-  deviceIsConnected: boolean;
 
-  peripheralBasicInfo: Peripheral;
+interface ConnectedDeviceInfo {
+  // upon connecting, below attributes should be populated
+  // upon disconnecting, below attributes should be set to none
+
+  // this info is available from just an advertising device?
+  peripheralBasicInfo: Peripheral | null;
   // Peripheral has the form: Peripheral {
   //   id: string;
   //   rssi: number;
@@ -22,7 +26,9 @@ interface infoAboutConnectedDevice {
   //   advertising: AdvertisingData;
   // }
 
-  peripheralExtendedInfo: PeripheralInfo;
+  // this info is available from a connected device?
+  // haven't been able to get yet.
+  peripheralExtendedInfo: PeripheralInfo | null;
   // PeripheralInfo extends Peripheral has the form: PeripheralInfo {
   //   serviceUUIDs?: string[];
   //   characteristics?: Characteristic[];
@@ -30,12 +36,21 @@ interface infoAboutConnectedDevice {
   // }
 
   // some other attribute for the characteristic we actually care about
-
 }
 
-
+const defaultDeviceInfo: ConnectedDeviceInfo = {
+  peripheralBasicInfo: null,
+  peripheralExtendedInfo: null,
+};
 
 interface BluetoothContextType {
   deviceIsConnected: boolean;
-  deviceInfo: infoAboutConnectedDevice;
+  deviceInfo: ConnectedDeviceInfo;
 }
+
+const BluetoothContext = createContext<BluetoothContextType>({
+  deviceIsConnected: false,
+  deviceInfo: defaultDeviceInfo,
+});
+
+export default BluetoothContext;
