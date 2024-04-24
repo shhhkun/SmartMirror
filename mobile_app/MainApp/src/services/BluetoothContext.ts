@@ -27,7 +27,6 @@ interface ConnectedDeviceInfo {
   // }
 
   // this info is available from a connected device?
-  // haven't been able to get yet.
   peripheralExtendedInfo: PeripheralInfo | null;
   // PeripheralInfo extends Peripheral has the form: PeripheralInfo {
   //   serviceUUIDs?: string[];

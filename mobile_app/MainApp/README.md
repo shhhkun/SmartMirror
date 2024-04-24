@@ -37,6 +37,7 @@ Next steps:
 - try reading the value out of a specific characteristic
 - implement command to write data to a characteristic on the peripheral
 - implement some UI functionality (maybe another page) that shows details of the device. and maybe a text box form. maybe store the data from the prior page with some context api thing?
+- smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 
