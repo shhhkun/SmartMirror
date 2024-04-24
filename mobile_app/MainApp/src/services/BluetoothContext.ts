@@ -38,24 +38,23 @@ interface ConnectedDeviceInfo {
   // some other attribute for the characteristic we actually care about
 }
 
-const defaultDeviceInfo: ConnectedDeviceInfo = {
-  peripheralBasicInfo: null,
-  peripheralExtendedInfo: null,
-};
-
-interface BluetoothContextType {
+export interface BluetoothContextType {
   bluetoothPermissionsOK: boolean;
   deviceIsConnected: boolean;
   deviceInfo: ConnectedDeviceInfo;
 }
 
-const defaultBluetoothContext: BluetoothContextType = {
+export const defaultDeviceInfo: ConnectedDeviceInfo = {
+  peripheralBasicInfo: null,
+  peripheralExtendedInfo: null,
+};
+
+export const defaultBluetoothContext: BluetoothContextType = {
   bluetoothPermissionsOK: false,
   deviceIsConnected: false,
   deviceInfo: defaultDeviceInfo,
 };
 
-const BluetoothContext = createContext<BluetoothContextType>(
+export const BluetoothContext = createContext<BluetoothContextType>(
   defaultBluetoothContext);
 
-export default BluetoothContext;

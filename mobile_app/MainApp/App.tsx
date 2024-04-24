@@ -8,10 +8,6 @@ import HomeScreen from './src/screens/HomeScreen';
 import ScanScreen from './src/screens/ScanScreen';
 
 
-
-
-
-
 const Stack = createStackNavigator();
 
 

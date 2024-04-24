@@ -28,6 +28,10 @@ Permisisons on home screen are working. Navigation from home screen to scan scre
 Get connected devices is working. Seems quite brittle though. Could be due to the nrf peripheral on my iPhone being jank. But it does print out info about the connected device.
 
 Next steps:
+- build bluetooth context and context provider
+- set up sexisting code to use the context provider instead of directly calling bluetooth service
+
+
 - refactor stuff to use the context API for bluetooth state management. to hold on to the UUID of our current device
 - call the method that gets info about a connected peripheral - its characteristics and services it is advertising
 - try reading the value out of a specific characteristic
