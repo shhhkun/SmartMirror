@@ -2,6 +2,14 @@
 
 import BleManager, { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
 
+
+// I think I'm going to make this into an instantiable class. that can hold onto
+// IDs of connected devices and characteristics and such.
+
+// then the provider interface will be a bit simpler.
+// it can do stuff like "write to currently connected device",
+// instead of having to juggle characteristic IDs and such.
+
 class BluetoothService {
   static async requestBluetoothPermission(): Promise<void> {
     try {
