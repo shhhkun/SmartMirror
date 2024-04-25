@@ -16,9 +16,6 @@ import BluetoothService from '../services/BluetoothService';
 
 
 
-
-
-
 const ScanScreen = ({ navigation }: { navigation: any }) => {
   // state variables to show info about last connected devices status
   const [numberOfDevices, setNumberOfDevices] = useState(0);
@@ -47,10 +44,17 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
         setConnectedDeviceInfo(successfulDeviceInfoPrintout);
         console.log("Connected peripherals array returned:", successfulDeviceInfoPrintout);
 
+        // print out the services info for the first connected device
         const connectedDeviceUUID = peripheralsArray[0].id;
-        const servicesInfo = await BluetoothService.retrieveServices(connectedDeviceUUID);
-        console.log("Services info for connected device:", servicesInfo);
+        try {
+          const servicesInfo = await BluetoothService.retrieveServices(connectedDeviceUUID);
+          console.log("Services info for connected device:", servicesInfo);
 
+        }
+        catch (error) {
+          console.error('Error retrieving services:', error);
+          // setConnectedDeviceInfo('none');
+        }
 
       } else {
         setConnectedDeviceInfo('none');
@@ -99,10 +103,6 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     </SafeAreaView >
   );
 };
-
-
-
-
 
 
 
