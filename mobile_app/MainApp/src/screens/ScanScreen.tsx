@@ -43,9 +43,14 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
       if (peripheralsArray.length > 0) {
         // a peripheral is connected
-        const successfulDeviceInfo: string = JSON.stringify(peripheralsArray, null, 2)
-        setConnectedDeviceInfo(successfulDeviceInfo);
-        console.log("Connected peripherals array returned:", successfulDeviceInfo);
+        const successfulDeviceInfoPrintout: string = JSON.stringify(peripheralsArray, null, 2)
+        setConnectedDeviceInfo(successfulDeviceInfoPrintout);
+        console.log("Connected peripherals array returned:", successfulDeviceInfoPrintout);
+
+        const connectedDeviceUUID = peripheralsArray[0].id;
+        const servicesInfo = await BluetoothService.retrieveServices(connectedDeviceUUID);
+        console.log("Services info for connected device:", servicesInfo);
+
 
       } else {
         setConnectedDeviceInfo('none');
