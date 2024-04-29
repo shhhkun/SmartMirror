@@ -31,7 +31,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => promptUserForPermissions()} title="Enable Bluetooth Driver" />
+        <ButtonToNavigate onPress={() => promptUserForPermissions()} title="Enable Bluetooth" />
       </View>
 
       <View style={styles.buttonContainer}>
