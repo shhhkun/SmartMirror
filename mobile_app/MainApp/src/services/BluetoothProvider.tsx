@@ -3,10 +3,10 @@ import React, {
   useState,
   PropsWithChildren,
 } from "react";
+import { Platform } from "react-native";
 
 import {
   BluetoothContext,
-  BluetoothContextType,
   ConnectedDeviceInfo,
   defaultBluetoothContext,
 } from './BluetoothContext';
@@ -26,15 +26,37 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
 
   // functions to interact with the bluetooth service
-  const initializeDriver = async () => {
-    // todo
+  const initializeDriver = async (): Promise<void> => {
+    BluetoothService.initialize();
   }
 
-  const promptUserForPermissions = async () => {
-    // todo
+  const promptUserForPermissions = async (): Promise<void> => {
+    if (bluetoothPermissionsOK) {
+      return;
+    }
+
+    try {
+      await BluetoothService.requestBluetoothPermission();
+
+      if (Platform.OS === 'android' && Platform.Version >= 23) {
+        await BluetoothService.requestAndroidLocationPermission();
+      };
+
+      setBluetoothPermissionsOK(true);
+      console.log('Bluetooth permissions granted');
+
+    } catch (error) {
+      setBluetoothPermissionsOK(false);
+      console.error('Bluetooth permissions not granted:', error);
+    }
   }
 
-  const getConnectedDevices = async () => {
+  const checkForConnectedDevices = async (): Promise<void> => {
+    if (!bluetoothPermissionsOK) {
+      console.error('Bluetooth permissions not granted');
+      return;
+    }
+
     // todo
   }
 
@@ -47,7 +69,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     deviceInfo,
     initializeDriver,
     promptUserForPermissions,
-    getConnectedDevices,
+    checkForConnectedDevices,
   };
 
   return (

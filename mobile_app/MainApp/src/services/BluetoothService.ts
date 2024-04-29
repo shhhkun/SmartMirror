@@ -1,10 +1,24 @@
 // wrapper class for react-native-ble-manager
-
+import {
+  Platform,
+  PermissionsAndroid,
+} from 'react-native';
 import BleManager, { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
 
 
 
 class BluetoothService {
+  static async initialize(): Promise<void> {
+    try {
+      await BleManager.start({ showAlert: true });
+      console.log("BLE manager initialized (BluetoothService.initialize)");
+
+    } catch (error) {
+      console.error('Error initializing BLE manager: ${error} (BluetoothService.initialize)');
+      throw error; // Re-throw the error to propagate it to the caller if needed
+    }
+  }
+
   static async requestBluetoothPermission(): Promise<void> {
     try {
       await BleManager.enableBluetooth();
@@ -16,15 +30,33 @@ class BluetoothService {
     }
   }
 
-  static async initialize(): Promise<void> {
-    try {
-      await BleManager.start({ showAlert: true });
-      console.log("BLE manager initialized (BluetoothService.initialize)");
+  static async requestAndroidLocationPermission(): Promise<void> {
+    if (await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+      .then(result => result)) {
 
-    } catch (error) {
-      console.error('Error initializing BLE manager: ${error} (BluetoothService.initialize)');
-      throw error; // Re-throw the error to propagate it to the caller if needed
+      console.log("Android fine location permission is already granted");
+      return;
     }
+
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Location Permission',
+        message: 'This app needs access to your location to use Bluetooth.',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK'
+      }
+    ).then(result => {
+      if (result) {
+        console.log('Prompted Android user for location. User accepted.');
+        return;
+
+      } else {
+        console.error('Prompted Android user for location. User denied.');
+        throw new Error("Android location permission denied");
+      }
+    });
   }
 
   static async getConnectedPeripherals(): Promise<Peripheral[]> {
