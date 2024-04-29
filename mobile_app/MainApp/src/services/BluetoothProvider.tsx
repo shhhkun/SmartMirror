@@ -7,7 +7,7 @@ import React, {
 import {
   BluetoothContext,
   BluetoothContextType,
-  defaultDeviceInfo,
+  ConnectedDeviceInfo,
   defaultBluetoothContext,
 } from './BluetoothContext';
 import BluetoothService from './BluetoothService';
@@ -15,13 +15,43 @@ import BluetoothService from './BluetoothService';
 
 
 const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
-  // states will go here
-  const [state, setState] = useState<BluetoothContextType>(defaultBluetoothContext);
+  // state variables
+  const [bluetoothPermissionsOK, setBluetoothPermissionsOK] =
+    useState<boolean>(defaultBluetoothContext.bluetoothPermissionsOK);
+  const [deviceIsConnected, setDeviceIsConnected] =
+    useState<boolean>(defaultBluetoothContext.deviceIsConnected);
+  const [deviceInfo, setDeviceInfo] =
+    useState<ConnectedDeviceInfo>(defaultBluetoothContext.deviceInfo);
 
-  // functions to actually do bluetooth stuff will go here
+
+
+  // functions to interact with the bluetooth service
+  const initializeDriver = async () => {
+    // todo
+  }
+
+  const promptUserForPermissions = async () => {
+    // todo
+  }
+
+  const getConnectedDevices = async () => {
+    // todo
+  }
+
+
+
+  // return the context provider
+  const value = {
+    bluetoothPermissionsOK,
+    deviceIsConnected,
+    deviceInfo,
+    initializeDriver,
+    promptUserForPermissions,
+    getConnectedDevices,
+  };
 
   return (
-    <BluetoothContext.Provider value={state}>
+    <BluetoothContext.Provider value={value}>
       {children}
     </BluetoothContext.Provider>
   );

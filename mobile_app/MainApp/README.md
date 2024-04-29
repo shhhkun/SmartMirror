@@ -74,5 +74,6 @@ or if that doesn't work, can also just try running
 
 Future enhancements that I'm not going to implement, but would be nice for the final sellable product: (none actually issues yet, but will be issues after this prototype is done)
 - This only works if there is one BLE device connected. Things will break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned, and I don't want to deal with the complexity of managing multiple bluetooth devices being connected and selecting the right one. alternatively, could add functionality to only pay attention to a bluetooth device wiht a certain UUID or characteristic or some mark of our smart mirror.
+- This could be made more performant / require less re-rendering by having bluetooth state stored as multiple state variables, not just a big object. Components will re-render each time this state changes, which is unnecessary in a lot of cases.
 - Have the user be able to drag and drop rectangles on the screen, instead of just sending coordinates as text.
 - A way for the user to authenticate for their apps. Like have this app make a call to a web server of ours, that server goes and gets a token for some site, gives us the token, and we pass that token along with BLE to the Raspi.

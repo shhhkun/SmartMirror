@@ -13,7 +13,7 @@ import BleManager, {
 import BluetoothService from './BluetoothService';
 
 
-interface ConnectedDeviceInfo {
+export interface ConnectedDeviceInfo {
   // upon connecting, below attributes should be populated
   // upon disconnecting, below attributes should be set to none
 
@@ -45,11 +45,11 @@ export interface BluetoothContextType {
   // and characteristic ID of interest
 
   initializeDriver: () => Promise<void>;
-  askForBluetoothPermissions: () => Promise<void>;
+  promptUserForPermissions: () => Promise<void>;
   getConnectedDevices: () => Promise<void>;
 }
 
-export const defaultDeviceInfo: ConnectedDeviceInfo = {
+const defaultDeviceInfo: ConnectedDeviceInfo = {
   peripheralBasicInfo: null,
   peripheralExtendedInfo: null,
 };
@@ -62,7 +62,7 @@ export const defaultBluetoothContext: BluetoothContextType = {
   initializeDriver: async () => {
     throw new Error('initializeDriver not implemented yet')
   },
-  askForBluetoothPermissions: async () => {
+  promptUserForPermissions: async () => {
     throw new Error('askForBluetoothPermissions not implemented yet')
   },
   getConnectedDevices: async () => {
