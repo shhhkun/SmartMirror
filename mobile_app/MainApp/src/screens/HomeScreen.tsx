@@ -1,95 +1,23 @@
 // library imports
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   StatusBar,
   StyleSheet,
   View,
   SafeAreaView,
-  PermissionsAndroid,
-  Platform,
 } from 'react-native';
 
 // my imports
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
-import BluetoothService from '../services/BluetoothService';
-
-
-// todo: move this permissions checking stuff into the context provider,
-// and then just have a single function call in here for that.
-
-const requestAndroidLocationPermission = async (): Promise<void> => {
-  // check if existing permission is granted
-  PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,)
-    .then(result => {
-      if (result) {
-        console.log("Android fine location permission is granted");
-        return;
-
-      } else {
-        console.log("Android fine location permission is not granted");
-        // set state to show that permissions are bad
-      }
-
-    });
-
-  // if we get here, we need to request location permission
-  PermissionsAndroid.request(
-    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    {
-      title: 'Location Permission',
-      message: 'This app needs access to your location to perform Bluetooth scanning.',
-      buttonNegative: 'Cancel',
-      buttonPositive: 'OK'
-    }
-  )
-    .then(result => {
-      if (result) {
-        console.log('Prompted Android user for location. User accepted.');
-        // should write to the context that permissions are OK
-
-      } else {
-        console.log('Prompted Android user for location. User denied.');
-        // should write to the context that permissions are bad
-      }
-    });
-};
-
-
-
-
-
-
-const requestPermissions = async (): Promise<void> => {
-  // make sure that permisisons are all granted in device settings!
-
-  BluetoothService.requestBluetoothPermission();
-
-  if (Platform.OS === 'android' && Platform.Version >= 23) {
-    requestAndroidLocationPermission();
-  };
-};
-
-
-
-
-
-
-const doUponRequestPermissionsButtonPress = () => {
-  console.log("Start bluetooth driver pressed on home screen");
-
-  BluetoothService.initialize();
-
-  requestPermissions();
-};
-
-
-
+import { BluetoothContext } from '../services/BluetoothContext';
 
 
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
+  const { bluetoothPermissionsOK, promptUserForPermissions } = useContext(BluetoothContext);
+
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
@@ -103,7 +31,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponRequestPermissionsButtonPress()} title="Enable Bluetooth Driver" />
+        <ButtonToNavigate onPress={() => promptUserForPermissions()} title="Enable Bluetooth Driver" />
       </View>
 
       <View style={styles.buttonContainer}>
@@ -113,10 +41,6 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     </SafeAreaView >
   );
 };
-
-
-
-
 
 
 const styles = StyleSheet.create({

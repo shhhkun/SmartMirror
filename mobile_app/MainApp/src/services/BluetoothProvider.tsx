@@ -1,6 +1,7 @@
 import React, {
   FC,
   useState,
+  useEffect,
   PropsWithChildren,
 } from "react";
 import { Platform } from "react-native";
@@ -22,7 +23,6 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     useState<boolean>(defaultBluetoothContext.deviceIsConnected);
   const [deviceInfo, setDeviceInfo] =
     useState<ConnectedDeviceInfo>(defaultBluetoothContext.deviceInfo);
-
 
 
   // functions to interact with the bluetooth service
@@ -60,6 +60,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // todo
   }
 
+
+  // constructor-like thing that runs when context is created
+  useEffect(() => {
+    initializeDriver();
+  }, []);
 
 
   // return the context provider
