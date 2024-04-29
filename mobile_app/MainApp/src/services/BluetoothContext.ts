@@ -41,6 +41,12 @@ export interface BluetoothContextType {
   bluetoothPermissionsOK: boolean;
   deviceIsConnected: boolean;
   deviceInfo: ConnectedDeviceInfo;
+  // want to enventaully have fields for our device ID
+  // and characteristic ID of interest
+
+  initializeDriver: () => Promise<void>;
+  askForBluetoothPermissions: () => Promise<void>;
+  getConnectedDevices: () => Promise<void>;
 }
 
 export const defaultDeviceInfo: ConnectedDeviceInfo = {
@@ -52,6 +58,16 @@ export const defaultBluetoothContext: BluetoothContextType = {
   bluetoothPermissionsOK: false,
   deviceIsConnected: false,
   deviceInfo: defaultDeviceInfo,
+
+  initializeDriver: async () => {
+    throw new Error('initializeDriver not implemented yet')
+  },
+  askForBluetoothPermissions: async () => {
+    throw new Error('askForBluetoothPermissions not implemented yet')
+  },
+  getConnectedDevices: async () => {
+    throw new Error('getConnectedDevices not implemented yet')
+  },
 };
 
 export const BluetoothContext = createContext<BluetoothContextType>(

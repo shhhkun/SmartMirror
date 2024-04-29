@@ -16,6 +16,8 @@ import NiceTextArea from '../components/NiceTextArea';
 import BluetoothService from '../services/BluetoothService';
 
 
+// todo: move this permissions checking stuff into the context provider,
+// and then just have a single function call in here for that.
 
 const requestAndroidLocationPermission = async (): Promise<void> => {
   // check if existing permission is granted

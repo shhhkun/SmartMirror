@@ -15,6 +15,9 @@ import NiceTextArea from '../components/NiceTextArea';
 import BluetoothService from '../services/BluetoothService';
 
 
+// todo: move all this connected device stuff into the context provider.
+// and then just have a single function call in here.
+
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
   // state variables to show info about last connected devices status
