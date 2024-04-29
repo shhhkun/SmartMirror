@@ -58,6 +58,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     // todo
+    throw new Error('Not implemented');
   }
 
 

@@ -1,6 +1,5 @@
 // wrapper class for react-native-ble-manager
 import {
-  Platform,
   PermissionsAndroid,
 } from 'react-native';
 import BleManager, { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
