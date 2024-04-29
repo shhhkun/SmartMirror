@@ -5,6 +5,7 @@ import React, {
   PropsWithChildren,
 } from "react";
 import { Platform } from "react-native";
+import { Peripheral } from "react-native-ble-manager";
 
 import {
   BluetoothContext,
@@ -23,6 +24,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     useState<boolean>(defaultBluetoothContext.deviceIsConnected);
   const [deviceInfo, setDeviceInfo] =
     useState<ConnectedDeviceInfo>(defaultBluetoothContext.deviceInfo);
+
 
 
   // functions to interact with the bluetooth service
@@ -53,20 +55,45 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const checkForConnectedDevices = async (): Promise<void> => {
     if (!bluetoothPermissionsOK) {
-      console.error('Bluetooth permissions not granted');
+      console.error('Bluetooth permissions not granted yet');
       return;
     }
 
-    // todo
-    throw new Error('Not implemented');
+    let peripheralsArray: Peripheral[] = [];
+    try {
+      peripheralsArray = await BluetoothService.getConnectedPeripherals();
+    } catch (error) {
+      console.error('Error checking for connected devices:', error);
+      throw error;
+    }
+
+    // in the future, could implement something here that only counts a device
+    // as connected if its ID matches the format of out smart mirror.
+    if (peripheralsArray.length == 0) {
+      console.log('No connected devices found');
+      setDeviceIsConnected(false);
+      setDeviceInfo(defaultBluetoothContext.deviceInfo);
+      return;
+    }
+
+    // for now, just assume the first connected device is the one we care about
+    const connectedDeviceInfo: ConnectedDeviceInfo = {
+      peripheralBasicInfo: peripheralsArray[0],
+      peripheralExtendedInfo: null,
+    };
+
+    console.log('Connected device info: ',
+      JSON.stringify(connectedDeviceInfo, null, 2));
+
+    setDeviceInfo(connectedDeviceInfo);
   }
+
 
 
   // constructor-like thing that runs when context is created
   useEffect(() => {
     initializeDriver();
   }, []);
-
 
   // return the context provider
   const value = {

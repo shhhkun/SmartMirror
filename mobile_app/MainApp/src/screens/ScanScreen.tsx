@@ -92,13 +92,14 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Devices List">
-          Current number of connected devices: {numberOfDevices}
+          took this functionality out for now
+          {/* Current number of connected devices: {numberOfDevices}
           {"\n"}
           Last update time: {lastScanTime}
           {"\n"}
           Connected devices info:
           {"\n"}
-          {connectedDeviceInfo}
+          {connectedDeviceInfo} */}
         </NiceTextArea>
       </View>
 

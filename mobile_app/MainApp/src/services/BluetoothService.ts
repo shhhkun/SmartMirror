@@ -34,7 +34,7 @@ class BluetoothService {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
       .then(result => result)) {
 
-      console.log("Android fine location permission is already granted");
+      console.log("Android fine location permission is already granted (BluetoothService.requestAndroidLocationPermission)");
       return;
     }
 
@@ -48,11 +48,11 @@ class BluetoothService {
       }
     ).then(result => {
       if (result) {
-        console.log('Prompted Android user for location. User accepted.');
+        console.log('Prompted Android user for location. User accepted. (BluetoothService.requestAndroidLocationPermission)');
         return;
 
       } else {
-        console.error('Prompted Android user for location. User denied.');
+        console.error('Prompted Android user for location. User denied. (BluetoothService.requestAndroidLocationPermission)');
         throw new Error("Android location permission denied");
       }
     });
