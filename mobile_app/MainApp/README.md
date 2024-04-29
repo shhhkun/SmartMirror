@@ -15,39 +15,34 @@ Pressing "enable bluetooth" from home screen will initialize the bluetooth manag
 
 Next screen has a button that checks for currently connected devices. It is assumed that the user will have paired to a device in their device settings, then will come back here.
 
-Upon a smart mirror device being found (as determined by UUID somehow?), or any device for now, the user can click it and get taken to a page for that device.
-
-On that next page, they can read from a characteristic and send data to it with a text box.
+Upon a smart mirror device being found (as determined by UUID somehow?), or any device for now, the user can send it data via a form.
 
 # ----------
 
 Todo / notes
 
-Permisisons on home screen are working. Navigation from home screen to scan screen works.
+Context API refactor for bluetooth is done. Basically has the same functional status as before, where it can detect a connected device.
 
-Get connected devices is working. Seems quite brittle though. Could be due to the nrf peripheral on my iPhone being jank. But it does print out info about the connected device.
+What I learned about packet sizes:
+The default data payload size for BLE is 20 bytes. The requestMTU function in the library initiates a negotiation process where both devices try to increase this packet size, all the way up to 512 bytes. Based on some forums reading, it sounds like rasbian and the raspi3 can do more than 20 byles MTU, but this probably requires some configuration.
 
 Next steps:
-- build bluetooth context and context provider
-- set up sexisting code to use the context provider instead of directly calling bluetooth service
-
-
-- refactor stuff to use the context API for bluetooth state management. to hold on to the UUID of our current device
 - call the method that gets info about a connected peripheral - its characteristics and services it is advertising
-- try reading the value out of a specific characteristic
-- implement command to write data to a characteristic on the peripheral
-- implement some UI functionality (maybe another page) that shows details of the device. and maybe a text box form. maybe store the data from the prior page with some context api thing?
-- smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
+- read the value out of a specific characteristic
+- write data to a specific characteristic
+- implement UI to send data to the device via a form submission
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 
-- come up with a data format to send to the peripheral (whatever the JSON config thing should look like)
-- hook up text box form to the ability to send this JSON config to the peripheral
-- maybe maybe the show connected devices function only show devices with our kind of specific service UUIDs
+- learn the max packet size allowed by the reciever - todo by other team
+- decide on exact data format we'll be sending, as one packet or multiple
+- implement data sending protocol, if we'll need it
+- hook up text box form to the ability to send this data to the peripheral
+- smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
 
 # ----------
 
-To run in emulator on Erik's machine:
+To run in Android Studio emulator on Erik's machine:
 
 run
    source ~/.zshrc
@@ -65,15 +60,15 @@ check that connected evice is recognized. run
    adb devices
 
 run
+   npm start
    DEBUG=react-native* npx react-native start
 
-or if that doesn't work, can also just try running
-   npm start
+or if that doesn't work (gets stuck installing APK), run
+   DEBUG=react-native* npx react-native start
 
 # ----------
 
-Future enhancements that I'm not going to implement, but would be nice for the final sellable product: (none actually issues yet, but will be issues after this prototype is done)
-- This only works if there is one BLE device connected. Things will break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned, and I don't want to deal with the complexity of managing multiple bluetooth devices being connected and selecting the right one. alternatively, could add functionality to only pay attention to a bluetooth device wiht a certain UUID or characteristic or some mark of our smart mirror.
-- This could be made more performant / require less re-rendering by having bluetooth state stored as multiple state variables, not just a big object. Components will re-render each time this state changes, which is unnecessary in a lot of cases.
+Future enhancements not implemented in protoype, but for the final sellable product:
+- This only works if there is one BLE device connected. Things will probably break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned. In the future, we could have it only detect connected devices that match a certain ID signature for our smart mirrors.
 - Have the user be able to drag and drop rectangles on the screen, instead of just sending coordinates as text.
 - A way for the user to authenticate for their apps. Like have this app make a call to a web server of ours, that server goes and gets a token for some site, gives us the token, and we pass that token along with BLE to the Raspi.

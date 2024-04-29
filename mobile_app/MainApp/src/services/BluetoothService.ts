@@ -73,6 +73,7 @@ class BluetoothService {
     }
   }
 
+  // haven't gotten this to work yet
   static async retrieveServices(deviceUUID: string): Promise<PeripheralInfo> {
     // returns an object that contains this peripheral's
     // services and characteristics.
@@ -89,16 +90,14 @@ class BluetoothService {
   }
 
   // stuff below here isn't really implemented yet
-
-  static read(deviceUUID: string, serviceUUID: string, characteristicUUID: string): Promise<any> {
+  static read(deviceUUID: string, serviceUUID: string, characteristicUUID: string):
+    Promise<any> {
     // this isn't really implemented yet
     return BleManager.read(deviceUUID, serviceUUID, characteristicUUID);
   }
 
-  static write(deviceUUID: string, serviceUUID: string, characteristicUUID: string, data: number[]): Promise<void> {
-    // this should run isPeripheralConnected before we attempt to write.
-    // if it's not, throw some kind of error or notify the user.
-
+  static write(deviceUUID: string, serviceUUID: string, characteristicUUID: string,
+    data: number[]): Promise<void> {
     // this isn't really implemented yet
     return BleManager.write(deviceUUID, serviceUUID, characteristicUUID, data);
   }
