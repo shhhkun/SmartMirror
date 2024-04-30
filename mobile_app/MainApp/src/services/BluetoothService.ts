@@ -60,11 +60,12 @@ class BluetoothService {
 
   static async getConnectedPeripherals(): Promise<Peripheral[]> {
     try {
-      const peripheralsArray = await BleManager.getConnectedPeripherals([]);
+      const peripheralsArray: Peripheral[] =
+        await BleManager.getConnectedPeripherals([]);
 
       console.log("Connected peripherals count: " + peripheralsArray.length);
 
-      return peripheralsArray as Peripheral[];
+      return peripheralsArray;
 
     } catch (error) {
       console.error('Error getting connected peripherals:', error);
@@ -73,14 +74,30 @@ class BluetoothService {
     }
   }
 
+  static async checkIfConnected(deviceUUID: string): Promise<boolean> {
+    // Might want to call this before any other function that
+    // requires a connection.
+    try {
+      const isConnected: boolean =
+        await BleManager.isPeripheralConnected(deviceUUID);
+
+      return isConnected;
+
+    } catch (error) {
+      console.error('Error checking if connected:', error);
+
+      throw error; // Re-throw the error to propagate it to the caller
+    }
+  }
+
   // haven't gotten this to work yet
   static async retrieveServices(deviceUUID: string): Promise<PeripheralInfo> {
-    // returns an object that contains this peripheral's
-    // services and characteristics.
+    // returns an object that contains this peripheral's services
     try {
-      const peripheralInfo = await BleManager.retrieveServices(deviceUUID);
+      const peripheralInfo: PeripheralInfo =
+        await BleManager.retrieveServices(deviceUUID);
 
-      return peripheralInfo as PeripheralInfo;
+      return peripheralInfo;
 
     } catch (error) {
       console.error('Error retrieving services:', error);
@@ -90,16 +107,24 @@ class BluetoothService {
   }
 
   // stuff below here isn't really implemented yet
-  static read(deviceUUID: string, serviceUUID: string, characteristicUUID: string):
-    Promise<any> {
+  static read(deviceUUID: string, serviceUUID: string,
+    characteristicUUID: string): Promise<any> {
     // this isn't really implemented yet
-    return BleManager.read(deviceUUID, serviceUUID, characteristicUUID);
+
+    const returnedData: any = BleManager.read(deviceUUID, serviceUUID,
+      characteristicUUID);
+
+    return returnedData;
   }
 
-  static write(deviceUUID: string, serviceUUID: string, characteristicUUID: string,
-    data: number[]): Promise<void> {
+  static write(deviceUUID: string, serviceUUID: string,
+    characteristicUUID: string, data: number[]): Promise<void> {
     // this isn't really implemented yet
-    return BleManager.write(deviceUUID, serviceUUID, characteristicUUID, data);
+
+    const successWritePromise: Promise<void> = BleManager.write(deviceUUID,
+      serviceUUID, characteristicUUID, data);
+
+    return successWritePromise;
   }
 
   static disconnect(deviceUUID: string): Promise<void> {
