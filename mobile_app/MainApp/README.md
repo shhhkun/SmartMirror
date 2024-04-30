@@ -24,6 +24,10 @@ Todo / notes
 Stuff to ask prof:
 - characteristic size vs MTU size. I read that is sometimes not recommended for the data size of your characteristic to be larger than the MTU. how not recommended is this? seems like it would be fine, assuming it's not hundreds/thousands of packets or something.
 
+Stuff to ask teammates:
+- what is the maximum BLE MTU (maximum trasnferable unit) on a raspi 3 and raspiOS? I believe this will be 20/23 bytes by default, but from what I've read, you can configure this up to a certain max size. what is that max size?
+- if an entire payload is too big to fit in one packet, it can be split up into multiple packets. in a lot of libraries, including the one I'm using, this can be done automatically/easily. in whatever bluetooth peripheral library we're using, if a payload is bigger than the MTU, is there automatic/easy functionality for reassebling these packets? I'm assuming the answer here is yes, but we should check.
+
 Context API refactor for bluetooth is done. Basically has the same functional status as before, where it can detect a connected device.
 
 What I learned about packet sizes:
