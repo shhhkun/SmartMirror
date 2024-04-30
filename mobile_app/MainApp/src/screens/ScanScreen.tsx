@@ -8,7 +8,6 @@ import {
   View,
   SafeAreaView,
 } from 'react-native';
-import { Peripheral } from 'react-native-ble-manager';
 
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
