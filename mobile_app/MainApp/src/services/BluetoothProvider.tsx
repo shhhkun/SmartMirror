@@ -5,7 +5,8 @@ import React, {
   PropsWithChildren,
 } from "react";
 import {
-  Platform
+  Platform,
+  ToastAndroid
 } from "react-native";
 import {
   Peripheral,
@@ -121,6 +122,36 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
+  const checkIfDeviceIsReadWritable = async (): Promise<boolean> => {
+    // todo
+    return false;
+  }
+
+  const readFromCharacteristic = async (): Promise<any> => {
+    // return type tbd, I think it's some kind of int array
+
+    // calling this get services on every read operation is not performant,
+    // but I'm concered about lots of dropped connections for now, so will
+    // keep it in.
+    getServicesFromConnectedDevice();
+
+    if (!deviceIsConnected || deviceInfo.peripheralBasicInfo == null) {
+      console.error('No connected device to read from');
+      return;
+    }
+
+    if (
+      deviceInfo.peripheralExtendedInfo == null ||
+      deviceInfo.peripheralExtendedInfo.serviceUUIDs == null ||
+      deviceInfo.peripheralExtendedInfo.serviceUUIDs.length === 0
+    ) {
+      console.error('No services discovered yet');
+      return;
+    }
+
+    const deviceID: string = deviceInfo.peripheralBasicInfo.id;
+    const serviceUUID: string = deviceInfo.peripheralExtendedInfo.serviceUUIDs[0];
+  }
 
 
   // constructor-like thing that runs when context is created

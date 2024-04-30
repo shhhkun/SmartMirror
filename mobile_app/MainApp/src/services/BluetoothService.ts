@@ -75,8 +75,7 @@ class BluetoothService {
   }
 
   static async checkIfConnected(deviceID: string): Promise<boolean> {
-    // Might want to call this before any other function that
-    // requires a connection.
+    // not sure this function is actually necessary.
     try {
       const isConnected: boolean =
         await BleManager.isPeripheralConnected(deviceID);
