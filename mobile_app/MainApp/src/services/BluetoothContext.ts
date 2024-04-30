@@ -44,6 +44,7 @@ export interface BluetoothContextType {
   promptUserForPermissions: () => Promise<void>;
   checkForConnectedDevices: () => Promise<void>;
   getServicesFromConnectedDevice: () => Promise<void>;
+  readFromCharacteristic: () => Promise<any>;
 }
 
 const defaultDeviceInfo: ConnectedDeviceInfo = {
@@ -67,6 +68,9 @@ export const defaultBluetoothContext: BluetoothContextType = {
   },
   getServicesFromConnectedDevice: async () => {
     throw new Error('getServicesFromConnectedDevice not implemented yet')
+  },
+  readFromCharacteristic: async () => {
+    throw new Error('readFromCharacteristic not implemented yet')
   },
 };
 

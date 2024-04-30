@@ -171,12 +171,14 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
-    // these are complaining about null safety right now, but shouldn't actuall
-    // be an issue since calling okToReadWrite first.
-    // for now, I'm assuming the service and characteristic we want are the first
+    // these IDs are complaining about null safety right now,
+    // but shouldn't actually be an issue, since calling okToReadWrite first.
+    // I'm assuming the service and characteristic we want are the first
     // ones in the arrays.
-    const deviceID: string = deviceInfo.peripheralBasicInfo.id;
-    const serviceUUID: string = deviceInfo.peripheralExtendedInfo.serviceUUIDs[0];
+    const deviceID: string =
+      deviceInfo.peripheralBasicInfo.id;
+    const serviceUUID: string =
+      deviceInfo.peripheralExtendedInfo.serviceUUIDs[0];
     const characteristicUUID: string =
       deviceInfo.peripheralExtendedInfo.characteristics[0].characteristic;
 
@@ -185,11 +187,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       const returnedData: any = await BluetoothService.read(deviceID, serviceUUID,
         characteristicUUID);
 
-      // no clue what this data actually is
+      // no clue what this data actually is. an array of ints?
       console.log('Read data: ', returnedData);
-
       return returnedData;
-
     }
     catch (error) {
       console.error('Error reading from characteristic:', error);
@@ -212,6 +212,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     promptUserForPermissions,
     checkForConnectedDevices,
     getServicesFromConnectedDevice,
+    readFromCharacteristic,
   };
 
   return (
