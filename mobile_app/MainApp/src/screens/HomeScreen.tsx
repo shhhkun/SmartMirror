@@ -16,7 +16,7 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
-  const { bluetoothPermissionsOK, promptUserForPermissions } = useContext(BluetoothContext);
+  const { promptUserForPermissions } = useContext(BluetoothContext);
 
   return (
     <SafeAreaView style={styles.mainStyle}>

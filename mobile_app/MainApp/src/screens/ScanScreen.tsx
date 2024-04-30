@@ -17,7 +17,7 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
-  const { checkForConnectedDevices, getServicesFromConnectedDevice } = useContext(BluetoothContext);
+  const { checkForConnectedDevices } = useContext(BluetoothContext);
   const [lastDeviceCheckTime, setLastDeviceCheckTime] = useState('never');
   // const [numberOfDevices, setNumberOfDevices] = useState(0);
   // const [connectedDeviceInfo, setConnectedDeviceInfo] = useState('none');
@@ -33,8 +33,6 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       console.error('Error checking for connected devices:', error);
       setLastDeviceCheckTime(`Error: ${new Date().toLocaleTimeString()}`);
     }
-
-    getServicesFromConnectedDevice();
   };
 
 
@@ -53,6 +51,11 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponConnectedDevicesButton()}
           title="Show Connected Devices" />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => navigation.navigate("DeviceDetail")}
+          title="Go to Device Details Page" />
       </View>
 
 

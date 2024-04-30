@@ -17,12 +17,18 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
-  const { checkForConnectedDevices, getServicesFromConnectedDevice } = useContext(BluetoothContext);
+  const { getServicesFromConnectedDevice } = useContext(BluetoothContext);
 
 
   const doUponbuttonPress = async (): Promise<void> => {
-    // todo
-    return;
+    try {
+      await getServicesFromConnectedDevice();
+      console.log('Services retrieved');
+
+    }
+    catch (error) {
+      console.error('Error retrieving services:', error);
+    }
   };
 
 
@@ -39,7 +45,7 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponbuttonPress()}
-          title="my button" />
+          title="get services" />
       </View>
 
 
