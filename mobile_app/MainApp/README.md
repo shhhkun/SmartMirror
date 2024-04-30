@@ -21,19 +21,16 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 # ----------
 
-Todo / notes
+Todo
 
 Stuff to ask prof:
 - propose our idea about not worrying about packet size, assuming our entire payload is only a few packets long. I read that is sometimes not recommended for the data size of your characteristic to be larger than the MTU. how not recommended is this? seems like it would be fine, assuming it's not hundreds/thousands of packets or something.
 
-Context API refactor for bluetooth is done. Basically has the same functional status as before, where it can detect a connected device.
-
-What I learned about packet sizes:
-The default data payload size for BLE is 20 bytes. The requestMTU function in the library initiates a negotiation process where both devices try to increase this packet size, all the way up to 512 bytes. Based on some forums reading, it sounds like rasbian and the raspi3 can do more than 20 byles MTU, but this probably requires some configuration.
-A charactersitic can technically be larger than the MTU. And this could be one solution. Under the hood, libraries generally seem to handle this reassebling automatically - if one charactersitic write operation needs to get send over 3 packets.
-
 Next steps:
 - make sure there are no null types in the defice info structs. should only be using "default x info" in here, so that I don't have to deal will this null safety pain. maybe upon services descovery, if they come back as blank, set it to default.
+
+- !!!!! semi blocked from here on, since the nrf peripheral spoofer is jank !!!!!
+
 - call the method that gets info about a connected peripheral - its characteristics and services it is advertising
 - read the value out of a specific characteristic
 - write data to a specific characteristic
@@ -43,8 +40,19 @@ Next steps:
 
 - decide on exact data format we'll be sending. seems like I can use built in serialize from json functionality in the app.
 - implement data sending protocol, if we'll need it. on the app size, it seems like there's some built in functionality to split a message into umltiple packets (in write() function of ble manager library).
-- hook up text box form to the ability to send this data to the peripheral
+- hook up text box form to populate some JSON object, then send it off to to the peripheral
 - smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
+
+# ----------
+
+Notes
+
+What I learned about packet sizes:
+
+The default data payload size for BLE is 20 bytes. The requestMTU function in the library initiates a negotiation process where both devices try to increase this packet size, all the way up to 512 bytes. Based on some forums reading, it sounds like rasbian and the raspi3 can do more than 20 byles MTU, but this probably requires some configuration.
+
+A charactersitic can technically be larger than the MTU. And this could be one solution. Under the hood, libraries generally seem to handle this reassebling automatically - if one charactersitic write operation needs to get send over 3 packets.
+
 
 # ----------
 

@@ -122,10 +122,9 @@ class BluetoothService {
     return returnedData;
   }
 
-  // stuff below here is not implemented yet
+  // not implemented yet
   static write(deviceID: string, serviceUUID: string,
     characteristicUUID: string, data: number[]): Promise<void> {
-    // this isn't really implemented yet
 
     const successWritePromise: Promise<void> = BleManager.write(deviceID,
       serviceUUID, characteristicUUID, data);
@@ -133,8 +132,8 @@ class BluetoothService {
     return successWritePromise;
   }
 
+  // not implemented yet
   static disconnect(deviceID: string): Promise<void> {
-    // this isn't really implemented yet
     return BleManager.disconnect(deviceID);
   }
 }
