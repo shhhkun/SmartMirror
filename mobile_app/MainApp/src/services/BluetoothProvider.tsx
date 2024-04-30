@@ -123,34 +123,78 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   const checkIfDeviceIsReadWritable = async (): Promise<boolean> => {
-    // todo
-    return false;
+    // calling this get services on every read/write operation is not
+    // performant, but I'm concered about lots of dropped connections for now,
+    // so will keep it in.
+    getServicesFromConnectedDevice();
+
+    if (!deviceIsConnected || deviceInfo.peripheralBasicInfo === null ||
+      deviceInfo.peripheralBasicInfo ===
+      defaultBluetoothContext.deviceInfo.peripheralBasicInfo
+    ) {
+      console.error('No connected device to check');
+      return false;
+    }
+
+    if (
+      deviceInfo.peripheralExtendedInfo === null ||
+      deviceInfo.peripheralExtendedInfo ===
+      defaultBluetoothContext.deviceInfo.peripheralExtendedInfo
+    ) {
+      console.error('No services discovered yet');
+      return false;
+    }
+
+    if (
+      deviceInfo.peripheralBasicInfo == null ||
+      deviceInfo.peripheralBasicInfo.id == null ||
+      deviceInfo.peripheralBasicInfo.id === "" ||
+      deviceInfo.peripheralExtendedInfo == null ||
+      deviceInfo.peripheralExtendedInfo.serviceUUIDs == null ||
+      deviceInfo.peripheralExtendedInfo.serviceUUIDs.length === 0 ||
+      deviceInfo.peripheralExtendedInfo.characteristics == null ||
+      deviceInfo.peripheralExtendedInfo.characteristics.length === 0
+    ) {
+      console.error('Invalid peripheral info');
+      return false;
+    }
+
+    return true;
   }
 
   const readFromCharacteristic = async (): Promise<any> => {
     // return type tbd, I think it's some kind of int array
 
-    // calling this get services on every read operation is not performant,
-    // but I'm concered about lots of dropped connections for now, so will
-    // keep it in.
-    getServicesFromConnectedDevice();
-
-    if (!deviceIsConnected || deviceInfo.peripheralBasicInfo == null) {
-      console.error('No connected device to read from');
+    const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();
+    if (!okToReadWrite) {
+      console.error('Device not read-writable');
       return;
     }
 
-    if (
-      deviceInfo.peripheralExtendedInfo == null ||
-      deviceInfo.peripheralExtendedInfo.serviceUUIDs == null ||
-      deviceInfo.peripheralExtendedInfo.serviceUUIDs.length === 0
-    ) {
-      console.error('No services discovered yet');
-      return;
-    }
-
+    // these are complaining about null safety right now, but shouldn't actuall
+    // be an issue since calling okToReadWrite first.
+    // for now, I'm assuming the service and characteristic we want are the first
+    // ones in the arrays.
     const deviceID: string = deviceInfo.peripheralBasicInfo.id;
     const serviceUUID: string = deviceInfo.peripheralExtendedInfo.serviceUUIDs[0];
+    const characteristicUUID: string =
+      deviceInfo.peripheralExtendedInfo.characteristics[0].characteristic;
+
+    // do the actual read operation
+    try {
+      const returnedData: any = await BluetoothService.read(deviceID, serviceUUID,
+        characteristicUUID);
+
+      // no clue what this data actually is
+      console.log('Read data: ', returnedData);
+
+      return returnedData;
+
+    }
+    catch (error) {
+      console.error('Error reading from characteristic:', error);
+      throw error;
+    }
   }
 
 

@@ -35,6 +35,7 @@ The default data payload size for BLE is 20 bytes. The requestMTU function in th
 A charactersitic can technically be larger than the MTU. And this could be one solution. Under the hood, libraries generally seem to handle this reassebling automatically - if one charactersitic write operation needs to get send over 3 packets.
 
 Next steps:
+- make sure there are no null types in the defice info structs. should only be using "default x info" in here, so that I don't have to deal will this null safety pain. maybe upon services descovery, if they come back as blank, set it to default.
 - call the method that gets info about a connected peripheral - its characteristics and services it is advertising
 - read the value out of a specific characteristic
 - write data to a specific characteristic
