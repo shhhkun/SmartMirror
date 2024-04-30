@@ -105,10 +105,16 @@ class BluetoothService {
     }
   }
 
-  // stuff below here isn't really implemented yet
-  static read(deviceID: string, serviceUUID: string,
+  // haven't gotten this to work yet
+  static async read(deviceID: string, serviceUUID: string,
     characteristicUUID: string): Promise<any> {
-    // this isn't really implemented yet
+
+    const deviceIsIsStillConnected: boolean =
+      await BleManager.isPeripheralConnected(deviceID);
+    if (!deviceIsIsStillConnected) {
+      console.error('Tried to read from disconnected device');
+      return null;
+    }
 
     const returnedData: any = BleManager.read(deviceID, serviceUUID,
       characteristicUUID);
@@ -116,6 +122,7 @@ class BluetoothService {
     return returnedData;
   }
 
+  // stuff below here is not implemented yet
   static write(deviceID: string, serviceUUID: string,
     characteristicUUID: string, data: number[]): Promise<void> {
     // this isn't really implemented yet

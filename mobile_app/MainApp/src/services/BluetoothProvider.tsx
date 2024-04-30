@@ -6,7 +6,6 @@ import React, {
 } from "react";
 import {
   Platform,
-  ToastAndroid
 } from "react-native";
 import {
   Peripheral,
@@ -202,9 +201,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
 
+
   // constructor-like thing that runs when context is created
   useEffect(() => {
     initializeDriver();
+    // eventually, could pull in data from saved state here.
   }, []);
 
   // return the context provider
@@ -227,8 +228,3 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 };
 
 export default BluetoothProvider;
-
-
-// the plan is for this to have methods like "get connected devices, write, read, etc."
-// and then under the hood, this would be calling bluetooth service.
-// but states would be saved in here.
