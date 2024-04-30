@@ -15,6 +15,8 @@ Pressing "enable bluetooth" from home screen will initialize the bluetooth manag
 
 Next screen has a button that checks for currently connected devices. It is assumed that the user will have paired to a device in their device settings, then will come back here.
 
+MTU between the two devices can be negotiated up. But should be ok just to write data as multiple packets.
+
 Upon a smart mirror device being found (as determined by UUID somehow?), or any device for now, the user can send it data via a form.
 
 # ----------
@@ -22,11 +24,7 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 Todo / notes
 
 Stuff to ask prof:
-- characteristic size vs MTU size. I read that is sometimes not recommended for the data size of your characteristic to be larger than the MTU. how not recommended is this? seems like it would be fine, assuming it's not hundreds/thousands of packets or something.
-
-Stuff to ask teammates:
-- what is the maximum BLE MTU (maximum trasnferable unit) on a raspi 3 and raspiOS? I believe this will be 20/23 bytes by default, but from what I've read, you can configure this up to a certain max size. what is that max size?
-- if an entire payload is too big to fit in one packet, it can be split up into multiple packets. in a lot of libraries, including the one I'm using, this can be done automatically/easily. in whatever bluetooth peripheral library we're using, if a payload is bigger than the MTU, is there automatic/easy functionality for reassebling these packets? I'm assuming the answer here is yes, but we should check.
+- propose our idea about not worrying about packet size, assuming our entire payload is only a few packets long. I read that is sometimes not recommended for the data size of your characteristic to be larger than the MTU. how not recommended is this? seems like it would be fine, assuming it's not hundreds/thousands of packets or something.
 
 Context API refactor for bluetooth is done. Basically has the same functional status as before, where it can detect a connected device.
 
@@ -43,8 +41,7 @@ Next steps:
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 
-- learn the max packet size allowed by the reciever - todo by other team
-- decide on exact data format we'll be sending, as one packet or multiple. seems like I can use built in toJSON functionality in the app, for serializing the data.
+- decide on exact data format we'll be sending. seems like I can use built in serialize from json functionality in the app.
 - implement data sending protocol, if we'll need it. on the app size, it seems like there's some built in functionality to split a message into umltiple packets (in write() function of ble manager library).
 - hook up text box form to the ability to send this data to the peripheral
 - smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.

@@ -173,6 +173,10 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     // these IDs are complaining about null safety right now,
     // but shouldn't actually be an issue, since calling okToReadWrite first.
+    // To fix, will probably want to remove all places I assign null, and
+    // make sure that get services sets them to the defaults if they come
+    // back empty.
+
     // I'm assuming the service and characteristic we want are the first
     // ones in the arrays.
     const deviceID: string =
