@@ -74,12 +74,12 @@ class BluetoothService {
     }
   }
 
-  static async checkIfConnected(deviceUUID: string): Promise<boolean> {
+  static async checkIfConnected(deviceID: string): Promise<boolean> {
     // Might want to call this before any other function that
     // requires a connection.
     try {
       const isConnected: boolean =
-        await BleManager.isPeripheralConnected(deviceUUID);
+        await BleManager.isPeripheralConnected(deviceID);
 
       return isConnected;
 
@@ -91,11 +91,11 @@ class BluetoothService {
   }
 
   // haven't gotten this to work yet
-  static async retrieveServices(deviceUUID: string): Promise<PeripheralInfo> {
+  static async retrieveServices(deviceID: string): Promise<PeripheralInfo> {
     // returns an object that contains this peripheral's services
     try {
       const peripheralInfo: PeripheralInfo =
-        await BleManager.retrieveServices(deviceUUID);
+        await BleManager.retrieveServices(deviceID);
 
       return peripheralInfo;
 
@@ -107,29 +107,29 @@ class BluetoothService {
   }
 
   // stuff below here isn't really implemented yet
-  static read(deviceUUID: string, serviceUUID: string,
+  static read(deviceID: string, serviceUUID: string,
     characteristicUUID: string): Promise<any> {
     // this isn't really implemented yet
 
-    const returnedData: any = BleManager.read(deviceUUID, serviceUUID,
+    const returnedData: any = BleManager.read(deviceID, serviceUUID,
       characteristicUUID);
 
     return returnedData;
   }
 
-  static write(deviceUUID: string, serviceUUID: string,
+  static write(deviceID: string, serviceUUID: string,
     characteristicUUID: string, data: number[]): Promise<void> {
     // this isn't really implemented yet
 
-    const successWritePromise: Promise<void> = BleManager.write(deviceUUID,
+    const successWritePromise: Promise<void> = BleManager.write(deviceID,
       serviceUUID, characteristicUUID, data);
 
     return successWritePromise;
   }
 
-  static disconnect(deviceUUID: string): Promise<void> {
+  static disconnect(deviceID: string): Promise<void> {
     // this isn't really implemented yet
-    return BleManager.disconnect(deviceUUID);
+    return BleManager.disconnect(deviceID);
   }
 }
 

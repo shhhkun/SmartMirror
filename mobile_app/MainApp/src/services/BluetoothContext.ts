@@ -43,6 +43,7 @@ export interface BluetoothContextType {
   initializeDriver: () => Promise<void>;
   promptUserForPermissions: () => Promise<void>;
   checkForConnectedDevices: () => Promise<void>;
+  getServicesFromConnectedDevice: () => Promise<void>;
 }
 
 const defaultDeviceInfo: ConnectedDeviceInfo = {
@@ -63,6 +64,9 @@ export const defaultBluetoothContext: BluetoothContextType = {
   },
   checkForConnectedDevices: async () => {
     throw new Error('checkForConnectedDevices not implemented yet')
+  },
+  getServicesFromConnectedDevice: async () => {
+    throw new Error('getServicesFromConnectedDevice not implemented yet')
   },
 };
 

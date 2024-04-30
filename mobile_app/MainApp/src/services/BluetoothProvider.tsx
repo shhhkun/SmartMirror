@@ -4,8 +4,13 @@ import React, {
   useEffect,
   PropsWithChildren,
 } from "react";
-import { Platform } from "react-native";
-import { Peripheral } from "react-native-ble-manager";
+import {
+  Platform
+} from "react-native";
+import {
+  Peripheral,
+  PeripheralInfo,
+} from "react-native-ble-manager";
 
 import {
   BluetoothContext,
@@ -88,7 +93,33 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     setDeviceInfo(connectedDeviceInfo);
   }
 
+  const getServicesFromConnectedDevice = async (): Promise<void> => {
+    checkForConnectedDevices();
 
+    if (!deviceIsConnected || deviceInfo.peripheralBasicInfo == null) {
+      console.error('No connected device to get services from');
+      return;
+    }
+
+    const deviceID: string = deviceInfo.peripheralBasicInfo.id;
+
+    try {
+      const peripheralExtendedInfo: PeripheralInfo =
+        await BluetoothService.retrieveServices(deviceID);
+
+      console.log('Peripheral extended info: ',
+        JSON.stringify(peripheralExtendedInfo, null, 2));
+
+      setDeviceInfo({
+        peripheralBasicInfo: deviceInfo.peripheralBasicInfo,
+        peripheralExtendedInfo: peripheralExtendedInfo,
+      });
+    }
+    catch (error) {
+      console.error('Error getting services from connected device:', error);
+      throw error;
+    }
+  }
 
 
 
@@ -105,6 +136,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     initializeDriver,
     promptUserForPermissions,
     checkForConnectedDevices,
+    getServicesFromConnectedDevice,
   };
 
   return (
