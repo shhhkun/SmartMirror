@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import BluetoothProvider from './src/services/BluetoothProvider';
 import HomeScreen from './src/screens/HomeScreen';
 import ScanScreen from './src/screens/ScanScreen';
+import DeviceDetailScreen from './src/screens/DeviceDetailScreen';
 
 
 const Stack = createStackNavigator();
@@ -19,6 +20,7 @@ const App = () => {
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Devices" component={ScanScreen} />
+          <Stack.Screen name="DeviceDetail" component={DeviceDetailScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </BluetoothProvider>
