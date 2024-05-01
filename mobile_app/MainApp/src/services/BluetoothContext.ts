@@ -11,7 +11,7 @@ export interface ConnectedDeviceInfo {
   // upon connecting, below attributes should be populated
   // upon disconnecting, below attributes should be set to none
 
-  // this info is available from just an advertising device I think
+  // this info is available after discovering connected devices
   peripheralBasicInfo: Peripheral | null;
   // Peripheral has the form: Peripheral {
   //   id: string;
@@ -20,7 +20,7 @@ export interface ConnectedDeviceInfo {
   //   advertising: AdvertisingData;
   // }
 
-  // this info is available after retrieveServices call I think
+  // this info is available after retrieveServices call
   peripheralExtendedInfo: PeripheralInfo | null;
   // PeripheralInfo extends Peripheral has the form: PeripheralInfo {
   //   serviceUUIDs?: string[];

@@ -17,10 +17,8 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
-  const { checkForConnectedDevices } = useContext(BluetoothContext);
+  const { deviceInfo, checkForConnectedDevices } = useContext(BluetoothContext);
   const [lastDeviceCheckTime, setLastDeviceCheckTime] = useState('never');
-  // const [numberOfDevices, setNumberOfDevices] = useState(0);
-  // const [connectedDeviceInfo, setConnectedDeviceInfo] = useState('none');
 
 
   // function to retireve connected devices upon button press
@@ -60,18 +58,12 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
 
       <View style={styles.mainStyle}>
-        <NiceTextArea title="Devices List">
-          Current number of connected devices: {/* {numberOfDevices} */}
-          todo
-          {"\n"}
-
+        <NiceTextArea title="Peripheral Basic Info">
           Last update time: {lastDeviceCheckTime}
+
           {"\n"}
 
-          Connected devices info:
-          {"\n"}
-          {/* {connectedDeviceInfo} */}
-          todo
+          {JSON.stringify(deviceInfo.peripheralBasicInfo, null, 2)}
         </NiceTextArea>
       </View>
 

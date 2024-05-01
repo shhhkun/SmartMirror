@@ -17,7 +17,7 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
-  const { getServicesFromConnectedDevice } = useContext(BluetoothContext);
+  const { deviceInfo, getServicesFromConnectedDevice } = useContext(BluetoothContext);
 
 
   const doUponbuttonPress = async (): Promise<void> => {
@@ -38,20 +38,20 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
       <StatusBar></StatusBar>
 
       <View style={styles.mainStyle}>
-        <NiceTextArea title="page title">
-          text goes here
+        <NiceTextArea title="Connected Device Details">
+          Details for services and characteristics of the connected device.
         </NiceTextArea>
       </View>
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponbuttonPress()}
-          title="get services" />
+          title="Get Services for Connected Device" />
       </View>
 
 
       <View style={styles.mainStyle}>
-        <NiceTextArea title="more content here">
-          info will go here
+        <NiceTextArea title="Peripheral Extended Info">
+          {JSON.stringify(deviceInfo.peripheralExtendedInfo, null, 2)}
         </NiceTextArea>
       </View>
 
