@@ -174,7 +174,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // but shouldn't actually be an issue, since calling okToReadWrite first.
     // To fix, will probably want to remove all places I assign null, and
     // make sure that get services sets them to the defaults if they come
-    // back empty.
+    // back empty. Also make the types of these peripheral info objects
+    // not union with null.
 
     // I'm assuming the service and characteristic we want are the first
     // ones in the arrays.

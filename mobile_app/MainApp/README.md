@@ -24,15 +24,16 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 Todo
 
 Stuff to ask prof:
-- propose our idea about not worrying about packet size, assuming our entire payload is only a few packets long. I read that is sometimes not recommended for the data size of your characteristic to be larger than the MTU. how not recommended is this? seems like it would be fine, assuming it's not hundreds/thousands of packets or something.
+- if our data opayload is 512 bytes or smaller, then we should be fine. built in functionality to dissasemble and reassemble a paylaod of that size into packets. MTU would be somewhat irrelevant in this case. but from our research, it seems like raspi and app can both negotiate MTU up to the max.
+- what is the max size of a characteristic? is it technically unlimited, or is it 512 bytes?
+- I'm a bit unclear about this. what are his thoughts on a 3.5 kb characteristic? my thought is that for something only a few times larger than the MTU, you're probably not losing many packets, and it's probably okay.
 
 Next steps:
-- make sure there are no null types in the defice info structs. should only be using "default x info" in here, so that I don't have to deal will this null safety pain. maybe upon services descovery, if they come back as blank, set it to default.
-
-- !!!!! semi blocked from here on, since the nrf peripheral spoofer is jank !!!!!
 
 - call the method that gets info about a connected peripheral - its characteristics and services it is advertising
 - read the value out of a specific characteristic
+- figure out how to encode/decode data being sent and read
+- make sure there are no null types in the defice info structs. should only be using "default x info" in here, so that I don't have to deal will this null safety pain. maybe upon services descovery, if they come back as blank, set it to default. or maybe not worry about this for now.
 - write data to a specific characteristic
 - implement UI to send data to the device via a form submission
 
@@ -52,6 +53,8 @@ What I learned about packet sizes:
 The default data payload size for BLE is 20 bytes. The requestMTU function in the library initiates a negotiation process where both devices try to increase this packet size, all the way up to 512 bytes. Based on some forums reading, it sounds like rasbian and the raspi3 can do more than 20 byles MTU, but this probably requires some configuration.
 
 A charactersitic can technically be larger than the MTU. And this could be one solution. Under the hood, libraries generally seem to handle this reassebling automatically - if one charactersitic write operation needs to get send over 3 packets.
+
+I'm not sure what the max size for a characteristic is. From what I read online, it seems to be 512 bytes. Want to confirm this wiht the prof, though.
 
 
 # ----------
