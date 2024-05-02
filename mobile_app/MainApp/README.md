@@ -21,28 +21,19 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 # ----------
 
-Todo
-
-Stuff to ask prof:
-- if our data opayload is 512 bytes or smaller, then we should be fine. built in functionality to dissasemble and reassemble a paylaod of that size into packets. MTU would be somewhat irrelevant in this case. but from our research, it seems like raspi and app can both negotiate MTU up to the max.
-- what is the max size of a characteristic? is it technically unlimited, or is it 512 bytes?
-- I'm a bit unclear about this. what are his thoughts on a 3.5 kb characteristic? my thought is that for something only a few times larger than the MTU, you're probably not losing many packets, and it's probably okay.
-
 Next steps:
-
-- !!!!! kinda blocked. the nrf peripheral spoofer is jank af. want to test with a real peripheral !!!!!
 
 - call the method that gets info about a connected peripheral - its characteristics and services it is advertising
 - read the value out of a specific characteristic
 - figure out how to encode/decode data being sent and read
 - make sure there are no null types in the defice info structs. should only be using "default x info" in here, so that I don't have to deal will this null safety pain. maybe upon services descovery, if they come back as blank, set it to default. or maybe not worry about this for now.
 - write data to a specific characteristic
-- implement UI to send data to the device via a form submission
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 
-- decide on exact data format we'll be sending. seems like I can use built in serialize from json functionality in the app.
-- implement data sending protocol, if we'll need it. on the app size, it seems like there's some built in functionality to split a message into umltiple packets (in write() function of ble manager library).
+- decide on exact data format we'll be sending. for multiple characteristics probably.
+- implement data sending protocol
+- implement UI to send data to the device via a form submission
 - hook up text box form to populate some JSON object, then send it off to to the peripheral
 - smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
 
@@ -56,7 +47,7 @@ The default data payload size for BLE is 20 bytes. The requestMTU function in th
 
 A charactersitic can technically be larger than the MTU. And this could be one solution. Under the hood, libraries generally seem to handle this reassebling automatically - if one charactersitic write operation needs to get send over 3 packets.
 
-I'm not sure what the max size for a characteristic is. From what I read online, it seems to be 512 bytes. Want to confirm this wiht the prof, though.
+Max characteristic size is still kinda unknown. But prof advised that we do one characteristic per module.
 
 
 # ----------
@@ -87,6 +78,6 @@ or if that doesn't work (gets stuck installing APK), run
 # ----------
 
 Future enhancements not implemented in protoype, but for the final sellable product:
-- This only works if there is one BLE device connected. Things will probably break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned. In the future, we could have it only detect connected devices that match a certain ID signature for our smart mirrors.
 - Have the user be able to drag and drop rectangles on the screen, instead of just sending coordinates as text.
+- This only works if there is one BLE device connected. Things will probably break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned. In the future, we could have it only detect connected devices that match a certain ID signature for our smart mirrors.
 - A way for the user to authenticate for their apps. Like have this app make a call to a web server of ours, that server goes and gets a token for some site, gives us the token, and we pass that token along with BLE to the Raspi.
