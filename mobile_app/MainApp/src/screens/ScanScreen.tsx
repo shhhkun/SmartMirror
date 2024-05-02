@@ -59,6 +59,9 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Peripheral Basic Info">
+
+          {/* might want some hook here that displays real time connected status */}
+
           Last update time: {lastDeviceCheckTime}
 
           {"\n"}

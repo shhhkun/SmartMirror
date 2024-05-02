@@ -58,19 +58,19 @@ export const defaultBluetoothContext: BluetoothContextType = {
   deviceInfo: defaultDeviceInfo,
 
   initializeDriver: async () => {
-    throw new Error('initializeDriver not implemented yet')
+    throw new Error('initializeDriver function is not initialized yet');
   },
   promptUserForPermissions: async () => {
-    throw new Error('askForBluetoothPermissions not implemented yet')
+    throw new Error('askForBluetoothPermissions function is not initialized yet');
   },
   checkForConnectedDevices: async () => {
-    throw new Error('checkForConnectedDevices not implemented yet')
+    throw new Error('checkForConnectedDevices function is not initialized yet');
   },
   getServicesFromConnectedDevice: async () => {
-    throw new Error('getServicesFromConnectedDevice not implemented yet')
+    throw new Error('getServicesFromConnectedDevice function is not initialized yet');
   },
   readFromCharacteristic: async () => {
-    throw new Error('readFromCharacteristic not implemented yet')
+    throw new Error('readFromCharacteristic function is not initialized yet');
   },
 };
 
