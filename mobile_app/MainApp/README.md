@@ -30,6 +30,8 @@ Stuff to ask prof:
 
 Next steps:
 
+- !!!!! kinda blocked. the nrf peripheral spoofer is jank af. want to test with a real peripheral !!!!!
+
 - call the method that gets info about a connected peripheral - its characteristics and services it is advertising
 - read the value out of a specific characteristic
 - figure out how to encode/decode data being sent and read
@@ -78,7 +80,6 @@ check that connected evice is recognized. run
 
 run
    npm start
-   DEBUG=react-native* npx react-native start
 
 or if that doesn't work (gets stuck installing APK), run
    DEBUG=react-native* npx react-native start

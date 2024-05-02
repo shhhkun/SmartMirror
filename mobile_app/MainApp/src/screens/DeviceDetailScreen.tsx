@@ -17,10 +17,10 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
-  const { deviceInfo, getServicesFromConnectedDevice } = useContext(BluetoothContext);
+  const { deviceInfo, getServicesFromConnectedDevice, readFromCharacteristic } = useContext(BluetoothContext);
 
 
-  const doUponbuttonPress = async (): Promise<void> => {
+  const doUponServicesButtonPress = async (): Promise<void> => {
     try {
       await getServicesFromConnectedDevice();
       console.log('Services retrieved');
@@ -30,6 +30,17 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
       console.error('Error retrieving services:', error);
     }
   };
+
+  const doUponReadButtonPress = async (): Promise<void> => {
+    try {
+      await readFromCharacteristic();
+      console.log('Read from characteristic');
+
+    }
+    catch (error) {
+      console.error('Error reading from characteristic:', error);
+    }
+  }
 
 
   // UI stuff here
@@ -44,10 +55,14 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponbuttonPress()}
-          title="Get Services for Connected Device" />
+        <ButtonToNavigate onPress={() => doUponServicesButtonPress()}
+          title="Get Services" />
       </View>
 
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponReadButtonPress()}
+          title="Read" />
+      </View>
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Peripheral Extended Info">
