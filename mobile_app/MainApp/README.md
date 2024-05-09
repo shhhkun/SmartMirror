@@ -23,6 +23,10 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 
+- turns out that I need to be specifically establishing a connection with the device in my app! needs its own specific GATT session. refactor app to do this.
+   - want to have it first check for system connected devices
+   - then initialize a conneciion for the first one and retrieve services on it.
+   - might repurpose the peripheral basic info thing to hold info about system devices, and have the extended info be for when an app-specific GATT is connected. or just keep as-is and use the deviceIsConnected attribute to be if the device is app connected.
 - get retrieveServices working. call to provider for it is now no longer erroring. but keeps returning null.
    - I'm trying to add a delay on either side of the retrieveServices call, since I saw this in an example project. But my delays don't actually seem to be working.
    - Maybe there's an issue that I'm not creating a bond in my app specifically, and that could be a requirement for GATT stuff. I don't think so, though.

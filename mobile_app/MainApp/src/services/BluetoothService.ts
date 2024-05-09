@@ -58,7 +58,7 @@ class BluetoothService {
     });
   }
 
-  static async getConnectedPeripherals(): Promise<Peripheral[]> {
+  static async getSystemConnectedPeripherals(): Promise<Peripheral[]> {
     try {
       const peripheralsArray: Peripheral[] =
         await BleManager.getConnectedPeripherals([]);

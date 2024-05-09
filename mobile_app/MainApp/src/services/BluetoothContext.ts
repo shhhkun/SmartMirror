@@ -35,7 +35,7 @@ export interface ConnectedDeviceInfo {
 
 export interface BluetoothContextType {
   bluetoothPermissionsOK: boolean;
-  deviceIsConnected: boolean;
+  deviceIsAppConnected: boolean;
   deviceInfo: ConnectedDeviceInfo;
   // want to enventaully have fields for our device ID
   // and characteristic ID of interest
@@ -54,7 +54,7 @@ const defaultDeviceInfo: ConnectedDeviceInfo = {
 
 export const defaultBluetoothContext: BluetoothContextType = {
   bluetoothPermissionsOK: false,
-  deviceIsConnected: false,
+  deviceIsAppConnected: false,
   deviceInfo: defaultDeviceInfo,
 
   initializeDriver: async () => {

@@ -25,8 +25,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   // state variables
   const [bluetoothPermissionsOK, setBluetoothPermissionsOK] =
     useState<boolean>(defaultBluetoothContext.bluetoothPermissionsOK);
-  const [deviceIsConnected, setDeviceIsConnected] =
-    useState<boolean>(defaultBluetoothContext.deviceIsConnected);
+  const [deviceIsAppConnected, setDeviceIsAppConnected] =
+    useState<boolean>(defaultBluetoothContext.deviceIsAppConnected);
   const [deviceInfo, setDeviceInfo] =
     useState<ConnectedDeviceInfo>(defaultBluetoothContext.deviceInfo);
 
@@ -66,7 +66,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     let peripheralsArray: Peripheral[] = [];
     try {
-      peripheralsArray = await BluetoothService.getConnectedPeripherals();
+      peripheralsArray = await BluetoothService.getSystemConnectedPeripherals();
     } catch (error) {
       console.error('Error checking for connected devices:', error);
       throw error;
@@ -76,7 +76,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // as connected if its ID matches the format of out smart mirror.
     if (peripheralsArray.length == 0) {
       console.log('No connected devices found');
-      setDeviceIsConnected(false);
+      setDeviceIsAppConnected(false);
       setDeviceInfo(defaultBluetoothContext.deviceInfo);
       return;
     }
@@ -90,15 +90,16 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     console.log('Connected device info: ',
       JSON.stringify(connectedDeviceInfo, null, 2));
 
-    setDeviceIsConnected(true);
+    // todo: don't set this to true unless we've established an app
+    setDeviceIsAppConnected(true);
 
     setDeviceInfo(connectedDeviceInfo);
   }
 
-  const getServicesFromConnectedDevice = async (): Promise<void> => {
+  const getServicesFromAppConnectedDevice = async (): Promise<void> => {
     checkForConnectedDevices();
 
-    if (!deviceIsConnected || deviceInfo.peripheralBasicInfo == null) {
+    if (!deviceIsAppConnected || deviceInfo.peripheralBasicInfo == null) {
       console.error('No connected device to get services from');
       return;
     }
@@ -135,9 +136,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // calling this get services on every read/write operation is not
     // performant, but I'm concered about lots of dropped connections for now,
     // so will keep it in.
-    getServicesFromConnectedDevice();
+    getServicesFromAppConnectedDevice();
 
-    if (!deviceIsConnected || deviceInfo.peripheralBasicInfo === null ||
+    if (!deviceIsAppConnected || deviceInfo.peripheralBasicInfo === null ||
       deviceInfo.peripheralBasicInfo ===
       defaultBluetoothContext.deviceInfo.peripheralBasicInfo
     ) {
@@ -222,12 +223,12 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   // return the context provider
   const value = {
     bluetoothPermissionsOK,
-    deviceIsConnected,
+    deviceIsConnected: deviceIsAppConnected,
     deviceInfo,
     initializeDriver,
     promptUserForPermissions,
     checkForConnectedDevices,
-    getServicesFromConnectedDevice,
+    getServicesFromConnectedDevice: getServicesFromAppConnectedDevice,
     readFromCharacteristic,
   };
 
