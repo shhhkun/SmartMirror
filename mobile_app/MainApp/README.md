@@ -23,19 +23,12 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 
-- turns out that I need to be specifically establishing a connection with the device in my app! needs its own specific GATT session. refactor app to do this.
-   - want to have it first check for system connected devices
-   - then initialize a conneciion for the first one and retrieve services on it.
-   - might repurpose the peripheral basic info thing to hold info about system devices, and have the extended info be for when an app-specific GATT is connected. or just keep as-is and use the deviceIsConnected attribute to be if the device is app connected.
-- get retrieveServices working. call to provider for it is now no longer erroring. but keeps returning null.
-   - I'm trying to add a delay on either side of the retrieveServices call, since I saw this in an example project. But my delays don't actually seem to be working.
-   - Maybe there's an issue that I'm not creating a bond in my app specifically, and that could be a requirement for GATT stuff. I don't think so, though.
-   - If all else fails, I can call the native code, instead of the library function. But I really don't want to do that.
-- read the value out of a specific characteristic
+- finish any refactoring needed for app-specific connection. get that and retrieveServices working.
+   - still need to make the buttons in the UI call the right stuff.
+   - and still need to test.
+- get read from single characteristic working
 - figure out how to encode/decode data being sent and read
-- make sure there are no null types in the defice info structs. should only be using "default x info" in here, so that I don't have to deal will this null safety pain. maybe upon services descovery, if they come back as blank, set it to default. or maybe not worry about this for now.
 - write data to a specific characteristic
-- make the connecting happen in the app. so I don't have to use nrf connect to go from bonded -> connected.
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 

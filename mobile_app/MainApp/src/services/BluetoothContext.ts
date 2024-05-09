@@ -35,8 +35,12 @@ export interface DeviceInfos {
 }
 
 export interface BluetoothContextType {
-  // not sure if I want to add a field for (compatible) device
-  // is system connected. I might want to.
+  // not sure if I want to add a field for if (compatible) device
+  // is system connected. like if there is a unique device ID for
+  // our smart mirrors, and a device with that is connected.
+
+  // also might want a way to hold onto multiple characteristics. or
+  // have some more state there, if I'm writing to multiple.
 
   bluetoothPermissionsOK: boolean;
   deviceIsAppConnected: boolean;
