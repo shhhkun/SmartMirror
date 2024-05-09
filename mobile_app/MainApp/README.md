@@ -23,12 +23,12 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 
-- currently, when a device is connected, get service is throwing an error for device is not connected. something about the state seems wrong.
-- call the method that gets info about a connected peripheral - its characteristics and services it is advertising
+- call to get services is now working (no error blocking it). but keep getting null back.
 - read the value out of a specific characteristic
 - figure out how to encode/decode data being sent and read
 - make sure there are no null types in the defice info structs. should only be using "default x info" in here, so that I don't have to deal will this null safety pain. maybe upon services descovery, if they come back as blank, set it to default. or maybe not worry about this for now.
 - write data to a specific characteristic
+- make the connecting happen in the app. so I don't have to use nrf connect to go from bonded -> connected.
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 

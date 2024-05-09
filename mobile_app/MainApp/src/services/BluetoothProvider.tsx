@@ -106,6 +106,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     const deviceID: string = deviceInfo.peripheralBasicInfo.id;
 
     try {
+      console.log('trying to get services from device: ', deviceID);
+
       const peripheralExtendedInfo: PeripheralInfo =
         await BluetoothService.retrieveServices(deviceID);
 
