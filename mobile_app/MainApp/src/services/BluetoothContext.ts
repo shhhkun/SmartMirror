@@ -35,6 +35,9 @@ export interface DeviceInfos {
 }
 
 export interface BluetoothContextType {
+  // not sure if I want to add a field for (compatible) device
+  // is system connected. I might want to.
+
   bluetoothPermissionsOK: boolean;
   deviceIsAppConnected: boolean;
   deviceInfo: DeviceInfos;

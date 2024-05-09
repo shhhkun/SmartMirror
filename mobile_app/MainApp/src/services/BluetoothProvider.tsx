@@ -82,18 +82,19 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     // for now, just assume the first connected device is the one we care about
-    const connectedDeviceInfo: DeviceInfos = {
+    const deviceInfosAfterSystemDevicesCheck: DeviceInfos = {
       systemConnectedPeripheralInfo: peripheralsArray[0],
       appConnectedPeripheralInfo: null,
     };
 
     console.log('Connected device info: ',
-      JSON.stringify(connectedDeviceInfo, null, 2));
+      JSON.stringify(deviceInfosAfterSystemDevicesCheck, null, 2));
 
-    // todo: don't set this to true unless we've established an app
-    setDeviceIsAppConnected(true);
+    // at this point, this could be a different device, so we should make it
+    // mandatory to update the app connected device info after calling this.
+    setDeviceIsAppConnected(false);
 
-    setDeviceInfos(connectedDeviceInfo);
+    setDeviceInfos(deviceInfosAfterSystemDevicesCheck);
   }
 
   const getServicesFromAppConnectedDevice = async (): Promise<void> => {
