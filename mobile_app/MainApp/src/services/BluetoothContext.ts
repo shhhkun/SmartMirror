@@ -8,10 +8,7 @@ import {
 
 
 export interface ConnectedDeviceInfo {
-  // upon connecting, below attributes should be populated
-  // upon disconnecting, below attributes should be set to none
-
-  // this info is available after discovering connected devices
+  // this info is available with just a system connection to a device.
   peripheralBasicInfo: Peripheral | null;
   // Peripheral has the form: Peripheral {
   //   id: string;
@@ -20,17 +17,20 @@ export interface ConnectedDeviceInfo {
   //   advertising: AdvertisingData;
   // }
 
-  // this info is available after retrieveServices call
+  // this info is available after an app specifc connection to a device and
+  // a retrieval of services.
   peripheralExtendedInfo: PeripheralInfo | null;
-  // PeripheralInfo extends Peripheral has the form: PeripheralInfo {
+  // PeripheralInfo extends Peripheral and has the form:
+  // PeripheralInfo {
+  //   id: string;
+  //   rssi: number;
+  //   name?: string;
+  //   advertising: AdvertisingData;
   //   serviceUUIDs?: string[];
   //   characteristics?: Characteristic[];
   //   services?: Service[];
   // }
 
-  // some other attribute for the characteristic we actually care about?
-  // or just select the device ID / service UUID / characteristic UUID
-  // from these objects.
 }
 
 export interface BluetoothContextType {
@@ -43,7 +43,7 @@ export interface BluetoothContextType {
   initializeDriver: () => Promise<void>;
   promptUserForPermissions: () => Promise<void>;
   checkForConnectedDevices: () => Promise<void>;
-  getServicesFromConnectedDevice: () => Promise<void>;
+  getServicesFromAppConnectedDevice: () => Promise<void>;
   readFromCharacteristic: () => Promise<any>;
 }
 
@@ -66,7 +66,7 @@ export const defaultBluetoothContext: BluetoothContextType = {
   checkForConnectedDevices: async () => {
     throw new Error('checkForConnectedDevices function is not initialized yet');
   },
-  getServicesFromConnectedDevice: async () => {
+  getServicesFromAppConnectedDevice: async () => {
     throw new Error('getServicesFromConnectedDevice function is not initialized yet');
   },
   readFromCharacteristic: async () => {

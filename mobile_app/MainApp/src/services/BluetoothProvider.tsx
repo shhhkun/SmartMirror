@@ -58,6 +58,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
+
   const checkForConnectedDevices = async (): Promise<void> => {
     if (!bluetoothPermissionsOK) {
       console.error('Bluetooth permissions not granted yet');
@@ -228,7 +229,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     initializeDriver,
     promptUserForPermissions,
     checkForConnectedDevices,
-    getServicesFromConnectedDevice: getServicesFromAppConnectedDevice,
+    getServicesFromAppConnectedDevice,
     readFromCharacteristic,
   };
 
