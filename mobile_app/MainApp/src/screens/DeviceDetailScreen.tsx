@@ -66,7 +66,7 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Peripheral Extended Info">
-          {JSON.stringify(deviceInfo.peripheralExtendedInfo, null, 2)}
+          {JSON.stringify(deviceInfo.appConnectedPeripheralInfo, null, 2)}
         </NiceTextArea>
       </View>
 

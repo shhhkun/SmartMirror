@@ -66,7 +66,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
           {"\n"}
 
-          {JSON.stringify(deviceInfo.peripheralBasicInfo, null, 2)}
+          {JSON.stringify(deviceInfo.systemConnectedPeripheralInfo, null, 2)}
         </NiceTextArea>
       </View>
 

@@ -9,7 +9,7 @@ import {
 
 export interface ConnectedDeviceInfo {
   // this info is available with just a system connection to a device.
-  peripheralBasicInfo: Peripheral | null;
+  systemConnectedPeripheralInfo: Peripheral | null;
   // Peripheral has the form: Peripheral {
   //   id: string;
   //   rssi: number;
@@ -17,9 +17,10 @@ export interface ConnectedDeviceInfo {
   //   advertising: AdvertisingData;
   // }
 
+
   // this info is available after an app specifc connection to a device and
   // a retrieval of services.
-  peripheralExtendedInfo: PeripheralInfo | null;
+  appConnectedPeripheralInfo: PeripheralInfo | null;
   // PeripheralInfo extends Peripheral and has the form:
   // PeripheralInfo {
   //   id: string;
@@ -48,8 +49,8 @@ export interface BluetoothContextType {
 }
 
 const defaultDeviceInfo: ConnectedDeviceInfo = {
-  peripheralBasicInfo: null,
-  peripheralExtendedInfo: null,
+  systemConnectedPeripheralInfo: null,
+  appConnectedPeripheralInfo: null,
 };
 
 export const defaultBluetoothContext: BluetoothContextType = {

@@ -84,8 +84,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     // for now, just assume the first connected device is the one we care about
     const connectedDeviceInfo: ConnectedDeviceInfo = {
-      peripheralBasicInfo: peripheralsArray[0],
-      peripheralExtendedInfo: null,
+      systemConnectedPeripheralInfo: peripheralsArray[0],
+      appConnectedPeripheralInfo: null,
     };
 
     console.log('Connected device info: ',
@@ -100,12 +100,12 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   const getServicesFromAppConnectedDevice = async (): Promise<void> => {
     checkForConnectedDevices();
 
-    if (!deviceIsAppConnected || deviceInfo.peripheralBasicInfo == null) {
+    if (!deviceIsAppConnected || deviceInfo.systemConnectedPeripheralInfo == null) {
       console.error('No connected device to get services from');
       return;
     }
 
-    const deviceID: string = deviceInfo.peripheralBasicInfo.id;
+    const deviceID: string = deviceInfo.systemConnectedPeripheralInfo.id;
 
     try {
       console.log('trying to get services from device: ', deviceID);
@@ -123,8 +123,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
         JSON.stringify(peripheralExtendedInfo, null, 2));
 
       setDeviceInfo({
-        peripheralBasicInfo: deviceInfo.peripheralBasicInfo,
-        peripheralExtendedInfo: peripheralExtendedInfo,
+        systemConnectedPeripheralInfo: deviceInfo.systemConnectedPeripheralInfo,
+        appConnectedPeripheralInfo: peripheralExtendedInfo,
       });
     }
     catch (error) {
@@ -139,32 +139,32 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // so will keep it in.
     getServicesFromAppConnectedDevice();
 
-    if (!deviceIsAppConnected || deviceInfo.peripheralBasicInfo === null ||
-      deviceInfo.peripheralBasicInfo ===
-      defaultBluetoothContext.deviceInfo.peripheralBasicInfo
+    if (!deviceIsAppConnected || deviceInfo.systemConnectedPeripheralInfo === null ||
+      deviceInfo.systemConnectedPeripheralInfo ===
+      defaultBluetoothContext.deviceInfo.systemConnectedPeripheralInfo
     ) {
       console.error('No connected device to check');
       return false;
     }
 
     if (
-      deviceInfo.peripheralExtendedInfo === null ||
-      deviceInfo.peripheralExtendedInfo ===
-      defaultBluetoothContext.deviceInfo.peripheralExtendedInfo
+      deviceInfo.appConnectedPeripheralInfo === null ||
+      deviceInfo.appConnectedPeripheralInfo ===
+      defaultBluetoothContext.deviceInfo.appConnectedPeripheralInfo
     ) {
       console.error('No services discovered yet');
       return false;
     }
 
     if (
-      deviceInfo.peripheralBasicInfo == null ||
-      deviceInfo.peripheralBasicInfo.id == null ||
-      deviceInfo.peripheralBasicInfo.id === "" ||
-      deviceInfo.peripheralExtendedInfo == null ||
-      deviceInfo.peripheralExtendedInfo.serviceUUIDs == null ||
-      deviceInfo.peripheralExtendedInfo.serviceUUIDs.length === 0 ||
-      deviceInfo.peripheralExtendedInfo.characteristics == null ||
-      deviceInfo.peripheralExtendedInfo.characteristics.length === 0
+      deviceInfo.systemConnectedPeripheralInfo == null ||
+      deviceInfo.systemConnectedPeripheralInfo.id == null ||
+      deviceInfo.systemConnectedPeripheralInfo.id === "" ||
+      deviceInfo.appConnectedPeripheralInfo == null ||
+      deviceInfo.appConnectedPeripheralInfo.serviceUUIDs == null ||
+      deviceInfo.appConnectedPeripheralInfo.serviceUUIDs.length === 0 ||
+      deviceInfo.appConnectedPeripheralInfo.characteristics == null ||
+      deviceInfo.appConnectedPeripheralInfo.characteristics.length === 0
     ) {
       console.error('Invalid peripheral info');
       return false;
@@ -192,11 +192,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // I'm assuming the service and characteristic we want are the first
     // ones in the arrays.
     const deviceID: string =
-      deviceInfo.peripheralBasicInfo.id;
+      deviceInfo.systemConnectedPeripheralInfo.id;
     const serviceUUID: string =
-      deviceInfo.peripheralExtendedInfo.serviceUUIDs[0];
+      deviceInfo.appConnectedPeripheralInfo.serviceUUIDs[0];
     const characteristicUUID: string =
-      deviceInfo.peripheralExtendedInfo.characteristics[0].characteristic;
+      deviceInfo.appConnectedPeripheralInfo.characteristics[0].characteristic;
 
     // do the actual read operation
     try {
