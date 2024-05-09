@@ -7,7 +7,7 @@ import {
 } from 'react-native-ble-manager';
 
 
-export interface ConnectedDeviceInfo {
+export interface DeviceInfos {
   // this info is available with just a system connection to a device.
   systemConnectedPeripheralInfo: Peripheral | null;
   // Peripheral has the form: Peripheral {
@@ -37,7 +37,7 @@ export interface ConnectedDeviceInfo {
 export interface BluetoothContextType {
   bluetoothPermissionsOK: boolean;
   deviceIsAppConnected: boolean;
-  deviceInfo: ConnectedDeviceInfo;
+  deviceInfo: DeviceInfos;
   // want to enventaully have fields for our device ID
   // and characteristic ID of interest
 
@@ -48,7 +48,7 @@ export interface BluetoothContextType {
   readFromCharacteristic: () => Promise<any>;
 }
 
-const defaultDeviceInfo: ConnectedDeviceInfo = {
+const defaultDeviceInfo: DeviceInfos = {
   systemConnectedPeripheralInfo: null,
   appConnectedPeripheralInfo: null,
 };

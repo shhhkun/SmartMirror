@@ -14,7 +14,7 @@ import {
 
 import {
   BluetoothContext,
-  ConnectedDeviceInfo,
+  DeviceInfos,
   defaultBluetoothContext,
 } from './BluetoothContext';
 import BluetoothService from './BluetoothService';
@@ -27,8 +27,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     useState<boolean>(defaultBluetoothContext.bluetoothPermissionsOK);
   const [deviceIsAppConnected, setDeviceIsAppConnected] =
     useState<boolean>(defaultBluetoothContext.deviceIsAppConnected);
-  const [deviceInfo, setDeviceInfo] =
-    useState<ConnectedDeviceInfo>(defaultBluetoothContext.deviceInfo);
+  const [deviceInfos, setDeviceInfos] =
+    useState<DeviceInfos>(defaultBluetoothContext.deviceInfo);
 
 
 
@@ -58,8 +58,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-
-  const checkForConnectedDevices = async (): Promise<void> => {
+  const getSystemConnectedDeviceInfo = async (): Promise<void> => {
     if (!bluetoothPermissionsOK) {
       console.error('Bluetooth permissions not granted yet');
       return;
@@ -78,12 +77,12 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     if (peripheralsArray.length == 0) {
       console.log('No connected devices found');
       setDeviceIsAppConnected(false);
-      setDeviceInfo(defaultBluetoothContext.deviceInfo);
+      setDeviceInfos(defaultBluetoothContext.deviceInfo);
       return;
     }
 
     // for now, just assume the first connected device is the one we care about
-    const connectedDeviceInfo: ConnectedDeviceInfo = {
+    const connectedDeviceInfo: DeviceInfos = {
       systemConnectedPeripheralInfo: peripheralsArray[0],
       appConnectedPeripheralInfo: null,
     };
@@ -94,18 +93,18 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // todo: don't set this to true unless we've established an app
     setDeviceIsAppConnected(true);
 
-    setDeviceInfo(connectedDeviceInfo);
+    setDeviceInfos(connectedDeviceInfo);
   }
 
   const getServicesFromAppConnectedDevice = async (): Promise<void> => {
-    checkForConnectedDevices();
+    getSystemConnectedDeviceInfo();
 
-    if (!deviceIsAppConnected || deviceInfo.systemConnectedPeripheralInfo == null) {
+    if (!deviceIsAppConnected || deviceInfos.systemConnectedPeripheralInfo == null) {
       console.error('No connected device to get services from');
       return;
     }
 
-    const deviceID: string = deviceInfo.systemConnectedPeripheralInfo.id;
+    const deviceID: string = deviceInfos.systemConnectedPeripheralInfo.id;
 
     try {
       console.log('trying to get services from device: ', deviceID);
@@ -122,8 +121,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       console.log('Peripheral extended info: ',
         JSON.stringify(peripheralExtendedInfo, null, 2));
 
-      setDeviceInfo({
-        systemConnectedPeripheralInfo: deviceInfo.systemConnectedPeripheralInfo,
+      setDeviceInfos({
+        systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
         appConnectedPeripheralInfo: peripheralExtendedInfo,
       });
     }
@@ -139,8 +138,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // so will keep it in.
     getServicesFromAppConnectedDevice();
 
-    if (!deviceIsAppConnected || deviceInfo.systemConnectedPeripheralInfo === null ||
-      deviceInfo.systemConnectedPeripheralInfo ===
+    if (!deviceIsAppConnected || deviceInfos.systemConnectedPeripheralInfo === null ||
+      deviceInfos.systemConnectedPeripheralInfo ===
       defaultBluetoothContext.deviceInfo.systemConnectedPeripheralInfo
     ) {
       console.error('No connected device to check');
@@ -148,8 +147,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     if (
-      deviceInfo.appConnectedPeripheralInfo === null ||
-      deviceInfo.appConnectedPeripheralInfo ===
+      deviceInfos.appConnectedPeripheralInfo === null ||
+      deviceInfos.appConnectedPeripheralInfo ===
       defaultBluetoothContext.deviceInfo.appConnectedPeripheralInfo
     ) {
       console.error('No services discovered yet');
@@ -157,14 +156,14 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     if (
-      deviceInfo.systemConnectedPeripheralInfo == null ||
-      deviceInfo.systemConnectedPeripheralInfo.id == null ||
-      deviceInfo.systemConnectedPeripheralInfo.id === "" ||
-      deviceInfo.appConnectedPeripheralInfo == null ||
-      deviceInfo.appConnectedPeripheralInfo.serviceUUIDs == null ||
-      deviceInfo.appConnectedPeripheralInfo.serviceUUIDs.length === 0 ||
-      deviceInfo.appConnectedPeripheralInfo.characteristics == null ||
-      deviceInfo.appConnectedPeripheralInfo.characteristics.length === 0
+      deviceInfos.systemConnectedPeripheralInfo == null ||
+      deviceInfos.systemConnectedPeripheralInfo.id == null ||
+      deviceInfos.systemConnectedPeripheralInfo.id === "" ||
+      deviceInfos.appConnectedPeripheralInfo == null ||
+      deviceInfos.appConnectedPeripheralInfo.serviceUUIDs == null ||
+      deviceInfos.appConnectedPeripheralInfo.serviceUUIDs.length === 0 ||
+      deviceInfos.appConnectedPeripheralInfo.characteristics == null ||
+      deviceInfos.appConnectedPeripheralInfo.characteristics.length === 0
     ) {
       console.error('Invalid peripheral info');
       return false;
@@ -192,11 +191,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // I'm assuming the service and characteristic we want are the first
     // ones in the arrays.
     const deviceID: string =
-      deviceInfo.systemConnectedPeripheralInfo.id;
+      deviceInfos.systemConnectedPeripheralInfo.id;
     const serviceUUID: string =
-      deviceInfo.appConnectedPeripheralInfo.serviceUUIDs[0];
+      deviceInfos.appConnectedPeripheralInfo.serviceUUIDs[0];
     const characteristicUUID: string =
-      deviceInfo.appConnectedPeripheralInfo.characteristics[0].characteristic;
+      deviceInfos.appConnectedPeripheralInfo.characteristics[0].characteristic;
 
     // do the actual read operation
     try {
@@ -225,10 +224,10 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   const value = {
     bluetoothPermissionsOK,
     deviceIsAppConnected,
-    deviceInfo,
+    deviceInfo: deviceInfos,
     initializeDriver,
     promptUserForPermissions,
-    checkForConnectedDevices,
+    checkForConnectedDevices: getSystemConnectedDeviceInfo,
     getServicesFromAppConnectedDevice,
     readFromCharacteristic,
   };

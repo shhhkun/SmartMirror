@@ -17,12 +17,12 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
-  const { deviceInfo, getServicesFromConnectedDevice, readFromCharacteristic } = useContext(BluetoothContext);
+  const { deviceInfo, getServicesFromAppConnectedDevice, readFromCharacteristic } = useContext(BluetoothContext);
 
 
   const doUponServicesButtonPress = async (): Promise<void> => {
     try {
-      await getServicesFromConnectedDevice();
+      await getServicesFromAppConnectedDevice();
       console.log('Services retrieved');
 
     }
