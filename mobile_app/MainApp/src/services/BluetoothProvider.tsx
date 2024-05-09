@@ -34,7 +34,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // functions to interact with the bluetooth service
   const initializeDriver = async (): Promise<void> => {
-    BluetoothService.initialize();
+    BluetoothService.initializeBLEManager();
   }
 
   const promptUserForPermissions = async (): Promise<void> => {
@@ -223,7 +223,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   // return the context provider
   const value = {
     bluetoothPermissionsOK,
-    deviceIsConnected: deviceIsAppConnected,
+    deviceIsAppConnected,
     deviceInfo,
     initializeDriver,
     promptUserForPermissions,

@@ -7,7 +7,7 @@ import BleManager, { Peripheral, PeripheralInfo } from 'react-native-ble-manager
 
 
 class BluetoothService {
-  static async initialize(): Promise<void> {
+  static async initializeBLEManager(): Promise<void> {
     try {
       await BleManager.start({ showAlert: true });
       console.log("BLE manager initialized (BluetoothService.initialize)");
@@ -74,7 +74,7 @@ class BluetoothService {
     }
   }
 
-  static async checkIfConnected(deviceID: string): Promise<boolean> {
+  static async checkIfDeviceIsSystemConnected(deviceID: string): Promise<boolean> {
     try {
       const isConnected: boolean =
         await BleManager.isPeripheralConnected(deviceID);
@@ -84,6 +84,17 @@ class BluetoothService {
     } catch (error) {
       console.error('Error checking if connected:', error);
 
+      throw error; // Re-throw the error to propagate it to the caller
+    }
+  }
+
+  static async appConnectToDevice(deviceID: string): Promise<void> {
+    try {
+      await BleManager.connect(deviceID);
+    }
+
+    catch (error) {
+      console.error('Error app connecting to device:', error);
       throw error; // Re-throw the error to propagate it to the caller
     }
   }
