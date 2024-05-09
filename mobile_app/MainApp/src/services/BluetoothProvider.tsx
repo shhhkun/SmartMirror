@@ -108,8 +108,14 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     try {
       console.log('trying to get services from device: ', deviceID);
 
+      // 2 second delay, because I saw this in an example project
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
       const peripheralExtendedInfo: PeripheralInfo =
         await BluetoothService.retrieveServices(deviceID);
+
+      // 2 secodn delay after, just to be safe
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       console.log('Peripheral extended info: ',
         JSON.stringify(peripheralExtendedInfo, null, 2));

@@ -23,7 +23,10 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 
-- call to get services is now working (no error blocking it). but keep getting null back.
+- get retrieveServices working. call to provider for it is now no longer erroring. but keeps returning null.
+   - I'm trying to add a delay on either side of the retrieveServices call, since I saw this in an example project. But my delays don't actually seem to be working.
+   - Maybe there's an issue that I'm not creating a bond in my app specifically, and that could be a requirement for GATT stuff. I don't think so, though.
+   - If all else fails, I can call the native code, instead of the library function. But I really don't want to do that.
 - read the value out of a specific characteristic
 - figure out how to encode/decode data being sent and read
 - make sure there are no null types in the defice info structs. should only be using "default x info" in here, so that I don't have to deal will this null safety pain. maybe upon services descovery, if they come back as blank, set it to default. or maybe not worry about this for now.
