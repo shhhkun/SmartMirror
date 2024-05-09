@@ -23,6 +23,7 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 
+- currently, when a device is connected, get service is throwing an error for device is not connected. something about the state seems wrong.
 - call the method that gets info about a connected peripheral - its characteristics and services it is advertising
 - read the value out of a specific characteristic
 - figure out how to encode/decode data being sent and read

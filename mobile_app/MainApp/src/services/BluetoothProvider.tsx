@@ -90,6 +90,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     console.log('Connected device info: ',
       JSON.stringify(connectedDeviceInfo, null, 2));
 
+    setDeviceIsConnected(true);
+
     setDeviceInfo(connectedDeviceInfo);
   }
 
