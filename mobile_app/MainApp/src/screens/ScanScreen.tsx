@@ -17,14 +17,15 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
-  const { deviceInfos, checkForConnectedDevices } = useContext(BluetoothContext);
+  getSystemConnectedDeviceInfo: () => Promise<void>;
+  const { deviceInfos, getSystemConnectedDeviceInfo } = useContext(BluetoothContext);
   const [lastDeviceCheckTime, setLastDeviceCheckTime] = useState('never');
 
 
   // function to retireve connected devices upon button press
   const doUponSystemConnectedDevicesButton = async (): Promise<void> => {
     try {
-      await checkForConnectedDevices();
+      await getSystemConnectedDeviceInfo();
       setLastDeviceCheckTime(new Date().toLocaleTimeString());
 
     } catch (error) {

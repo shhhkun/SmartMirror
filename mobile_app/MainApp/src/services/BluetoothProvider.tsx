@@ -256,8 +256,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     deviceInfos,
     initializeDriver,
     promptUserForPermissions,
-    checkForConnectedDevices: getSystemConnectedDeviceInfo,
-    getServicesFromAppConnectedDevice: connectAndGetAppConnectedDeviceInfo,
+    getSystemConnectedDeviceInfo,
+    connectAndGetAppConnectedDeviceInfo,
     readFromCharacteristic,
   };
 

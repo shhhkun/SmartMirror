@@ -17,13 +17,14 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
-  const { deviceInfos, getServicesFromAppConnectedDevice, readFromCharacteristic } = useContext(BluetoothContext);
-
+  // state stuff from the context provider
+  const { deviceInfos, connectAndGetAppConnectedDeviceInfo,
+    readFromCharacteristic } = useContext(BluetoothContext);
 
   const doUponServicesButtonPress = async (): Promise<void> => {
     try {
-      await getServicesFromAppConnectedDevice();
-      console.log('Services retrieved');
+      await connectAndGetAppConnectedDeviceInfo();
+      console.log('Connected to device and got services in DeviceDetailScreen');
 
     }
     catch (error) {
@@ -56,12 +57,12 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponServicesButtonPress()}
-          title="Get Services" />
+          title="App-Pair and Get Services" />
       </View>
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponReadButtonPress()}
-          title="Read" />
+          title="Read from Characteristic" />
       </View>
 
       <View style={styles.mainStyle}>

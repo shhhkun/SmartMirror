@@ -50,8 +50,8 @@ export interface BluetoothContextType {
 
   initializeDriver: () => Promise<void>;
   promptUserForPermissions: () => Promise<void>;
-  checkForConnectedDevices: () => Promise<void>;
-  getServicesFromAppConnectedDevice: () => Promise<void>;
+  getSystemConnectedDeviceInfo: () => Promise<void>;
+  connectAndGetAppConnectedDeviceInfo: () => Promise<void>;
   readFromCharacteristic: () => Promise<any>;
 }
 
@@ -71,10 +71,10 @@ export const defaultBluetoothContext: BluetoothContextType = {
   promptUserForPermissions: async () => {
     throw new Error('askForBluetoothPermissions function is not initialized yet');
   },
-  checkForConnectedDevices: async () => {
-    throw new Error('checkForConnectedDevices function is not initialized yet');
+  getSystemConnectedDeviceInfo: async () => {
+    throw new Error('getSystemConnectedDeviceInfo function is not initialized yet');
   },
-  getServicesFromAppConnectedDevice: async () => {
+  connectAndGetAppConnectedDeviceInfo: async () => {
     throw new Error('getServicesFromConnectedDevice function is not initialized yet');
   },
   readFromCharacteristic: async () => {
