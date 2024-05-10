@@ -24,6 +24,7 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 Next steps:
 
 - get read from single characteristic working
+   - current issue is context doesn't seem to be updating after a get services call.
 - make connecting action nicer. feels kinda jank still, and want to be able to not use nrf connect.
 - figure out how to encode/decode data being sent and read
 - write data to a specific characteristic

@@ -42,6 +42,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // helper functions
   const updateServiceAndCharacteristicFieldsFromPeripheralInfo = (): void => {
+    console.log('Updating service and characteristic fields to the following: ',
+      deviceInfos.appConnectedPeripheralInfo);
+
     setTargetDeviceID(deviceInfos.appConnectedPeripheralInfo?.
       id || '');
 
@@ -190,17 +193,21 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       // short delay, to allow connection to settle
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      const peripheralExtendedInfo: PeripheralInfo =
+      const peripheralRetrievedServicesInfo: PeripheralInfo =
         await BluetoothService.retrieveServices(deviceID);
 
       console.log('Peripheral extended info: ',
-        JSON.stringify(peripheralExtendedInfo, null, 2));
+        JSON.stringify(peripheralRetrievedServicesInfo, null, 2));
 
       // update fields in context
       setDeviceInfos({
         systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
-        appConnectedPeripheralInfo: peripheralExtendedInfo,
+        appConnectedPeripheralInfo: peripheralRetrievedServicesInfo,
       });
+
+      // todo !!!!!!
+      // for some reason, this function is seeing null in
+      // appConnectedPeripheralInfo when it isn't null.
       updateServiceAndCharacteristicFieldsFromPeripheralInfo();
 
     }
