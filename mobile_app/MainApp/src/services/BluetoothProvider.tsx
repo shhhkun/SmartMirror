@@ -47,12 +47,15 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     console.log('Updating service and characteristic fields to the following: ',
       appConnectedPeripheralInfo);
 
-    setTargetDeviceID(appConnectedPeripheralInfo?.id || '');
+    setTargetDeviceID(appConnectedPeripheralInfo?.id ||
+      defaultBluetoothContext.targetDeviceID);
 
-    setTargetServiceUUID(appConnectedPeripheralInfo?.serviceUUIDs?.[0] || '');
+    setTargetServiceUUID(appConnectedPeripheralInfo?.serviceUUIDs?.[0] ||
+      defaultBluetoothContext.targetServiceUUID);
 
-    setTargetCharacteristicUUID(appConnectedPeripheralInfo?.characteristics?.
-    [0]?.characteristic || '');
+    setTargetCharacteristicUUID(appConnectedPeripheralInfo?.
+      characteristics?.[0]?.characteristic || defaultBluetoothContext.
+        targetCharacteristicUUID);
   };
 
   const setTargetFieldsToDefault = (): void => {
@@ -74,18 +77,23 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setDeviceInfos({
       systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
-      appConnectedPeripheralInfo: null,
+
+      appConnectedPeripheralInfo:
+        defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo,
     });
 
     setTargetFieldsToDefault();
   }
 
   const verifySystemDeviceConnected = async (): Promise<boolean> => {
-    if (deviceInfos.systemConnectedPeripheralInfo == null) {
+    // make sure we have system device info saved
+    if (deviceInfos.systemConnectedPeripheralInfo == null ||
+      deviceInfos.systemConnectedPeripheralInfo ===
+      defaultBluetoothContext.deviceInfos.systemConnectedPeripheralInfo
+    ) {
       console.error('No connected device to get services from (verifySystemDeviceConnected)');
 
       setSystemConnectedDeviceInfoToDefault();
-
       return false;
     }
 
@@ -223,7 +231,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
-    const deviceID: string = deviceInfos.systemConnectedPeripheralInfo?.id || '';
+    const deviceID: string = deviceInfos.systemConnectedPeripheralInfo?.id ||
+      defaultBluetoothContext.targetDeviceID;
 
     try {
       await appConnectToDevice(deviceID);
@@ -275,8 +284,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     // make sure the target fields are set
     if (targetDeviceID === '' ||
+      targetDeviceID === defaultBluetoothContext.targetDeviceID ||
       targetServiceUUID === '' ||
-      targetCharacteristicUUID === '') {
+      targetServiceUUID === defaultBluetoothContext.targetServiceUUID ||
+      targetCharacteristicUUID === '' ||
+      targetCharacteristicUUID === defaultBluetoothContext.targetCharacteristicUUID) {
 
       console.error('No target device, service, or characteristic set');
       return false;
