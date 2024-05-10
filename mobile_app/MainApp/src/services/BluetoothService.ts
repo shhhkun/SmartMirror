@@ -118,8 +118,12 @@ class BluetoothService {
   static async read(deviceID: string, serviceUUID: string,
     characteristicUUID: string): Promise<any> {
 
+
+
     const deviceIsIsStillConnected: boolean =
       await BleManager.isPeripheralConnected(deviceID);
+
+
     if (!deviceIsIsStillConnected) {
       console.error('Tried to read from disconnected device');
       return null;

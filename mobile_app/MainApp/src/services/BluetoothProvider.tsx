@@ -29,10 +29,19 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     useState<boolean>(defaultBluetoothContext.deviceIsAppConnected);
   const [deviceInfos, setDeviceInfos] =
     useState<DeviceInfos>(defaultBluetoothContext.deviceInfos);
+  const [targetServiceUUID, setTargetServiceUUID] =
+    useState<string>(defaultBluetoothContext.targetServiceUUID);
+  const [targetCharacteristicUUID, setTargetCharacteristicUUID] =
+    useState<string>(defaultBluetoothContext.targetCharacteristicUUID);
 
 
+  // helper functions
+  const myAsyncHelperFunction = async (): Promise<void> => {
+    // your code here
+  };
 
-  // functions to interact with the bluetooth service
+
+  // functions for the UI to interact with the bluetooth service
   const initializeDriver = async (): Promise<void> => {
     BluetoothService.initializeBLEManager();
   }
@@ -217,7 +226,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();
     if (!okToReadWrite) {
-      console.error('Device not read-writable');
+      console.error('Device not read-writable (readFromCharacteristic)');
       return;
     }
 
@@ -227,7 +236,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       deviceInfos.appConnectedPeripheralInfo.serviceUUIDs === undefined ||
       deviceInfos.appConnectedPeripheralInfo.characteristics === undefined) {
       console.error('No connected device to read from.');
-      console.error('checkIfDeviceIsReadWritable should have caught this but didn\'t.');
+      console.error('checkIfDeviceIsReadWritable should have caught this but didn\'t!');
       return;
     }
 
@@ -268,6 +277,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     bluetoothPermissionsOK,
     deviceIsAppConnected,
     deviceInfos,
+    targetServiceUUID,
+    targetCharacteristicUUID,
     initializeDriver,
     promptUserForPermissions,
     getSystemConnectedDeviceInfo,

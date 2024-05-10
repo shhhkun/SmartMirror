@@ -23,10 +23,8 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 
-- finish any refactoring needed for app-specific connection. get that and retrieveServices working.
-   - still need to make the buttons in the UI call the right stuff.
-   - and still need to test.
 - get read from single characteristic working
+- make connecting action nicer. feels kinda jank still, and want to be able to not use nrf connect.
 - figure out how to encode/decode data being sent and read
 - write data to a specific characteristic
 
