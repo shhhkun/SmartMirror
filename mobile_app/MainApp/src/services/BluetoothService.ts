@@ -1,6 +1,7 @@
 // wrapper class for react-native-ble-manager
 import {
   PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import BleManager, { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
 
@@ -18,14 +19,30 @@ class BluetoothService {
     }
   }
 
+  static async requestAllPermissions(): Promise<void> {
+    try {
+      await BluetoothService.requestBluetoothPermission();
+
+      if (Platform.OS === 'android' && Platform.Version >= 23) {
+        await BluetoothService.requestAndroidLocationPermission();
+      };
+
+      console.log("All permissions granted.");
+
+    } catch (error) {
+      console.error('Error requesting all permissions.');
+      throw error;
+    }
+  }
+
   static async requestBluetoothPermission(): Promise<void> {
     try {
       await BleManager.enableBluetooth();
-      console.log("Bluetooth permission granted (BluetoothService.requestBluetoothPermission)");
+      // console.log("Bluetooth permission granted (BluetoothService.requestBluetoothPermission)");
 
     } catch (error) {
-      console.error('Error requesting Bluetooth permission: ${error} (BluetoothService.requestBluetoothPermission)');
-      throw error; // Re-throw the error to propagate it to the caller if needed
+      // console.error('Error requesting Bluetooth permission: ${error} (BluetoothService.requestBluetoothPermission)');
+      throw error;
     }
   }
 

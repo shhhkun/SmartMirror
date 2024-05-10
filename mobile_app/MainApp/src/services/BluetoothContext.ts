@@ -18,7 +18,7 @@ export interface DeviceInfos {
   // }
 
 
-  // this info is available after an app specifc connection to a device and
+  // this info is available after an app-specifc connection to a device and
   // a retrieval of services.
   appConnectedPeripheralInfo: PeripheralInfo | null;
   // PeripheralInfo extends Peripheral and has the form:

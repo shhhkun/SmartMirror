@@ -164,18 +164,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     try {
-      await BluetoothService.requestBluetoothPermission();
-
-      if (Platform.OS === 'android' && Platform.Version >= 23) {
-        await BluetoothService.requestAndroidLocationPermission();
-      };
-
+      await BluetoothService.requestAllPermissions();
       setBluetoothPermissionsOK(true);
-      console.log('Bluetooth permissions granted');
 
     } catch (error) {
       setBluetoothPermissionsOK(false);
-      console.error('Bluetooth permissions not granted:', error);
     }
   }
 
