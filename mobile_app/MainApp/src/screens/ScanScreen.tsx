@@ -17,7 +17,6 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
-  getSystemConnectedDeviceInfo: () => Promise<void>;
   const { deviceInfos, getSystemConnectedDeviceInfo } = useContext(BluetoothContext);
   const [lastDeviceCheckTime, setLastDeviceCheckTime] = useState('never');
 

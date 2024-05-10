@@ -87,7 +87,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       appConnectedPeripheralInfo: null,
     };
 
-    console.log('Connected device info: ',
+    console.log('System connected device info: ',
       JSON.stringify(deviceInfosAfterSystemDevicesCheck, null, 2));
 
     // at this point, this could be a different device, so we should make it
@@ -98,14 +98,28 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   const connectAndGetAppConnectedDeviceInfo = async (): Promise<void> => {
-    getSystemConnectedDeviceInfo();
+    // must have called getSystemConnectedDeviceInfo before this!
 
+    // if there is no system connected device, there is nothing to connect to.
     if (deviceInfos.systemConnectedPeripheralInfo == null) {
       console.error('No connected device to get services from');
       return;
     }
 
     const deviceID: string = deviceInfos.systemConnectedPeripheralInfo.id;
+
+    // make sure system device is still connected
+    const isSystemConnected: boolean =
+      await BluetoothService.checkIfDeviceIsSystemConnected(deviceID);
+    if (!isSystemConnected) {
+      console.error('No system device connected (connectAndGetAppConnectedDeviceInfo)');
+      setDeviceIsAppConnected(false);
+      setDeviceInfos({
+        systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
+        appConnectedPeripheralInfo: null,
+      });
+      return;
+    }
 
     // try to connect
     try {

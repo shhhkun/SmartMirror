@@ -99,7 +99,6 @@ class BluetoothService {
     }
   }
 
-  // haven't gotten this to work yet
   static async retrieveServices(deviceID: string): Promise<PeripheralInfo> {
     // returns an object that contains this peripheral's services
     try {
