@@ -5,11 +5,9 @@ import React, {
   PropsWithChildren,
 } from "react";
 import {
-  Platform,
-} from "react-native";
-import {
   Peripheral,
   PeripheralInfo,
+  Service,
 } from "react-native-ble-manager";
 
 import {
@@ -48,14 +46,16 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   const updateTargetsFromAppPeripheralInfo = (appConnectedPeripheralInfo:
     PeripheralInfo): void => {
 
-    console.log('Updating service and characteristic fields to the following: ',
-      appConnectedPeripheralInfo);
-
     setTargetDeviceID(appConnectedPeripheralInfo?.id ||
       defaultBluetoothContext.targetDeviceID);
 
-    setTargetServiceUUID(appConnectedPeripheralInfo?.serviceUUIDs?.[0] ||
-      defaultBluetoothContext.targetServiceUUID);
+    // just selecting the first service for now
+    const servicesArray: Service[] = appConnectedPeripheralInfo?.services ?? [];
+    const serviceTarget: Service = servicesArray[0] ?? {};
+    const serviceUUID: string = serviceTarget?.uuid ??
+      defaultBluetoothContext.targetServiceUUID;
+
+    setTargetServiceUUID(serviceUUID);
 
     setTargetCharacteristicUUID(appConnectedPeripheralInfo?.
       characteristics?.[0]?.characteristic || defaultBluetoothContext.
@@ -247,6 +247,10 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   const checkIfDeviceIsReadWritable = async (): Promise<boolean> => {
+    console.log('attempting to read from target ID: ', targetDeviceID);
+    console.log('service: ', targetServiceUUID);
+    console.log('characteristic: ', targetCharacteristicUUID);
+
     // make sure we have system device info saved
     if (deviceInfos.systemConnectedPeripheralInfo === null ||
       deviceInfos.systemConnectedPeripheralInfo ===
