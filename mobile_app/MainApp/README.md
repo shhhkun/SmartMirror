@@ -27,6 +27,7 @@ Next steps:
    - current issue is context doesn't seem to be updating after a get services call. I made some changes that I think will fix, but still need to test.
 - figure out how to encode/decode data being sent and read
 - write data to a specific characteristic
+- implement some quick UI for sending data. maybe just a button.
 - make connecting action nicer. feels kinda jank still, and want to be able to not use nrf connect.
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
@@ -35,6 +36,7 @@ Next steps:
 - implement data sending protocol, probably across multiple characteristics.
 - implement UI to send data to the device via a form submission
 - smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
+- persist info about devices and/or user states. store stuff to "disk".
 
 # ----------
 
