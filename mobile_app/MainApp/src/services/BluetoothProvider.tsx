@@ -41,6 +41,10 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
 
   // helper functions
+  const initializeDriver = async (): Promise<void> => {
+    BluetoothService.initializeBLEManager();
+  }
+
   const updateTargetsFromAppPeripheralInfo = (appConnectedPeripheralInfo:
     PeripheralInfo): void => {
 
@@ -112,7 +116,6 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   const appConnectToDevice = async (deviceID: string): Promise<void> => {
-    // try to connect
     try {
       await BluetoothService.appConnectToDevice(deviceID);
       setDeviceIsAppConnected(true);
@@ -148,7 +151,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       // for some reason, this function is seeing null in
       // appConnectedPeripheralInfo when it isn't null.
       // might have been some async timing thing with states, so going to try
-      // this ne function and set it directly.
+      // this new function and set it directly.
       updateTargetsFromAppPeripheralInfo(peripheralRetrievedServicesInfo);
 
     }
@@ -162,10 +165,6 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
 
   // functions for the UI to interact with the bluetooth service
-  const initializeDriver = async (): Promise<void> => {
-    BluetoothService.initializeBLEManager();
-  }
-
   const promptUserForPermissions = async (): Promise<void> => {
     if (bluetoothPermissionsOK) {
       return;
@@ -339,7 +338,6 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     targetServiceUUID,
     targetCharacteristicUUID,
 
-    initializeDriver,
     promptUserForPermissions,
     getSystemConnectedDeviceInfo,
     connectAndGetAppConnectedDeviceInfo,

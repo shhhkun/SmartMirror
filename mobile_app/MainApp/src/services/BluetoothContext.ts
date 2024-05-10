@@ -50,7 +50,6 @@ export interface BluetoothContextType {
   targetServiceUUID: string;
   targetCharacteristicUUID: string;
 
-  initializeDriver: () => Promise<void>;
   promptUserForPermissions: () => Promise<void>;
   getSystemConnectedDeviceInfo: () => Promise<void>;
   connectAndGetAppConnectedDeviceInfo: () => Promise<void>;
@@ -71,9 +70,6 @@ export const defaultBluetoothContext: BluetoothContextType = {
   targetServiceUUID: '',
   targetCharacteristicUUID: '',
 
-  initializeDriver: async () => {
-    throw new Error('initializeDriver function is not initialized yet');
-  },
   promptUserForPermissions: async () => {
     throw new Error('askForBluetoothPermissions function is not initialized yet');
   },
