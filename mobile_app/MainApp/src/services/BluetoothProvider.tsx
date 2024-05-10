@@ -186,7 +186,15 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     // make sure there are services and characteristics to read from
-    // todo: won't check this for now
+    if (deviceInfos.appConnectedPeripheralInfo.serviceUUIDs === undefined ||
+      deviceInfos.appConnectedPeripheralInfo.serviceUUIDs.length == 0 ||
+      deviceInfos.appConnectedPeripheralInfo.characteristics === undefined ||
+      deviceInfos.appConnectedPeripheralInfo.characteristics.length == 0
+    ) {
+      console.error('No services or characteristics to read from');
+      return false;
+    }
+
     return true;
   }
 
@@ -199,12 +207,20 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
+    // these checks aren't really necessary since these should be covered in
+    // checkIfDeviceIsReadWritable, but have them here to silence the type checker.
+    if (deviceInfos.appConnectedPeripheralInfo === null ||
+      deviceInfos.appConnectedPeripheralInfo.serviceUUIDs === undefined ||
+      deviceInfos.appConnectedPeripheralInfo.characteristics === undefined) {
+      console.error('No connected device to read from.');
+      console.error('checkIfDeviceIsReadWritable should have caught this but didn\'t.');
+      return;
+    }
+
     // I'm assuming the service and characteristic we want are the first
     // ones in the arrays.
-    // These IDs are complaining about null safety right now,
-    // but shouldn't actually be an issue, since calling okToReadWrite first.
     const deviceID: string =
-      deviceInfos.systemConnectedPeripheralInfo.id;
+      deviceInfos.appConnectedPeripheralInfo.id;
     const serviceUUID: string =
       deviceInfos.appConnectedPeripheralInfo.serviceUUIDs[0];
     const characteristicUUID: string =
