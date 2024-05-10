@@ -186,8 +186,6 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       throw error;
     }
 
-    // in the future, could implement something here that only counts a device
-    // as connected if its ID matches the format of out smart mirror.
     if (peripheralsArray.length == 0) {
       console.log('No connected devices found');
       setSystemConnectedDeviceInfoToDefault();
@@ -195,19 +193,15 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     // for now, just assume the first connected device is the one we care about
-    const deviceInfosAfterSystemDevicesCheck: DeviceInfos = {
+    const systemConnectedDeviceInfo: DeviceInfos = {
       systemConnectedPeripheralInfo: peripheralsArray[0],
-      appConnectedPeripheralInfo: null,
+      appConnectedPeripheralInfo: deviceInfos.appConnectedPeripheralInfo,
     };
 
     console.log('System connected device info: ',
-      JSON.stringify(deviceInfosAfterSystemDevicesCheck, null, 2));
+      JSON.stringify(systemConnectedDeviceInfo, null, 2));
 
-    // at this point, this could be a different device, so we should make it
-    // mandatory to update the app connected device info after calling this.
-    setDeviceIsAppConnected(false);
-
-    setDeviceInfos(deviceInfosAfterSystemDevicesCheck);
+    setDeviceInfos(systemConnectedDeviceInfo);
   }
 
   const connectAndGetAppConnectedDeviceInfo = async (): Promise<void> => {
