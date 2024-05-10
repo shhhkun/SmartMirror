@@ -28,7 +28,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   const [deviceIsAppConnected, setDeviceIsAppConnected] =
     useState<boolean>(defaultBluetoothContext.deviceIsAppConnected);
   const [deviceInfos, setDeviceInfos] =
-    useState<DeviceInfos>(defaultBluetoothContext.deviceInfo);
+    useState<DeviceInfos>(defaultBluetoothContext.deviceInfos);
 
 
 
@@ -77,7 +77,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     if (peripheralsArray.length == 0) {
       console.log('No connected devices found');
       setDeviceIsAppConnected(false);
-      setDeviceInfos(defaultBluetoothContext.deviceInfo);
+      setDeviceInfos(defaultBluetoothContext.deviceInfos);
       return;
     }
 
@@ -154,7 +154,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // make sure we have system device info saved
     if (deviceInfos.systemConnectedPeripheralInfo === null ||
       deviceInfos.systemConnectedPeripheralInfo ===
-      defaultBluetoothContext.deviceInfo.systemConnectedPeripheralInfo
+      defaultBluetoothContext.deviceInfos.systemConnectedPeripheralInfo
     ) {
       console.error('No connected device to check');
       return false;
@@ -179,7 +179,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // make sure we have app device info saved
     if (deviceInfos.appConnectedPeripheralInfo === null ||
       deviceInfos.appConnectedPeripheralInfo ===
-      defaultBluetoothContext.deviceInfo.appConnectedPeripheralInfo
+      defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo
     ) {
       console.error('No services discovered yet');
       return false;
@@ -253,7 +253,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   const value = {
     bluetoothPermissionsOK,
     deviceIsAppConnected,
-    deviceInfo: deviceInfos,
+    deviceInfos,
     initializeDriver,
     promptUserForPermissions,
     checkForConnectedDevices: getSystemConnectedDeviceInfo,

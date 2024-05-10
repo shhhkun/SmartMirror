@@ -44,7 +44,7 @@ export interface BluetoothContextType {
 
   bluetoothPermissionsOK: boolean;
   deviceIsAppConnected: boolean;
-  deviceInfo: DeviceInfos;
+  deviceInfos: DeviceInfos;
   // want to enventaully have fields for our device ID
   // and characteristic ID of interest
 
@@ -63,7 +63,7 @@ const defaultDeviceInfo: DeviceInfos = {
 export const defaultBluetoothContext: BluetoothContextType = {
   bluetoothPermissionsOK: false,
   deviceIsAppConnected: false,
-  deviceInfo: defaultDeviceInfo,
+  deviceInfos: defaultDeviceInfo,
 
   initializeDriver: async () => {
     throw new Error('initializeDriver function is not initialized yet');

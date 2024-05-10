@@ -17,7 +17,7 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
-  const { deviceInfo, getServicesFromAppConnectedDevice, readFromCharacteristic } = useContext(BluetoothContext);
+  const { deviceInfos, getServicesFromAppConnectedDevice, readFromCharacteristic } = useContext(BluetoothContext);
 
 
   const doUponServicesButtonPress = async (): Promise<void> => {
@@ -66,7 +66,7 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Peripheral Extended Info">
-          {JSON.stringify(deviceInfo.appConnectedPeripheralInfo, null, 2)}
+          {JSON.stringify(deviceInfos.appConnectedPeripheralInfo, null, 2)}
         </NiceTextArea>
       </View>
 
