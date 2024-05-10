@@ -173,6 +173,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   const getSystemConnectedDeviceInfo = async (): Promise<void> => {
+    // checks for devices connected to the phone, which may or may not actually
+    // have an app-specific connection. this function resets the app-specific
+    // info to defaults (for the case we've connected to a different device
+    // since that was written.
+
     if (!bluetoothPermissionsOK) {
       console.error('Bluetooth permissions not granted yet');
       return;
@@ -195,13 +200,16 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // for now, just assume the first connected device is the one we care about
     const systemConnectedDeviceInfo: DeviceInfos = {
       systemConnectedPeripheralInfo: peripheralsArray[0],
-      appConnectedPeripheralInfo: deviceInfos.appConnectedPeripheralInfo,
+
+      appConnectedPeripheralInfo:
+        defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo,
     };
 
     console.log('System connected device info: ',
       JSON.stringify(systemConnectedDeviceInfo, null, 2));
 
     setDeviceInfos(systemConnectedDeviceInfo);
+    setTargetFieldsToDefault();
   }
 
   const connectAndGetAppConnectedDeviceInfo = async (): Promise<void> => {
