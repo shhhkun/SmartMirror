@@ -52,10 +52,34 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       characteristics?.[0]?.characteristic || '');
   };
 
+  const setSystemConnectedDeviceInfoFailed = (): void => {
+    setDeviceInfos(defaultBluetoothContext.deviceInfos);
+    setDeviceIsAppConnected(false);
+
+    setTargetDeviceID('');
+    setTargetServiceUUID('');
+    setTargetCharacteristicUUID('');
+  }
+
+  const setAppConnectedDeviceInfoFailed = (): void => {
+    setDeviceIsAppConnected(false);
+
+    setDeviceInfos({
+      systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
+      appConnectedPeripheralInfo: null,
+    });
+
+    setTargetDeviceID('');
+    setTargetServiceUUID('');
+    setTargetCharacteristicUUID('');
+  }
+
   const verifySystemDeviceConnected = async (): Promise<boolean> => {
-    // if there is no system connected device, there is nothing to connect to.
     if (deviceInfos.systemConnectedPeripheralInfo == null) {
-      console.error('No connected device to get services from');
+      console.error('No connected device to get services from (verifySystemDeviceConnected)');
+
+      setSystemConnectedDeviceInfoFailed();
+
       return false;
     }
 
@@ -63,25 +87,15 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     // make sure system device is still connected
     if (!(await BluetoothService.checkIfDeviceIsSystemConnected(deviceID))) {
-
       console.error('No system device connected (connectAndGetAppConnectedDeviceInfo)');
 
-      setDeviceIsAppConnected(false);
-
-      setDeviceInfos({
-        systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
-        appConnectedPeripheralInfo: null,
-      });
-
-      setTargetDeviceID('');
-      setTargetServiceUUID('');
-      setTargetCharacteristicUUID('');
+      setSystemConnectedDeviceInfoFailed();
 
       return false;
     }
 
     return true;
-  }
+  };
 
 
 
@@ -129,8 +143,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // as connected if its ID matches the format of out smart mirror.
     if (peripheralsArray.length == 0) {
       console.log('No connected devices found');
-      setDeviceIsAppConnected(false);
-      setDeviceInfos(defaultBluetoothContext.deviceInfos);
+      setSystemConnectedDeviceInfoFailed();
       return;
     }
 
@@ -167,15 +180,12 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
     catch (error) {
       console.error('Error connecting to device:', error);
-      setDeviceIsAppConnected(false);
-      setDeviceInfos({
-        systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
-        appConnectedPeripheralInfo: null,
-      });
+      setAppConnectedDeviceInfoFailed();
       throw error;
     }
 
-    // if connection was successful, get services and update device info
+    // if we get here, connection was successful.
+    // get services and update device info.
     try {
       // short delay, to allow connection to settle
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -196,10 +206,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
     catch (error) {
       console.error('Error getting services from connected device:', error);
-      setDeviceInfos({
-        systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
-        appConnectedPeripheralInfo: null,
-      });
+      setAppConnectedDeviceInfoFailed();
       throw error;
     }
   }
