@@ -41,18 +41,18 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
 
   // helper functions
-  const updateServiceAndCharacteristicFieldsFromPeripheralInfo = (): void => {
+  const updateTargetsFromAppPeripheralInfo = (appConnectedPeripheralInfo:
+    PeripheralInfo): void => {
+
     console.log('Updating service and characteristic fields to the following: ',
-      deviceInfos.appConnectedPeripheralInfo);
+      appConnectedPeripheralInfo);
 
-    setTargetDeviceID(deviceInfos.appConnectedPeripheralInfo?.
-      id || '');
+    setTargetDeviceID(appConnectedPeripheralInfo?.id || '');
 
-    setTargetServiceUUID(deviceInfos.appConnectedPeripheralInfo?.
-      serviceUUIDs?.[0] || '');
+    setTargetServiceUUID(appConnectedPeripheralInfo?.serviceUUIDs?.[0] || '');
 
-    setTargetCharacteristicUUID(deviceInfos.appConnectedPeripheralInfo?.
-      characteristics?.[0]?.characteristic || '');
+    setTargetCharacteristicUUID(appConnectedPeripheralInfo?.characteristics?.
+    [0]?.characteristic || '');
   };
 
   const setTargetFieldsToDefault = (): void => {
@@ -139,7 +139,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       // todo !!!!!!
       // for some reason, this function is seeing null in
       // appConnectedPeripheralInfo when it isn't null.
-      updateServiceAndCharacteristicFieldsFromPeripheralInfo();
+      // might have been some async timing thing with states, so going to try
+      // this ne function and set it directly.
+      updateTargetsFromAppPeripheralInfo(peripheralRetrievedServicesInfo);
 
     }
     catch (error) {
