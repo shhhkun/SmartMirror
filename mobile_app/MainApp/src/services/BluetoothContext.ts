@@ -45,10 +45,10 @@ export interface BluetoothContextType {
   bluetoothPermissionsOK: boolean;
   deviceIsAppConnected: boolean;
   deviceInfos: DeviceInfos;
+
+  targetDeviceID: string;
   targetServiceUUID: string;
   targetCharacteristicUUID: string;
-  // want to enventaully have fields for our device ID
-  // and characteristic ID of interest
 
   initializeDriver: () => Promise<void>;
   promptUserForPermissions: () => Promise<void>;
@@ -66,6 +66,8 @@ export const defaultBluetoothContext: BluetoothContextType = {
   bluetoothPermissionsOK: false,
   deviceIsAppConnected: false,
   deviceInfos: defaultDeviceInfo,
+
+  targetDeviceID: '',
   targetServiceUUID: '',
   targetCharacteristicUUID: '',
 

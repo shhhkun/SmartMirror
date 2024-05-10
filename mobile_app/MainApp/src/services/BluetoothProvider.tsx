@@ -22,23 +22,67 @@ import BluetoothService from './BluetoothService';
 
 
 const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
-  // state variables
+  // ble state info
   const [bluetoothPermissionsOK, setBluetoothPermissionsOK] =
     useState<boolean>(defaultBluetoothContext.bluetoothPermissionsOK);
   const [deviceIsAppConnected, setDeviceIsAppConnected] =
     useState<boolean>(defaultBluetoothContext.deviceIsAppConnected);
   const [deviceInfos, setDeviceInfos] =
     useState<DeviceInfos>(defaultBluetoothContext.deviceInfos);
+
+  // states to hold on to device info of interest
+  const [targetDeviceID, setTargetDeviceID] =
+    useState<string>(defaultBluetoothContext.targetDeviceID);
   const [targetServiceUUID, setTargetServiceUUID] =
     useState<string>(defaultBluetoothContext.targetServiceUUID);
   const [targetCharacteristicUUID, setTargetCharacteristicUUID] =
     useState<string>(defaultBluetoothContext.targetCharacteristicUUID);
 
 
+
   // helper functions
-  const myAsyncHelperFunction = async (): Promise<void> => {
-    // your code here
+  const updateServiceAndCharacteristicFieldsFromPeripheralInfo = (): void => {
+    setTargetDeviceID(deviceInfos.appConnectedPeripheralInfo?.
+      id || '');
+
+    setTargetServiceUUID(deviceInfos.appConnectedPeripheralInfo?.
+      serviceUUIDs?.[0] || '');
+
+    setTargetCharacteristicUUID(deviceInfos.appConnectedPeripheralInfo?.
+      characteristics?.[0]?.characteristic || '');
   };
+
+  const verifySystemDeviceConnected = async (): Promise<boolean> => {
+    // if there is no system connected device, there is nothing to connect to.
+    if (deviceInfos.systemConnectedPeripheralInfo == null) {
+      console.error('No connected device to get services from');
+      return false;
+    }
+
+    const deviceID: string = deviceInfos.systemConnectedPeripheralInfo.id;
+
+    // make sure system device is still connected
+    if (!(await BluetoothService.checkIfDeviceIsSystemConnected(deviceID))) {
+
+      console.error('No system device connected (connectAndGetAppConnectedDeviceInfo)');
+
+      setDeviceIsAppConnected(false);
+
+      setDeviceInfos({
+        systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
+        appConnectedPeripheralInfo: null,
+      });
+
+      setTargetDeviceID('');
+      setTargetServiceUUID('');
+      setTargetCharacteristicUUID('');
+
+      return false;
+    }
+
+    return true;
+  }
+
 
 
   // functions for the UI to interact with the bluetooth service
@@ -109,26 +153,12 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   const connectAndGetAppConnectedDeviceInfo = async (): Promise<void> => {
     // must have called getSystemConnectedDeviceInfo before this!
 
-    // if there is no system connected device, there is nothing to connect to.
-    if (deviceInfos.systemConnectedPeripheralInfo == null) {
-      console.error('No connected device to get services from');
+    if (! await verifySystemDeviceConnected()) {
+      console.error('System device not connected');
       return;
     }
 
-    const deviceID: string = deviceInfos.systemConnectedPeripheralInfo.id;
-
-    // make sure system device is still connected
-    const isSystemConnected: boolean =
-      await BluetoothService.checkIfDeviceIsSystemConnected(deviceID);
-    if (!isSystemConnected) {
-      console.error('No system device connected (connectAndGetAppConnectedDeviceInfo)');
-      setDeviceIsAppConnected(false);
-      setDeviceInfos({
-        systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
-        appConnectedPeripheralInfo: null,
-      });
-      return;
-    }
+    const deviceID: string = deviceInfos.systemConnectedPeripheralInfo?.id || '';
 
     // try to connect
     try {
@@ -147,9 +177,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     // if connection was successful, get services and update device info
     try {
-      console.log('trying to get services from device: ', deviceID);
-
-      // 1 second delay, because I saw this in an example project
+      // short delay, to allow connection to settle
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       const peripheralExtendedInfo: PeripheralInfo =
@@ -158,10 +186,13 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       console.log('Peripheral extended info: ',
         JSON.stringify(peripheralExtendedInfo, null, 2));
 
+      // update fields in context
       setDeviceInfos({
         systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
         appConnectedPeripheralInfo: peripheralExtendedInfo,
       });
+      updateServiceAndCharacteristicFieldsFromPeripheralInfo();
+
     }
     catch (error) {
       console.error('Error getting services from connected device:', error);
@@ -208,13 +239,12 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       return false;
     }
 
-    // make sure there are services and characteristics to read from
-    if (deviceInfos.appConnectedPeripheralInfo.serviceUUIDs === undefined ||
-      deviceInfos.appConnectedPeripheralInfo.serviceUUIDs.length == 0 ||
-      deviceInfos.appConnectedPeripheralInfo.characteristics === undefined ||
-      deviceInfos.appConnectedPeripheralInfo.characteristics.length == 0
-    ) {
-      console.error('No services or characteristics to read from');
+    // make sure the target fields are set
+    if (targetDeviceID === '' ||
+      targetServiceUUID === '' ||
+      targetCharacteristicUUID === '') {
+
+      console.error('No target device, service, or characteristic set');
       return false;
     }
 
@@ -230,29 +260,10 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
-    // these checks aren't really necessary since these should be covered in
-    // checkIfDeviceIsReadWritable, but have them here to silence the type checker.
-    if (deviceInfos.appConnectedPeripheralInfo === null ||
-      deviceInfos.appConnectedPeripheralInfo.serviceUUIDs === undefined ||
-      deviceInfos.appConnectedPeripheralInfo.characteristics === undefined) {
-      console.error('No connected device to read from.');
-      console.error('checkIfDeviceIsReadWritable should have caught this but didn\'t!');
-      return;
-    }
-
-    // I'm assuming the service and characteristic we want are the first
-    // ones in the arrays.
-    const deviceID: string =
-      deviceInfos.appConnectedPeripheralInfo.id;
-    const serviceUUID: string =
-      deviceInfos.appConnectedPeripheralInfo.serviceUUIDs[0];
-    const characteristicUUID: string =
-      deviceInfos.appConnectedPeripheralInfo.characteristics[0].characteristic;
-
     // do the actual read operation
     try {
-      const returnedData: any = await BluetoothService.read(deviceID, serviceUUID,
-        characteristicUUID);
+      const returnedData: any = await BluetoothService.read(
+        targetDeviceID, targetServiceUUID, targetCharacteristicUUID);
 
       // no clue what this data actually is. an array of ints?
       console.log('Read data: ', returnedData);
@@ -277,8 +288,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     bluetoothPermissionsOK,
     deviceIsAppConnected,
     deviceInfos,
+
+    targetDeviceID,
     targetServiceUUID,
     targetCharacteristicUUID,
+
     initializeDriver,
     promptUserForPermissions,
     getSystemConnectedDeviceInfo,
