@@ -48,7 +48,7 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 
   const doUponWriteButtonPress = async (): Promise<void> => {
     try {
-      await writeDataToCharacteristic('3');
+      await writeDataToCharacteristic(3);
       console.log('Write to characteristic button pressed');
     }
     catch (error) {

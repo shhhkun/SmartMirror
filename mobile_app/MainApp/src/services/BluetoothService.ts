@@ -163,7 +163,9 @@ class BluetoothService {
     }
   }
 
-  // unsure if this works
+  // somewhere in the write function there is a runtime error rn.
+  // "java.lang.String cannot be cast to com.facebook.react.bridge.ReadableNativeArray"
+  // I'm guessing I'm passing a string where an array is expected somewhere.
   static async write(deviceID: string, serviceUUID: string,
     characteristicUUID: string, data: number[]): Promise<void> {
 
