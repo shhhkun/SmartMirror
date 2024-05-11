@@ -18,6 +18,16 @@ import { BluetoothContext } from '../services/BluetoothContext';
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const { promptUserForPermissions } = useContext(BluetoothContext);
 
+  const doUponNavigateButtonPress = async (): Promise<void> => {
+    try {
+      await promptUserForPermissions();
+      navigation.navigate("Devices")
+    } catch (error) {
+      console.error('Error prompting user for permissions:', error);
+    }
+    navigation.navigate("Devices")
+  }
+
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
@@ -25,17 +35,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.mainStyle}>
         <NiceTextArea title="Team 3 Smart Mirror">
           This mobile app is an interface for sending a JSON configuration file
-          to the Smart Mirror via BLE. Press the button to enable Bluetooth,
-          then continue to the devices screen.
+          to the Smart Mirror via BLE. Press the button below to connect you device.
         </NiceTextArea>
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => promptUserForPermissions()} title="Enable Bluetooth" />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => navigation.navigate("Devices")} title="Go To Devices Page" />
+        <ButtonToNavigate onPress={() => doUponNavigateButtonPress()} title="Go To Devices Page" />
       </View>
 
     </SafeAreaView >
