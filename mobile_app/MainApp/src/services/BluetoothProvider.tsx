@@ -335,6 +335,19 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
+  const writeDataToCharacteristic = async (data: any): Promise<void> => {
+    // for now, just accepting data as an int
+
+    const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();
+    if (!okToReadWrite) {
+      console.error('Device not read-writable (writeDataToCharacteristic)');
+      return;
+    }
+
+    BluetoothService.write(targetDeviceID, targetServiceUUID,
+      targetCharacteristicUUID, data);
+  }
+
 
 
   // constructor-like thing that runs when context is created
@@ -357,6 +370,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     getSystemConnectedDeviceInfo,
     connectAndGetAppConnectedDeviceInfo,
     readFromCharacteristic,
+    writeDataToCharacteristic,
   };
 
   return (

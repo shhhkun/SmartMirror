@@ -179,16 +179,12 @@ class BluetoothService {
   static async writeInt(deviceID: string, serviceUUID: string,
     characteristicUUID: string, intInput: number): Promise<void> {
 
-    // I don't know why this is showing up as an error. maybe some weird
-    // pass-by-reference thing?
+    const serializedData: number[] = serializeInt(intInput);
 
-    serializedData: number[] = serializeInt(intInput);
-
-    success: Promise<void> = BluetoothService.write(deviceID, serviceUUID,
+    const success: Promise<void> = BluetoothService.write(deviceID, serviceUUID,
       characteristicUUID, serializedData);
 
     return success;
-
   }
 
   // not implemented yet
