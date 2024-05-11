@@ -17,14 +17,14 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
-  const { deviceInfo, checkForConnectedDevices } = useContext(BluetoothContext);
+  const { deviceInfos, getSystemConnectedDeviceInfo } = useContext(BluetoothContext);
   const [lastDeviceCheckTime, setLastDeviceCheckTime] = useState('never');
 
 
   // function to retireve connected devices upon button press
-  const doUponConnectedDevicesButton = async (): Promise<void> => {
+  const doUponSystemConnectedDevicesButton = async (): Promise<void> => {
     try {
-      await checkForConnectedDevices();
+      await getSystemConnectedDeviceInfo();
       setLastDeviceCheckTime(new Date().toLocaleTimeString());
 
     } catch (error) {
@@ -42,13 +42,13 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.mainStyle}>
         <NiceTextArea title="Connected Devices">
           Pair to a peripheral in your device settings,
-          then press the "show connected devices" button.
+          then press the "show system connected devices" button.
         </NiceTextArea>
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponConnectedDevicesButton()}
-          title="Show Connected Devices" />
+        <ButtonToNavigate onPress={() => doUponSystemConnectedDevicesButton()}
+          title="Show System Connected Devices" />
       </View>
 
       <View style={styles.buttonContainer}>
@@ -66,7 +66,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
           {"\n"}
 
-          {JSON.stringify(deviceInfo.peripheralBasicInfo, null, 2)}
+          {JSON.stringify(deviceInfos.systemConnectedPeripheralInfo, null, 2)}
         </NiceTextArea>
       </View>
 

@@ -23,19 +23,18 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 
-- call the method that gets info about a connected peripheral - its characteristics and services it is advertising
-- read the value out of a specific characteristic
 - figure out how to encode/decode data being sent and read
-- make sure there are no null types in the defice info structs. should only be using "default x info" in here, so that I don't have to deal will this null safety pain. maybe upon services descovery, if they come back as blank, set it to default. or maybe not worry about this for now.
 - write data to a specific characteristic
+- implement some quick UI for sending data. maybe just a button.
+- make connecting action nicer. feels kinda jank still, and want to be able to not use nrf connect.
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 
-- decide on exact data format we'll be sending. for multiple characteristics probably.
-- implement data sending protocol
+- decide on exact data format we'll be sending. probably per-module info.
+- implement data sending protocol, probably across multiple characteristics.
 - implement UI to send data to the device via a form submission
-- hook up text box form to populate some JSON object, then send it off to to the peripheral
 - smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
+- persist info about devices and/or user states. store stuff to "disk".
 
 # ----------
 
@@ -74,6 +73,8 @@ run
 
 or if that doesn't work (gets stuck installing APK), run
    DEBUG=react-native* npx react-native start
+
+or if neither of those work, try deleting the app and flashing again
 
 # ----------
 

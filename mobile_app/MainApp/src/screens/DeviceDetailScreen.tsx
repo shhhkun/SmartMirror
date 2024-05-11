@@ -17,13 +17,18 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
-  const { deviceInfo, getServicesFromConnectedDevice, readFromCharacteristic } = useContext(BluetoothContext);
-
+  // state stuff from the context provider
+  const { deviceInfos,
+    connectAndGetAppConnectedDeviceInfo,
+    readFromCharacteristic,
+    writeDataToCharacteristic,
+  } = useContext(BluetoothContext);
+  const [readData, setReadData] = useState<any>(null);
 
   const doUponServicesButtonPress = async (): Promise<void> => {
     try {
-      await getServicesFromConnectedDevice();
-      console.log('Services retrieved');
+      await connectAndGetAppConnectedDeviceInfo();
+      console.log('Connected to device and got services in DeviceDetailScreen');
 
     }
     catch (error) {
@@ -33,15 +38,24 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 
   const doUponReadButtonPress = async (): Promise<void> => {
     try {
-      await readFromCharacteristic();
-      console.log('Read from characteristic');
-
+      const returnedData: any = await readFromCharacteristic();
+      setReadData(returnedData);
+      console.log('Read from characteristic button pressed');
     }
     catch (error) {
       console.error('Error reading from characteristic:', error);
     }
   }
 
+  const doUponWriteButtonPress = async (): Promise<void> => {
+    try {
+      await writeDataToCharacteristic(3);
+      console.log('Write to characteristic button pressed');
+    }
+    catch (error) {
+      console.error('Error writing to characteristic from UI:', error);
+    }
+  }
 
   // UI stuff here
   return (
@@ -56,20 +70,24 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponServicesButtonPress()}
-          title="Get Services" />
+          title="App-Pair and Get Services" />
       </View>
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponReadButtonPress()}
-          title="Read" />
+          title="Read from Characteristic" />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponWriteButtonPress()}
+          title="Write to Characteristic" />
       </View>
 
       <View style={styles.mainStyle}>
-        <NiceTextArea title="Peripheral Extended Info">
-          {JSON.stringify(deviceInfo.peripheralExtendedInfo, null, 2)}
+        <NiceTextArea title="Read Data">
+          {JSON.stringify(readData, null, 2)}
         </NiceTextArea>
       </View>
-
 
     </SafeAreaView >
   );

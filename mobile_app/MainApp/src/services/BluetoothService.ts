@@ -1,13 +1,20 @@
 // wrapper class for react-native-ble-manager
 import {
   PermissionsAndroid,
+  Platform,
 } from 'react-native';
-import BleManager, { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
+import BleManager, {
+  Peripheral,
+  PeripheralInfo
+} from 'react-native-ble-manager';
+import {
+  serializeInt
+} from './BluetoothUtils';
 
 
 
 class BluetoothService {
-  static async initialize(): Promise<void> {
+  static async initializeBLEManager(): Promise<void> {
     try {
       await BleManager.start({ showAlert: true });
       console.log("BLE manager initialized (BluetoothService.initialize)");
@@ -18,18 +25,34 @@ class BluetoothService {
     }
   }
 
-  static async requestBluetoothPermission(): Promise<void> {
+  static async requestAllPermissions(): Promise<void> {
     try {
-      await BleManager.enableBluetooth();
-      console.log("Bluetooth permission granted (BluetoothService.requestBluetoothPermission)");
+      await BluetoothService.requestBluetoothPermission();
+
+      if (Platform.OS === 'android' && Platform.Version >= 23) {
+        await BluetoothService.requestAndroidLocationPermission();
+      };
+
+      console.log("All permissions granted.");
 
     } catch (error) {
-      console.error('Error requesting Bluetooth permission: ${error} (BluetoothService.requestBluetoothPermission)');
-      throw error; // Re-throw the error to propagate it to the caller if needed
+      console.error('Error requesting all permissions.');
+      throw error;
     }
   }
 
-  static async requestAndroidLocationPermission(): Promise<void> {
+  private static async requestBluetoothPermission(): Promise<void> {
+    try {
+      await BleManager.enableBluetooth();
+      // console.log("Bluetooth permission granted (BluetoothService.requestBluetoothPermission)");
+
+    } catch (error) {
+      // console.error('Error requesting Bluetooth permission: ${error} (BluetoothService.requestBluetoothPermission)');
+      throw error;
+    }
+  }
+
+  private static async requestAndroidLocationPermission(): Promise<void> {
     if (await PermissionsAndroid.check(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
       .then(result => result)) {
@@ -58,7 +81,9 @@ class BluetoothService {
     });
   }
 
-  static async getConnectedPeripherals(): Promise<Peripheral[]> {
+  static async getSystemConnectedPeripherals(): Promise<Peripheral[]> {
+    // in the future, could implement something here that only counts a device
+    // as connected if its ID matches the format of out smart mirror.
     try {
       const peripheralsArray: Peripheral[] =
         await BleManager.getConnectedPeripherals([]);
@@ -70,11 +95,11 @@ class BluetoothService {
     } catch (error) {
       console.error('Error getting connected peripherals:', error);
 
-      throw error; // Re-throw the error to propagate it to the caller
+      throw error;
     }
   }
 
-  static async checkIfConnected(deviceID: string): Promise<boolean> {
+  static async checkIfDeviceIsSystemConnected(deviceID: string): Promise<boolean> {
     try {
       const isConnected: boolean =
         await BleManager.isPeripheralConnected(deviceID);
@@ -88,7 +113,17 @@ class BluetoothService {
     }
   }
 
-  // haven't gotten this to work yet
+  static async appConnectToDevice(deviceID: string): Promise<void> {
+    try {
+      await BleManager.connect(deviceID);
+    }
+
+    catch (error) {
+      console.error('Error app connecting to device:', error);
+      throw error; // Re-throw the error to propagate it to the caller
+    }
+  }
+
   static async retrieveServices(deviceID: string): Promise<PeripheralInfo> {
     // returns an object that contains this peripheral's services
     try {
@@ -104,35 +139,64 @@ class BluetoothService {
     }
   }
 
-  // haven't gotten this to work yet
+  private static async deviceIsStillConnected(deviceID: string): Promise<boolean> {
+    try {
+      const isConnected: boolean =
+        await BleManager.isPeripheralConnected(deviceID);
+
+      return isConnected;
+
+    } catch (error) {
+      console.error('Error checking if connected:', error);
+
+      return false;
+    }
+  }
+
   static async read(deviceID: string, serviceUUID: string,
     characteristicUUID: string): Promise<any> {
 
-    const deviceIsIsStillConnected: boolean =
-      await BleManager.isPeripheralConnected(deviceID);
-    if (!deviceIsIsStillConnected) {
+    if (!await BluetoothService.deviceIsStillConnected(deviceID)) {
       console.error('Tried to read from disconnected device');
       return null;
     }
 
-    const returnedData: any = BleManager.read(deviceID, serviceUUID,
-      characteristicUUID);
+    try {
+      const returnedData: any = BleManager.read(deviceID, serviceUUID,
+        characteristicUUID);
 
-    return returnedData;
+      return returnedData;
+    }
+    catch (error) {
+      console.error('Error reading from characteristic:', error);
+      throw error;
+    }
   }
 
-  // not implemented yet
-  static write(deviceID: string, serviceUUID: string,
-    characteristicUUID: string, data: number[]): Promise<void> {
+  // something in here is not succeeding. even when sending ints directly.
+  static async writeInt(deviceID: string, serviceUUID: string,
+    characteristicUUID: string, intInput: number): Promise<void> {
 
-    const successWritePromise: Promise<void> = BleManager.write(deviceID,
-      serviceUUID, characteristicUUID, data);
+    if (!await BluetoothService.deviceIsStillConnected(deviceID)) {
+      console.error('Tried to write to disconnected device');
+      return;
+    }
 
-    return successWritePromise;
+    // const serializedData: number[] = serializeInt(intInput);
+    // todo: use the real data that I'll pass in, not this dummy data.
+    const serializedData: number[] = [1, 2, 3, 255]
+
+    try {
+      BleManager.write(deviceID, serviceUUID, characteristicUUID, serializedData);
+    }
+    catch (error) {
+      console.error('Error writing to characteristic in writeInt:', error);
+      throw error;
+    }
   }
 
-  // not implemented yet
-  static disconnect(deviceID: string): Promise<void> {
+  // not implemented yet. un-private this when written.
+  private static async disconnect(deviceID: string): Promise<void> {
     return BleManager.disconnect(deviceID);
   }
 }

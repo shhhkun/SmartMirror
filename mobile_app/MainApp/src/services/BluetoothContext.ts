@@ -7,12 +7,9 @@ import {
 } from 'react-native-ble-manager';
 
 
-export interface ConnectedDeviceInfo {
-  // upon connecting, below attributes should be populated
-  // upon disconnecting, below attributes should be set to none
-
-  // this info is available after discovering connected devices
-  peripheralBasicInfo: Peripheral | null;
+export interface DeviceInfos {
+  // this info is available with just a system connection to a device.
+  systemConnectedPeripheralInfo: Peripheral | null;
   // Peripheral has the form: Peripheral {
   //   id: string;
   //   rssi: number;
@@ -20,58 +17,75 @@ export interface ConnectedDeviceInfo {
   //   advertising: AdvertisingData;
   // }
 
-  // this info is available after retrieveServices call
-  peripheralExtendedInfo: PeripheralInfo | null;
-  // PeripheralInfo extends Peripheral has the form: PeripheralInfo {
+
+  // this info is available after an app-specifc connection to a device and
+  // a retrieval of services.
+  appConnectedPeripheralInfo: PeripheralInfo | null;
+  // PeripheralInfo extends Peripheral and has the form:
+  // PeripheralInfo {
+  //   id: string;
+  //   rssi: number;
+  //   name?: string;
+  //   advertising: AdvertisingData;
   //   serviceUUIDs?: string[];
   //   characteristics?: Characteristic[];
   //   services?: Service[];
   // }
 
-  // some other attribute for the characteristic we actually care about?
-  // or just select the device ID / service UUID / characteristic UUID
-  // from these objects.
 }
 
 export interface BluetoothContextType {
-  bluetoothPermissionsOK: boolean;
-  deviceIsConnected: boolean;
-  deviceInfo: ConnectedDeviceInfo;
-  // want to enventaully have fields for our device ID
-  // and characteristic ID of interest
+  // not sure if I want to add a field for if (compatible) device
+  // is system connected. like if there is a unique device ID for
+  // our smart mirrors, and a device with that is connected.
 
-  initializeDriver: () => Promise<void>;
+  // also might want a way to hold onto multiple characteristics. or
+  // have some more state there, if I'm writing to multiple.
+
+  bluetoothPermissionsOK: boolean;
+  deviceIsAppConnected: boolean;
+  deviceInfos: DeviceInfos;
+
+  targetDeviceID: string;
+  targetServiceUUID: string;
+  targetCharacteristicUUID: string;
+
   promptUserForPermissions: () => Promise<void>;
-  checkForConnectedDevices: () => Promise<void>;
-  getServicesFromConnectedDevice: () => Promise<void>;
+  getSystemConnectedDeviceInfo: () => Promise<void>;
+  connectAndGetAppConnectedDeviceInfo: () => Promise<void>;
   readFromCharacteristic: () => Promise<any>;
+  writeDataToCharacteristic: (data: any) => Promise<void>;
 }
 
-const defaultDeviceInfo: ConnectedDeviceInfo = {
-  peripheralBasicInfo: null,
-  peripheralExtendedInfo: null,
+const defaultDeviceInfo: DeviceInfos = {
+  systemConnectedPeripheralInfo: null,
+  appConnectedPeripheralInfo: null,
 };
 
 export const defaultBluetoothContext: BluetoothContextType = {
   bluetoothPermissionsOK: false,
-  deviceIsConnected: false,
-  deviceInfo: defaultDeviceInfo,
+  deviceIsAppConnected: false,
+  deviceInfos: defaultDeviceInfo,
 
-  initializeDriver: async () => {
-    throw new Error('initializeDriver function is not initialized yet');
-  },
+  targetDeviceID: '',
+  targetServiceUUID: '',
+  targetCharacteristicUUID: '',
+
   promptUserForPermissions: async () => {
     throw new Error('askForBluetoothPermissions function is not initialized yet');
   },
-  checkForConnectedDevices: async () => {
-    throw new Error('checkForConnectedDevices function is not initialized yet');
+  getSystemConnectedDeviceInfo: async () => {
+    throw new Error('getSystemConnectedDeviceInfo function is not initialized yet');
   },
-  getServicesFromConnectedDevice: async () => {
+  connectAndGetAppConnectedDeviceInfo: async () => {
     throw new Error('getServicesFromConnectedDevice function is not initialized yet');
   },
   readFromCharacteristic: async () => {
     throw new Error('readFromCharacteristic function is not initialized yet');
   },
+  writeDataToCharacteristic: async () => {
+    throw new Error('writeDataToCharacteristic function is not initialized yet');
+  }
 };
 
 export const BluetoothContext = createContext<BluetoothContextType>(
