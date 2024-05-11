@@ -8,7 +8,12 @@ import {
 export function serializeInt(intInput: number): number[] {
   // quick function just to try serializing a single number
 
-  let buffer = Buffer.alloc(4);
+  if (intInput < 0 || intInput > 255) {
+    throw new Error('Input must be between 0 and 255');
+  }
+
+  let buffer: Buffer = Buffer.alloc(1);
   buffer.writeUInt32LE(intInput, 0);
-  return Array.from(buffer);
+  const byteArray: number[] = Array.from(buffer);
+  return byteArray;
 }

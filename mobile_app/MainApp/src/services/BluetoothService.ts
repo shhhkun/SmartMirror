@@ -41,7 +41,7 @@ class BluetoothService {
     }
   }
 
-  static async requestBluetoothPermission(): Promise<void> {
+  private static async requestBluetoothPermission(): Promise<void> {
     try {
       await BleManager.enableBluetooth();
       // console.log("Bluetooth permission granted (BluetoothService.requestBluetoothPermission)");
@@ -52,7 +52,7 @@ class BluetoothService {
     }
   }
 
-  static async requestAndroidLocationPermission(): Promise<void> {
+  private static async requestAndroidLocationPermission(): Promise<void> {
     if (await PermissionsAndroid.check(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
       .then(result => result)) {
@@ -164,10 +164,12 @@ class BluetoothService {
   }
 
   // somewhere in the write function there is a runtime error rn.
-  // "java.lang.String cannot be cast to com.facebook.react.bridge.ReadableNativeArray"
-  // I'm guessing I'm passing a string where an array is expected somewhere.
-  static async write(deviceID: string, serviceUUID: string,
+  // "java.lang.Double cannot be cast to com.facebook.react.bridge.ReadableNativeArray"
+  // going to try sending some ints directly, to see if its a serialization issue.
+  private static async write(deviceID: string, serviceUUID: string,
     characteristicUUID: string, data: number[]): Promise<void> {
+
+    console.error('I don\'t want to be calling this service.write function yet.');
 
     try {
       BleManager.write(deviceID, serviceUUID, characteristicUUID, data);
@@ -178,19 +180,26 @@ class BluetoothService {
     }
   }
 
+  // still erroring even after trying to send this dummy data,
+  // and not the serialized data.
   static async writeInt(deviceID: string, serviceUUID: string,
     characteristicUUID: string, intInput: number): Promise<void> {
 
-    const serializedData: number[] = serializeInt(intInput);
+    // const serializedData: number[] = serializeInt(intInput);
+    // todo: use the real data that I'll pass in, not this dummy data.
+    const serializedData: number[] = [1, 2, 3, 255]
 
-    const success: Promise<void> = BluetoothService.write(deviceID, serviceUUID,
-      characteristicUUID, serializedData);
-
-    return success;
+    try {
+      BleManager.write(deviceID, serviceUUID, characteristicUUID, serializedData);
+    }
+    catch (error) {
+      console.error('Error writing to characteristic in writeInt:', error);
+      throw error;
+    }
   }
 
-  // not implemented yet
-  static async disconnect(deviceID: string): Promise<void> {
+  // not implemented yet. un-private this when written.
+  private static async disconnect(deviceID: string): Promise<void> {
     return BleManager.disconnect(deviceID);
   }
 }

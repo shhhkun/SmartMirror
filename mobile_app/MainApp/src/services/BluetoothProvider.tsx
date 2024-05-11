@@ -346,7 +346,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     try {
-      BluetoothService.write(targetDeviceID, targetServiceUUID,
+      BluetoothService.writeInt(targetDeviceID, targetServiceUUID,
         targetCharacteristicUUID, data);
     } catch (error) {
       console.error('Error writing to characteristic in provider:', error);
