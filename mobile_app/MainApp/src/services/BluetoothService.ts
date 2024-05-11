@@ -139,14 +139,24 @@ class BluetoothService {
     }
   }
 
+  private static async deviceIsStillConnected(deviceID: string): Promise<boolean> {
+    try {
+      const isConnected: boolean =
+        await BleManager.isPeripheralConnected(deviceID);
+
+      return isConnected;
+
+    } catch (error) {
+      console.error('Error checking if connected:', error);
+
+      return false;
+    }
+  }
+
   static async read(deviceID: string, serviceUUID: string,
     characteristicUUID: string): Promise<any> {
 
-    const deviceIsIsStillConnected: boolean =
-      await BleManager.isPeripheralConnected(deviceID);
-
-
-    if (!deviceIsIsStillConnected) {
+    if (!await BluetoothService.deviceIsStillConnected(deviceID)) {
       console.error('Tried to read from disconnected device');
       return null;
     }
@@ -163,27 +173,14 @@ class BluetoothService {
     }
   }
 
-  // somewhere in the write function there is a runtime error rn.
-  // "java.lang.Double cannot be cast to com.facebook.react.bridge.ReadableNativeArray"
-  // going to try sending some ints directly, to see if its a serialization issue.
-  private static async write(deviceID: string, serviceUUID: string,
-    characteristicUUID: string, data: number[]): Promise<void> {
-
-    console.error('I don\'t want to be calling this service.write function yet.');
-
-    try {
-      BleManager.write(deviceID, serviceUUID, characteristicUUID, data);
-    }
-    catch (error) {
-      console.error('Error writing to characteristic:', error);
-      throw error;
-    }
-  }
-
-  // still erroring even after trying to send this dummy data,
-  // and not the serialized data.
+  // something in here is not succeeding. even when sending ints directly.
   static async writeInt(deviceID: string, serviceUUID: string,
     characteristicUUID: string, intInput: number): Promise<void> {
+
+    if (!await BluetoothService.deviceIsStillConnected(deviceID)) {
+      console.error('Tried to write to disconnected device');
+      return;
+    }
 
     // const serializedData: number[] = serializeInt(intInput);
     // todo: use the real data that I'll pass in, not this dummy data.

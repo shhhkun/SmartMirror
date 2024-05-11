@@ -3,7 +3,7 @@ import {
 } from 'buffer';
 
 // functions to serialize/deserialize data, and anything else that
-// doesn't need to touch the context states.
+// doesn't need to touch the context states or the BLE manager
 
 export function serializeInt(intInput: number): number[] {
   // quick function just to try serializing a single number

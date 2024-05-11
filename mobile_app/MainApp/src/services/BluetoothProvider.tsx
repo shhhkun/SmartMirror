@@ -336,7 +336,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   // write function has a runtime error right now. crashes the app.
-  const writeDataToCharacteristic = async (data: any): Promise<void> => {
+  const writeDataToCharacteristic = async (data: number): Promise<void> => {
     // for now, just accepting data as an int
 
     const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();

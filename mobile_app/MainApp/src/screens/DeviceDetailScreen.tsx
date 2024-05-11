@@ -23,6 +23,7 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
     readFromCharacteristic,
     writeDataToCharacteristic,
   } = useContext(BluetoothContext);
+  const [readData, setReadData] = useState<any>(null);
 
   const doUponServicesButtonPress = async (): Promise<void> => {
     try {
@@ -37,9 +38,9 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 
   const doUponReadButtonPress = async (): Promise<void> => {
     try {
-      await readFromCharacteristic();
+      const returnedData: any = await readFromCharacteristic();
+      setReadData(returnedData);
       console.log('Read from characteristic button pressed');
-
     }
     catch (error) {
       console.error('Error reading from characteristic:', error);
@@ -82,10 +83,9 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
           title="Write to Characteristic" />
       </View>
 
-      {/* might want to update this so it prints out the read/write values instead */}
       <View style={styles.mainStyle}>
-        <NiceTextArea title="Peripheral Extended Info">
-          {JSON.stringify(deviceInfos.appConnectedPeripheralInfo, null, 2)}
+        <NiceTextArea title="Read Data">
+          {JSON.stringify(readData, null, 2)}
         </NiceTextArea>
       </View>
 
