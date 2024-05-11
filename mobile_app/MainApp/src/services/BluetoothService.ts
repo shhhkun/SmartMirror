@@ -3,7 +3,13 @@ import {
   PermissionsAndroid,
   Platform,
 } from 'react-native';
-import BleManager, { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
+import BleManager, {
+  Peripheral,
+  PeripheralInfo
+} from 'react-native-ble-manager';
+import {
+  serializeInt
+} from './BluetoothUtils';
 
 
 
@@ -133,7 +139,6 @@ class BluetoothService {
     }
   }
 
-  // haven't gotten this to work yet
   static async read(deviceID: string, serviceUUID: string,
     characteristicUUID: string): Promise<any> {
 
@@ -146,24 +151,48 @@ class BluetoothService {
       return null;
     }
 
-    const returnedData: any = BleManager.read(deviceID, serviceUUID,
-      characteristicUUID);
+    try {
+      const returnedData: any = BleManager.read(deviceID, serviceUUID,
+        characteristicUUID);
 
-    return returnedData;
+      return returnedData;
+    }
+    catch (error) {
+      console.error('Error reading from characteristic:', error);
+      throw error;
+    }
   }
 
-  // not implemented yet
-  static write(deviceID: string, serviceUUID: string,
+  // unsure if this works
+  static async write(deviceID: string, serviceUUID: string,
     characteristicUUID: string, data: number[]): Promise<void> {
 
-    const successWritePromise: Promise<void> = BleManager.write(deviceID,
-      serviceUUID, characteristicUUID, data);
+    try {
+      BleManager.write(deviceID, serviceUUID, characteristicUUID, data);
+    }
+    catch (error) {
+      console.error('Error writing to characteristic:', error);
+      throw error;
+    }
+  }
 
-    return successWritePromise;
+  static async writeInt(deviceID: string, serviceUUID: string,
+    characteristicUUID: string, intInput: number): Promise<void> {
+
+    // I don't know why this is showing up as an error. maybe some weird
+    // pass-by-reference thing?
+
+    serializedData: number[] = serializeInt(intInput);
+
+    success: Promise<void> = BluetoothService.write(deviceID, serviceUUID,
+      characteristicUUID, serializedData);
+
+    return success;
+
   }
 
   // not implemented yet
-  static disconnect(deviceID: string): Promise<void> {
+  static async disconnect(deviceID: string): Promise<void> {
     return BleManager.disconnect(deviceID);
   }
 }

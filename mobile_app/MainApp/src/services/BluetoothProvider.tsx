@@ -8,6 +8,7 @@ import {
   Peripheral,
   PeripheralInfo,
   Service,
+  Characteristic,
 } from "react-native-ble-manager";
 
 import {
@@ -45,21 +46,31 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const updateTargetsFromAppPeripheralInfo = (appConnectedPeripheralInfo:
     PeripheralInfo): void => {
+    // this assumes we're only going to have one service.
+    // and just selecting the first charafceteristic for now.
 
-    setTargetDeviceID(appConnectedPeripheralInfo?.id ||
-      defaultBluetoothContext.targetDeviceID);
+    const deviceID: string = appConnectedPeripheralInfo?.id ||
+      defaultBluetoothContext.targetDeviceID;
+    setTargetDeviceID(deviceID);
 
-    // just selecting the first service for now
+
     const servicesArray: Service[] = appConnectedPeripheralInfo?.services ?? [];
-    const serviceTarget: Service = servicesArray[0] ?? {};
-    const serviceUUID: string = serviceTarget?.uuid ??
+    const specificService: Service = servicesArray[0] ?? {};
+
+    const serviceUUID: string = specificService?.uuid ??
       defaultBluetoothContext.targetServiceUUID;
 
     setTargetServiceUUID(serviceUUID);
 
-    setTargetCharacteristicUUID(appConnectedPeripheralInfo?.
-      characteristics?.[0]?.characteristic || defaultBluetoothContext.
-        targetCharacteristicUUID);
+
+    const characteristicsArray: Characteristic[] =
+      appConnectedPeripheralInfo?.characteristics ?? [];
+    const specificCharacteristic: Characteristic = characteristicsArray[0] ?? {};
+
+    const characteristicUUID: string = specificCharacteristic?.characteristic ??
+      defaultBluetoothContext.targetCharacteristicUUID;
+
+    setTargetCharacteristicUUID(characteristicUUID);
   };
 
   const setTargetFieldsToDefault = (): void => {

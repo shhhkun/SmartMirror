@@ -23,8 +23,6 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 
-- get read from single characteristic working
-   - current issue is context doesn't seem to be updating after a get services call. I made some changes that I think will fix, but still need to test.
 - figure out how to encode/decode data being sent and read
 - write data to a specific characteristic
 - implement some quick UI for sending data. maybe just a button.
