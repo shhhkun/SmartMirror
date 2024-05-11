@@ -18,8 +18,11 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
   // state stuff from the context provider
-  const { deviceInfos, connectAndGetAppConnectedDeviceInfo,
-    readFromCharacteristic } = useContext(BluetoothContext);
+  const { deviceInfos,
+    connectAndGetAppConnectedDeviceInfo,
+    readFromCharacteristic,
+    writeDataToCharacteristic,
+  } = useContext(BluetoothContext);
 
   const doUponServicesButtonPress = async (): Promise<void> => {
     try {
@@ -43,6 +46,15 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
     }
   }
 
+  const doUponWriteButtonPress = async (): Promise<void> => {
+    try {
+      await writeDataToCharacteristic('3');
+      console.log('Write to characteristic button pressed');
+    }
+    catch (error) {
+      console.error('Error writing to characteristic from UI:', error);
+    }
+  }
 
   // UI stuff here
   return (
@@ -65,12 +77,17 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
           title="Read from Characteristic" />
       </View>
 
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponWriteButtonPress()}
+          title="Write to Characteristic" />
+      </View>
+
+      {/* might want to update this so it prints out the read/write values instead */}
       <View style={styles.mainStyle}>
         <NiceTextArea title="Peripheral Extended Info">
           {JSON.stringify(deviceInfos.appConnectedPeripheralInfo, null, 2)}
         </NiceTextArea>
       </View>
-
 
     </SafeAreaView >
   );

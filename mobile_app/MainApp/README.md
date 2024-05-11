@@ -74,6 +74,8 @@ run
 or if that doesn't work (gets stuck installing APK), run
    DEBUG=react-native* npx react-native start
 
+or if neither of those work, try deleting the app and flashing again
+
 # ----------
 
 Future enhancements not implemented in protoype, but for the final sellable product:

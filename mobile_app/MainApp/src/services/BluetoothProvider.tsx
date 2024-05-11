@@ -330,11 +330,12 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       return returnedData;
     }
     catch (error) {
-      console.error('Error reading from characteristic:', error);
+      console.error('Error reading from characteristic in provider:', error);
       throw error;
     }
   }
 
+  // write function has a runtime error right now. crashes the app.
   const writeDataToCharacteristic = async (data: any): Promise<void> => {
     // for now, just accepting data as an int
 
@@ -344,11 +345,13 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
-    BluetoothService.write(targetDeviceID, targetServiceUUID,
-      targetCharacteristicUUID, data);
+    try {
+      BluetoothService.write(targetDeviceID, targetServiceUUID,
+        targetCharacteristicUUID, data);
+    } catch (error) {
+      console.error('Error writing to characteristic in provider:', error);
+    }
   }
-
-
 
   // constructor-like thing that runs when context is created
   useEffect(() => {
