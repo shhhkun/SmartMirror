@@ -33,7 +33,7 @@ server_socket.listen(1)
 bluetooth.advertise_service(
     server_socket,
     "MyBLEService",
-    SERVICE_UUID
+    service_id=SERVICE_UUID,
 )
 
 print("Waiting for connection...")
@@ -47,3 +47,4 @@ except KeyboardInterrupt:
 finally:
     # Clean up
     server_socket.close()
+
