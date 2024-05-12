@@ -7,6 +7,7 @@ import {
   StyleSheet,
   View,
   SafeAreaView,
+  Text,
 } from 'react-native';
 
 import { GlobalStyles } from '../common/GlobalStyles';
@@ -64,7 +65,7 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Connected Device Details">
-          Details for services and characteristics of the connected device.
+          Press buttons below.
         </NiceTextArea>
       </View>
 
@@ -81,6 +82,15 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponWriteButtonPress()}
           title="Write to Characteristic" />
+      </View>
+
+      <View style={styles.mainStyle}>
+        <NiceTextArea title="Target Characteristic Info">
+          <Text>
+            todo
+
+          </Text>
+        </NiceTextArea>
       </View>
 
       <View style={styles.mainStyle}>

@@ -13,6 +13,7 @@ import {
 
 import {
   BluetoothContext,
+  BluetoothContextType,
   DeviceInfos,
   defaultBluetoothContext,
 } from './BluetoothContext';
@@ -353,8 +354,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  // this write function doesn't seem to be working. was getting a warning for
-  // uncaught promise failure somewhere. todo: need to test again.
+  // this write wasn't working earlier. todo: need to test again.
   const writeDataToCharacteristic = async (data: number): Promise<void> => {
     // for now, just accepting data as an int
 
@@ -383,11 +383,12 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
 
   // return the context provider
-  const value = {
+  const value: BluetoothContextType = {
+    // state info
+    // I think it's okay to expose these for now, since might use for navigation
     bluetoothPermissionsOK,
     deviceIsAppConnected,
     deviceInfos,
-
     targetDeviceID,
     targetServiceUUID,
     targetCharacteristicUUID,

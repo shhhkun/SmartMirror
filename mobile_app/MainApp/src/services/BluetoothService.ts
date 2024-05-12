@@ -1,6 +1,7 @@
 // wrapper class for react-native-ble-manager
 import {
   PermissionsAndroid,
+  PermissionStatus,
   Platform,
 } from 'react-native';
 import BleManager, {
@@ -74,19 +75,26 @@ class BluetoothService {
       };
 
       // trigger the popup asking for location permission
-      const permissionRequestResult = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        permissionPopupContent
-      );
+      const permissionRequestResult: PermissionStatus =
+        await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          permissionPopupContent
+        );
 
-      if (permissionRequestResult) {
+      // for some reason, conditioning on "granted" doesn't work, but this does
+      // work if I convert the PermissionStatus to a bool.
+      const permissionRequestResultBool: boolean = Boolean(permissionRequestResult);
+
+      if (permissionRequestResultBool) {
         console.log('Prompted Android user for location. User accepted.');
         return;
+
       } else {
         console.error('Prompted Android user for location. User denied.');
         // one day, might want to have a way to recover from denied permissions
         throw new Error("Android location permission denied");
       }
+
     } catch (error) {
       console.error('Error requesting Android location permission:', error);
       throw error;
