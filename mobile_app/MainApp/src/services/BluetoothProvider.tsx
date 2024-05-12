@@ -41,13 +41,18 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // helper functions
   const initializeDriver = async (): Promise<void> => {
-    BluetoothService.initializeBLEManager();
+    try {
+      await BluetoothService.initializeBLEManager();
+    }
+    catch (error) {
+      console.error('Error initializing BLE driver:', error);
+    }
   }
 
   const updateTargetsFromAppPeripheralInfo = (appConnectedPeripheralInfo:
     PeripheralInfo): void => {
     // this assumes we're only going to have one service.
-    // and just selecting the first charafceteristic for now.
+    // and for now, this just selects the first characteristic.
 
     const deviceID: string = appConnectedPeripheralInfo?.id ||
       defaultBluetoothContext.targetDeviceID;
@@ -91,8 +96,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     setDeviceIsAppConnected(false);
 
     setDeviceInfos({
-      systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
+      // maintain whatever was in system connected info
+      systemConnectedPeripheralInfo:
+        deviceInfos.systemConnectedPeripheralInfo,
 
+      // reset app connected info
       appConnectedPeripheralInfo:
         defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo,
     });
@@ -115,15 +123,22 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     const deviceID: string = deviceInfos.systemConnectedPeripheralInfo.id;
 
     // make sure system device is still connected
-    if (!(await BluetoothService.checkIfDeviceIsSystemConnected(deviceID))) {
-      console.error('No system device connected (connectAndGetAppConnectedDeviceInfo)');
+    try {
+      const isConnected: boolean =
+        await BluetoothService.checkIfDeviceIsSystemConnected(deviceID);
 
-      setSystemConnectedDeviceInfoToDefault();
+      if (!isConnected) {
+        console.error('Device disconnected (verifySystemDeviceConnected)');
+        setSystemConnectedDeviceInfoToDefault();
+        return false;
+      }
+      return true;
 
+    }
+    catch (error) {
+      console.error('Error checking if connected:', error);
       return false;
     }
-
-    return true;
   }
 
   const appConnectToDevice = async (deviceID: string): Promise<void> => {
@@ -146,6 +161,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       // short delay, to allow connection to settle
       await new Promise(resolve => setTimeout(resolve, 1000));
 
+      // actually get the services
       const peripheralRetrievedServicesInfo: PeripheralInfo =
         await BluetoothService.retrieveServices(deviceID);
 
@@ -158,11 +174,6 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
         appConnectedPeripheralInfo: peripheralRetrievedServicesInfo,
       });
 
-      // todo !!!!!!
-      // for some reason, this function is seeing null in
-      // appConnectedPeripheralInfo when it isn't null.
-      // might have been some async timing thing with states, so going to try
-      // this new function and set it directly.
       updateTargetsFromAppPeripheralInfo(peripheralRetrievedServicesInfo);
 
     }
@@ -173,94 +184,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-
-
-  // functions for the UI to interact with the bluetooth service
-  const promptUserForPermissions = async (): Promise<void> => {
-    if (bluetoothPermissionsOK) {
-      return;
-    }
-
-    try {
-      await BluetoothService.requestAllPermissions();
-      setBluetoothPermissionsOK(true);
-
-    } catch (error) {
-      setBluetoothPermissionsOK(false);
-    }
-  }
-
-  const getSystemConnectedDeviceInfo = async (): Promise<void> => {
-    // checks for devices connected to the phone, which may or may not actually
-    // have an app-specific connection. this function resets the app-specific
-    // info to defaults (for the case we've connected to a different device
-    // since that was written.
-
-    if (!bluetoothPermissionsOK) {
-      console.error('Bluetooth permissions not granted yet');
-      return;
-    }
-
-    let peripheralsArray: Peripheral[] = [];
-    try {
-      peripheralsArray = await BluetoothService.getSystemConnectedPeripherals();
-    } catch (error) {
-      console.error('Error checking for connected devices:', error);
-      throw error;
-    }
-
-    if (peripheralsArray.length == 0) {
-      console.log('No connected devices found');
-      setSystemConnectedDeviceInfoToDefault();
-      return;
-    }
-
-    // for now, just assume the first connected device is the one we care about
-    const systemConnectedDeviceInfo: DeviceInfos = {
-      systemConnectedPeripheralInfo: peripheralsArray[0],
-
-      appConnectedPeripheralInfo:
-        defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo,
-    };
-
-    console.log('System connected device info: ',
-      JSON.stringify(systemConnectedDeviceInfo, null, 2));
-
-    setDeviceInfos(systemConnectedDeviceInfo);
-    setTargetFieldsToDefault();
-  }
-
-  const connectAndGetAppConnectedDeviceInfo = async (): Promise<void> => {
-    // iniates the app-specific connection, retrieves services, and updates context
-    // with all the info needed to read/write to the device. need to have
-    // system connected device info before calling this, since uses the stored
-    // system device device ID.
-
-    if (! await verifySystemDeviceConnected()) {
-      console.error('System device not connected');
-      return;
-    }
-
-    const deviceID: string = deviceInfos.systemConnectedPeripheralInfo?.id ||
-      defaultBluetoothContext.targetDeviceID;
-
-    try {
-      await appConnectToDevice(deviceID);
-      await retrieveServicesFromConnectedDevice(deviceID);
-
-    } catch (error) {
-
-      console.error('Error connecting to device or retrieving services:', error);
-      setAppConnectedDeviceInfoToFailed();
-      throw error;
-    }
-
-  }
-
   const checkIfDeviceIsReadWritable = async (): Promise<boolean> => {
-    console.log('attempting to read from target ID: ', targetDeviceID);
-    console.log('service: ', targetServiceUUID);
-    console.log('characteristic: ', targetCharacteristicUUID);
+    // this function only returns a bool. doesn't throw errors.
 
     // make sure we have system device info saved
     if (deviceInfos.systemConnectedPeripheralInfo === null ||
@@ -311,6 +236,98 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     return true;
   }
 
+
+
+  // functions for the UI to interact with the bluetooth service
+  const promptUserForPermissions = async (): Promise<void> => {
+    if (bluetoothPermissionsOK) {
+      return;
+    }
+
+    try {
+      await BluetoothService.requestAllPermissions();
+      setBluetoothPermissionsOK(true);
+
+    } catch (error) {
+      setBluetoothPermissionsOK(false);
+    }
+  }
+
+  const getSystemConnectedDeviceInfo = async (): Promise<void> => {
+    // checks for devices connected to the phone, which may or may not actually
+    // have an app-specific connection. this function resets the app-specific
+    // info to defaults (for the case we've connected to a different device
+    // since that was written.
+
+    if (!bluetoothPermissionsOK) {
+      console.error('Bluetooth permissions not granted yet');
+      return;
+    }
+
+    let peripheralsArray: Peripheral[] = [];
+    try {
+      peripheralsArray = await BluetoothService.getSystemConnectedPeripherals();
+    } catch (error) {
+      console.error('Error checking for connected devices:', error);
+      throw error;
+    }
+
+    if (peripheralsArray.length == 0) {
+      console.log('No connected devices found');
+      setSystemConnectedDeviceInfoToDefault();
+      return;
+    }
+
+    const systemConnectedDeviceInfo: DeviceInfos = {
+      // for now, just assume we want the first connected device
+      systemConnectedPeripheralInfo:
+        peripheralsArray[0],
+
+      // reset app connected info, in the event it was for a different device
+      appConnectedPeripheralInfo:
+        defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo,
+    };
+
+    console.log('System connected device info: ',
+      JSON.stringify(systemConnectedDeviceInfo, null, 2));
+
+    setDeviceInfos(systemConnectedDeviceInfo);
+    setTargetFieldsToDefault();
+  }
+
+  const connectAndGetAppConnectedDeviceInfo = async (): Promise<void> => {
+    // iniates the app-specific connection, retrieves services, and updates context
+    // with all the info needed to read/write to the device. need to have
+    // system connected device info before calling this, since uses the stored
+    // system device device ID.
+
+    // make sure we're still system connected
+    try {
+      if (!await verifySystemDeviceConnected()) {
+        console.error('System device not connected');
+        return;
+      }
+    } catch (error) {
+      console.error('Error verifying system device connection:', error);
+      return;
+    }
+
+    const deviceID: string = deviceInfos.systemConnectedPeripheralInfo?.id ||
+      defaultBluetoothContext.targetDeviceID;
+
+    // actually connect and get services
+    try {
+      await appConnectToDevice(deviceID);
+      await retrieveServicesFromConnectedDevice(deviceID);
+
+    } catch (error) {
+      console.error('Error connecting to device or retrieving services:', error);
+      setAppConnectedDeviceInfoToFailed();
+      throw error;
+    }
+
+  }
+
   const readFromCharacteristic = async (): Promise<any> => {
     // return type tbd, I think it's some kind of int array
 
@@ -327,6 +344,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
       // no clue what this data actually is. an array of ints?
       console.log('Read data: ', returnedData);
+
       return returnedData;
     }
     catch (error) {
@@ -335,7 +353,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  // write function has a runtime error right now. crashes the app.
+  // this write function doesn't seem to be working. was getting a warning for
+  // uncaught promise failure somewhere. todo: need to test again.
   const writeDataToCharacteristic = async (data: number): Promise<void> => {
     // for now, just accepting data as an int
 
@@ -353,11 +372,15 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
+
+
   // constructor-like thing that runs when context is created
   useEffect(() => {
     initializeDriver();
     // eventually, could pull in data from saved state here.
   }, []);
+
+
 
   // return the context provider
   const value = {
@@ -369,6 +392,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     targetServiceUUID,
     targetCharacteristicUUID,
 
+    // functions I wish to expose to the UI
     promptUserForPermissions,
     getSystemConnectedDeviceInfo,
     connectAndGetAppConnectedDeviceInfo,

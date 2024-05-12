@@ -44,41 +44,53 @@ class BluetoothService {
   private static async requestBluetoothPermission(): Promise<void> {
     try {
       await BleManager.enableBluetooth();
-      // console.log("Bluetooth permission granted (BluetoothService.requestBluetoothPermission)");
 
     } catch (error) {
-      // console.error('Error requesting Bluetooth permission: ${error} (BluetoothService.requestBluetoothPermission)');
-      throw error;
+      throw new Error("Bluetooth permission denied");
     }
   }
 
   private static async requestAndroidLocationPermission(): Promise<void> {
-    if (await PermissionsAndroid.check(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
-      .then(result => result)) {
+    // if the permission is already granted, don't prompt the user
+    try {
+      const permissionsAlreadyEnabled = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
 
-      console.log("Android fine location permission is already granted (BluetoothService.requestAndroidLocationPermission)");
-      return;
+      if (permissionsAlreadyEnabled) {
+        console.log("Android fine location permission is already granted.");
+        return;
+      }
+    } catch (error) {
+      console.error('Error checking Android fine location permission:', error);
+      throw error;
     }
 
-    PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
+    try {
+      const permissionPopupContent = {
         title: 'Location Permission',
         message: 'This app needs access to your location to use Bluetooth.',
         buttonNegative: 'Cancel',
         buttonPositive: 'OK'
-      }
-    ).then(result => {
-      if (result) {
-        console.log('Prompted Android user for location. User accepted. (BluetoothService.requestAndroidLocationPermission)');
-        return;
+      };
 
+      // trigger the popup asking for location permission
+      const permissionRequestResult = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        permissionPopupContent
+      );
+
+      if (permissionRequestResult) {
+        console.log('Prompted Android user for location. User accepted.');
+        return;
       } else {
-        console.error('Prompted Android user for location. User denied. (BluetoothService.requestAndroidLocationPermission)');
+        console.error('Prompted Android user for location. User denied.');
+        // one day, might want to have a way to recover from denied permissions
         throw new Error("Android location permission denied");
       }
-    });
+    } catch (error) {
+      console.error('Error requesting Android location permission:', error);
+      throw error;
+    }
   }
 
   static async getSystemConnectedPeripherals(): Promise<Peripheral[]> {
@@ -139,24 +151,10 @@ class BluetoothService {
     }
   }
 
-  private static async deviceIsStillConnected(deviceID: string): Promise<boolean> {
-    try {
-      const isConnected: boolean =
-        await BleManager.isPeripheralConnected(deviceID);
-
-      return isConnected;
-
-    } catch (error) {
-      console.error('Error checking if connected:', error);
-
-      return false;
-    }
-  }
-
   static async read(deviceID: string, serviceUUID: string,
     characteristicUUID: string): Promise<any> {
 
-    if (!await BluetoothService.deviceIsStillConnected(deviceID)) {
+    if (!await BluetoothService.checkIfDeviceIsSystemConnected(deviceID)) {
       console.error('Tried to read from disconnected device');
       return null;
     }
@@ -177,17 +175,25 @@ class BluetoothService {
   static async writeInt(deviceID: string, serviceUUID: string,
     characteristicUUID: string, intInput: number): Promise<void> {
 
-    if (!await BluetoothService.deviceIsStillConnected(deviceID)) {
-      console.error('Tried to write to disconnected device');
-      return;
+    try {
+      if (!await BluetoothService.checkIfDeviceIsSystemConnected(deviceID)) {
+        console.error('Tried to write to disconnected device');
+        return;
+      }
+    } catch (error) {
+      console.error('Error checking if device is connected:', error);
+      throw error;
     }
 
-    // const serializedData: number[] = serializeInt(intInput);
     // todo: use the real data that I'll pass in, not this dummy data.
+    // const serializedData: number[] = serializeInt(intInput);
     const serializedData: number[] = [1, 2, 3, 255]
 
     try {
-      BleManager.write(deviceID, serviceUUID, characteristicUUID, serializedData);
+      await BleManager.write(deviceID, serviceUUID, characteristicUUID,
+        serializedData);
+
+      console.log('Write to characteristic succeeded');
     }
     catch (error) {
       console.error('Error writing to characteristic in writeInt:', error);
