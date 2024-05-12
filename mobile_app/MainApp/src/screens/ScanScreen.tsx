@@ -48,12 +48,12 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponSystemConnectedDevicesButton()}
-          title="Show System Connected Devices" />
+          title="Show First System Connected Device" />
       </View>
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => navigation.navigate("DeviceDetail")}
-          title="Go to Device Details Page" />
+          title="Go to Device Detail Page" />
       </View>
 
 

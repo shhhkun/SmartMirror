@@ -197,6 +197,7 @@ class BluetoothService {
 
   // not implemented yet. un-private this when written.
   private static async disconnect(deviceID: string): Promise<void> {
+    console.error('this function is not implemented yet')
     return BleManager.disconnect(deviceID);
   }
 }

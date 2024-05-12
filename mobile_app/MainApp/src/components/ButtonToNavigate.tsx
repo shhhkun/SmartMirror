@@ -21,6 +21,7 @@ const ButtonToNavigate: React.FC<ButtonToNavigate> = ({ onPress, title }) => {
 const styles = StyleSheet.create({
   buttonContainer: {
     backgroundColor: GlobalStyles.lightBackground,
+    width: 250,
   },
   button: {
     paddingVertical: 12,
