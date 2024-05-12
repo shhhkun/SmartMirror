@@ -1,50 +1,46 @@
-import bluetooth
+import socket
+import subprocess
 
-# Define the UUID for the custom BLE service
 SERVICE_UUID = "00001101-0000-1000-8000-00805F9B34FB"
+PORT = 1  # RFCOMM port number
 
-# Callback function to handle incoming connections
 def handle_client(client_socket, client_info):
     print(f"Accepted connection from {client_info}")
 
-    while True:
-        # Receive data from the central device
-        data = client_socket.recv(1024)
-        if not data:
-            break
-
-        # Echo back the received data
-        print("Received:", data)
-        client_socket.send(data)
-
-    print("Connection closed")
-    client_socket.close()
-
-# Set up Bluetooth socket
-server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-
-# Bind socket to any available port
-server_socket.bind(("", bluetooth.PORT_ANY))
-
-# Start listening for incoming connections
-server_socket.listen(1)
-
-# Advertise the custom service
-bluetooth.advertise_service(
-    server_socket,
-    "MyBLEService",
-    service_id=SERVICE_UUID,
-)
-
-print("Waiting for connection...")
+    try:
+        while True:
+            data = client_socket.recv(1024)
+            if not data:
+                break
+            print("Received:", data)
+            client_socket.send(data)
+    except Exception as e:
+        print("Error:", e)
+    finally:
+        print("Connection closed")
+        client_socket.close()
 
 try:
-    # Accept incoming connections
+    print("Initializing Bluetooth socket...")
+    server_socket = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
+    print("Bluetooth socket initialized.")
+    
+    print("Binding socket...")
+    server_socket.bind(("", PORT))
+    print(f"Socket bound to port {PORT}.")
+
+    print("Listening for connections...")
+    server_socket.listen(1)
+
+    print("Advertising service...")
+    subprocess.run(["sdptool", "add", "SP"])
+    print("Service advertised.")
+
+    print("Waiting for connection...")
     client_socket, client_info = server_socket.accept()
     handle_client(client_socket, client_info)
 except KeyboardInterrupt:
-    pass
+    print("Keyboard interrupt")
 finally:
-    # Clean up
-    server_socket.close()
-
+    if 'server_socket' in locals():
+        server_socket.close()
