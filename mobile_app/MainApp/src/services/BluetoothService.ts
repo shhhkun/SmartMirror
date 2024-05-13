@@ -204,6 +204,7 @@ class BluetoothService {
       console.log('Write to characteristic succeeded');
     }
     catch (error) {
+      // todo: this is the error I'm getting: Error writing
       console.error('Error writing to characteristic in writeInt:', error);
       throw error;
     }

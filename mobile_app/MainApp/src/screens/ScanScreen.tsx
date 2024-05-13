@@ -33,6 +33,10 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  const doUponSystemConnectToBondedDeviceButton = async (): Promise<void> => {
+    // todo
+  };
+
 
   // UI stuff here
   return (
@@ -47,8 +51,13 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponSystemConnectToBondedDeviceButton()}
+          title="Connect to Bonded Device" />
+      </View>
+
+      <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponSystemConnectedDevicesButton()}
-          title="Show First System Connected Device" />
+          title="Get Info About System Connected Device" />
       </View>
 
       <View style={styles.buttonContainer}>

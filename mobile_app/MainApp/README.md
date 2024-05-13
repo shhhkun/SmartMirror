@@ -23,16 +23,17 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 
-- get write action to work. seems to not be completing successfully right now.
-- figure out how to encode/decode data being sent and read
-- make connecting action nicer. feels kinda jank still, and want to be able to not use nrf connect.
-- general UI cleanup and refactor
+- get write action to work. seems to not be completing successfully right now. but I'm not certain that is my on my end, rather than on the end of nrf connect, since that app is super jank. might want to just go striaght to the pi, if that's up and running.
+- figure out how to encode/decode data being sent and read.
+- make connecting action nicer. have the ability to go from bonded to connected. feels kinda jank still, and want to be able to not use nrf connect.
+- general UI cleanup and refactor.
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 
 - decide on exact data format we'll be sending. probably per-module info.
 - implement data sending protocol, probably across multiple characteristics.
-- implement UI to send data to the device via a form submission
+- implement UI to send data to the device via a form submission.
+- implement a nice UI page where you can drag and resize rectangles.
 - smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
 - persist info about devices and/or user states. store stuff to "disk".
 
@@ -82,3 +83,4 @@ Future enhancements not implemented in protoype, but for the final sellable prod
 - Have the user be able to drag and drop rectangles on the screen, instead of just sending coordinates as text.
 - This only works if there is one BLE device connected. Things will probably break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned. In the future, we could have it only detect connected devices that match a certain ID signature for our smart mirrors.
 - A way for the user to authenticate for their apps. Like have this app make a call to a web server of ours, that server goes and gets a token for some site, gives us the token, and we pass that token along with BLE to the Raspi.
+- iOS compatability. Haven't tested any of this on iOS. Theoretically, most of it should work. Except for the getBondedPeripherals() method in the library. But I doubt the flow of bonded > system connected > connected that kind of happens in this app right now would be the same on iOS.
