@@ -260,7 +260,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       const bondedDevices: Peripheral[] =
         await BluetoothService.getBondedPeripherals();
 
-      console.log('Bonded devices: ', bondedDevices);
+      console.log('Bonded devices: ', JSON.stringify(bondedDevices, null, 2));
 
     }
     catch (error) {

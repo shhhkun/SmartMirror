@@ -101,8 +101,9 @@ class BluetoothService {
     }
   }
 
-  // untested rn
   static async getBondedPeripherals(): Promise<Peripheral[]> {
+    // returns a list of bonded peripherals. basically the list in settings of
+    // devices that have been paired with the phone.
     try {
       const bondedPeripheralsArray: Peripheral[] =
         await BleManager.getBondedPeripherals();
