@@ -17,7 +17,10 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
-  const { deviceInfos, getSystemConnectedDeviceInfo } = useContext(BluetoothContext);
+  const { deviceInfos,
+    getBondedDevices,
+    getSystemConnectedDeviceInfo
+  } = useContext(BluetoothContext);
   const [lastDeviceCheckTime, setLastDeviceCheckTime] = useState('never');
 
 
@@ -33,8 +36,12 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
-  const doUponSystemConnectToBondedDeviceButton = async (): Promise<void> => {
-    // todo
+  const doUponBondedDeviceButton = async (): Promise<void> => {
+    try {
+      await getBondedDevices();
+    } catch (error) {
+      console.error('Error checking for bonded devices in UI:', error);
+    }
   };
 
 
@@ -51,8 +58,8 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponSystemConnectToBondedDeviceButton()}
-          title="Connect to Bonded Device" />
+        <ButtonToNavigate onPress={() => doUponBondedDeviceButton()}
+          title="Get Bonded Devices" />
       </View>
 
       <View style={styles.buttonContainer}>
@@ -64,7 +71,6 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
         <ButtonToNavigate onPress={() => navigation.navigate("DeviceDetail")}
           title="Go to Device Detail Page" />
       </View>
-
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Peripheral Basic Info">

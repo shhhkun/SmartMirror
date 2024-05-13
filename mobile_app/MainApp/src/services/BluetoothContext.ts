@@ -51,6 +51,7 @@ export interface BluetoothContextType {
   targetCharacteristicUUID: string;
 
   promptUserForPermissions: () => Promise<void>;
+  getBondedDevices: () => Promise<void>;
   getSystemConnectedDeviceInfo: () => Promise<void>;
   connectAndGetAppConnectedDeviceInfo: () => Promise<void>;
   readFromCharacteristic: () => Promise<any>;
@@ -74,11 +75,14 @@ export const defaultBluetoothContext: BluetoothContextType = {
   promptUserForPermissions: async () => {
     throw new Error('askForBluetoothPermissions function is not initialized yet');
   },
+  getBondedDevices: async () => {
+    throw new Error('getBondedDevices function is not initialized yet');
+  },
   getSystemConnectedDeviceInfo: async () => {
     throw new Error('getSystemConnectedDeviceInfo function is not initialized yet');
   },
   connectAndGetAppConnectedDeviceInfo: async () => {
-    throw new Error('getServicesFromConnectedDevice function is not initialized yet');
+    throw new Error('connectAndGetAppConnectedDeviceInfo function is not initialized yet');
   },
   readFromCharacteristic: async () => {
     throw new Error('readFromCharacteristic function is not initialized yet');

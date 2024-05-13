@@ -101,6 +101,22 @@ class BluetoothService {
     }
   }
 
+  // untested rn
+  static async getBondedPeripherals(): Promise<Peripheral[]> {
+    try {
+      const bondedPeripheralsArray: Peripheral[] =
+        await BleManager.getBondedPeripherals();
+
+      console.log("Bonded peripherals count: " + bondedPeripheralsArray.length)
+
+      return bondedPeripheralsArray;
+    }
+    catch (error) {
+      console.error('Error getting bonded peripherals in BLE service:', error);
+      throw error;
+    }
+  }
+
   static async getSystemConnectedPeripherals(): Promise<Peripheral[]> {
     // in the future, could implement something here that only counts a device
     // as connected if its ID matches the format of out smart mirror.

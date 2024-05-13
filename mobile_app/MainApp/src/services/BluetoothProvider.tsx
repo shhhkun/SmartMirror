@@ -254,6 +254,20 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
+  const getBondedDevices = async (): Promise<void> => {
+    // todo
+    try {
+      const bondedDevices: Peripheral[] =
+        await BluetoothService.getBondedPeripherals();
+
+      console.log('Bonded devices: ', bondedDevices);
+
+    }
+    catch (error) {
+      console.error('Error getting bonded devices from context provider:', error);
+    }
+  }
+
   const getSystemConnectedDeviceInfo = async (): Promise<void> => {
     // checks for devices connected to the phone, which may or may not actually
     // have an app-specific connection. this function resets the app-specific
@@ -395,6 +409,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     // functions I wish to expose to the UI
     promptUserForPermissions,
+    getBondedDevices,
     getSystemConnectedDeviceInfo,
     connectAndGetAppConnectedDeviceInfo,
     readFromCharacteristic,
