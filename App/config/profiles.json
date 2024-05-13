@@ -1,0 +1,25 @@
+{
+    "default": {
+      "modules": [
+        "clock",
+        "calendar",
+        "weather"
+      ],
+      "enterMessage": "Welcome to the default profile!"
+    },
+    "profile1": {
+      "modules": [
+        "newsfeed",
+        "compliments"
+      ],
+      "enterMessage": "You are now viewing profile 1"
+    },
+    "profile2": {
+      "modules": [
+        "clock",
+        "weather",
+        "newsfeed"
+      ],
+      "enterMessage": "This is profile 2"
+    }
+  } 

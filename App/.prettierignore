@@ -1,0 +1,8 @@
+*.js
+.eslintignore
+.husky/pre-commit
+.prettierignore
+/config
+/coverage
+package-lock.json
+**.ics
