@@ -10,15 +10,11 @@ let config = process.env.config ? JSON.parse(process.env.config) : {};
 
 const app = electron.app;
 
-if (process.env.ELECTRON_ENABLE_GPU !== "1") {
-  app.disableHardwareAcceleration();
-}
-
 const BrowserWindow = electron.BrowserWindow;
 
 let mainWindow;
 
-function createWindow () {
+function createWindow() {
   let electronSize = (800, 600);
   try {
     electronSize = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -154,34 +150,58 @@ if (process.env.clientonly) {
   });
 }
 
+let userId = "default"; // Initial userId value
+
+function loadConfiguration() {
+  try {
+    const configDir = path.join(__dirname, "..", "config");
+    const defaultConfigPath = path.join(configDir, "config.js");
+    const userConfigPath = path.join(configDir, `${userId}.js`);
+
+    console.log("Default config path:", defaultConfigPath);
+    console.log("User config path:", userConfigPath);
+
+    if (fs.existsSync(userConfigPath)) {
+      console.log(`Copying user-specific configuration file (${userConfigPath}) to ${defaultConfigPath}`);
+      fs.copyFileSync(userConfigPath, defaultConfigPath);
+    } else {
+      console.warn(`Configuration file not found for user ${userId}. Using default configuration.`);
+    }
+
+    delete require.cache[require.resolve(defaultConfigPath)]; // Clear the module cache
+    config = require(defaultConfigPath); // Load the updated configuration
+  } catch (error) {
+    console.error(`Error loading configuration:`, error);
+  }
+}
+
+function watchElectronJSFile() {
+  const electronJSPath = __filename;
+
+  fs.watch(electronJSPath, (eventType, filename) => {
+    if (filename === path.basename(electronJSPath)) {
+      delete require.cache[require.resolve(electronJSPath)]; // Clear the module cache
+      const updatedElectronJS = require(electronJSPath); // Load the updated electron.js file
+      const newUserId = updatedElectronJS.userId;
+
+      if (newUserId !== userId) {
+        userId = newUserId;
+        loadConfiguration();
+        app.relaunch();
+        app.quit();
+      }
+    }
+  });
+}
+
 if (["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].includes(config.address)) {
   core.start().then((c) => {
     config = c;
     app.whenReady().then(async () => {
       Log.log("Launching application.");
-    
-      const userId = "default"; // 
-    
-      try {
-        const configDir = path.join(__dirname, "..", "config");
-        const defaultConfigPath = path.join(configDir, "config.js");
-        const userConfigPath = path.join(configDir, `${userId}.js`);
-    
-        console.log("Default config path:", defaultConfigPath);
-        console.log("User config path:", userConfigPath);
-    
-        if (fs.existsSync(userConfigPath)) {
-          console.log(`Copying user-specific configuration file (${userConfigPath}) to ${defaultConfigPath}`);
-          fs.copyFileSync(userConfigPath, defaultConfigPath);
-        } else {
-          console.warn(`Configuration file not found for user ${userId}. Using default configuration.`);
-        }
-    
-        const config = await import(defaultConfigPath);
-        createWindow();
-      } catch (error) {
-        console.error(`Error loading configuration:`, error);
-      }
+      loadConfiguration(); // Initial configuration load
+      createWindow();
+      watchElectronJSFile(); // Start watching the electron.js file for changes
     });
   });
 }

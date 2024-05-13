@@ -4,7 +4,7 @@
 	"description": "The open source modular smart mirror platform.",
 	"main": "js/electron.js",
 	"scripts": {
-		"start": "DISPLAY=\"${DISPLAY:=:0}\" ./node_modules/.bin/electron js/electron.js",
+		"start": "DISPLAY=\"${DISPLAY:=:0}\" ./node_modules/.bin/electron --disable-gpu js/electron.js",
 		"start:dev": "DISPLAY=\"${DISPLAY:=:0}\" ./node_modules/.bin/electron js/electron.js dev",
 		"server": "node ./serveronly",
 		"install-mm": "npm install --no-audit --no-fund --no-update-notifier --only=prod --omit=dev",
