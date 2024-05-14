@@ -97,6 +97,10 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     setDeviceIsAppConnected(false);
 
     setDeviceInfos({
+      // maintain bonded device info
+      bondedDeviceInfo:
+        deviceInfos.bondedDeviceInfo,
+
       // maintain whatever was in system connected info
       systemConnectedPeripheralInfo:
         deviceInfos.systemConnectedPeripheralInfo,
@@ -171,8 +175,17 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
       // update fields in context
       setDeviceInfos({
-        systemConnectedPeripheralInfo: deviceInfos.systemConnectedPeripheralInfo,
-        appConnectedPeripheralInfo: peripheralRetrievedServicesInfo,
+        // maintain bonded device info
+        bondedDeviceInfo:
+          deviceInfos.bondedDeviceInfo,
+
+        // maintaitn system connected info
+        systemConnectedPeripheralInfo:
+          deviceInfos.systemConnectedPeripheralInfo,
+
+        // update app connected info
+        appConnectedPeripheralInfo:
+          peripheralRetrievedServicesInfo,
       });
 
       updateTargetsFromAppPeripheralInfo(peripheralRetrievedServicesInfo);
@@ -254,13 +267,32 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
+  // this function is jank and doesn't do what it says!
+  // now it discovers a peripohgeral and connects to it.
   const getBondedDevices = async (): Promise<void> => {
-    // todo
     try {
       const bondedDevices: Peripheral[] =
         await BluetoothService.getBondedPeripherals();
 
       console.log('Bonded devices: ', JSON.stringify(bondedDevices, null, 2));
+
+      console.log('setting system connected device info to first bonded device');
+      setDeviceInfos({
+        bondedDeviceInfo:
+          bondedDevices[0],
+        systemConnectedPeripheralInfo:
+          bondedDevices[0],
+        appConnectedPeripheralInfo:
+          defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo,
+      });
+
+      try {
+        console.log('app connecting to first bonded device');
+        await appConnectToDevice(bondedDevices[0].id);
+      }
+      catch (error) {
+        console.error('Error app connecting to bonded device:', error);
+      }
 
     }
     catch (error) {
@@ -270,7 +302,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const getSystemConnectedDeviceInfo = async (): Promise<void> => {
     // checks for devices connected to the phone, which may or may not actually
-    // have an app-specific connection. this function resets the app-specific
+    // have an app-specific connection. then sets the system connected device info.
+    // this function resets the app-specific
     // info to defaults (for the case we've connected to a different device
     // since that was written.
 
@@ -294,6 +327,10 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     const systemConnectedDeviceInfo: DeviceInfos = {
+      // leave bonded device info as it was
+      bondedDeviceInfo:
+        deviceInfos.bondedDeviceInfo,
+
       // for now, just assume we want the first connected device
       systemConnectedPeripheralInfo:
         peripheralsArray[0],
@@ -308,6 +345,23 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setDeviceInfos(systemConnectedDeviceInfo);
     setTargetFieldsToDefault();
+  }
+
+  const hardConnectToDevice = async (deviceID: string): Promise<void> => {
+    // this function is temp for now! just want the ability to go from
+    // bonded device to app connected device.
+    try {
+      await appConnectToDevice(deviceID);
+
+      // update system device info
+
+      // update app-connected info
+      await retrieveServicesFromConnectedDevice(deviceID);
+    }
+    catch (error) {
+      console.error('Error hard connecting to device:', error);
+      throw error;
+    }
   }
 
   const connectAndGetAppConnectedDeviceInfo = async (): Promise<void> => {

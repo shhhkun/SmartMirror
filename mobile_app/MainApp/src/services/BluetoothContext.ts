@@ -8,6 +8,15 @@ import {
 
 
 export interface DeviceInfos {
+  // this will hold the info about a potentially bonded device.
+  bondedDeviceInfo: Peripheral | null;
+  // Peripheral has the form: Peripheral {
+  //   id: string;
+  //   rssi: number;
+  //   name?: string;
+  //   advertising: AdvertisingData;
+  // }
+
   // this info is available with just a system connection to a device.
   systemConnectedPeripheralInfo: Peripheral | null;
   // Peripheral has the form: Peripheral {
@@ -59,6 +68,7 @@ export interface BluetoothContextType {
 }
 
 const defaultDeviceInfo: DeviceInfos = {
+  bondedDeviceInfo: null,
   systemConnectedPeripheralInfo: null,
   appConnectedPeripheralInfo: null,
 };
