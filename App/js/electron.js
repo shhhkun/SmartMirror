@@ -7,14 +7,20 @@ const fs = require("fs");
 const path = require("path");
 
 let config = process.env.config ? JSON.parse(process.env.config) : {};
+const userConfig = {
+  config: {}
+};
+
+const userIdModule = require('./userId');
+let userId = userIdModule.userId;
 
 const app = electron.app;
-
 const BrowserWindow = electron.BrowserWindow;
 
 let mainWindow;
 
 function createWindow() {
+  console.log("Creating file");
   let electronSize = (800, 600);
   try {
     electronSize = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -150,8 +156,6 @@ if (process.env.clientonly) {
   });
 }
 
-let userId = "default"; // Initial userId value
-
 function loadConfiguration() {
   try {
     const configDir = path.join(__dirname, "..", "config");
@@ -168,8 +172,14 @@ function loadConfiguration() {
       console.warn(`Configuration file not found for user ${userId}. Using default configuration.`);
     }
 
-    delete require.cache[require.resolve(defaultConfigPath)]; // Clear the module cache
-    config = require(defaultConfigPath); // Load the updated configuration
+    delete require.cache[require.resolve(defaultConfigPath)];
+
+    if (fs.existsSync(defaultConfigPath)) {
+      userConfig.config = require(defaultConfigPath);
+    } else {
+      console.warn(`Default configuration file (${defaultConfigPath}) not found. Using an empty configuration.`);
+      userConfig.config = {};
+    }
   } catch (error) {
     console.error(`Error loading configuration:`, error);
   }
@@ -177,19 +187,35 @@ function loadConfiguration() {
 
 function watchElectronJSFile() {
   const electronJSPath = __filename;
+  const userIdPath = path.join(__dirname, 'userId.js');
 
-  fs.watch(electronJSPath, (eventType, filename) => {
-    if (filename === path.basename(electronJSPath)) {
-      delete require.cache[require.resolve(electronJSPath)]; // Clear the module cache
-      const updatedElectronJS = require(electronJSPath); // Load the updated electron.js file
-      const newUserId = updatedElectronJS.userId;
+  const watchUserIdFile = fs.watch(userIdPath, (eventType, filename) => {
+    if (filename === path.basename(userIdPath)) {
+      console.log("userId file changed");
+      delete require.cache[require.resolve(userIdPath)];
+      const updatedUserIdModule = require(userIdPath);
+      const newUserId = updatedUserIdModule.userId;
+
+      console.log("Previous userId:", userId);
+      console.log("New userId:", newUserId);
 
       if (newUserId !== userId) {
         userId = newUserId;
+        userConfig.userId = userId;
+
         loadConfiguration();
-        app.relaunch();
-        app.quit();
+
+        mainWindow.webContents.reload();
+        mainWindow.webContents.send("reload-config");
       }
+    }
+  });
+
+  const watchElectronJSFile = fs.watch(electronJSPath, (eventType, filename) => {
+    if (filename === path.basename(electronJSPath)) {
+      console.log("electron.js file changed");
+      watchUserIdFile.close();
+      watchElectronJSFile();
     }
   });
 }
@@ -197,11 +223,13 @@ function watchElectronJSFile() {
 if (["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].includes(config.address)) {
   core.start().then((c) => {
     config = c;
+    console.log("RESET");
     app.whenReady().then(async () => {
+      console.log("APPLICATION LAUNCHED");
       Log.log("Launching application.");
-      loadConfiguration(); // Initial configuration load
+      loadConfiguration();
       createWindow();
-      watchElectronJSFile(); // Start watching the electron.js file for changes
+      watchElectronJSFile();
     });
   });
 }
