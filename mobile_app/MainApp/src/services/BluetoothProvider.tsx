@@ -152,7 +152,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       setDeviceIsAppConnected(true);
     }
     catch (error) {
-      console.error('Error connecting to device:', error);
+      console.error('Error connecting to device in appConnectToDevice:', error);
       setAppConnectedDeviceInfoToFailed();
       throw error;
     }
@@ -301,6 +301,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
+  // this isn't working currently.
   const connectToBondedDevice = async (): Promise<void> => {
     if (deviceInfos.bondedDeviceInfo == null) {
       console.error('No bonded device to connect to');
