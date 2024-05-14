@@ -356,7 +356,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // info to defaults (for the case we've connected to a different device
     // since that was written.
 
-    if (deviceStates.bluetoothPermissionsOK) {
+    if (!deviceStates.bluetoothPermissionsOK) {
       console.error('Bluetooth permissions not granted yet');
       return;
     }

@@ -40,6 +40,10 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => promptUserForPermissions()} title="permissions" />
+      </View>
+
+      <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponNavigateButtonPress()} title="Go To Devices Page" />
       </View>
 
