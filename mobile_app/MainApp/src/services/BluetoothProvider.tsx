@@ -463,6 +463,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // state info
     // I think it's okay to expose these for now, since might use for navigation
     bluetoothPermissionsOK,
+
     deviceIsAppConnected,
     deviceInfos,
     targetDeviceID,

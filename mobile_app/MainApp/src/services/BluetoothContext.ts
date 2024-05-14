@@ -7,6 +7,16 @@ import {
 } from 'react-native-ble-manager';
 
 
+
+export interface DeviceStates {
+  // might want some of these to listen to ble manager events
+
+  bluetoothPermissionsOK: boolean;
+  deviceIsBonded: boolean;
+  deviceIsSystemConnected: boolean;
+  deviceIsAppConnected: boolean;
+}
+
 export interface DeviceInfos {
   // this will holds the info of a smart mirror device that is bonded
   bondedDeviceInfo: Peripheral | null;
@@ -43,21 +53,19 @@ export interface DeviceInfos {
 
 }
 
-export interface BluetoothContextType {
-  // not sure if I want to add a field for if (compatible) device
-  // is system connected. like if there is a unique device ID for
-  // our smart mirrors, and a device with that is connected.
-
-  // also might want a way to hold onto multiple characteristics. or
-  // have some more state there, if I'm writing to multiple.
-
-  bluetoothPermissionsOK: boolean;
-  deviceIsAppConnected: boolean;
-  deviceInfos: DeviceInfos;
-
+export interface TargetInfos {
   targetDeviceID: string;
   targetServiceUUID: string;
   targetCharacteristicUUID: string;
+}
+
+
+
+export interface BluetoothContextType {
+
+  deviceStates: DeviceStates;
+  deviceInfos: DeviceInfos;
+  targetInfos: TargetInfos;
 
   promptUserForPermissions: () => Promise<void>;
   getBondedDevice: () => Promise<void>;
@@ -68,6 +76,21 @@ export interface BluetoothContextType {
   writeDataToCharacteristic: (data: any) => Promise<void>;
 }
 
+
+
+const defaultDeviceStates: DeviceStates = {
+  bluetoothPermissionsOK: false,
+  deviceIsBonded: false,
+  deviceIsSystemConnected: false,
+  deviceIsAppConnected: false,
+};
+
+const defaultTargetInfos: TargetInfos = {
+  targetDeviceID: '',
+  targetServiceUUID: '',
+  targetCharacteristicUUID: '',
+};
+
 const defaultDeviceInfo: DeviceInfos = {
   bondedDeviceInfo: null,
   systemConnectedPeripheralInfo: null,
@@ -75,13 +98,9 @@ const defaultDeviceInfo: DeviceInfos = {
 };
 
 export const defaultBluetoothContext: BluetoothContextType = {
-  bluetoothPermissionsOK: false,
-  deviceIsAppConnected: false,
+  deviceStates: defaultDeviceStates,
   deviceInfos: defaultDeviceInfo,
-
-  targetDeviceID: '',
-  targetServiceUUID: '',
-  targetCharacteristicUUID: '',
+  targetInfos: defaultTargetInfos,
 
   promptUserForPermissions: async () => {
     throw new Error('askForBluetoothPermissions function is not initialized yet');
@@ -103,8 +122,10 @@ export const defaultBluetoothContext: BluetoothContextType = {
   },
   writeDataToCharacteristic: async () => {
     throw new Error('writeDataToCharacteristic function is not initialized yet');
-  }
+  },
 };
+
+
 
 export const BluetoothContext = createContext<BluetoothContextType>(
   defaultBluetoothContext);
