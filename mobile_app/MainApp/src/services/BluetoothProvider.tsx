@@ -14,7 +14,9 @@ import {
 import {
   BluetoothContext,
   BluetoothContextType,
+  DeviceStates,
   DeviceInfos,
+  TargetInfos,
   defaultBluetoothContext,
 } from './BluetoothContext';
 import { selectOurDeviceFromBondedDevices } from './BluetoothUtils';
@@ -23,21 +25,12 @@ import BluetoothService from './BluetoothService';
 
 
 const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
-  // ble state info
-  const [bluetoothPermissionsOK, setBluetoothPermissionsOK] =
-    useState<boolean>(defaultBluetoothContext.bluetoothPermissionsOK);
-  const [deviceIsAppConnected, setDeviceIsAppConnected] =
-    useState<boolean>(defaultBluetoothContext.deviceIsAppConnected);
+  const [deviceStates, setDeviceStates] =
+    useState<DeviceStates>(defaultBluetoothContext.deviceStates);
   const [deviceInfos, setDeviceInfos] =
     useState<DeviceInfos>(defaultBluetoothContext.deviceInfos);
-
-  // states to hold on to device info of interest
-  const [targetDeviceID, setTargetDeviceID] =
-    useState<string>(defaultBluetoothContext.targetDeviceID);
-  const [targetServiceUUID, setTargetServiceUUID] =
-    useState<string>(defaultBluetoothContext.targetServiceUUID);
-  const [targetCharacteristicUUID, setTargetCharacteristicUUID] =
-    useState<string>(defaultBluetoothContext.targetCharacteristicUUID);
+  const [targetInfos, setTargetInfos] =
+    useState<TargetInfos>(defaultBluetoothContext.targetInfos);
 
 
 
@@ -57,46 +50,56 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // and for now, this just selects the first characteristic.
 
     const deviceID: string = appConnectedPeripheralInfo?.id ||
-      defaultBluetoothContext.targetDeviceID;
-    setTargetDeviceID(deviceID);
+      defaultBluetoothContext.targetInfos.targetDeviceID;
 
 
     const servicesArray: Service[] = appConnectedPeripheralInfo?.services ?? [];
     const specificService: Service = servicesArray[0] ?? {};
-
     const serviceUUID: string = specificService?.uuid ??
-      defaultBluetoothContext.targetServiceUUID;
-
-    setTargetServiceUUID(serviceUUID);
+      defaultBluetoothContext.targetInfos.targetServiceUUID;
 
 
     const characteristicsArray: Characteristic[] =
       appConnectedPeripheralInfo?.characteristics ?? [];
     const specificCharacteristic: Characteristic = characteristicsArray[0] ?? {};
-
     const characteristicUUID: string = specificCharacteristic?.characteristic ??
-      defaultBluetoothContext.targetCharacteristicUUID;
+      defaultBluetoothContext.targetInfos.targetCharacteristicUUID;
 
-    setTargetCharacteristicUUID(characteristicUUID);
-  };
+    setTargetInfos({
+      targetDeviceID: deviceID,
+      targetServiceUUID: serviceUUID,
+      targetCharacteristicUUID: characteristicUUID,
+    });
+  }
 
   const setTargetFieldsToDefault = (): void => {
-    setTargetDeviceID(defaultBluetoothContext.targetDeviceID);
-    setTargetServiceUUID(defaultBluetoothContext.targetServiceUUID);
-    setTargetCharacteristicUUID(defaultBluetoothContext.targetCharacteristicUUID);
+    setTargetInfos(defaultBluetoothContext.targetInfos);
   }
 
   const setSystemConnectedDeviceInfoToDefault = (): void => {
     setDeviceInfos(defaultBluetoothContext.deviceInfos);
 
-    setDeviceIsAppConnected(false);
+    // set app connected state to false
+    setDeviceStates({
+      bluetoothPermissionsOK: deviceStates.bluetoothPermissionsOK,
+      deviceIsBonded: deviceStates.deviceIsBonded,
+      deviceIsSystemConnected: false,
+      deviceIsAppConnected: deviceStates.deviceIsAppConnected,
+    });
 
     setTargetFieldsToDefault();
   }
 
   const setAppConnectedDeviceInfoToFailed = (): void => {
-    setDeviceIsAppConnected(false);
+    // set app connected state to false
+    setDeviceStates({
+      bluetoothPermissionsOK: deviceStates.bluetoothPermissionsOK,
+      deviceIsBonded: deviceStates.deviceIsBonded,
+      deviceIsSystemConnected: deviceStates.deviceIsSystemConnected,
+      deviceIsAppConnected: false,
+    });
 
+    // reset app connected info
     setDeviceInfos({
       // maintain bonded device info
       bondedDeviceInfo:
@@ -150,7 +153,15 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   const appConnectToDevice = async (deviceID: string): Promise<void> => {
     try {
       await BluetoothService.appConnectToDevice(deviceID);
-      setDeviceIsAppConnected(true);
+
+      // set device app connected state to true
+      setDeviceStates({
+        bluetoothPermissionsOK: deviceStates.bluetoothPermissionsOK,
+        deviceIsBonded: deviceStates.deviceIsBonded,
+        deviceIsSystemConnected: deviceStates.deviceIsSystemConnected,
+        deviceIsAppConnected: true,
+      });
+
     }
     catch (error) {
       console.error('Error connecting to device in appConnectToDevice:', error);
@@ -237,12 +248,12 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     // make sure the target fields are set
-    if (targetDeviceID === '' ||
-      targetDeviceID === defaultBluetoothContext.targetDeviceID ||
-      targetServiceUUID === '' ||
-      targetServiceUUID === defaultBluetoothContext.targetServiceUUID ||
-      targetCharacteristicUUID === '' ||
-      targetCharacteristicUUID === defaultBluetoothContext.targetCharacteristicUUID) {
+    if (targetInfos.targetDeviceID ===
+      defaultBluetoothContext.targetInfos.targetDeviceID ||
+      targetInfos.targetServiceUUID ===
+      defaultBluetoothContext.targetInfos.targetServiceUUID ||
+      targetInfos.targetCharacteristicUUID ===
+      defaultBluetoothContext.targetInfos.targetCharacteristicUUID) {
 
       console.error('No target device, service, or characteristic set');
       return false;
@@ -255,16 +266,29 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // functions for the UI to interact with the bluetooth service
   const promptUserForPermissions = async (): Promise<void> => {
-    if (bluetoothPermissionsOK) {
+    if (deviceStates.bluetoothPermissionsOK) {
       return;
     }
 
     try {
       await BluetoothService.requestAllPermissions();
-      setBluetoothPermissionsOK(true);
+
+      // set bluetooth permission state true
+      setDeviceStates({
+        bluetoothPermissionsOK: true,
+        deviceIsBonded: deviceStates.deviceIsBonded,
+        deviceIsSystemConnected: deviceStates.deviceIsSystemConnected,
+        deviceIsAppConnected: deviceStates.deviceIsAppConnected,
+      });
 
     } catch (error) {
-      setBluetoothPermissionsOK(false);
+      // set bluetooth permission state false
+      setDeviceStates({
+        bluetoothPermissionsOK: false,
+        deviceIsBonded: deviceStates.deviceIsBonded,
+        deviceIsSystemConnected: deviceStates.deviceIsSystemConnected,
+        deviceIsAppConnected: deviceStates.deviceIsAppConnected,
+      });
     }
   }
 
@@ -332,7 +356,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // info to defaults (for the case we've connected to a different device
     // since that was written.
 
-    if (!bluetoothPermissionsOK) {
+    if (deviceStates.bluetoothPermissionsOK) {
       console.error('Bluetooth permissions not granted yet');
       return;
     }
@@ -390,7 +414,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     const deviceID: string = deviceInfos.systemConnectedPeripheralInfo?.id ||
-      defaultBluetoothContext.targetDeviceID;
+      defaultBluetoothContext.targetInfos.targetDeviceID;
 
     // actually connect and get services
     try {
@@ -417,7 +441,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // do the actual read operation
     try {
       const returnedData: any = await BluetoothService.read(
-        targetDeviceID, targetServiceUUID, targetCharacteristicUUID);
+        targetInfos.targetDeviceID,
+        targetInfos.targetServiceUUID,
+        targetInfos.targetCharacteristicUUID);
 
       // no clue what this data actually is. an array of ints?
       console.log('Read data: ', returnedData);
@@ -441,8 +467,12 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     try {
-      BluetoothService.writeInt(targetDeviceID, targetServiceUUID,
-        targetCharacteristicUUID, data);
+      BluetoothService.writeInt(
+        targetInfos.targetDeviceID,
+        targetInfos.targetServiceUUID,
+        targetInfos.targetCharacteristicUUID,
+        data);
+
     } catch (error) {
       console.error('Error writing to characteristic in provider:', error);
     }
@@ -460,17 +490,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // return the context provider
   const value: BluetoothContextType = {
-    // state info
-    // I think it's okay to expose these for now, since might use for navigation
-    bluetoothPermissionsOK,
-
-    deviceIsAppConnected,
+    deviceStates,
     deviceInfos,
-    targetDeviceID,
-    targetServiceUUID,
-    targetCharacteristicUUID,
-
-    // functions I wish to expose to the UI
+    targetInfos,
     promptUserForPermissions,
     getBondedDevice,
     connectToBondedDevice,

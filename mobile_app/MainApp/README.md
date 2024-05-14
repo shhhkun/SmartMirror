@@ -23,6 +23,7 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 
+- should be using a reducer thing in provider states to make that less ugly
 - make bonded -> connected work, without initiating the system connection in nrf connect.
 - add event handeler for disconnect events in the ble manager.
 - get write action to work. seems to not be completing successfully right now. but I'm not certain that is my on my end, rather than on the end of nrf connect, since that app is super jank. might want to just go striaght to the pi, if that's up and running.
