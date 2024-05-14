@@ -8,7 +8,7 @@ import {
 
 
 export interface DeviceInfos {
-  // this will hold the info about a potentially bonded device.
+  // this will holds the info of a smart mirror device that is bonded
   bondedDeviceInfo: Peripheral | null;
   // Peripheral has the form: Peripheral {
   //   id: string;
@@ -60,7 +60,7 @@ export interface BluetoothContextType {
   targetCharacteristicUUID: string;
 
   promptUserForPermissions: () => Promise<void>;
-  getBondedDevices: () => Promise<void>;
+  getBondedDevice: () => Promise<void>;
   connectToBondedDevice: () => Promise<void>;
   getSystemConnectedDeviceInfo: () => Promise<void>;
   connectAndGetAppConnectedDeviceInfo: () => Promise<void>;
@@ -86,7 +86,7 @@ export const defaultBluetoothContext: BluetoothContextType = {
   promptUserForPermissions: async () => {
     throw new Error('askForBluetoothPermissions function is not initialized yet');
   },
-  getBondedDevices: async () => {
+  getBondedDevice: async () => {
     throw new Error('getBondedDevices function is not initialized yet');
   },
   connectToBondedDevice: async () => {

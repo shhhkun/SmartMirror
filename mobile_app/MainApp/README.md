@@ -28,6 +28,7 @@ Next steps:
 - get write action to work. seems to not be completing successfully right now. but I'm not certain that is my on my end, rather than on the end of nrf connect, since that app is super jank. might want to just go striaght to the pi, if that's up and running.
 - figure out how to encode/decode data being sent and read.
 - general UI cleanup and refactor.
+- should have radial buttons for "top left", "top right", etc for positions. instead of x/y coordinates.
 
 - !!!!! blocked from here on, until we have the peripheral set up on the pi !!!!!
 

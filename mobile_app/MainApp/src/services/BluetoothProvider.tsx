@@ -268,7 +268,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  const getBondedDevices = async (): Promise<void> => {
+  const getBondedDevice = async (): Promise<void> => {
     // gets the list of bonded devices. and then populates bonded device info
     // in context with the first device in the list.
 
@@ -471,7 +471,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     // functions I wish to expose to the UI
     promptUserForPermissions,
-    getBondedDevices,
+    getBondedDevice,
     connectToBondedDevice,
     getSystemConnectedDeviceInfo,
     connectAndGetAppConnectedDeviceInfo,
