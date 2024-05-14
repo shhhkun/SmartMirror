@@ -8,6 +8,7 @@ import BluetoothProvider from './src/services/BluetoothProvider';
 import HomeScreen from './src/screens/HomeScreen';
 import ScanScreen from './src/screens/ScanScreen';
 import DeviceDetailScreen from './src/screens/DeviceDetailScreen';
+import ModuleConfigScreen from './src/screens/ModuleConfigScreen';
 
 
 const Stack = createStackNavigator();
@@ -21,6 +22,7 @@ const App = () => {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Devices" component={ScanScreen} />
           <Stack.Screen name="DeviceDetail" component={DeviceDetailScreen} />
+          <Stack.Screen name="ModuleConfig" component={ModuleConfigScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </BluetoothProvider>
