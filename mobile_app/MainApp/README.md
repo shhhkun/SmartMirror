@@ -23,10 +23,8 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 
-- make connecting action nicer. have the ability to go from bonded to connected. feels kinda jank still, and want to be able to not use nrf connect.
-   - need to refactor. will want to get rid of system connected state and just make that bonded state.
-   - I think this might need some connection state management refactoring. assuming the actions will be: get bonded devices (maybe filter by ID) -> app connect to one -> get services. that's how the nordic app seems to wrok. aka without the distinction of system connnected vs app connected.
-   - maybe could repurpouse the system connected info field to be something that holds info about a previously bonded smart mirror device. could be a bit of work if we want to support multiple devices.
+- make bonded -> connected work, without initiating the system connection in nrf connect.
+- add event handeler for disconnect events in the ble manager.
 - get write action to work. seems to not be completing successfully right now. but I'm not certain that is my on my end, rather than on the end of nrf connect, since that app is super jank. might want to just go striaght to the pi, if that's up and running.
 - figure out how to encode/decode data being sent and read.
 - general UI cleanup and refactor.
@@ -86,4 +84,4 @@ Future enhancements not implemented in protoype, but for the final sellable prod
 - Have the user be able to drag and drop rectangles on the screen, instead of just sending coordinates as text.
 - This only works if there is one BLE device connected. Things will probably break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned. In the future, we could have it only detect connected devices that match a certain ID signature for our smart mirrors. Overall I bet things will break if multiple devices are connected.
 - A way for the user to authenticate for their apps. Like have this app make a call to a web server of ours, that server goes and gets a token for some site, gives us the token, and we pass that token along with BLE to the Raspi.
-- iOS compatability. Haven't tested any of this on iOS. Theoretically, most of it should work. Except for the getBondedPeripherals() method in the library. But I doubt the flow of bonded > system connected > connected that kind of happens in this app right now would be the same on iOS.
+- iOS compatability. Haven't tested any of this on iOS. Theoretically, most of it should work. Except for the getBondedPeripherals() method in the library. But I doubt the flow of bonded > system connected > connected that kind of happens in this app right now would be the same on iOS. And the connect() function in the library doesn't time out on iOS, so would need a timer here.

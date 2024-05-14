@@ -17,6 +17,7 @@ import {
   DeviceInfos,
   defaultBluetoothContext,
 } from './BluetoothContext';
+import { selectOurDeviceFromBondedDevices } from './BluetoothUtils';
 import BluetoothService from './BluetoothService';
 
 
@@ -269,7 +270,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const getBondedDevices = async (): Promise<void> => {
     // gets the list of bonded devices. and then populates bonded device info
-    // in context with the first device in the list (todo - make this selectable).
+    // in context with the first device in the list.
 
     try {
       const bondedDevices: Peripheral[] =
@@ -282,15 +283,19 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
         return;
       }
 
-      const bondedDeviceOfInterest: Peripheral = bondedDevices[0];
-      console.log('setting bonded device info to first bonded device');
+      // select which of the peripherals to use, based on some filtering rule
+      const bondedDeviceOfInterest: Peripheral =
+        selectOurDeviceFromBondedDevices(bondedDevices);
+
       setDeviceInfos({
-        // set the bonded device info
+        // set the bonded device info to this device
         bondedDeviceInfo:
           bondedDeviceOfInterest,
+
         // maintain system connected info
         systemConnectedPeripheralInfo:
           defaultBluetoothContext.deviceInfos.systemConnectedPeripheralInfo,
+
         // maintain app connected info
         appConnectedPeripheralInfo:
           defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo,

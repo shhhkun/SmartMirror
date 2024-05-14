@@ -17,11 +17,14 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
+  // parts of the context we need
   const { deviceInfos,
     getBondedDevices,
     connectToBondedDevice,
     getSystemConnectedDeviceInfo
   } = useContext(BluetoothContext);
+
+  // page-specific state stuff
   const [lastDeviceCheckTime, setLastDeviceCheckTime] = useState('never');
 
 
