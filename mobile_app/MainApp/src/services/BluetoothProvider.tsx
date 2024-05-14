@@ -267,36 +267,55 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  // this function is jank and doesn't do what it says!
-  // now it discovers a peripohgeral and connects to it.
   const getBondedDevices = async (): Promise<void> => {
+    // gets the list of bonded devices. and then populates bonded device info
+    // in context with the first device in the list (todo - make this selectable).
+
     try {
       const bondedDevices: Peripheral[] =
         await BluetoothService.getBondedPeripherals();
 
-      console.log('Bonded devices: ', JSON.stringify(bondedDevices, null, 2));
+      console.log('Bonded devices array: ', JSON.stringify(bondedDevices, null, 2));
 
-      console.log('setting system connected device info to first bonded device');
+      if (bondedDevices.length == 0) {
+        console.log('No bonded devices found');
+        return;
+      }
+
+      const bondedDeviceOfInterest: Peripheral = bondedDevices[0];
+      console.log('setting bonded device info to first bonded device');
       setDeviceInfos({
+        // set the bonded device info
         bondedDeviceInfo:
-          bondedDevices[0],
+          bondedDeviceOfInterest,
+        // maintain system connected info
         systemConnectedPeripheralInfo:
-          bondedDevices[0],
+          defaultBluetoothContext.deviceInfos.systemConnectedPeripheralInfo,
+        // maintain app connected info
         appConnectedPeripheralInfo:
           defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo,
       });
-
-      try {
-        console.log('app connecting to first bonded device');
-        await appConnectToDevice(bondedDevices[0].id);
-      }
-      catch (error) {
-        console.error('Error app connecting to bonded device:', error);
-      }
-
     }
     catch (error) {
       console.error('Error getting bonded devices from context provider:', error);
+    }
+  }
+
+  const connectToBondedDevice = async (): Promise<void> => {
+    if (deviceInfos.bondedDeviceInfo == null) {
+      console.error('No bonded device to connect to');
+      return;
+    }
+
+    try {
+      // attempt to connect to the bonded device
+      appConnectToDevice(deviceInfos.bondedDeviceInfo.id);
+
+      // get the connected device info
+      getSystemConnectedDeviceInfo();
+
+    } catch (error) {
+      console.error('Error connecting to bonded device in connectToBondedDevice:', error);
     }
   }
 
@@ -345,23 +364,6 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setDeviceInfos(systemConnectedDeviceInfo);
     setTargetFieldsToDefault();
-  }
-
-  const hardConnectToDevice = async (deviceID: string): Promise<void> => {
-    // this function is temp for now! just want the ability to go from
-    // bonded device to app connected device.
-    try {
-      await appConnectToDevice(deviceID);
-
-      // update system device info
-
-      // update app-connected info
-      await retrieveServicesFromConnectedDevice(deviceID);
-    }
-    catch (error) {
-      console.error('Error hard connecting to device:', error);
-      throw error;
-    }
   }
 
   const connectAndGetAppConnectedDeviceInfo = async (): Promise<void> => {
@@ -464,6 +466,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // functions I wish to expose to the UI
     promptUserForPermissions,
     getBondedDevices,
+    connectToBondedDevice,
     getSystemConnectedDeviceInfo,
     connectAndGetAppConnectedDeviceInfo,
     readFromCharacteristic,
