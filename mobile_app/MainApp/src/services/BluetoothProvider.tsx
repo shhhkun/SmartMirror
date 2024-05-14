@@ -61,7 +61,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const characteristicsArray: Characteristic[] =
       appConnectedPeripheralInfo?.characteristics ?? [];
-    const specificCharacteristic: Characteristic = characteristicsArray[0] ?? {};
+    const specificCharacteristic: Characteristic = characteristicsArray[1] ?? {};
     const characteristicUUID: string = specificCharacteristic?.characteristic ??
       defaultBluetoothContext.targetInfos.targetCharacteristicUUID;
 
@@ -445,6 +445,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
         targetInfos.targetServiceUUID,
         targetInfos.targetCharacteristicUUID);
 
+
+      console.log("reading from characteristic : ", targetInfos.targetDeviceID)
       // no clue what this data actually is. an array of ints?
       console.log('Read data: ', returnedData);
 
