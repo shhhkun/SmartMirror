@@ -254,13 +254,30 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
+  // this function is jank and doesn't do what it says!
+  // now it discovers a peripohgeral and connects to it.
   const getBondedDevices = async (): Promise<void> => {
-    // todo
     try {
       const bondedDevices: Peripheral[] =
         await BluetoothService.getBondedPeripherals();
 
       console.log('Bonded devices: ', JSON.stringify(bondedDevices, null, 2));
+
+      console.log('setting system connected device info to first bonded device');
+      setDeviceInfos({
+        systemConnectedPeripheralInfo:
+          bondedDevices[0],
+        appConnectedPeripheralInfo:
+          defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo,
+      });
+
+      try {
+        console.log('app connecting to first bonded device');
+        await appConnectToDevice(bondedDevices[0].id);
+      }
+      catch (error) {
+        console.error('Error app connecting to bonded device:', error);
+      }
 
     }
     catch (error) {
@@ -308,6 +325,23 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setDeviceInfos(systemConnectedDeviceInfo);
     setTargetFieldsToDefault();
+  }
+
+  const hardConnectToDevice = async (deviceID: string): Promise<void> => {
+    // this function is temp for now! just want the ability to go from
+    // bonded device to app connected device.
+    try {
+      await appConnectToDevice(deviceID);
+
+      // update system device info
+
+      // update app-connected info
+      await retrieveServicesFromConnectedDevice(deviceID);
+    }
+    catch (error) {
+      console.error('Error hard connecting to device:', error);
+      throw error;
+    }
   }
 
   const connectAndGetAppConnectedDeviceInfo = async (): Promise<void> => {
