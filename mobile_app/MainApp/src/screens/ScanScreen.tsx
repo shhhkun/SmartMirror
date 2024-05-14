@@ -19,6 +19,7 @@ import { BluetoothContext } from '../services/BluetoothContext';
 const ScanScreen = ({ navigation }: { navigation: any }) => {
   const { deviceInfos,
     getBondedDevices,
+    connectToBondedDevice,
     getSystemConnectedDeviceInfo
   } = useContext(BluetoothContext);
   const [lastDeviceCheckTime, setLastDeviceCheckTime] = useState('never');
@@ -44,6 +45,14 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  const doUponConnectToBondedDeviceButton = async (): Promise<void> => {
+    try {
+      await connectToBondedDevice();
+    } catch (error) {
+      console.error('Error connecting to bonded device in UI:', error);
+    }
+  };
+
 
   // UI stuff here
   return (
@@ -60,6 +69,11 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponBondedDeviceButton()}
           title="Get Bonded Devices" />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponConnectToBondedDeviceButton()}
+          title="Connect to Bonded Device" />
       </View>
 
       <View style={styles.buttonContainer}>
