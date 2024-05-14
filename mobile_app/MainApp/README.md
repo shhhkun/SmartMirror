@@ -23,18 +23,15 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 - get write action to work. it is broken on my end.
-- should be using a reducer thing in provider states to make that less ugly.
 - make bonded -> connected work, without initiating the system connection in nrf connect.
 - add event handeler for disconnect events in the ble manager.is super jank. might want to just go striaght to the pi, if that's up and running.
 - figure out how to encode/decode data being sent and read.
+- should be using a reducer thing in provider states to make that less ugly.
 
-- general UI cleanup and refactor.
-- should have radial buttons for "top left", "top right", etc for positions. instead of x/y coordinates.
+- add ability and UI for communicating with more than 1 characteristic. might reconfiguretarget stuff with this. maybe make the target characteristic an array, and just for-each this for writing.
 
-
-- decide on exact data format we'll be sending. probably per-module info.
-- implement data sending protocol, probably across multiple characteristics.
-- implement UI to send data to the device via a form submission.
+- make UI for sending data to one characteristic. should have radial buttons for "top left", "top right", etc for positions. (not x/y coordinates)
+- make UI for sending data to multiple characteristics
 
 maybe:
 - smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.

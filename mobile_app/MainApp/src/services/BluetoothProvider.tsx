@@ -458,7 +458,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  // this write wasn't working earlier. todo: need to test again.
+  // this write isn't working right now.
   const writeDataToCharacteristic = async (data: number): Promise<void> => {
     // for now, just accepting data as an int
 
