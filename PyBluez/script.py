@@ -1,46 +1,46 @@
-import socket
-import subprocess
+import bluetooth
+from bluetooth.ble import BeaconService
 
-SERVICE_UUID = "00001101-0000-1000-8000-00805F9B34FB"
-PORT = 1  # RFCOMM port number
+# Define the service UUID
+SERVICE_UUID = "0000180d-0000-1000-8000-00805f9b34fb"  # Example UUID for a standard BLE service
 
-def handle_client(client_socket, client_info):
-    print(f"Accepted connection from {client_info}")
+# Define the characteristics UUIDs
+CHARACTERISTIC_READ_UUID = "00002a37-0000-1000-8000-00805f9b34fb"  # Example UUID for a standard read characteristic
+CHARACTERISTIC_WRITE_UUID = "00002a38-0000-1000-8000-00805f9b34fb"  # Example UUID for a standard write characteristic
 
-    try:
-        while True:
-            data = client_socket.recv(1024)
-            if not data:
-                break
-            print("Received:", data)
-            client_socket.send(data)
-    except Exception as e:
-        print("Error:", e)
-    finally:
-        print("Connection closed")
+# Define the callback function for handling incoming write requests
+def handle_write(data):
+    print("Received data:", data.decode())
+    # You can process the received data here as needed
+
+# Create a BLE service instance
+service = BeaconService()
+
+# Register the service
+service.start_advertising(SERVICE_UUID, bluetooth._bluetooth.advertise_flags['limited_discoverable'], 9, 0, 200)
+
+# Main loop to handle incoming connections and data
+try:
+    while True:
+        # Wait for incoming connection
+        client_socket, address = bluetooth.BluetoothSocket.accept()
+        print("Accepted connection from", address)
+
+        # Receive data from the connected device
+        data = client_socket.recv(1024)
+        if not data:
+            break
+
+        # Process received data
+        handle_write(data)
+
+        # Send response back to the client
+        response = "Data received successfully"
+        client_socket.send(response.encode())
+
+        # Close the client socket
         client_socket.close()
 
-try:
-    print("Initializing Bluetooth socket...")
-    server_socket = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
-    print("Bluetooth socket initialized.")
-    
-    print("Binding socket...")
-    server_socket.bind(("", PORT))
-    print(f"Socket bound to port {PORT}.")
-
-    print("Listening for connections...")
-    server_socket.listen(1)
-
-    print("Advertising service...")
-    subprocess.run(["sdptool", "add", "SP"])
-    print("Service advertised.")
-
-    print("Waiting for connection...")
-    client_socket, client_info = server_socket.accept()
-    handle_client(client_socket, client_info)
 except KeyboardInterrupt:
-    print("Keyboard interrupt")
-finally:
-    if 'server_socket' in locals():
-        server_socket.close()
+    print("Keyboard interrupt received. Stopping...")
+    service.stop_advertising()
