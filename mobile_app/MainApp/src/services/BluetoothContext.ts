@@ -27,6 +27,7 @@ export interface DeviceInfos {
   //   advertising: AdvertisingData;
   // }
 
+
   // this info is available with just a system connection to a device.
   systemConnectedPeripheralInfo: Peripheral | null;
   // Peripheral has the form: Peripheral {

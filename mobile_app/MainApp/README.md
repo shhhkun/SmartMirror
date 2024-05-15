@@ -23,35 +23,22 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Next steps:
 - get write action to work. it is broken on my end.
-- should be using a reducer thing in provider states to make that less ugly.
+- add some UI for switching between 2 configs. assuming sending data to one characteristic.
+- figure out how to encode/decode data, or at least simple ints
+
 - make bonded -> connected work, without initiating the system connection in nrf connect.
-- add event handeler for disconnect events in the ble manager.is super jank. might want to just go striaght to the pi, if that's up and running.
-- figure out how to encode/decode data being sent and read.
+- add event handeler for disconnect events in the ble manager.
+- figure out how to encode/decode more complex data
+- should be using a reducer thing in provider states to make that less ugly. this itself is also complex, though.
 
-- general UI cleanup and refactor.
-- should have radial buttons for "top left", "top right", etc for positions. instead of x/y coordinates.
+- make UI for sending data to config a module for one characteristic. should have radial buttons for "top left", "top right", etc for positions. (not x/y coordinates)
 
-
-- decide on exact data format we'll be sending. probably per-module info.
-- implement data sending protocol, probably across multiple characteristics.
-- implement UI to send data to the device via a form submission.
+- add ability and UI for communicating with more than 1 characteristic. might reconfiguretarget stuff with this. maybe make the target characteristic an array, and just for-each this for writing.
+- make UI for sending data to multiple characteristics
 
 maybe:
 - smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
 - persist info about devices and/or user states. store stuff to "disk".
-
-# ----------
-
-Notes
-
-What I learned about packet sizes:
-
-The default data payload size for BLE is 20 bytes. The requestMTU function in the library initiates a negotiation process where both devices try to increase this packet size, all the way up to 512 bytes. Based on some forums reading, it sounds like rasbian and the raspi3 can do more than 20 byles MTU, but this probably requires some configuration. Packet size is a little bit irrelevant, according to prof.
-
-A charactersitic can technically be larger than the MTU. And this could be one solution. Under the hood, libraries generally seem to handle this reassebling automatically - if one charactersitic write operation needs to get send over 3 packets.
-
-Max characteristic size is still kinda unknown. But prof advised that we do one characteristic per module.
-
 
 # ----------
 
