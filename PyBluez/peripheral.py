@@ -6,31 +6,30 @@ from service import Application, Service, Characteristic, Descriptor
 GATT_CHRC_IFACE = "org.bluez.GattCharacteristic1"
 
 class UserProfileService(Service):
-    USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf" # SERVICE UID
+    USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf" # SERVICE UUID
 
     def __init__(self, index):
         Service.__init__(self, index, self.USER_PROFILE_SVC_UUID, True)
         self.add_characteristic(UserProfileCharacteristic(self))
 
 class UserProfileCharacteristic(Characteristic):
-    USER_PROFILE_CHARACTERISTIC_UUID = "00000002-710e-4a5b-8d75-3e5b444bc3cf" # USER PROFILE CHAR.
+    USER_PROFILE_CHARACTERISTIC_UUID = "00000002-710e-4a5b-8d75-3e5b444bc3cf" # USER PROFILE CHAR. 1 UUID
 
     def __init__(self, service):
+        self.profile_index = 0  # Initialize with a default value
         Characteristic.__init__(
                 self, self.USER_PROFILE_CHARACTERISTIC_UUID,
                 ["read", "write"], service)
         self.add_descriptor(UserProfileDescriptor(self))
 
     def ReadValue(self, options):
-        # Placeholder value, you can customize this to return actual data if needed
-        value = [dbus.Byte(0)]
-        print("User profile index read:", value[0])
+        value = [dbus.Byte(self.profile_index)]
+        print("User profile index read:", self.profile_index)
         return value
 
     def WriteValue(self, value, options):
-        # Process the received integer value (user profile index)
-        profile_index = int(value[0])
-        print("User profile index written:", profile_index)
+        self.profile_index = int(value[0])
+        print("User profile index written:", self.profile_index)
         # You can add logic here to load the corresponding user profile based on the index
 
 class UserProfileDescriptor(Descriptor):
@@ -65,4 +64,3 @@ try:
     app.run()
 except KeyboardInterrupt:
     app.quit()
-
