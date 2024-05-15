@@ -184,9 +184,24 @@ class BluetoothService {
       return null;
     }
 
+    // hard coded stuff for now
+    const tempDeviceID: string = '77:1E:BC:E5:C7:17';
+    const tempServiceUUID: string = '89d3502b-0f36-433a-8ef4-c502ad55f8d';
+    const tempCharacteristicUUID: string = 'c6b2f38c-23ab-46d8-a6ab-a3a870bbd5d7';
+
+    console.log('-----------------');
+    console.log('using hard-coded device targets to read!')
+    console.log('deviceID:', tempDeviceID);
+    console.log('serviceUUID:', tempServiceUUID);
+    console.log('characteristicUUID:', tempCharacteristicUUID);
+    console.log('-----------------');
+
     try {
-      const returnedData: any = BleManager.read(deviceID, serviceUUID,
-        characteristicUUID);
+      const returnedData: any = BleManager.read(tempDeviceID, tempServiceUUID,
+        tempCharacteristicUUID);
+
+      // const returnedData: any = BleManager.read(deviceID, serviceUUID,
+      //   characteristicUUID);
 
       return returnedData;
     }
@@ -214,9 +229,24 @@ class BluetoothService {
     // const serializedData: number[] = serializeInt(intInput);
     const serializedData: number[] = [1]
 
+    // hard coded stuff for now
+    const tempDeviceID: string = '77:1E:BC:E5:C7:17';
+    const tempServiceUUID: string = '89d3502b-0f36-433a-8ef4-c502ad55f8d';
+    const tempCharacteristicUUID: string = 'c6b2f38c-23ab-46d8-a6ab-a3a870bbd5d7';
+
+    console.log('-----------------');
+    console.log('using hard-coded device targets to write!')
+    console.log('deviceID:', tempDeviceID);
+    console.log('serviceUUID:', tempServiceUUID);
+    console.log('characteristicUUID:', tempCharacteristicUUID);
+    console.log('-----------------');
+
     try {
-      await BleManager.write(deviceID, serviceUUID, characteristicUUID,
+      await BleManager.write(tempDeviceID, tempServiceUUID, tempCharacteristicUUID,
         serializedData);
+
+      // await BleManager.write(deviceID, serviceUUID, characteristicUUID,
+      //   serializedData);
 
       console.log('Write to characteristic succeeded');
     }
