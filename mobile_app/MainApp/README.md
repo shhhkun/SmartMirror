@@ -26,7 +26,7 @@ Next steps:
 - make bonded -> connected work, without initiating the system connection in nrf connect.
 - add event handeler for disconnect events in the ble manager.is super jank. might want to just go striaght to the pi, if that's up and running.
 - figure out how to encode/decode data being sent and read.
-- should be using a reducer thing in provider states to make that less ugly.
+- should be using a reducer thing in provider states to make that less ugly. this itself is also complex, though.
 
 - add ability and UI for communicating with more than 1 characteristic. might reconfiguretarget stuff with this. maybe make the target characteristic an array, and just for-each this for writing.
 

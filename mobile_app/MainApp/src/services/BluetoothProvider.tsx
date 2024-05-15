@@ -54,16 +54,25 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
 
     const servicesArray: Service[] = appConnectedPeripheralInfo?.services ?? [];
-    const specificService: Service = servicesArray[0] ?? {};
-    const serviceUUID: string = specificService?.uuid ??
-      defaultBluetoothContext.targetInfos.targetServiceUUID;
+    console.log('Services array: ', JSON.stringify(servicesArray, null, 2));
+
+    // const specificService: Service = servicesArray[5] ?? {};
+    // const serviceUUID: string = specificService?.uuid ??
+    //   defaultBluetoothContext.targetInfos.targetServiceUUID;
+
+    const serviceUUID = 'd0611e78-bbb4-4591-a5f8-487910ae4366'
+
+    console.log('Service UUID: ', serviceUUID);
 
 
-    const characteristicsArray: Characteristic[] =
-      appConnectedPeripheralInfo?.characteristics ?? [];
-    const specificCharacteristic: Characteristic = characteristicsArray[1] ?? {};
-    const characteristicUUID: string = specificCharacteristic?.characteristic ??
-      defaultBluetoothContext.targetInfos.targetCharacteristicUUID;
+    // const characteristicsArray: Characteristic[] =
+    //   appConnectedPeripheralInfo?.characteristics ?? [];
+    // const specificCharacteristic: Characteristic = characteristicsArray[0] ?? {};
+    // const characteristicUUID: string = specificCharacteristic?.characteristic ??
+    //   defaultBluetoothContext.targetInfos.targetCharacteristicUUID;
+
+    const characteristicUUID = '8667556c-9a37-4c91-84ed-54ee27d90049';
+    console.log('Characteristic UUID: ', characteristicUUID);
 
     setTargetInfos({
       targetDeviceID: deviceID,

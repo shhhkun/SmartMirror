@@ -212,7 +212,7 @@ class BluetoothService {
 
     // todo: use the real data that I'll pass in, not this dummy data.
     // const serializedData: number[] = serializeInt(intInput);
-    const serializedData: number[] = [1, 2, 3, 255]
+    const serializedData: number[] = [1]
 
     try {
       await BleManager.write(deviceID, serviceUUID, characteristicUUID,
