@@ -18,7 +18,6 @@ class UserProfileCharacteristic(Characteristic):
 
     def __init__(self, service):
         self.profile_index = 0  # Initialize with a default value
-        self.profile_indices = []  # Array to store profile indices
         Characteristic.__init__(
             self, self.USER_PROFILE_CHARACTERISTIC_UUID,
             ["read", "write"], service)
@@ -31,7 +30,6 @@ class UserProfileCharacteristic(Characteristic):
 
     def WriteValue(self, value, options):
         self.profile_index = int(value[0])
-        self.profile_indices.append(self.profile_index)
         print("User profile index written:", self.profile_index)
         # Open corresponding file
         self.open_profile_file(self.profile_index)
@@ -40,14 +38,16 @@ class UserProfileCharacteristic(Characteristic):
         filename = f'file{profile_index}.json'
         print(f"Opening file: {filename}")
         # For now, we just open the file in read/write mode
-        with open(filename, 'a+') as file:
-            file.seek(0)
-            content = file.read()
-            if content:
-                print(f"Current content of {filename}: {content}")
-            else:
-                print(f"{filename} is empty, initializing with empty JSON object.")
-                file.write('{}')
+        try:
+            with open(filename, 'r+') as file:
+                content = file.read()
+                if content:
+                    print(f"Current content of {filename}: {content}")
+                else:
+                    print(f"{filename} is empty, initializing with empty JSON object.")
+                    file.write('{}')
+        except FileNotFoundError:
+            print(f"File {filename} does not exist.")
 
 class UserProfileDescriptor(Descriptor):
     USER_PROFILE_DESCRIPTOR_UUID = "2901"
