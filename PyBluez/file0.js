@@ -3,9 +3,9 @@ var config = {
     address: "localhost",
     port: 8080,
     ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"],
-    language: "en",
+    language: "en", // modifiable
     timeFormat: 24,
-    units: "metric",
+    units: "metric",// modifiable
     modules: [
       {
         // alert
@@ -14,18 +14,18 @@ var config = {
       {
         // updatenotification
         module: "updatenotification",
-        position: "top_bar"
+        position: "top_bar" // modifiable
       },
       {
         // clock
         module: "clock",
-        position: "top_left"
+        position: "top_left" // modifiable
       },
       {
         // calendar
         module: "calendar",
-        header: "US Holidays",
-        position: "top_left",
+        header: "US Holidays", // modifiable
+        position: "top_left", // modifiable
         config: {
           calendars: [
             {
@@ -38,12 +38,12 @@ var config = {
       {
         // compliments
         module: "compliments",
-        position: "lower_third"
+        position: "lower_third" // modifiable
       },
       {
         // weather
         module: "weather",
-        position: "top_right",
+        position: "top_right", // modifiable
         config: {
           weatherProvider: "openweathermap",
           type: "current",
@@ -55,7 +55,7 @@ var config = {
       {
         // newsfeed
         module: "newsfeed",
-        position: "bottom_bar",
+        position: "bottom_bar", // modifiable
         config: {
           feeds: [
             {

@@ -7,50 +7,162 @@ from service import Application, Service, Characteristic, Descriptor
 
 GATT_CHRC_IFACE = "org.bluez.GattCharacteristic1"
 
+CONFIG_DIR = "/path/to/config/files"  # Update this path to where your JSON files are located
+
 class UserProfileService(Service):
-    USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"  # SERVICE UUID
+    USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, index):
         Service.__init__(self, index, self.USER_PROFILE_SVC_UUID, True)
-        self.profile_index = 0  # Initialize with a default value
-        self.add_characteristic(UserProfileCharacteristic(self))
+        self.add_characteristic(ProfileIndexCharacteristic(self))
         self.add_characteristic(LanguageCharacteristic(self))
         self.add_characteristic(UnitsCharacteristic(self))
+        self.add_characteristic(ModuleCharacteristic(self, "updatenotification", "00000004-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModuleCharacteristic(self, "clock", "00000005-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModuleCharacteristic(self, "calendar", "00000006-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModuleCharacteristic(self, "compliments", "00000007-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModuleCharacteristic(self, "weather", "00000008-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModuleCharacteristic(self, "newsfeed", "00000009-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModuleNameCharacteristic(self, "updatenotification", "0000000A-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModuleNameCharacteristic(self, "clock", "0000000B-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModuleNameCharacteristic(self, "calendar", "0000000C-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModuleNameCharacteristic(self, "compliments", "0000000D-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModuleNameCharacteristic(self, "weather", "0000000E-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModuleNameCharacteristic(self, "newsfeed", "0000000F-710e-4a5b-8d75-3e5b444bc3cf"))
 
-    def open_profile_file(self, profile_index):
-        filename = f'file{profile_index}.json'
-        if not os.path.exists(filename):
-            raise FileNotFoundError(f"File {filename} does not exist.")
-        with open(filename, 'r+') as file:
-            config = json.load(file)
-        return config, filename
+    def get_config_path(self, profile_index):
+        return os.path.join(CONFIG_DIR, f"file{profile_index}.json")
 
-    def update_profile_file(self, profile_index, config):
-        filename = f'file{profile_index}.json'
-        with open(filename, 'w') as file:
-            json.dump(config, file, indent=4)
-        print(f"Updated file: {filename}")
+    def read_config(self, profile_index):
+        path = self.get_config_path(profile_index)
+        with open(path, 'r') as file:
+            return json.load(file)
 
-class UserProfileCharacteristic(Characteristic):
-    USER_PROFILE_CHARACTERISTIC_UUID = "00000002-710e-4a5b-8d75-3e5b444bc3cf"  # USER PROFILE CHAR. 1 UUID
+    def write_config(self, profile_index, config):
+        path = self.get_config_path(profile_index)
+        with open(path, 'w') as file:
+            json.dump(config, file, indent=2)
+
+class ProfileIndexCharacteristic(Characteristic):
+    PROFILE_INDEX_UUID = "00000002-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
-            self, self.USER_PROFILE_CHARACTERISTIC_UUID,
+            self, self.PROFILE_INDEX_UUID,
+            ["read", "write"], service)
+        self.add_descriptor(UserProfileDescriptor(self))
+        self.profile_index = 0
+
+    def ReadValue(self, options):
+        value = [dbus.Byte(self.profile_index)]
+        print("Profile index read:", self.profile_index)
+        return value
+
+    def WriteValue(self, value, options):
+        self.profile_index = int(value[0])
+        print("Profile index written:", self.profile_index)
+
+class LanguageCharacteristic(Characteristic):
+    LANGUAGE_UUID = "00000003-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, service):
+        Characteristic.__init__(
+            self, self.LANGUAGE_UUID,
             ["read", "write"], service)
         self.add_descriptor(UserProfileDescriptor(self))
 
     def ReadValue(self, options):
-        value = [dbus.Byte(self.service.profile_index)]
-        print("User profile index read:", self.service.profile_index)
+        config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
+        language = config.get('language', 'en')
+        value = [dbus.Byte(l) for l in language.encode()]
+        print("Language read:", language)
         return value
 
     def WriteValue(self, value, options):
-        self.service.profile_index = int(value[0])
-        print("User profile index written:", self.service.profile_index)
-        # Open corresponding file
-        config, filename = self.service.open_profile_file(self.service.profile_index)
-        print(f"Opened file: {filename}")
+        language = ''.join(chr(b) for b in value)
+        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
+        config = self.service.read_config(profile_index)
+        config['language'] = language
+        self.service.write_config(profile_index, config)
+        print("Language written:", language)
+
+class UnitsCharacteristic(Characteristic):
+    UNITS_UUID = "00000004-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, service):
+        Characteristic.__init__(
+            self, self.UNITS_UUID,
+            ["read", "write"], service)
+        self.add_descriptor(UserProfileDescriptor(self))
+
+    def ReadValue(self, options):
+        config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
+        units = config.get('units', 'metric')
+        value = [dbus.Byte(u) for u in units.encode()]
+        print("Units read:", units)
+        return value
+
+    def WriteValue(self, value, options):
+        units = ''.join(chr(b) for b in value)
+        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
+        config = self.service.read_config(profile_index)
+        config['units'] = units
+        self.service.write_config(profile_index, config)
+        print("Units written:", units)
+
+class ModuleCharacteristic(Characteristic):
+    def __init__(self, service, module_name, uuid):
+        self.module_name = module_name
+        Characteristic.__init__(
+            self, uuid,
+            ["read", "write"], service)
+        self.add_descriptor(UserProfileDescriptor(self))
+
+    def ReadValue(self, options):
+        config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
+        module = next((m for m in config['modules'] if m['module'] == self.module_name), {})
+        position = module.get('position', '')
+        value = [dbus.Byte(p.encode()) for p in position]
+        print(f"Position read for {self.module_name}:", position)
+        return value
+
+    def WriteValue(self, value, options):
+        position = ''.join(chr(b) for b in value)
+        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
+        config = self.service.read_config(profile_index)
+        for module in config['modules']:
+            if module['module'] == self.module_name:
+                module['position'] = position
+        self.service.write_config(profile_index, config)
+        print(f"Position written for {self.module_name}:", position)
+
+class ModuleNameCharacteristic(Characteristic):
+    def __init__(self, service, module_name, uuid):
+        self.module_name = module_name
+        Characteristic.__init__(
+            self, uuid,
+            ["read", "write"], service)
+        self.add_descriptor(UserProfileDescriptor(self))
+
+    def ReadValue(self, options):
+        config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
+        module = next((m for m in config['modules'] if m['module'] == self.module_name), {})
+        module_name = module.get('module', '')
+        value = [dbus.Byte(ord(c)) for c in module_name]
+        print(f"Module name read for {self.module_name}:", module_name)
+        return value
+
+    def WriteValue(self, value, options):
+        module_name = ''.join(chr(b) for b in value)
+        if module_name == '0':
+            module_name = ''
+        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
+        config = self.service.read_config(profile_index)
+        for module in config['modules']:
+            if module['module'] == self.module_name:
+                module['module'] = module_name
+        self.service.write_config(profile_index, config)
+        print(f"Module name written for {self.module_name}:", module_name)
 
 class UserProfileDescriptor(Descriptor):
     USER_PROFILE_DESCRIPTOR_UUID = "2901"
@@ -59,100 +171,13 @@ class UserProfileDescriptor(Descriptor):
     def __init__(self, characteristic):
         Descriptor.__init__(
             self, self.USER_PROFILE_DESCRIPTOR_UUID,
-            ["read"],
-            characteristic)
+            ["read"], characteristic)
 
     def ReadValue(self, options):
         value = []
         desc = self.USER_PROFILE_DESCRIPTOR_VALUE
-
         for c in desc:
             value.append(dbus.Byte(c.encode()))
-
-        return value
-
-class LanguageCharacteristic(Characteristic):
-    LANGUAGE_CHARACTERISTIC_UUID = "00000003-710e-4a5b-8d75-3e5b444bc3cf"  # LANGUAGE CHAR. UUID
-
-    def __init__(self, service):
-        Characteristic.__init__(
-            self, self.LANGUAGE_CHARACTERISTIC_UUID,
-            ["read", "write"], service)
-        self.add_descriptor(LanguageDescriptor(self))
-
-    def ReadValue(self, options):
-        config, _ = self.service.open_profile_file(self.service.profile_index)
-        language = config.get("language", "en")
-        value = [dbus.Byte(c.encode()) for c in language]
-        print("Language read:", language)
-        return value
-
-    def WriteValue(self, value, options):
-        config, filename = self.service.open_profile_file(self.service.profile_index)
-        new_language = "".join([chr(b) for b in value])
-        config["language"] = new_language
-        self.service.update_profile_file(self.service.profile_index, config)
-        print("Language written:", new_language)
-
-class LanguageDescriptor(Descriptor):
-    LANGUAGE_DESCRIPTOR_UUID = "2901"
-    LANGUAGE_DESCRIPTOR_VALUE = "Language"
-
-    def __init__(self, characteristic):
-        Descriptor.__init__(
-            self, self.LANGUAGE_DESCRIPTOR_UUID,
-            ["read"],
-            characteristic)
-
-    def ReadValue(self, options):
-        value = []
-        desc = self.LANGUAGE_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
-        return value
-
-class UnitsCharacteristic(Characteristic):
-    UNITS_CHARACTERISTIC_UUID = "00000004-710e-4a5b-8d75-3e5b444bc3cf"  # UNITS CHAR. UUID
-
-    def __init__(self, service):
-        Characteristic.__init__(
-            self, self.UNITS_CHARACTERISTIC_UUID,
-            ["read", "write"], service)
-        self.add_descriptor(UnitsDescriptor(self))
-
-    def ReadValue(self, options):
-        config, _ = self.service.open_profile_file(self.service.profile_index)
-        units = config.get("units", "metric")
-        value = [dbus.Byte(c.encode()) for c in units]
-        print("Units read:", units)
-        return value
-
-    def WriteValue(self, value, options):
-        config, filename = self.service.open_profile_file(self.service.profile_index)
-        new_units = "".join([chr(b) for b in value])
-        config["units"] = new_units
-        self.service.update_profile_file(self.service.profile_index, config)
-        print("Units written:", new_units)
-
-class UnitsDescriptor(Descriptor):
-    UNITS_DESCRIPTOR_UUID = "2901"
-    UNITS_DESCRIPTOR_VALUE = "Units"
-
-    def __init__(self, characteristic):
-        Descriptor.__init__(
-            self, self.UNITS_DESCRIPTOR_UUID,
-            ["read"],
-            characteristic)
-
-    def ReadValue(self, options):
-        value = []
-        desc = self.UNITS_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
         return value
 
 app = Application()
