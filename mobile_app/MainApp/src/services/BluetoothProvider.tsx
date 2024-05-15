@@ -271,6 +271,34 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     return true;
   }
 
+  const checkIfDeviceIsReadable = async (serviceUUID: string,
+    characteristicUUID: string): Promise<boolean> => {
+    // todo
+    // will call checkIfDeviceIsReadWritable, and check if read is allowed
+
+    if (!await checkIfDeviceIsReadWritable()) {
+      return false;
+    }
+
+    // todo
+
+    return false;
+  }
+
+  const checkIfDeviceIsWritable = async (serviceUUID: string,
+    characteristicUUID: string): Promise<boolean> => {
+    // todo
+    // will call checkIfDeviceIsReadWritable, and check if write is allowed
+
+    if (!await checkIfDeviceIsReadWritable()) {
+      return false;
+    }
+
+    // todo
+
+    return false;
+  }
+
 
 
   // functions for the UI to interact with the bluetooth service
@@ -468,6 +496,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   // this write isn't working right now.
+  // status code 6 corresponded to something like GATT REQUEST NOT SUPPORTED.
+  // where I might have been trying to write to a read-only characteristic.
   const writeDataToCharacteristic = async (data: number): Promise<void> => {
     // for now, just accepting data as an int
 
@@ -477,12 +507,26 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
+    // hard coded service and characteristic for now
+    const tempDeviceID: string = targetInfos.targetDeviceID;
+    const tempServiceUUID: string = 'd0611e78-bbb4-4591-a5f8-487910ae4366';
+    const tempCharacteristicUUID: string = '8667556c-9a37-4c91-84ed-54ee27d90049';
+
+    const tempData: number = 1;
+
+
     try {
       BluetoothService.writeInt(
-        targetInfos.targetDeviceID,
-        targetInfos.targetServiceUUID,
-        targetInfos.targetCharacteristicUUID,
-        data);
+        tempDeviceID,
+        tempServiceUUID,
+        tempCharacteristicUUID,
+        tempData);
+
+      // BluetoothService.writeInt(
+      //   targetInfos.targetDeviceID,
+      //   targetInfos.targetServiceUUID,
+      //   targetInfos.targetCharacteristicUUID,
+      //   data);
 
     } catch (error) {
       console.error('Error writing to characteristic in provider:', error);
