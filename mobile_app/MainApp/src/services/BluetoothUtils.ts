@@ -12,6 +12,19 @@ import {
 // directly. for selecting from lists of peripherals, services, etc. and
 // serialization stuff.
 
+function selectPeripheralByName(peripheralsArray: Peripheral[]): Peripheral {
+  const ourDeviceName: String = 'Blank';
+
+  for (let thisPeripheral of peripheralsArray) {
+    if (thisPeripheral.name === ourDeviceName) {
+      return thisPeripheral;
+    }
+  }
+
+  // if not found, just return the first peripheral in the list
+  return peripheralsArray[0];
+}
+
 export function selectOurDeviceFromBondedDevices(
   peripheralsArray: Peripheral[]): Peripheral {
   // get our specific device from the list of bonded devices.
@@ -23,7 +36,7 @@ export function selectOurDeviceFromBondedDevices(
     throw new Error('No bonded devices found');
   }
 
-  return peripheralsArray[0];
+  return selectPeripheralByName(peripheralsArray);
 }
 
 export function selectOurServiceAndCharacteristic(

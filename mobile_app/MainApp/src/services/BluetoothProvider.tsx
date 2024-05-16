@@ -326,6 +326,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       const bondedDeviceOfInterest: Peripheral =
         selectOurDeviceFromBondedDevices(bondedDevices);
 
+      console.log('Bonded device of interest: ',
+        JSON.stringify(bondedDeviceOfInterest, null, 2));
+
       setDeviceInfos({
         // set the bonded device info to this device
         bondedDeviceInfo:
