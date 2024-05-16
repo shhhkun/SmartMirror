@@ -1,6 +1,7 @@
 import dbus
 import json
 import os
+from enum import Enum
 
 from advertisement import Advertisement
 from service import Application, Service, Characteristic, Descriptor
@@ -8,6 +9,27 @@ from service import Application, Service, Characteristic, Descriptor
 GATT_CHRC_IFACE = "org.bluez.GattCharacteristic1"
 
 CONFIG_DIR = "/path/to/config/files"  # Update this path to where your JSON files are located
+
+class Positions(Enum):
+    TOP_BAR = 0
+    TOP_LEFT = 1
+    TOP_CENTER = 2
+    TOP_RIGHT = 3
+    UPPER_THIRD = 4
+    MIDDLE_CENTER = 5
+    LOWER_THIRD = 6
+    BOTTOM_LEFT = 7
+    BOTTOM_CENTER = 8
+    BOTTOM_RIGHT = 9
+    BOTTOM_BAR = 10
+    FULLSCREEN_ABOVE = 11
+    FULLSCREEN_BELOW = 12
+
+positions = [
+    "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center",
+    "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
+    "fullscreen_above", "fullscreen_below"
+]
 
 class UserProfileService(Service):
     USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"
@@ -17,12 +39,12 @@ class UserProfileService(Service):
         self.add_characteristic(ProfileIndexCharacteristic(self))
         self.add_characteristic(LanguageCharacteristic(self))
         self.add_characteristic(UnitsCharacteristic(self))
-        self.add_characteristic(ModuleCharacteristic(self, "updatenotification", "00000004-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModuleCharacteristic(self, "clock", "00000005-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModuleCharacteristic(self, "calendar", "00000006-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModuleCharacteristic(self, "compliments", "00000007-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModuleCharacteristic(self, "weather", "00000008-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModuleCharacteristic(self, "newsfeed", "00000009-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModulePositionCharacteristic(self, "updatenotification", "00000004-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModulePositionCharacteristic(self, "clock", "00000005-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModulePositionCharacteristic(self, "calendar", "00000006-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModulePositionCharacteristic(self, "compliments", "00000007-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModulePositionCharacteristic(self, "weather", "00000008-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ModulePositionCharacteristic(self, "newsfeed", "00000009-710e-4a5b-8d75-3e5b444bc3cf"))
         self.add_characteristic(ModuleNameCharacteristic(self, "updatenotification", "0000000A-710e-4a5b-8d75-3e5b444bc3cf"))
         self.add_characteristic(ModuleNameCharacteristic(self, "clock", "0000000B-710e-4a5b-8d75-3e5b444bc3cf"))
         self.add_characteristic(ModuleNameCharacteristic(self, "calendar", "0000000C-710e-4a5b-8d75-3e5b444bc3cf"))
@@ -74,7 +96,7 @@ class LanguageCharacteristic(Characteristic):
     def ReadValue(self, options):
         config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
         language = config.get('language', 'en')
-        value = [dbus.Byte(l) for l in language.encode()]
+        value = [dbus.Byte(ord(c)) for c in language]
         print("Language read:", language)
         return value
 
@@ -98,7 +120,7 @@ class UnitsCharacteristic(Characteristic):
     def ReadValue(self, options):
         config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
         units = config.get('units', 'metric')
-        value = [dbus.Byte(u) for u in units.encode()]
+        value = [dbus.Byte(ord(u)) for u in units]
         print("Units read:", units)
         return value
 
@@ -110,7 +132,7 @@ class UnitsCharacteristic(Characteristic):
         self.service.write_config(profile_index, config)
         print("Units written:", units)
 
-class ModuleCharacteristic(Characteristic):
+class ModulePositionCharacteristic(Characteristic):
     def __init__(self, service, module_name, uuid):
         self.module_name = module_name
         Characteristic.__init__(
@@ -122,12 +144,14 @@ class ModuleCharacteristic(Characteristic):
         config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
         module = next((m for m in config['modules'] if m['module'] == self.module_name), {})
         position = module.get('position', '')
-        value = [dbus.Byte(p.encode()) for p in position]
+        position_index = positions.index(position) if position in positions else 0
+        value = [dbus.Byte(position_index)]
         print(f"Position read for {self.module_name}:", position)
         return value
 
     def WriteValue(self, value, options):
-        position = ''.join(chr(b) for b in value)
+        position_index = int(value[0])
+        position = positions[position_index] if 0 <= position_index < len(positions) else positions[0]
         profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
         config = self.service.read_config(profile_index)
         for module in config['modules']:
