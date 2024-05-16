@@ -88,10 +88,11 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
           title="Connect to Bonded Device" />
       </View>
 
-      <View style={styles.buttonContainer}>
+      {/* haven't seen this function work yet, so removing from UI for now */}
+      {/* <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponFullConnectionButton()}
           title="Do Full Connection" />
-      </View>
+      </View> */}
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponSystemConnectedDevicesButton()}
