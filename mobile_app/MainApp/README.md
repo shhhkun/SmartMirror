@@ -21,12 +21,12 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 # ----------
 
-Next steps:
-- get rid of some of the hard coding of ID / Characteristic. make sure read and write then still works.
-- add some UI for switching between 2 configs. assuming sending data to one characteristic.
-- figure out how to encode/decode data, or at least simple ints
+I think the issue I'm seeing of disconnecting after about a minute can be attributed to the Lightblue app. Will wait to worry more about this until I see it happen on the pi.
 
-- make bonded -> connected work, without initiating the system connection in nrf connect.
+Next steps:
+- make some more of the connection process automatic. like getting system connected info. reduce the number of buttons and steps needed.
+   - the bonded > connected flow still works if you system connect in Lightblue.
+
 - add event handeler for disconnect events in the ble manager.
 - figure out how to encode/decode more complex data
 - should be using a reducer thing in provider states to make that less ugly. this itself is also complex, though.
@@ -38,7 +38,7 @@ Next steps:
 
 maybe:
 - smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
-- persist info about devices and/or user states. store stuff to "disk".
+- persist info about devices and/or user states. store stuff to "disk". might not be super necessary though, if I'm using the bonded devices array.
 
 # ----------
 

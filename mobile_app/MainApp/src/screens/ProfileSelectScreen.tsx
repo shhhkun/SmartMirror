@@ -1,5 +1,8 @@
 // library imports
-import React, { useContext } from 'react';
+import React, {
+  useContext,
+  useState
+} from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -16,7 +19,15 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const ProfileSelectScreen = ({ navigation }: { navigation: any }) => {
-  const { writeDataToCharacteristic } = useContext(BluetoothContext);
+  // context provider stuff needed for this screen
+  const { readFromCharacteristic, writeDataToCharacteristic }
+    = useContext(BluetoothContext);
+
+  // state stuff for this screen
+  const [readData, setReadData]
+    = useState<number>(0);
+
+
 
   const profileOneButton = async () => {
     console.log("Button 1 pressed");
@@ -27,6 +38,18 @@ const ProfileSelectScreen = ({ navigation }: { navigation: any }) => {
     console.log("Button 2 pressed");
     await writeDataToCharacteristic(2);
   }
+
+  const doUponReadButtonPress = async (): Promise<void> => {
+    try {
+      const returnedData: number[] = await readFromCharacteristic();
+      setReadData(returnedData[0]);
+      console.log('Read from characteristic button pressed');
+    }
+    catch (error) {
+      console.error('Error reading from characteristic:', error);
+    }
+  }
+
 
 
   return (
@@ -45,6 +68,17 @@ const ProfileSelectScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => profileTwoButton()} title="User 2" />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponReadButtonPress()}
+          title="Read from Characteristic" />
+      </View>
+
+      <View style={styles.mainStyle}>
+        <NiceTextArea title="Read Data">
+          {JSON.stringify(readData, null, 2)}
+        </NiceTextArea>
       </View>
 
     </SafeAreaView >

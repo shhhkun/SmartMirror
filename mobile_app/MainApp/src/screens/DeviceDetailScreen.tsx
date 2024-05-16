@@ -46,7 +46,7 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
     catch (error) {
       console.error('Error reading from characteristic:', error);
     }
-  }
+  };
 
   const doUponWriteButtonPress = async (): Promise<void> => {
     const dataValue: number = 80;
@@ -58,7 +58,7 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
     catch (error) {
       console.error('Error writing to characteristic from UI:', error);
     }
-  }
+  };
 
   // UI stuff here
   return (
