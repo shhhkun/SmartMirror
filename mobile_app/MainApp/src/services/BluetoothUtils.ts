@@ -1,17 +1,23 @@
 import {
   Buffer
 } from 'buffer';
-import { Peripheral } from 'react-native-ble-manager';
+import { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
 
-// functions to serialize/deserialize data, and anything else that
-// doesn't need to touch the context states or the BLE manager
+import {
+  TargetInfos,
+  defaultBluetoothContext
+} from './BluetoothContext';
 
-export function selectOurDeviceFromBondedDevices(peripheralsArray: Peripheral[]):
-  Peripheral {
-  // get our specific device from the list of bonded devices
+// functions that don't need to touch the context states or the BLE manager
+// directly. for selecting from lists of peripherals, services, etc. and
+// serialization stuff.
+
+export function selectOurDeviceFromBondedDevices(
+  peripheralsArray: Peripheral[]): Peripheral {
+  // get our specific device from the list of bonded devices.
+  // for now, this just selects the first device in the list.
   // eventially this will be based on some kind of manufaturer ID or something
-  // specific to our device. but for now, we're just going to return the first
-  // device in the list.
+  // specific to our device.
 
   if (peripheralsArray.length === 0) {
     throw new Error('No bonded devices found');
@@ -20,15 +26,26 @@ export function selectOurDeviceFromBondedDevices(peripheralsArray: Peripheral[])
   return peripheralsArray[0];
 }
 
-export function serializeInt(intInput: number): number[] {
-  // quick function just to try serializing a single number
+export function selectOurServiceAndCharacteristic(
+  appConnectedPeripheralInfo: PeripheralInfo): TargetInfos {
+  // select our specific service and characteristic from the lists of services
+  // and characteristics.
 
-  if (intInput < 0 || intInput > 255) {
-    throw new Error('Input must be between 0 and 255');
-  }
 
-  let buffer: Buffer = Buffer.alloc(1);
-  buffer.writeUInt32LE(intInput, 0);
-  const byteArray: number[] = Array.from(buffer);
-  return byteArray;
+  const deviceID: string = appConnectedPeripheralInfo?.id ||
+    defaultBluetoothContext.targetInfos.targetDeviceID;
+
+
+  // eventually can set service and characteristic based on their descriptions
+  // or positions. but for now, just have them hard-coded.
+  const serviceUUID: string = '1111';
+  const characteristicUUID: string = '2222';
+
+
+  const outputTargetInfos: TargetInfos = {
+    targetDeviceID: deviceID,
+    targetServiceUUID: serviceUUID,
+    targetCharacteristicUUID: characteristicUUID
+  };
+  return outputTargetInfos;
 }

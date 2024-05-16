@@ -22,7 +22,7 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 # ----------
 
 Next steps:
-- get write action to work. it is broken on my end.
+- get rid of some of the hard coding of ID / Characteristic. make sure read and write then still works.
 - add some UI for switching between 2 configs. assuming sending data to one characteristic.
 - figure out how to encode/decode data, or at least simple ints
 

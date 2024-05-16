@@ -19,7 +19,10 @@ import {
   TargetInfos,
   defaultBluetoothContext,
 } from './BluetoothContext';
-import { selectOurDeviceFromBondedDevices } from './BluetoothUtils';
+import {
+  selectOurDeviceFromBondedDevices,
+  selectOurServiceAndCharacteristic
+} from './BluetoothUtils';
 import BluetoothService from './BluetoothService';
 
 
@@ -46,39 +49,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const updateTargetsFromAppPeripheralInfo = (appConnectedPeripheralInfo:
     PeripheralInfo): void => {
-    // this assumes we're only going to have one service.
-    // and for now, this just selects the first characteristic.
 
-    const deviceID: string = appConnectedPeripheralInfo?.id ||
-      defaultBluetoothContext.targetInfos.targetDeviceID;
+    const newTargetInfos: TargetInfos = selectOurServiceAndCharacteristic(
+      appConnectedPeripheralInfo);
 
-
-    const servicesArray: Service[] = appConnectedPeripheralInfo?.services ?? [];
-    console.log('Services array: ', JSON.stringify(servicesArray, null, 2));
-
-    // const specificService: Service = servicesArray[5] ?? {};
-    // const serviceUUID: string = specificService?.uuid ??
-    //   defaultBluetoothContext.targetInfos.targetServiceUUID;
-
-    const serviceUUID = 'd0611e78-bbb4-4591-a5f8-487910ae4366'
-
-    console.log('Service UUID: ', serviceUUID);
-
-
-    // const characteristicsArray: Characteristic[] =
-    //   appConnectedPeripheralInfo?.characteristics ?? [];
-    // const specificCharacteristic: Characteristic = characteristicsArray[0] ?? {};
-    // const characteristicUUID: string = specificCharacteristic?.characteristic ??
-    //   defaultBluetoothContext.targetInfos.targetCharacteristicUUID;
-
-    const characteristicUUID = '8667556c-9a37-4c91-84ed-54ee27d90049';
-    console.log('Characteristic UUID: ', characteristicUUID);
-
-    setTargetInfos({
-      targetDeviceID: deviceID,
-      targetServiceUUID: serviceUUID,
-      targetCharacteristicUUID: characteristicUUID,
-    });
+    setTargetInfos(newTargetInfos);
   }
 
   const setTargetFieldsToDefault = (): void => {

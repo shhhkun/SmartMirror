@@ -8,9 +8,7 @@ import BleManager, {
   Peripheral,
   PeripheralInfo
 } from 'react-native-ble-manager';
-import {
-  serializeInt
-} from './BluetoothUtils';
+
 
 
 
@@ -177,33 +175,18 @@ class BluetoothService {
     }
   }
 
-  static async read(deviceID: string, serviceUUID: string,
-    characteristicUUID: string): Promise<any> {
+  static async read(
+    deviceID: string, serviceUUID: string, characteristicUUID: string):
+    Promise<any> {
 
     if (!await BluetoothService.checkIfDeviceIsSystemConnected(deviceID)) {
       console.error('Tried to read from disconnected device');
       return null;
     }
 
-    // todo - use the real data
-    // hard coded stuff for now
-    const tempDeviceID: string = '66:98:B4:F2:88:C2';
-    const tempServiceUUID: string = '1111';
-    const tempCharacteristicUUID: string = '2222';
-
-    console.log('-----------------');
-    console.log('using hard-coded device targets to read!')
-    console.log('deviceID:', tempDeviceID);
-    console.log('serviceUUID:', tempServiceUUID);
-    console.log('characteristicUUID:', tempCharacteristicUUID);
-    console.log('-----------------');
-
     try {
-      const returnedData: any = BleManager.read(tempDeviceID, tempServiceUUID,
-        tempCharacteristicUUID);
-
-      // const returnedData: any = BleManager.read(deviceID, serviceUUID,
-      //   characteristicUUID);
+      const returnedData: any = BleManager.read(deviceID, serviceUUID,
+        characteristicUUID);
 
       return returnedData;
     }
@@ -213,10 +196,10 @@ class BluetoothService {
     }
   }
 
-  // something in here is not succeeding. even when sending ints directly.
   static async writeInt(deviceID: string, serviceUUID: string,
     characteristicUUID: string, intInput: number): Promise<void> {
 
+    // make sure we're still connected
     try {
       if (!await BluetoothService.checkIfDeviceIsSystemConnected(deviceID)) {
         console.error('Tried to write to disconnected device');
@@ -227,33 +210,16 @@ class BluetoothService {
       throw error;
     }
 
-    // todo: use the real data that I'll pass in, not this dummy data.
-    // const serializedData: number[] = serializeInt(intInput);
-    const serializedData: number[] = [1]
-
-    // hard coded stuff for now
-    const tempDeviceID: string = '66:98:B4:F2:88:C2';
-    const tempServiceUUID: string = '1111';
-    const tempCharacteristicUUID: string = '2222';
-
-    console.log('-----------------');
-    console.log('using hard-coded device targets to write!')
-    console.log('deviceID:', tempDeviceID);
-    console.log('serviceUUID:', tempServiceUUID);
-    console.log('characteristicUUID:', tempCharacteristicUUID);
-    console.log('-----------------');
+    // write requires a numbers array, so change type here
+    const dataValue: number[] = [intInput];
 
     try {
-      await BleManager.write(tempDeviceID, tempServiceUUID, tempCharacteristicUUID,
-        serializedData);
-
-      // await BleManager.write(deviceID, serviceUUID, characteristicUUID,
-      //   serializedData);
+      await BleManager.write(deviceID, serviceUUID, characteristicUUID,
+        dataValue);
 
       console.log('Write to characteristic succeeded');
     }
     catch (error) {
-      // todo: this is the error I'm getting: Error writing
       console.error('Error writing to characteristic in writeInt:', error);
       throw error;
     }
