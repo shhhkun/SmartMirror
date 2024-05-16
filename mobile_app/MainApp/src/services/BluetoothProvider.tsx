@@ -348,27 +348,21 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  // this semi works rn
   const connectToBondedDevice = async (): Promise<void> => {
 
     // make sure we have info about a bonded device of interest
-    if (deviceInfos.bondedDeviceInfo === null) {
+    if (deviceInfos.bondedDeviceInfo === null ||
+      deviceInfos.bondedDeviceInfo ===
+      defaultBluetoothContext.deviceInfos.bondedDeviceInfo
+    ) {
       console.error('No bonded device to connect to');
       return;
     }
 
+    // attempt to connect to the bonded device
     try {
-      // attempt to connect to the bonded device
-      // todo: this could be the issue. since there isn't currently system
-      // connected device info.
-      // await appConnectToDevice(deviceInfos.bondedDeviceInfo.id);
-
       await BluetoothService.connectToDevice(deviceInfos.bondedDeviceInfo.id);
       console.log('Successfully connected to bonded device');
-
-      // get the connected device info
-      // todo - probably don't need this in here.
-      // await getSystemConnectedDeviceInfo();
 
     } catch (error) {
       console.error('Error connecting to bonded device in connectToBondedDevice:', error);

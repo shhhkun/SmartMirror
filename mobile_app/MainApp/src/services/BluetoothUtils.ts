@@ -1,8 +1,7 @@
-import {
-  Buffer
-} from 'buffer';
+// library imports
 import { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
 
+// my imports
 import {
   TargetInfos,
   defaultBluetoothContext

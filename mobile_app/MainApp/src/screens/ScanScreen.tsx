@@ -18,7 +18,7 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
   // parts of the context we need
-  const { deviceInfos,
+  const {
     getBondedDevice,
     connectToBondedDevice,
     getSystemConnectedDeviceInfo
@@ -89,20 +89,6 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
           title="Go to Device Detail Page" />
       </View>
 
-      <View style={styles.mainStyle}>
-        <NiceTextArea title="Peripheral Basic Info">
-
-          {/* might want some hook here that displays real time connected status */}
-
-          Last update time: {lastDeviceCheckTime}
-
-          {"\n"}
-
-          {JSON.stringify(deviceInfos.systemConnectedPeripheralInfo, null, 2)}
-        </NiceTextArea>
-      </View>
-
-
     </SafeAreaView >
   );
 };
@@ -122,8 +108,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: GlobalStyles.lightBackground,
   },
-
 });
+
 
 
 export default ScanScreen;

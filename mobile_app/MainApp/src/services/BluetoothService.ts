@@ -177,16 +177,16 @@ class BluetoothService {
 
   static async read(
     deviceID: string, serviceUUID: string, characteristicUUID: string):
-    Promise<any> {
+    Promise<number[]> {
 
     if (!await BluetoothService.checkIfDeviceIsSystemConnected(deviceID)) {
       console.error('Tried to read from disconnected device');
-      return null;
+      return [];
     }
 
     try {
-      const returnedData: any = BleManager.read(deviceID, serviceUUID,
-        characteristicUUID);
+      const returnedData: number[] =
+        await BleManager.read(deviceID, serviceUUID, characteristicUUID);
 
       return returnedData;
     }

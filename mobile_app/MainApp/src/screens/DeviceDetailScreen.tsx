@@ -7,7 +7,6 @@ import {
   StyleSheet,
   View,
   SafeAreaView,
-  Text,
 } from 'react-native';
 
 import { GlobalStyles } from '../common/GlobalStyles';
@@ -18,13 +17,17 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
-  // state stuff from the context provider
-  const { deviceInfos,
+  // stuff needed from the context provider
+  const {
     connectAndGetAppConnectedDeviceInfo,
     readFromCharacteristic,
     writeDataToCharacteristic,
   } = useContext(BluetoothContext);
+
+  // page-specific state stuff
   const [readData, setReadData] = useState<any>(null);
+
+
 
   const doUponServicesButtonPress = async (): Promise<void> => {
     try {
@@ -59,6 +62,8 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
       console.error('Error writing to characteristic from UI:', error);
     }
   };
+
+
 
   // UI stuff here
   return (
@@ -109,14 +114,12 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    // flex: 1, // using flexbox here is cursed; don't do
     paddingTop: 15,
     paddingBottom: 15,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: GlobalStyles.lightBackground,
   },
-
 });
 
 
