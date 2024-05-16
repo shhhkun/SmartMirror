@@ -117,7 +117,12 @@ class PowerControlCharacteristic(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-            self, bus, index, self.uuid, ["encrypt-read", "encrypt-write"], service,
+            self,
+            bus,
+            index,
+            self.uuid,
+            ["encrypt-read", "encrypt-write"],
+            service,
         )
 
         self.value = [0xFF]
@@ -159,7 +164,12 @@ class BoilerControlCharacteristic(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-            self, bus, index, self.uuid, ["encrypt-read", "encrypt-write"], service,
+            self,
+            bus,
+            index,
+            self.uuid,
+            ["encrypt-read", "encrypt-write"],
+            service,
         )
 
         self.value = []
@@ -197,7 +207,12 @@ class AutoOffCharacteristic(Characteristic):
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-            self, bus, index, self.uuid, ["secure-read", "secure-write"], service,
+            self,
+            bus,
+            index,
+            self.uuid,
+            ["secure-read", "secure-write"],
+            service,
         )
 
         self.value = []
@@ -237,7 +252,10 @@ class CharacteristicUserDescriptionDescriptor(Descriptor):
     CUD_UUID = "2901"
 
     def __init__(
-        self, bus, index, characteristic,
+        self,
+        bus,
+        index,
+        characteristic,
     ):
 
         self.value = array.array("B", characteristic.description)
@@ -257,7 +275,8 @@ class VivaldiAdvertisement(Advertisement):
     def __init__(self, bus, index):
         Advertisement.__init__(self, bus, index, "peripheral")
         self.add_manufacturer_data(
-            0xFFFF, [0x70, 0x74],
+            0xFFFF,
+            [0x70, 0x74],
         )
         self.add_service_uuid(VivaldiS1Service.ESPRESSO_SVC_UUID)
 
