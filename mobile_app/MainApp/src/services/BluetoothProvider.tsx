@@ -508,27 +508,24 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     // hard coded service and characteristic for now
-
-    // todo - these aren't being used rn in the bluetooth service class method!
-    const tempDeviceID: string = targetInfos.targetDeviceID;
-    const tempServiceUUID: string = 'd0611e78-bbb4-4591-a5f8-487910ae4366';
-    const tempCharacteristicUUID: string = '8667556c-9a37-4c91-84ed-54ee27d90049';
-
-    const tempData: number = 1;
-
+    // const tempDeviceID: string = targetInfos.targetDeviceID;
+    // const tempServiceUUID: string = 'd0611e78-bbb4-4591-a5f8-487910ae4366';
+    // const tempCharacteristicUUID: string = '8667556c-9a37-4c91-84ed-54ee27d90049';
+    // const tempData: number = 1;
 
     try {
-      BluetoothService.writeInt(
-        tempDeviceID,
-        tempServiceUUID,
-        tempCharacteristicUUID,
-        tempData);
-
+      // for when I want to hard code in here.
       // BluetoothService.writeInt(
-      //   targetInfos.targetDeviceID,
-      //   targetInfos.targetServiceUUID,
-      //   targetInfos.targetCharacteristicUUID,
-      //   data);
+      //   tempDeviceID,
+      //   tempServiceUUID,
+      //   tempCharacteristicUUID,
+      //   tempData);
+
+      BluetoothService.writeInt(
+        targetInfos.targetDeviceID,
+        targetInfos.targetServiceUUID,
+        targetInfos.targetCharacteristicUUID,
+        data);
 
     } catch (error) {
       console.error('Error writing to characteristic in provider:', error);

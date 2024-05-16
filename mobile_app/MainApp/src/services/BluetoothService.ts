@@ -185,10 +185,11 @@ class BluetoothService {
       return null;
     }
 
+    // todo - use the real data
     // hard coded stuff for now
-    const tempDeviceID: string = '77:1E:BC:E5:C7:17';
-    const tempServiceUUID: string = '89d3502b-0f36-433a-8ef4-c502ad55f8d';
-    const tempCharacteristicUUID: string = 'c6b2f38c-23ab-46d8-a6ab-a3a870bbd5d7';
+    const tempDeviceID: string = '66:98:B4:F2:88:C2';
+    const tempServiceUUID: string = '1111';
+    const tempCharacteristicUUID: string = '2222';
 
     console.log('-----------------');
     console.log('using hard-coded device targets to read!')
@@ -231,9 +232,9 @@ class BluetoothService {
     const serializedData: number[] = [1]
 
     // hard coded stuff for now
-    const tempDeviceID: string = '77:1E:BC:E5:C7:17';
-    const tempServiceUUID: string = '89d3502b-0f36-433a-8ef4-c502ad55f8d';
-    const tempCharacteristicUUID: string = 'c6b2f38c-23ab-46d8-a6ab-a3a870bbd5d7';
+    const tempDeviceID: string = '66:98:B4:F2:88:C2';
+    const tempServiceUUID: string = '1111';
+    const tempCharacteristicUUID: string = '2222';
 
     console.log('-----------------');
     console.log('using hard-coded device targets to write!')
