@@ -12,10 +12,11 @@ import {
 // and serialization stuff.
 
 function selectPeripheralByName(peripheralsArray: Peripheral[]): Peripheral {
-  const ourDeviceName: String = 'Blank';
 
+  // go through our list of saved devices. if one of our saved names is in the
+  // bonded devices list, select that one.
   for (let thisPeripheral of peripheralsArray) {
-    if (thisPeripheral.name === ourDeviceName) {
+    if (thisPeripheral.name && savedDeviceNames.includes(thisPeripheral.name)) {
       return thisPeripheral;
     }
   }
@@ -47,18 +48,13 @@ export function selectOurServiceAndCharacteristic(
   const deviceID: string = appConnectedPeripheralInfo?.id ||
     defaultBluetoothContext.targetInfos.targetDeviceID;
 
-
   // eventually can set service and characteristic based on their descriptions
   // or positions in arrays. but for now, just have them hard-coded.
-  const serviceUUID: string = '1111';
+  const serviceUUID: string =
+    savedServiceUUIDs.erikLightblueService;
 
-  // serjo's service ID
-  // 00000001-710e-4a5b-8d75-3e5b444bc3cf
-
-  const characteristicUUID: string = '2222';
-
-  // serjo's characteristic ID
-  // 00000002-710e-4a5b-8d75-3e5b444bc3cf
+  const characteristicUUID: string =
+    savedCharacteristicUUIDs.erikLightChar;
 
 
   const outputTargetInfos: TargetInfos = {
@@ -67,4 +63,35 @@ export function selectOurServiceAndCharacteristic(
     targetCharacteristicUUID: characteristicUUID
   };
   return outputTargetInfos;
+}
+
+export const enum modulePositionOptions {
+  top_bar = 1,
+  top_left,
+  top_center,
+  top_right,
+  upper_third,
+  middle_center,
+  lower_third,
+  bottom_left,
+  bottom_center,
+  bottom_right,
+  bottom_bar,
+  fullscreen_above,
+  fullscreen_below
+}
+
+const savedDeviceNames: string[] = [
+  'erik_lightblue',
+  'Blank'
+];
+
+const enum savedServiceUUIDs {
+  erikLightblueService = '1111',
+  serjoProfileService = '00000001-710e-4a5b-8d75-3e5b444bc3cf'
+}
+
+const enum savedCharacteristicUUIDs {
+  erikLightChar = '2222',
+  serjoProfileChar = '00000002-710e-4a5b-8d75-3e5b444bc3cf'
 }

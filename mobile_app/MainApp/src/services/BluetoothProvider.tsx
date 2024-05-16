@@ -451,7 +451,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   }
 
-  // haven't seen this work yet
+  // haven't seen this work yet. not using rn.
   const appConnectFromBonded = async (): Promise<void> => {
     // this failed when I tried it. however, the indivudual steps work when
     // triggered from buttons. maybe need to have delays between.

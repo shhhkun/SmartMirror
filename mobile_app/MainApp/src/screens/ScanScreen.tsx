@@ -57,6 +57,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  // have this functionality removed for now
   const doUponFullConnectionButton = async (): Promise<void> => {
     try {
       await appConnectFromBonded();
