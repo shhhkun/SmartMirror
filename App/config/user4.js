@@ -9,22 +9,26 @@ var config = {
 	  {
 		// alert
 		module: "alert",
+		disabled: false
 	  },
 	  {
 		// updatenotification
 		module: "updatenotification",
-		position: "top_bar"
+		position: "top_bar",
+		disabled: false
 	  },
 	  {
 		// clock
 		module: "clock",
-		position: "top_left"
+		position: "top_left",
+		disabled: false
 	  },
 	  {
 		// calendar
 		module: "calendar",
 		header: "US Holidays",
 		position: "top_left",
+		disabled: false,
 		config: {
 		  calendars: [
 			{
@@ -37,12 +41,14 @@ var config = {
 	  {
 		// compliments
 		module: "compliments",
-		position: "lower_third"
+		position: "lower_third",
+		disabled: false
 	  },
 	  {
 		// weather
 		module: "weather",
 		position: "top_right",
+		disabled: false,
 		config: {
 		  weatherProvider: "openweathermap",
 		  type: "current",
@@ -55,6 +61,7 @@ var config = {
 		// newsfeed
 		module: "newsfeed",
 		position: "bottom_bar",
+		disabled: false,
 		config: {
 		  feeds: [
 			{
