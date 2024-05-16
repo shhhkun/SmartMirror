@@ -11,10 +11,9 @@ import {
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
-import { BluetoothContext } from '../services/BluetoothContext';
+import ModulePositionsDropdown from '../components/ModulePositionsDropdown';
 
 
-// this component is unused right now
 
 const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 
@@ -22,9 +21,6 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
     console.log("Button pressed");
   };
 
-
-  // this will be a UI with some radial buttons to select "top left",
-  // "top right", etc. for each module.
 
   return (
     <SafeAreaView style={styles.mainStyle}>
@@ -34,6 +30,10 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
         <NiceTextArea title="Content">
           todo
         </NiceTextArea>
+      </View>
+
+      <View style={styles.mainStyle}>
+        <ModulePositionsDropdown options={["top", "bottom", "left", "right"]} />
       </View>
 
       <View style={styles.buttonContainer}>
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: GlobalStyles.lightBackground,
   },
-
 });
 
 

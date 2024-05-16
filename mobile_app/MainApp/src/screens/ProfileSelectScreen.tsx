@@ -81,6 +81,11 @@ const ProfileSelectScreen = ({ navigation }: { navigation: any }) => {
         </NiceTextArea>
       </View>
 
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => navigation.navigate('ModuleConfig')}
+          title="Go To Module Config Screens" />
+      </View>
+
     </SafeAreaView >
   );
 };
