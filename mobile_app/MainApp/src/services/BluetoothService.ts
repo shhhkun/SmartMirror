@@ -149,7 +149,7 @@ class BluetoothService {
     }
   }
 
-  static async appConnectToDevice(deviceID: string): Promise<void> {
+  static async connectToDevice(deviceID: string): Promise<void> {
     try {
       await BleManager.connect(deviceID);
     }

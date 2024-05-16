@@ -136,7 +136,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const appConnectToDevice = async (deviceID: string): Promise<void> => {
     try {
-      await BluetoothService.appConnectToDevice(deviceID);
+      await BluetoothService.connectToDevice(deviceID);
 
       // set device app connected state to true
       setDeviceStates({
@@ -348,7 +348,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  // this isn't working currently.
+  // this semi works rn
   const connectToBondedDevice = async (): Promise<void> => {
 
     // make sure we have info about a bonded device of interest
@@ -361,10 +361,14 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       // attempt to connect to the bonded device
       // todo: this could be the issue. since there isn't currently system
       // connected device info.
-      await appConnectToDevice(deviceInfos.bondedDeviceInfo.id);
+      // await appConnectToDevice(deviceInfos.bondedDeviceInfo.id);
+
+      await BluetoothService.connectToDevice(deviceInfos.bondedDeviceInfo.id);
+      console.log('Successfully connected to bonded device');
 
       // get the connected device info
-      await getSystemConnectedDeviceInfo();
+      // todo - probably don't need this in here.
+      // await getSystemConnectedDeviceInfo();
 
     } catch (error) {
       console.error('Error connecting to bonded device in connectToBondedDevice:', error);
@@ -495,6 +499,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
         targetInfos.targetServiceUUID,
         targetInfos.targetCharacteristicUUID,
         data);
+
+      console.log('Wrote data: ', data);
 
     } catch (error) {
       console.error('Error writing to characteristic in provider:', error);
