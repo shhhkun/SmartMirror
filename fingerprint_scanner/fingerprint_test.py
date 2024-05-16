@@ -170,6 +170,17 @@ def get_num():
             pass
     return i
 
+while True:
+    # Initial check to make sure it can find fingerprints
+    if finger.read_templates() != adafruit_fingerprint.OK:
+        raise RuntimeError("Failed to read templates")
+    
+    # LWill always find a fingerprint first, and then react accordingly
+    
+
+
+
+
 
 while True:
     print("----------------")
@@ -187,8 +198,10 @@ while True:
     if c == "f":
         if get_fingerprint():
             print("Detected #", finger.finger_id, "with confidence", finger.confidence)
+            return int(finger.finger_id) # Will return and terminate the program when finger is found
         else:
-            print("Finger not found")
+            print("User not found") # Print error message to stdout for 
+            return 0 # user is not found 
     if c == "d":
         if finger.delete_model(get_num()) == adafruit_fingerprint.OK:
             print("Deleted!")
