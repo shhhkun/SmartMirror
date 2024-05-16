@@ -451,6 +451,18 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   }
 
+  const appConnectFromBonded = async (): Promise<void> => {
+    try {
+      await connectToBondedDevice();
+      await getSystemConnectedDeviceInfo();
+      await connectAndGetAppConnectedDeviceInfo();
+
+    } catch (error) {
+      console.error('Error connecting from bonded:', error);
+      throw error;
+    }
+  }
+
   const readFromCharacteristic = async (): Promise<number[]> => {
     // returns a byte array
 
@@ -521,6 +533,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     connectToBondedDevice,
     getSystemConnectedDeviceInfo,
     connectAndGetAppConnectedDeviceInfo,
+    appConnectFromBonded,
     readFromCharacteristic,
     writeDataToCharacteristic,
   };

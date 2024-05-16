@@ -21,7 +21,8 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
   const {
     getBondedDevice,
     connectToBondedDevice,
-    getSystemConnectedDeviceInfo
+    getSystemConnectedDeviceInfo,
+    appConnectFromBonded
   } = useContext(BluetoothContext);
 
   // page-specific state stuff
@@ -56,6 +57,14 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  const doUponFullConnectionButton = async (): Promise<void> => {
+    try {
+      await appConnectFromBonded();
+    } catch (error) {
+      console.error('Error doing full connection in UI:', error);
+    }
+  };
+
 
   // UI stuff here
   return (
@@ -77,6 +86,11 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponConnectToBondedDeviceButton()}
           title="Connect to Bonded Device" />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponFullConnectionButton()}
+          title="Do Full Connection" />
       </View>
 
       <View style={styles.buttonContainer}>
