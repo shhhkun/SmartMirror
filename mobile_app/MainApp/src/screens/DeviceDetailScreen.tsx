@@ -86,13 +86,9 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
           title="Write to Characteristic" />
       </View>
 
-      <View style={styles.mainStyle}>
-        <NiceTextArea title="Target Characteristic Info">
-          <Text>
-            todo
-
-          </Text>
-        </NiceTextArea>
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => navigation.navigate("ProfileSelect")}
+          title="Go to Profile Switcher" />
       </View>
 
       <View style={styles.mainStyle}>

@@ -16,6 +16,7 @@ import { BluetoothContext } from '../services/BluetoothContext';
 
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
+  // context provider stuff needed in this component
   const { promptUserForPermissions } = useContext(BluetoothContext);
 
   const doUponNavigateButtonPress = async (): Promise<void> => {
@@ -37,10 +38,6 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           This mobile app is an interface for sending a JSON configuration file
           to the Smart Mirror via BLE. Press the button below to connect you device.
         </NiceTextArea>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => promptUserForPermissions()} title="permissions" />
       </View>
 
       <View style={styles.buttonContainer}>
