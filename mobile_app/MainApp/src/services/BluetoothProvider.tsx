@@ -154,7 +154,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  const retrieveServicesFromConnectedDevice = async (deviceID: string): Promise<void> => {
+  const retrieveServicesFromConnectedDevice = async (
+    deviceID: string): Promise<void> => {
     // this function attempts to get the services from the connected device.
     // it then updates the context with the new info.
 
@@ -246,6 +247,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     return true;
   }
 
+  // not yet implemented
   const checkIfDeviceIsReadable = async (serviceUUID: string,
     characteristicUUID: string): Promise<boolean> => {
     // todo
@@ -260,6 +262,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     return false;
   }
 
+  // not yet implemented
   const checkIfDeviceIsWritable = async (serviceUUID: string,
     characteristicUUID: string): Promise<boolean> => {
     // todo
@@ -364,9 +367,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   const getSystemConnectedDeviceInfo = async (): Promise<void> => {
     // checks for devices connected to the phone, which may or may not actually
     // have an app-specific connection. then sets the system connected device info.
-    // this function resets the app-specific
-    // info to defaults (for the case we've connected to a different device
-    // since that was written.
+    // this function resets the app-specific info to defaults, for the case we've
+    // connected to a different device since app info was written.
 
     if (!deviceStates.bluetoothPermissionsOK) {
       console.error('Bluetooth permissions not granted yet');
@@ -393,6 +395,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
         deviceInfos.bondedDeviceInfo,
 
       // for now, just assume we want the first connected device
+      // todo: might want to eventaully make a filtering function in utils
+      // to select only our device.
       systemConnectedPeripheralInfo:
         peripheralsArray[0],
 
@@ -425,6 +429,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
+    // use the device ID from system connected
     const deviceID: string = deviceInfos.systemConnectedPeripheralInfo?.id ||
       defaultBluetoothContext.targetInfos.targetDeviceID;
 
@@ -441,25 +446,23 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   }
 
-  const readFromCharacteristic = async (): Promise<any> => {
-    // return type tbd, I think it's some kind of int array
+  const readFromCharacteristic = async (): Promise<number[]> => {
+    // returns a byte array
 
     const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();
     if (!okToReadWrite) {
       console.error('Device not read-writable (readFromCharacteristic)');
-      return;
+      return [];
     }
 
     // do the actual read operation
     try {
-      const returnedData: any = await BluetoothService.read(
+      // use the targets stored in the target states
+      const returnedData: number[] = await BluetoothService.read(
         targetInfos.targetDeviceID,
         targetInfos.targetServiceUUID,
         targetInfos.targetCharacteristicUUID);
 
-
-      console.log("reading from characteristic : ", targetInfos.targetDeviceID)
-      // no clue what this data actually is. an array of ints?
       console.log('Read data: ', returnedData);
 
       return returnedData;
@@ -470,9 +473,6 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  // this write isn't working right now.
-  // status code 6 corresponded to something like GATT REQUEST NOT SUPPORTED.
-  // where I might have been trying to write to a read-only characteristic.
   const writeDataToCharacteristic = async (data: number): Promise<void> => {
     // for now, just accepting data as an int
 
@@ -482,21 +482,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
-    // hard coded service and characteristic for now
-    // const tempDeviceID: string = targetInfos.targetDeviceID;
-    // const tempServiceUUID: string = 'd0611e78-bbb4-4591-a5f8-487910ae4366';
-    // const tempCharacteristicUUID: string = '8667556c-9a37-4c91-84ed-54ee27d90049';
-    // const tempData: number = 1;
-
     try {
-      // for when I want to hard code in here.
-      // BluetoothService.writeInt(
-      //   tempDeviceID,
-      //   tempServiceUUID,
-      //   tempCharacteristicUUID,
-      //   tempData);
-
-      BluetoothService.writeInt(
+      await BluetoothService.writeInt(
         targetInfos.targetDeviceID,
         targetInfos.targetServiceUUID,
         targetInfos.targetCharacteristicUUID,
