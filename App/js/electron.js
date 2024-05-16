@@ -188,7 +188,23 @@ function loadConfiguration() {
 
 function watchFiles() {
   const userIdPath = path.join(__dirname, 'userId.js');
-  const userConfigPath = path.join(__dirname, "..", "config", `${userId}.js`);
+  let userConfigPath = path.join(__dirname, "..", "config", `${userId}.js`);
+  let userConfigWatcher = null;
+
+  function watchUserConfig() {
+    if (userConfigWatcher) {
+      userConfigWatcher.close();
+    }
+
+    userConfigPath = path.join(__dirname, "..", "config", `${userId}.js`);
+    userConfigWatcher = fs.watch(userConfigPath, (eventType, filename) => {
+      if (filename === `${userId}.js`) {
+        console.log(`User-specific configuration file (${userConfigPath}) changed`);
+        loadConfiguration();
+        mainWindow.webContents.reload();
+      }
+    });
+  }
 
   fs.watch(userIdPath, (eventType, filename) => {
     if (filename === 'userId.js') {
@@ -205,17 +221,12 @@ function watchFiles() {
         userConfig.userId = userId;
         loadConfiguration();
         mainWindow.webContents.reload();
+        watchUserConfig();
       }
     }
   });
 
-  fs.watch(userConfigPath, (eventType, filename) => {
-    if (filename === `${userId}.js`) {
-      console.log(`User-specific configuration file (${userConfigPath}) changed`);
-      loadConfiguration();
-      mainWindow.webContents.reload();
-    }
-  });
+  watchUserConfig();
 }
 
 if (["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].includes(config.address)) {
