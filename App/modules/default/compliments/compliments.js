@@ -2,10 +2,10 @@ Module.register("compliments", {
 	// Module config defaults.
 	defaults: {
 		compliments: {
-			anytime: ["Hey there sexy!"],
-			morning: ["Good morning, handsome!", "Enjoy your day!", "How was your sleep?"],
-			afternoon: ["Hello, beauty!", "You look sexy!", "Looking good today!"],
-			evening: ["Wow, you look hot!", "You look nice!", "Hi, sexy!"],
+			anytime: ["Welcome"],
+			morning: ["Good morning!"],
+			afternoon: ["Good afternoon!"],
+			evening: [],
 			"....-01-01": ["Happy new year!"]
 		},
 		updateInterval: 30000,
@@ -37,6 +37,9 @@ Module.register("compliments", {
 			this.config.compliments = JSON.parse(response);
 			this.updateDom();
 		}
+
+		const userId = await this.loadUserId();
+		this.config.compliments.anytime[0] = `Hi ${userId}!`;
 
 		// Schedule update timer.
 		setInterval(() => {
@@ -105,15 +108,16 @@ Module.register("compliments", {
 		return compliments;
 	},
 
-	/**
-	 * Retrieve a file from the local filesystem
-	 * @returns {Promise} Resolved when the file is loaded
-	 */
-	async loadComplimentFile () {
-		const isRemote = this.config.remoteFile.indexOf("http://") === 0 || this.config.remoteFile.indexOf("https://") === 0,
-			url = isRemote ? this.config.remoteFile : this.file(this.config.remoteFile);
-		const response = await fetch(url);
-		return await response.text();
+	async loadUserId() {
+		try {
+			const response = await fetch('../../js/userId.js');
+			const userIdContent = await response.text();
+			const userIdMatch = userIdContent.match(/exports\.userId\s*=\s*"(.+)"/);
+			return userIdMatch ? userIdMatch[1] : 'default';
+		} catch (error) {
+			console.error('Error loading user ID:', error);
+			return 'default';
+		}
 	},
 
 	/**
@@ -136,6 +140,17 @@ Module.register("compliments", {
 		}
 
 		return compliments[index] || "";
+	},
+
+	/**
+	 * Retrieve a file from the local filesystem
+	 * @returns {Promise} Resolved when the file is loaded
+	 */
+	async loadComplimentFile () {
+		const isRemote = this.config.remoteFile.indexOf("http://") === 0 || this.config.remoteFile.indexOf("https://") === 0,
+			url = isRemote ? this.config.remoteFile : this.file(this.config.remoteFile);
+		const response = await fetch(url);
+		return await response.text();
 	},
 
 	// Override dom generator.

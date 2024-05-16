@@ -117,6 +117,7 @@ function createWindow() {
 
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
+    watchFiles();
   });
 }
 
@@ -185,12 +186,12 @@ function loadConfiguration() {
   }
 }
 
-function watchElectronJSFile() {
-  const electronJSPath = __filename;
+function watchFiles() {
   const userIdPath = path.join(__dirname, 'userId.js');
+  const userConfigPath = path.join(__dirname, "..", "config", `${userId}.js`);
 
-  const watchUserIdFile = fs.watch(userIdPath, (eventType, filename) => {
-    if (filename === path.basename(userIdPath)) {
+  fs.watch(userIdPath, (eventType, filename) => {
+    if (filename === 'userId.js') {
       console.log("userId file changed");
       delete require.cache[require.resolve(userIdPath)];
       const updatedUserIdModule = require(userIdPath);
@@ -202,20 +203,17 @@ function watchElectronJSFile() {
       if (newUserId !== userId) {
         userId = newUserId;
         userConfig.userId = userId;
-
         loadConfiguration();
-
         mainWindow.webContents.reload();
-        mainWindow.webContents.send("reload-config");
       }
     }
   });
 
-  const watchElectronJSFile = fs.watch(electronJSPath, (eventType, filename) => {
-    if (filename === path.basename(electronJSPath)) {
-      console.log("electron.js file changed");
-      watchUserIdFile.close();
-      watchElectronJSFile();
+  fs.watch(userConfigPath, (eventType, filename) => {
+    if (filename === `${userId}.js`) {
+      console.log(`User-specific configuration file (${userConfigPath}) changed`);
+      loadConfiguration();
+      mainWindow.webContents.reload();
     }
   });
 }
@@ -229,7 +227,6 @@ if (["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].includes(co
       Log.log("Launching application.");
       loadConfiguration();
       createWindow();
-      watchElectronJSFile();
     });
   });
 }

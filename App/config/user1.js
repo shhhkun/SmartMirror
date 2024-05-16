@@ -7,20 +7,52 @@ var config = {
 	units: "metric",
 	modules: [
 	  {
+		// alert
 		module: "alert",
 	  },
 	  {
+		// updatenotification
+		module: "updatenotification",
+		position: "top_bar"
+	  },
+	  {
+		// clock
+		module: "clock",
+		position: "top_left"
+	  },
+	  {
+		// calendar
+		module: "calendar",
+		header: "US Holidays",
+		position: "top_left",
+		config: {
+		  calendars: [
+			{
+			  symbol: "calendar-check",
+			  url: "webcal://www.calendarlabs.com/ical-calendar/ics/76/US_Holidays.ics"
+			}
+		  ]
+		}
+	  },
+	  {
+		// compliments
+		module: "compliments",
+		position: "lower_third"
+	  },
+	  {
+		// weather
 		module: "weather",
 		position: "top_right",
 		config: {
 		  weatherProvider: "openweathermap",
 		  type: "current",
-		  location: "New York",
-		  locationID: "5128581",
-		  apiKey: "YOUR_OPENWEATHER_API_KEY"
+		  location: "Santa Cruz",
+		  //locationID: "5368361",
+		  apiKey: "945780832dc712da979aa1bc89616956"
 		}
 	  },
 	  {
+		// newsfeed
 		module: "newsfeed",
 		position: "bottom_bar",
 		config: {
