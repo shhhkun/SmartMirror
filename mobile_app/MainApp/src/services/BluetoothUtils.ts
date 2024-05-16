@@ -37,7 +37,7 @@ export function selectOurServiceAndCharacteristic(
 
 
   // eventually can set service and characteristic based on their descriptions
-  // or positions. but for now, just have them hard-coded.
+  // or positions in arrays. but for now, just have them hard-coded.
   const serviceUUID: string = '1111';
   const characteristicUUID: string = '2222';
 

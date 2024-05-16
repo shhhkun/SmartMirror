@@ -49,8 +49,10 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
   }
 
   const doUponWriteButtonPress = async (): Promise<void> => {
+    const dataValue: number = 80;
+
     try {
-      await writeDataToCharacteristic(3);
+      await writeDataToCharacteristic(dataValue);
       console.log('Write to characteristic button pressed');
     }
     catch (error) {
