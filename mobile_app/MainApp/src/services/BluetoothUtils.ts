@@ -9,8 +9,8 @@ import {
 } from './BluetoothContext';
 
 // functions that don't need to touch the context states or the BLE manager
-// directly. for selecting from lists of peripherals, services, etc. and
-// serialization stuff.
+// directly. for selecting from lists of peripherals, services, characteristics.
+// and serialization stuff.
 
 function selectPeripheralByName(peripheralsArray: Peripheral[]): Peripheral {
   const ourDeviceName: String = 'Blank';

@@ -309,7 +309,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const getBondedDevice = async (): Promise<void> => {
     // gets the list of bonded devices. and then populates bonded device info
-    // in context with the first device in the list.
+    // in context.
 
     try {
       const bondedDevices: Peripheral[] =
@@ -350,17 +350,21 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // this isn't working currently.
   const connectToBondedDevice = async (): Promise<void> => {
-    if (deviceInfos.bondedDeviceInfo == null) {
+
+    // make sure we have info about a bonded device of interest
+    if (deviceInfos.bondedDeviceInfo === null) {
       console.error('No bonded device to connect to');
       return;
     }
 
     try {
       // attempt to connect to the bonded device
-      appConnectToDevice(deviceInfos.bondedDeviceInfo.id);
+      // todo: this could be the issue. since there isn't currently system
+      // connected device info.
+      await appConnectToDevice(deviceInfos.bondedDeviceInfo.id);
 
       // get the connected device info
-      getSystemConnectedDeviceInfo();
+      await getSystemConnectedDeviceInfo();
 
     } catch (error) {
       console.error('Error connecting to bonded device in connectToBondedDevice:', error);
