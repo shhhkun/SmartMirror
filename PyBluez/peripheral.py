@@ -39,18 +39,8 @@ class UserProfileService(Service):
         self.add_characteristic(ProfileIndexCharacteristic(self))
         self.add_characteristic(LanguageCharacteristic(self))
         self.add_characteristic(UnitsCharacteristic(self))
-        self.add_characteristic(ModulePositionCharacteristic(self, "updatenotification", "00000004-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModulePositionCharacteristic(self, "clock", "00000005-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModulePositionCharacteristic(self, "calendar", "00000006-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModulePositionCharacteristic(self, "compliments", "00000007-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModulePositionCharacteristic(self, "weather", "00000008-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModulePositionCharacteristic(self, "newsfeed", "00000009-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModuleNameCharacteristic(self, "updatenotification", "0000000A-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModuleNameCharacteristic(self, "clock", "0000000B-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModuleNameCharacteristic(self, "calendar", "0000000C-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModuleNameCharacteristic(self, "compliments", "0000000D-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModuleNameCharacteristic(self, "weather", "0000000E-710e-4a5b-8d75-3e5b444bc3cf"))
-        self.add_characteristic(ModuleNameCharacteristic(self, "newsfeed", "0000000F-710e-4a5b-8d75-3e5b444bc3cf"))
+        self.add_characteristic(ClockPositionCharacteristic(self))
+        print("UserProfileService initialized")
 
     def get_config_path(self, profile_index):
         return os.path.join(CONFIG_DIR, f"file{profile_index}.json")
@@ -74,6 +64,7 @@ class ProfileIndexCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(UserProfileDescriptor(self))
         self.profile_index = 0
+        print("ProfileIndexCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.profile_index)]
@@ -92,6 +83,7 @@ class LanguageCharacteristic(Characteristic):
             self, self.LANGUAGE_UUID,
             ["read", "write"], service)
         self.add_descriptor(UserProfileDescriptor(self))
+        print("LanguageCharacteristic initialized")
 
     def ReadValue(self, options):
         config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
@@ -116,6 +108,7 @@ class UnitsCharacteristic(Characteristic):
             self, self.UNITS_UUID,
             ["read", "write"], service)
         self.add_descriptor(UserProfileDescriptor(self))
+        print("UnitsCharacteristic initialized")
 
     def ReadValue(self, options):
         config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
@@ -132,21 +125,24 @@ class UnitsCharacteristic(Characteristic):
         self.service.write_config(profile_index, config)
         print("Units written:", units)
 
-class ModulePositionCharacteristic(Characteristic):
-    def __init__(self, service, module_name, uuid):
-        self.module_name = module_name
+class ClockPositionCharacteristic(Characteristic):
+    CLOCK_POSITION_UUID = "00000005-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, service):
         Characteristic.__init__(
-            self, uuid,
+            self, self.CLOCK_POSITION_UUID,
             ["read", "write"], service)
         self.add_descriptor(UserProfileDescriptor(self))
+        print("ClockPositionCharacteristic initialized")
 
     def ReadValue(self, options):
-        config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
-        module = next((m for m in config['modules'] if m['module'] == self.module_name), {})
+        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
+        config = self.service.read_config(profile_index)
+        module = next((m for m in config['modules'] if m['module'] == 'clock'), {})
         position = module.get('position', '')
         position_index = positions.index(position) if position in positions else 0
         value = [dbus.Byte(position_index)]
-        print(f"Position read for {self.module_name}:", position)
+        print("Clock position read:", position)
         return value
 
     def WriteValue(self, value, options):
@@ -155,38 +151,10 @@ class ModulePositionCharacteristic(Characteristic):
         profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
         config = self.service.read_config(profile_index)
         for module in config['modules']:
-            if module['module'] == self.module_name:
+            if module['module'] == 'clock':
                 module['position'] = position
         self.service.write_config(profile_index, config)
-        print(f"Position written for {self.module_name}:", position)
-
-class ModuleNameCharacteristic(Characteristic):
-    def __init__(self, service, module_name, uuid):
-        self.module_name = module_name
-        Characteristic.__init__(
-            self, uuid,
-            ["read", "write"], service)
-        self.add_descriptor(UserProfileDescriptor(self))
-
-    def ReadValue(self, options):
-        config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
-        module = next((m for m in config['modules'] if m['module'] == self.module_name), {})
-        module_name = module.get('module', '')
-        value = [dbus.Byte(ord(c)) for c in module_name]
-        print(f"Module name read for {self.module_name}:", module_name)
-        return value
-
-    def WriteValue(self, value, options):
-        module_name = ''.join(chr(b) for b in value)
-        if module_name == '0':
-            module_name = ''
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        config = self.service.read_config(profile_index)
-        for module in config['modules']:
-            if module['module'] == self.module_name:
-                module['module'] = module_name
-        self.service.write_config(profile_index, config)
-        print(f"Module name written for {self.module_name}:", module_name)
+        print("Clock position written:", position)
 
 class UserProfileDescriptor(Descriptor):
     USER_PROFILE_DESCRIPTOR_UUID = "2901"
