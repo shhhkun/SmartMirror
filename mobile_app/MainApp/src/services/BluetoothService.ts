@@ -47,6 +47,7 @@ class BluetoothService {
       await BleManager.enableBluetooth();
 
     } catch (error) {
+      console.error('Error enabling Bluetooth:', error);
       throw new Error("Bluetooth permission denied");
     }
   }
