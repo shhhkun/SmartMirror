@@ -175,8 +175,8 @@ while True:
     if finger.read_templates() != adafruit_fingerprint.OK:
         raise RuntimeError("Failed to read templates")
     
-    # LWill always find a fingerprint first, and then react accordingly
-    
+    # Will always find a fingerprint first, and then react accordingly
+
 
 
 
