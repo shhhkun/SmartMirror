@@ -28,14 +28,15 @@ Next steps:
    - the bonded > connected flow still works if you system connect in Lightblue.
    - connecting while already connected seems to be fine. so doesn't matter if this gets called again
    - can maybe do some refactoring with all this stuff when I add in the event handlers for the ble manager events.
-- finish up UI page for the module configs.
-   - need to figure out data flow stuff with props, and what should be where.
 - add event handeler for disconnect events in the ble manager.
+- maybe make a top right status menu that shows this stuff. could be just a button that takes you to a dedicated status page.
 - figure out how to encode/decode more complex data
 - add support for more than 1 characteristic at once in bluetooth context
+
+blocked
+- fill out props and data flow stuff for the "send changes to mirror" screen. on hold until I know if we're sending a full json / one module's json / something even more granular.
 - maybe make a second context for holding onto the module config JSON. have one "attribute" that is the real config. and then one that is a "draft" which gets editied in the form submit page. and upon pressing the submit button, the draft gets sent off, and upon writing successfully, the main json config then gets updated to the draft.
-- add ability and UI for communicating with more than 1 characteristic. might reconfiguretarget stuff with this. maybe make the target characteristic an array, and just for-each this for writing.
-- make UI for sending data to multiple characteristics
+- add ability and UI for communicating with more than 1 characteristic. might reconfiguretarget stuff with this. maybe make the target characteristic an array, and just for-each this for writing. or somehow form an association between certain modules and certain characteristics.
 
 
 maybe:

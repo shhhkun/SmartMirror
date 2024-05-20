@@ -59,14 +59,25 @@ export interface TargetInfos {
   targetServiceUUID: string;
   targetCharacteristicUUID: string;
 }
+// maybe the "main" target characteristic could be current user. or number of
+// modules.
 
-
+// might want to have a type that is an array or map of characteristics and
+// associated module. I like the idea of a map, where keys are module names and
+// values are the characteristicUUIDs.
+export interface CharacteristicsMapping {
+  [characteristicName: string]: string;
+}
+// might need to have some method that takes the peripherals info gotten from
+// retrieveServices and updates this field with characteristic UUIDs and their
+// names. assuming that in the advertising thing, the
 
 export interface BluetoothContextType {
 
   deviceStates: DeviceStates;
   deviceInfos: DeviceInfos;
   targetInfos: TargetInfos;
+  // characteristicsMapping: CharacteristicsMapping;
 
   promptUserForPermissions: () => Promise<void>;
   getBondedDevice: () => Promise<void>;
