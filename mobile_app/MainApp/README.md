@@ -28,14 +28,12 @@ Next steps:
    - the bonded > connected flow still works if you system connect in Lightblue.
    - connecting while already connected seems to be fine. so doesn't matter if this gets called again
    - can maybe do some refactoring with all this stuff when I add in the event handlers for the ble manager events.
-
+- finish up UI page for the module configs.
+   - need to figure out data flow stuff with props, and what should be where.
 - add event handeler for disconnect events in the ble manager.
 - figure out how to encode/decode more complex data
-- should be using a reducer thing in provider states to make that less ugly. this itself is also complex, though.
+- add support for more than 1 characteristic at once in bluetooth context
 
-- figure out dataflow stuff for the UI form page. what gets passed as props vs what is in each little component directly.
-
-- make UI for sending data to config a module for one characteristic. should have radial buttons for "top left", "top right", etc for positions. (not x/y coordinates)
 
 - add ability and UI for communicating with more than 1 characteristic. might reconfiguretarget stuff with this. maybe make the target characteristic an array, and just for-each this for writing.
 - make UI for sending data to multiple characteristics

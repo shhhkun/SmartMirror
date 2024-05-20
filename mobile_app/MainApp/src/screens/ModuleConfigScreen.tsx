@@ -10,8 +10,7 @@ import {
 // my imports
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
-import NiceTextArea from '../components/NiceTextArea';
-import ModulePositionsDropdown from '../components/ModulePositionsDropdown';
+import ModuleConfigBar from '../components/ModuleConfigBar';
 
 
 
@@ -27,17 +26,11 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
       <StatusBar></StatusBar>
 
       <View style={styles.mainStyle}>
-        <NiceTextArea title="Content">
-          todo
-        </NiceTextArea>
-      </View>
-
-      <View style={styles.mainStyle}>
-        <ModulePositionsDropdown options={["top", "bottom", "left", "right"]} />
+        <ModuleConfigBar title="Weather" sliderValue={0} onSliderChange={(value: number) => console.log(value)} />
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => buttonToDoSomething()} title="button" />
+        <ButtonToNavigate onPress={() => buttonToDoSomething()} title="Send Changes to Mirror" />
       </View>
 
     </SafeAreaView >

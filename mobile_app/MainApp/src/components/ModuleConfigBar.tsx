@@ -1,8 +1,12 @@
-// Section.tsx
+// library imports
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+
+// my imports
 import ModulePositionsDropdown from './ModulePositionsDropdown';
-// import Slider from './Slider';
+import ModuleEnableToggle from './ModuleEnableToggle';
+
+
 
 interface ModuleConfigBarProps {
   title: string;
@@ -16,8 +20,8 @@ const ModuleConfigBar: React.FC<ModuleConfigBarProps> = ({
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.title}>{title}</Text>
-      <ModulePositionsDropdown options={[]} />
-      {/* <Slider value={sliderValue} onValueChange={onSliderChange} /> */}
+      <ModulePositionsDropdown options={["top", "bottom", "left", "right"]} />
+      <ModuleEnableToggle value={false} onValueChange={(value: boolean) => console.log(value)} />
     </View>
   );
 };
