@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 // my imports
-import BluetoothProvider from './src/services/BluetoothProvider';
+import BluetoothProvider from './src/ble/BluetoothProvider';
 import HomeScreen from './src/screens/HomeScreen';
 import ScanScreen from './src/screens/ScanScreen';
 import DeviceDetailScreen from './src/screens/DeviceDetailScreen';

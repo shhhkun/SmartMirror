@@ -14,7 +14,7 @@ import {
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
-import { BluetoothContext } from '../services/BluetoothContext';
+import { BluetoothContext } from '../ble/BluetoothContext';
 
 
 
