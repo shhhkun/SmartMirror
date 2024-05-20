@@ -24,7 +24,7 @@ const ModuleEnableToggle: React.FC<ModuleEnableToggleProps> = ({
 
 const styles = StyleSheet.create({
   toggleContainer: {
-    marginTop: 10,
+    marginTop: 0
   },
 });
 

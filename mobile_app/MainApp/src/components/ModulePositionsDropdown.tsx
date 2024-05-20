@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     height: 50,
-    width: '35%',
+    width: 150, // could change this to percent width
   },
 });
 

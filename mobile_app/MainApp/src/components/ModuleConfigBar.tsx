@@ -20,8 +20,10 @@ const ModuleConfigBar: React.FC<ModuleConfigBarProps> = ({
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.title}>{title}</Text>
-      <ModulePositionsDropdown options={["top", "bottom", "left", "right"]} />
-      <ModuleEnableToggle value={false} onValueChange={(value: boolean) => console.log(value)} />
+      <View style={styles.rowContainer}>
+        <ModulePositionsDropdown options={["top", "bottom", "left", "right"]} />
+        <ModuleEnableToggle value={false} onValueChange={(value: boolean) => console.log(value)} />
+      </View>
     </View>
   );
 };
@@ -42,6 +44,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 

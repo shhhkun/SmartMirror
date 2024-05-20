@@ -33,10 +33,10 @@ Next steps:
 - add event handeler for disconnect events in the ble manager.
 - figure out how to encode/decode more complex data
 - add support for more than 1 characteristic at once in bluetooth context
-
-
+- maybe make a second context for holding onto the module config JSON. have one "attribute" that is the real config. and then one that is a "draft" which gets editied in the form submit page. and upon pressing the submit button, the draft gets sent off, and upon writing successfully, the main json config then gets updated to the draft.
 - add ability and UI for communicating with more than 1 characteristic. might reconfiguretarget stuff with this. maybe make the target characteristic an array, and just for-each this for writing.
 - make UI for sending data to multiple characteristics
+
 
 maybe:
 - smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
