@@ -15,3 +15,6 @@ Device, ID x {
     }
 }
 
+The "current user" characteristic should basically just expose the system's small JSON file that holds something like current user = 2. If we want to enable profile switching from the app, this should be writeable.
+
+Upon changing the current user, the remaining characteristics should all go away. Then new services should become availible.
