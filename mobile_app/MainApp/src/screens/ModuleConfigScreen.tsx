@@ -26,15 +26,15 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
       <StatusBar></StatusBar>
 
       <View style={styles.mainStyle}>
-        <ModuleConfigBar title="Clock" sliderValue={0} onSliderChange={(value: number) => console.log(value)} />
+        <ModuleConfigBar title="Clock" sliderValue={true} onSliderChange={(value: number) => console.log(value)} />
       </View>
 
       <View style={styles.mainStyle}>
-        <ModuleConfigBar title="Weather" sliderValue={0} onSliderChange={(value: number) => console.log(value)} />
+        <ModuleConfigBar title="Weather" sliderValue={false} onSliderChange={(value: number) => console.log(value)} />
       </View>
 
       <View style={styles.mainStyle}>
-        <ModuleConfigBar title="News" sliderValue={0} onSliderChange={(value: number) => console.log(value)} />
+        <ModuleConfigBar title="News" sliderValue={true} onSliderChange={(value: number) => console.log(value)} />
       </View>
 
       <View style={styles.buttonContainer}>

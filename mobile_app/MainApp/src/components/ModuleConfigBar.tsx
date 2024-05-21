@@ -10,19 +10,21 @@ import ModuleEnableToggle from './ModuleEnableToggle';
 
 interface ModuleConfigBarProps {
   title: string;
-  sliderValue: number;
+  sliderValue: boolean;
   onSliderChange: (value: number) => void;
 }
 
 const ModuleConfigBar: React.FC<ModuleConfigBarProps> = ({
   title, sliderValue, onSliderChange }) => {
 
+  // value of slider needs to be a state. with useState hook. initail val = slider value
+
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.rowContainer}>
         <ModulePositionsDropdown options={["top", "bottom", "left", "right"]} />
-        <ModuleEnableToggle value={false} onValueChange={(value: boolean) => console.log(value)} />
+        <ModuleEnableToggle value={sliderValue} onValueChange={(value: boolean) => sliderValue = value} />
       </View>
     </View>
   );

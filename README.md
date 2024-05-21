@@ -17,4 +17,6 @@ Device, ID x {
 
 The "current user" characteristic should basically just expose the system's small JSON file that holds something like current user = 2. If we want to enable profile switching from the app, this should be writeable.
 
-Upon changing the current user, the remaining characteristics should all go away. Then new services should become availible.
+Upon changing the current user (either via fingerprint or a bluetooth command), the module-specific characteristics, z1-zn, should all go away. Then, new characteristics should appear, each with new UUIDs, and exposing different underlying data.
+
+Upon writing to one of these module-specific characteristics, the corresponding section in the user's json config file would be updated with the new content.
