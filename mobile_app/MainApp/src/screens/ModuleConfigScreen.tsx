@@ -16,6 +16,9 @@ import ModuleConfigBar from '../components/ModuleConfigBar';
 
 const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 
+  // todo: I think the slider states and dropdown states should be states
+  // in here. make the component-specific states can hook into these states.
+
   const doUponSubmitButton = () => {
     console.log("Send Changes to Mirror button pressed");
   };

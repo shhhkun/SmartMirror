@@ -71,7 +71,12 @@ export function parseModuleNamesAndCharacteristics(
   // todo: make this not hard coded
 
   // for now, this will just return some hard-coded module names and UUIDs.
-  return defaultBluetoothContext.characteristicsMap;
+  const moduleNamesAndCharacteristics: CharacteristicsMap = {
+    "Clock": savedCharacteristicUUIDs.erikLightCharModu1,
+    "Weather": savedCharacteristicUUIDs.erikLightCharModu2
+  }
+
+  return moduleNamesAndCharacteristics;
 }
 
 export const enum modulePositionOptions {
@@ -102,6 +107,8 @@ const enum savedServiceUUIDs {
 
 const enum savedCharacteristicUUIDs {
   erikLightChar = '2222',
-  serjoProfileChar = '00000002-710e-4a5b-8d75-3e5b444bc3cf'
-  // add more for module things
+  serjoProfileChar = '00000002-710e-4a5b-8d75-3e5b444bc3cf',
+
+  erikLightCharModu1 = '3333',
+  erikLightCharModu2 = '4444',
 }
