@@ -22,7 +22,8 @@ import {
 } from './BluetoothContext';
 import {
   selectOurDeviceFromBondedDevices,
-  selectOurServiceAndCharacteristic
+  selectTargetServiceAndCharacteristic,
+  parseModuleNamesAndCharacteristics
 } from './BluetoothUtils';
 import BluetoothService from './BluetoothService';
 
@@ -53,19 +54,21 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   const updateTargetsFromAppPeripheralInfo = (appConnectedPeripheralInfo:
     PeripheralInfo): void => {
 
-    const newTargetInfos: TargetInfos = selectOurServiceAndCharacteristic(
+    const newTargetInfos: TargetInfos = selectTargetServiceAndCharacteristic(
       appConnectedPeripheralInfo);
 
     setTargetInfos(newTargetInfos);
   }
 
-  // not yet implemented
   const populateCharacteristicsMap = (appConnectedPeripheralInfo:
     PeripheralInfo): void => {
-    // todo
-
     // will take the retrieveServices PeripheralInfo array and populate the
     // characteristicsMap with module names and characteristic UUIDs.
+
+    // thisn function is just hard coded for now.
+    setCharacteristicsMap(
+      parseModuleNamesAndCharacteristics(appConnectedPeripheralInfo)
+    );
   }
 
   const setTargetFieldsToDefault = (): void => {
@@ -197,7 +200,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
           peripheralRetrievedServicesInfo,
       });
 
+      // update targets. for the "main" characteristic
       updateTargetsFromAppPeripheralInfo(peripheralRetrievedServicesInfo);
+
+      // update the characteristics map. for module names and characteristic UUIDs
+      populateCharacteristicsMap(peripheralRetrievedServicesInfo);
 
     }
     catch (error) {
@@ -528,6 +535,32 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
+  const writeByteArrayToAnyCharacteristic = async (data: number[],
+    characteristicUUID: string): Promise<void> => {
+    // should eventually consolidate this and the other write function into one.
+    // for now, just duplicated code pretty much.
+
+    const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();
+    if (!okToReadWrite) {
+      console.error('Device not read-writable (writeByteArrayToAnyCharacteristic)');
+      return;
+    }
+
+    try {
+      await BluetoothService.writeByteArray(
+        targetInfos.targetDeviceID,
+        targetInfos.targetServiceUUID,
+        characteristicUUID,
+        data);
+
+      console.log('Wrote data: ', data);
+
+    } catch (error) {
+      console.error('Error writing to characteristic in provider:', error);
+    }
+
+  }
+
 
 
   // constructor-like thing that runs when context is created
@@ -552,6 +585,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     appConnectFromBonded,
     readFromCharacteristic,
     writeDataToCharacteristic,
+    writeByteArrayToAnyCharacteristic
   };
 
   return (

@@ -225,6 +225,34 @@ class BluetoothService {
     }
   }
 
+  static async writeByteArray(deviceID: string, serviceUUID: string,
+    characteristicUUID: string, byteArray: number[]): Promise<void> {
+    // this is just duplicated code from above for now pretty much.
+    // sshould consolidate later to make prettier.
+
+    // make sure we're still connected
+    try {
+      if (!await BluetoothService.checkIfDeviceIsSystemConnected(deviceID)) {
+        console.error('Tried to write to disconnected device');
+        return;
+      }
+    } catch (error) {
+      console.error('Error checking if device is connected:', error);
+      throw error;
+    }
+
+    try {
+      await BleManager.write(deviceID, serviceUUID, characteristicUUID,
+        byteArray);
+
+      console.log('Write to characteristic succeeded');
+    }
+    catch (error) {
+      console.error('Error writing to characteristic in writeByteArray:', error);
+      throw error;
+    }
+  }
+
   // not implemented yet. un-private this when written.
   private static async disconnect(deviceID: string): Promise<void> {
     console.error('this function is not implemented yet')

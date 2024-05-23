@@ -4,6 +4,7 @@ import { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
 // my imports
 import {
   TargetInfos,
+  CharacteristicsMap,
   defaultBluetoothContext
 } from './BluetoothContext';
 
@@ -39,7 +40,7 @@ export function selectOurDeviceFromBondedDevices(
   return selectPeripheralByName(peripheralsArray);
 }
 
-export function selectOurServiceAndCharacteristic(
+export function selectTargetServiceAndCharacteristic(
   appConnectedPeripheralInfo: PeripheralInfo): TargetInfos {
   // select our specific service and characteristic from the lists of services
   // and characteristics.
@@ -63,6 +64,14 @@ export function selectOurServiceAndCharacteristic(
     targetCharacteristicUUID: characteristicUUID
   };
   return outputTargetInfos;
+}
+
+export function parseModuleNamesAndCharacteristics(
+  peripheralInfo: PeripheralInfo): CharacteristicsMap {
+  // todo: make this not hard coded
+
+  // for now, this will just return some hard-coded module names and UUIDs.
+  return defaultBluetoothContext.characteristicsMap;
 }
 
 export const enum modulePositionOptions {
@@ -94,4 +103,5 @@ const enum savedServiceUUIDs {
 const enum savedCharacteristicUUIDs {
   erikLightChar = '2222',
   serjoProfileChar = '00000002-710e-4a5b-8d75-3e5b444bc3cf'
+  // add more for module things
 }
