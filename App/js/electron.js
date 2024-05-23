@@ -13,6 +13,7 @@ const userConfig = {
 
 const userIdModule = require('./userId');
 let userId = userIdModule.userId;
+let existingUsers = userIdModule.existingUsers || [];
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -165,6 +166,13 @@ function loadConfiguration() {
 
     console.log("Default config path:", defaultConfigPath);
     console.log("User config path:", userConfigPath);
+
+    if (!existingUsers.includes(userId)) {
+      console.log(`User ${userId} does not exist. Creating a new configuration file.`);
+      existingUsers.push(userId);
+      fs.writeFileSync(path.join(__dirname, 'userId.js'), `exports.userId = "${userId}";\nexports.existingUsers = ${JSON.stringify(existingUsers)};`);
+      fs.copyFileSync(defaultConfigPath, userConfigPath);
+    }
 
     if (fs.existsSync(userConfigPath)) {
       console.log(`Copying user-specific configuration file (${userConfigPath}) to ${defaultConfigPath}`);
