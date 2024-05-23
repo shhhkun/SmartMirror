@@ -28,6 +28,7 @@ Next steps:
    - the bonded > connected flow still works if you system connect in Lightblue.
    - connecting while already connected seems to be fine. so doesn't matter if this gets called again
    - can maybe do some refactoring with all this stuff when I add in the event handlers for the ble manager events.
+- make the module config screen less jank. actually capture states of the components in the form.
 - add event handeler for disconnect events in the ble manager.
 - maybe make a top right status menu that shows this stuff. could be just a button that takes you to a dedicated status page.
 - figure out how to encode/decode more complex data

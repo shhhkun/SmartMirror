@@ -1,10 +1,15 @@
-// library imports
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-
-// my imports
-import ModulePositionsDropdown from './ModulePositionsDropdown';
-import ModuleEnableToggle from './ModuleEnableToggle';
+import React, {
+  useState
+} from 'react';
+import {
+  View,
+  Text,
+  Switch,
+  StyleSheet
+} from 'react-native';
+import {
+  Picker
+} from '@react-native-picker/picker';
 
 
 
@@ -14,21 +19,75 @@ interface ModuleConfigBarProps {
   onSliderChange: (value: number) => void;
 }
 
+interface ModuleEnableToggleProps {
+  value: boolean;
+  onValueChange: (value: boolean) => void;
+}
+
+interface DropdownProps {
+  options: string[];
+}
+
+
+
 const ModuleConfigBar: React.FC<ModuleConfigBarProps> = ({
   title, sliderValue, onSliderChange }) => {
 
-  // value of slider needs to be a state. with useState hook. initail val = slider value
+  const [sliderState, setSliderState] = useState<boolean>(sliderValue);
 
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.rowContainer}>
         <ModulePositionsDropdown options={["top", "bottom", "left", "right"]} />
-        <ModuleEnableToggle value={sliderValue} onValueChange={(value: boolean) => sliderValue = value} />
+
+        <ModuleEnableToggle value={sliderState}
+          onValueChange={(value: boolean) => setSliderState(value)} />
       </View>
     </View>
   );
 };
+
+
+
+const ModuleEnableToggle: React.FC<ModuleEnableToggleProps> = ({
+  value, onValueChange }) => {
+
+  return (
+    <View style={styles.toggleContainer}>
+      <Switch
+        value={value}
+        onValueChange={onValueChange}
+      />
+    </View>
+  );
+};
+
+
+
+const ModulePositionsDropdown: React.FC<DropdownProps> = ({ options }) => {
+  const [selectedValue, setSelectedValue] = useState<string>(options[0]);
+
+  return (
+    <View style={styles.dropdownContainer}>
+      <Picker
+        selectedValue={selectedValue}
+        style={styles.picker}
+
+        onValueChange={(itemValue: React.SetStateAction<string>) =>
+          setSelectedValue(itemValue)}
+      >
+
+        {options.map((option, index) => (
+          <Picker.Item key={index} label={option} value={option} />
+        ))}
+
+      </Picker>
+    </View>
+  );
+};
+
+
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -51,6 +110,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+
+
+  toggleContainer: {
+    marginTop: 0
+  },
+
+
+  dropdownContainer: {
+    marginBottom: 10,
+  },
+  picker: {
+    height: 50,
+    width: 150, // could change this to percent width
   },
 });
 

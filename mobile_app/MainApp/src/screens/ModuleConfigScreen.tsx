@@ -16,7 +16,7 @@ import ModuleConfigBar from '../components/ModuleConfigBar';
 
 const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 
-  const doUponSubmitButtonPress = () => {
+  const doUponSubmitButton = () => {
     console.log("Send Changes to Mirror button pressed");
   };
 
@@ -38,7 +38,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponSubmitButtonPress()} title="Send Changes to Mirror" />
+        <ButtonToNavigate onPress={() => doUponSubmitButton()} title="Send Changes to Mirror" />
       </View>
 
     </SafeAreaView >
