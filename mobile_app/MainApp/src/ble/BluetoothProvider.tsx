@@ -17,6 +17,7 @@ import {
   DeviceStates,
   DeviceInfos,
   TargetInfos,
+  CharacteristicsMap,
   defaultBluetoothContext,
 } from './BluetoothContext';
 import {
@@ -34,6 +35,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     useState<DeviceInfos>(defaultBluetoothContext.deviceInfos);
   const [targetInfos, setTargetInfos] =
     useState<TargetInfos>(defaultBluetoothContext.targetInfos);
+  const [characteristicsMap, setCharacteristicsMap] =
+    useState<CharacteristicsMap>(defaultBluetoothContext.characteristicsMap);
 
 
 
@@ -54,6 +57,15 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       appConnectedPeripheralInfo);
 
     setTargetInfos(newTargetInfos);
+  }
+
+  // not yet implemented
+  const populateCharacteristicsMap = (appConnectedPeripheralInfo:
+    PeripheralInfo): void => {
+    // todo
+
+    // will take the retrieveServices PeripheralInfo array and populate the
+    // characteristicsMap with module names and characteristic UUIDs.
   }
 
   const setTargetFieldsToDefault = (): void => {
@@ -531,6 +543,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     deviceStates,
     deviceInfos,
     targetInfos,
+    characteristicsMap,
     promptUserForPermissions,
     getBondedDevice,
     connectToBondedDevice,

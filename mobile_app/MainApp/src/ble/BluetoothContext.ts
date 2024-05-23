@@ -58,26 +58,23 @@ export interface TargetInfos {
   targetDeviceID: string;
   targetServiceUUID: string;
   targetCharacteristicUUID: string;
+  // this "main" target characteristic will point to the characteristic that
+  // shows "current user". upon switching users, we'll need to call
+  // retrieveServices again to get the rest of the characteristics.
 }
-// maybe the "main" target characteristic should be current user.
-// then upon switching users, we'll neet to retrieve services again.
 
-// might want to have a type that is an array or map of characteristics and
-// associated module. I like the idea of a map, where keys are module names and
-// values are the characteristicUUIDs.
 export interface CharacteristicsMap {
+  // a map structure where keys are module names (or module name - attribute)
+  // as strings, and values are the characteristic UUIDs as strings.
   [module: string]: string;
 }
-// might need to have some method that takes the peripherals info gotten from
-// retrieveServices and updates this field with characteristic UUIDs and their
-// names. assuming that in the advertising thing, the
 
 export interface BluetoothContextType {
 
   deviceStates: DeviceStates;
   deviceInfos: DeviceInfos;
   targetInfos: TargetInfos;
-  // characteristicsMap: CharacteristicsMap;
+  characteristicsMap: CharacteristicsMap;
 
   promptUserForPermissions: () => Promise<void>;
   getBondedDevice: () => Promise<void>;
@@ -110,12 +107,15 @@ const defaultDeviceInfo: DeviceInfos = {
   appConnectedPeripheralInfo: null,
 };
 
-const defaultCharacteristicsMapping: CharacteristicsMap = {};
+const defaultCharacteristicsMap: CharacteristicsMap = {
+  // empty map
+};
 
 export const defaultBluetoothContext: BluetoothContextType = {
   deviceStates: defaultDeviceStates,
   deviceInfos: defaultDeviceInfo,
   targetInfos: defaultTargetInfos,
+  characteristicsMap: defaultCharacteristicsMap,
 
   promptUserForPermissions: async () => {
     throw new Error('askForBluetoothPermissions function is not initialized yet');

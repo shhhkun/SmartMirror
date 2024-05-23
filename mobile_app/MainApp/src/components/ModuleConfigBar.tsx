@@ -24,7 +24,7 @@ interface ModuleEnableToggleProps {
   onValueChange: (value: boolean) => void;
 }
 
-interface DropdownProps {
+interface ModulePositionsDropdownProps {
   options: string[];
 }
 
@@ -65,7 +65,7 @@ const ModuleEnableToggle: React.FC<ModuleEnableToggleProps> = ({
 
 
 
-const ModulePositionsDropdown: React.FC<DropdownProps> = ({ options }) => {
+const ModulePositionsDropdown: React.FC<ModulePositionsDropdownProps> = ({ options }) => {
   const [selectedValue, setSelectedValue] = useState<string>(options[0]);
 
   return (
