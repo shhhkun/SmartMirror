@@ -11,6 +11,10 @@ import {
   Picker
 } from '@react-native-picker/picker';
 
+import {
+  modulePositionOptions
+} from '../ble/BluetoothUtils';
+
 
 
 interface ModuleConfigBarProps {
@@ -33,13 +37,14 @@ interface ModulePositionsDropdownProps {
 const ModuleConfigBar: React.FC<ModuleConfigBarProps> = ({
   title, sliderValue, onSliderChange }) => {
 
+  // todo: remove this component's state variable
   const [sliderState, setSliderState] = useState<boolean>(sliderValue);
 
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.rowContainer}>
-        <ModulePositionsDropdown options={["top", "bottom", "left", "right"]} />
+        <ModulePositionsDropdown options={modulePositionOptions} />
 
         <ModuleEnableToggle value={sliderState}
           onValueChange={(value: boolean) => setSliderState(value)} />
@@ -52,6 +57,9 @@ const ModuleConfigBar: React.FC<ModuleConfigBarProps> = ({
 
 const ModuleEnableToggle: React.FC<ModuleEnableToggleProps> = ({
   value, onValueChange }) => {
+  // todo: modfy this function signature to not take these params?
+  // and just use the state variable from the parent component?
+  // might not even need this component and can just have it in the bar.
 
   return (
     <View style={styles.toggleContainer}>
@@ -123,7 +131,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     height: 50,
-    width: 150, // could change this to percent width
+    width: 250, // could change this to percent width
   },
 });
 
