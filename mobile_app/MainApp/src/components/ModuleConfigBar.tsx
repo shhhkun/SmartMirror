@@ -86,7 +86,7 @@ const ModulePositionsDropdown: React.FC<ModulePositionsDropdownProps> = ({
 const styles = StyleSheet.create({
   sectionContainer: {
     margin: 10,
-    padding: 10,
+    padding: 8,
     backgroundColor: '#fff',
     borderRadius: 8,
     shadowColor: '#000',
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   rowContainer: {
     flexDirection: 'row',
@@ -107,11 +107,11 @@ const styles = StyleSheet.create({
   },
 
   dropdownContainer: {
-    marginBottom: 10,
+    marginBottom: 5,
   },
   picker: {
     height: 50,
-    width: 250, // could change this to percent width
+    width: 200,
   },
 });
 

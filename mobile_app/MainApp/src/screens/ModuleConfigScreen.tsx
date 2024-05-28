@@ -7,6 +7,7 @@ import {
   StyleSheet,
   View,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 
 // my imports
@@ -36,47 +37,62 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
+      <ScrollView
+        style={styles.scrollableContainer}
+        showsVerticalScrollIndicator={true}>
 
-      <ModuleConfigBar
-        title="Clock"
+        <ModuleConfigBar
+          title="Clock"
+          sliderValue={clockSliderValue}
+          onSliderChange={(value: boolean) => setClockSliderValue(value)}
+          dropdownValue={clockDropdownValue}
+          onDropdownChange={(value: string) => setClockDropdownValue(value)}
+        />
 
-        sliderValue={clockSliderValue}
-        onSliderChange={
-          (value: boolean) => setClockSliderValue(value)}
+        <ModuleConfigBar
+          title="Weather"
+          sliderValue={weatherSliderValue}
+          onSliderChange={(value: boolean) => setWeatherSliderValue(value)}
+          dropdownValue={weatherDropdownValue}
+          onDropdownChange={(value: string) => setWeatherDropdownValue(value)}
+        />
 
-        dropdownValue={clockDropdownValue}
-        onDropdownChange={
-          (value: string) => setClockDropdownValue(value)}
-      />
+        <ModuleConfigBar
+          title="News"
+          sliderValue={newsSliderValue}
+          onSliderChange={(value: boolean) => setNewsSliderValue(value)}
+          dropdownValue={newsDropdownValue}
+          onDropdownChange={(value: string) => setNewsDropdownValue(value)}
+        />
 
-      <ModuleConfigBar
-        title="Weather"
+        <ModuleConfigBar
+          title="News2"
+          sliderValue={newsSliderValue}
+          onSliderChange={(value: boolean) => setNewsSliderValue(value)}
+          dropdownValue={newsDropdownValue}
+          onDropdownChange={(value: string) => setNewsDropdownValue(value)}
+        />
 
-        sliderValue={weatherSliderValue}
-        onSliderChange={
-          (value: boolean) => setWeatherSliderValue(value)}
+        <ModuleConfigBar
+          title="News3"
+          sliderValue={newsSliderValue}
+          onSliderChange={(value: boolean) => setNewsSliderValue(value)}
+          dropdownValue={newsDropdownValue}
+          onDropdownChange={(value: string) => setNewsDropdownValue(value)}
+        />
 
-        dropdownValue={weatherDropdownValue}
-        onDropdownChange={
-          (value: string) => setWeatherDropdownValue(value)}
-      />
-
-      <ModuleConfigBar
-        title="News"
-
-        sliderValue={newsSliderValue}
-        onSliderChange={
-          (value: boolean) => setNewsSliderValue(value)}
-
-        dropdownValue={newsDropdownValue}
-        onDropdownChange={
-          (value: string) => setNewsDropdownValue(value)}
-      />
+        <ModuleConfigBar
+          title="News4"
+          sliderValue={newsSliderValue}
+          onSliderChange={(value: boolean) => setNewsSliderValue(value)}
+          dropdownValue={newsDropdownValue}
+          onDropdownChange={(value: string) => setNewsDropdownValue(value)}
+        />
+      </ScrollView>
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponSubmitButton()} title="Send Changes to Mirror" />
       </View>
-
     </SafeAreaView >
   );
 };
@@ -86,6 +102,10 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
   mainStyle: {
     backgroundColor: GlobalStyles.lightBackground,
+  },
+
+  scrollableContainer: {
+    height: '70%',
   },
 
   buttonContainer: {
