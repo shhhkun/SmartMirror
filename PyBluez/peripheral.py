@@ -62,7 +62,7 @@ class ProfileIndexCharacteristic(Characteristic):
         Characteristic.__init__(
             self, self.PROFILE_INDEX_UUID,
             ["read", "write"], service)
-        self.add_descriptor(UserProfileDescriptor(self))
+        self.add_descriptor(ProfileIndexDescriptor(self))
         self.profile_index = 0
         print("ProfileIndexCharacteristic initialized")
 
@@ -82,7 +82,7 @@ class LanguageCharacteristic(Characteristic):
         Characteristic.__init__(
             self, self.LANGUAGE_UUID,
             ["read", "write"], service)
-        self.add_descriptor(UserProfileDescriptor(self))
+        self.add_descriptor(LanguageDescriptor(self))
         print("LanguageCharacteristic initialized")
 
     def ReadValue(self, options):
@@ -107,7 +107,7 @@ class UnitsCharacteristic(Characteristic):
         Characteristic.__init__(
             self, self.UNITS_UUID,
             ["read", "write"], service)
-        self.add_descriptor(UserProfileDescriptor(self))
+        self.add_descriptor(UnitsDescriptor(self))
         print("UnitsCharacteristic initialized")
 
     def ReadValue(self, options):
@@ -132,7 +132,7 @@ class ClockPositionCharacteristic(Characteristic):
         Characteristic.__init__(
             self, self.CLOCK_POSITION_UUID,
             ["read", "write"], service)
-        self.add_descriptor(UserProfileDescriptor(self))
+        self.add_descriptor(ClockPositionDescriptor(self))
         print("ClockPositionCharacteristic initialized")
 
     def ReadValue(self, options):
@@ -156,18 +156,66 @@ class ClockPositionCharacteristic(Characteristic):
         self.service.write_config(profile_index, config)
         print("Clock position written:", position)
 
-class UserProfileDescriptor(Descriptor):
-    USER_PROFILE_DESCRIPTOR_UUID = "2901"
-    USER_PROFILE_DESCRIPTOR_VALUE = "User Profile Index"
+class ProfileIndexDescriptor(Descriptor):
+    PROFILE_INDEX_DESCRIPTOR_UUID = "2901"
+    PROFILE_INDEX_DESCRIPTOR_VALUE = "Profile Index"
 
     def __init__(self, characteristic):
         Descriptor.__init__(
-            self, self.USER_PROFILE_DESCRIPTOR_UUID,
+            self, self.PROFILE_INDEX_DESCRIPTOR_UUID,
             ["read"], characteristic)
 
     def ReadValue(self, options):
         value = []
-        desc = self.USER_PROFILE_DESCRIPTOR_VALUE
+        desc = self.PROFILE_INDEX_DESCRIPTOR_VALUE
+        for c in desc:
+            value.append(dbus.Byte(c.encode()))
+        return value
+
+class LanguageDescriptor(Descriptor):
+    LANGUAGE_DESCRIPTOR_UUID = "2902"
+    LANGUAGE_DESCRIPTOR_VALUE = "Language"
+
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, self.LANGUAGE_DESCRIPTOR_UUID,
+            ["read"], characteristic)
+
+    def ReadValue(self, options):
+        value = []
+        desc = self.LANGUAGE_DESCRIPTOR_VALUE
+        for c in desc:
+            value.append(dbus.Byte(c.encode()))
+        return value
+
+class UnitsDescriptor(Descriptor):
+    UNITS_DESCRIPTOR_UUID = "2903"
+    UNITS_DESCRIPTOR_VALUE = "Units"
+
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, self.UNITS_DESCRIPTOR_UUID,
+            ["read"], characteristic)
+
+    def ReadValue(self, options):
+        value = []
+        desc = self.UNITS_DESCRIPTOR_VALUE
+        for c in desc:
+            value.append(dbus.Byte(c.encode()))
+        return value
+
+class ClockPositionDescriptor(Descriptor):
+    CLOCK_POSITION_DESCRIPTOR_UUID = "2904"
+    CLOCK_POSITION_DESCRIPTOR_VALUE = "Clock Position"
+
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, self.CLOCK_POSITION_DESCRIPTOR_UUID,
+            ["read"], characteristic)
+
+    def ReadValue(self, options):
+        value = []
+        desc = self.CLOCK_POSITION_DESCRIPTOR_VALUE
         for c in desc:
             value.append(dbus.Byte(c.encode()))
         return value
