@@ -1,6 +1,4 @@
-import React, {
-  useState
-} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -30,10 +28,9 @@ interface ModulePositionsDropdownProps {
   onDropdownChange: (value: string) => void;
 }
 
-
-
 const ModuleConfigBar: React.FC<ModuleConfigBarProps> = ({
   title,
+  dropdownValue,
   sliderValue,
   onDropdownChange,
   onSliderChange,
@@ -46,7 +43,7 @@ const ModuleConfigBar: React.FC<ModuleConfigBarProps> = ({
       <View style={styles.rowContainer}>
 
         <ModulePositionsDropdown
-          incomingDropdownValue="top-left"
+          incomingDropdownValue={dropdownValue}
           onDropdownChange={(value: string) => onDropdownChange(value)}
         />
 

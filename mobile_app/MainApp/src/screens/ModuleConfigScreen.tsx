@@ -18,28 +18,60 @@ import ModuleConfigBar from '../components/ModuleConfigBar';
 
 const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 
-
+  const [clockSliderValue, setClockSliderValue] = useState(true);
+  const [clockDropdownValue, setClockDropdownValue] = useState("top_left");
+  const [weatherSliderValue, setWeatherSliderValue] = useState(false);
+  const [weatherDropdownValue, setWeatherDropdownValue] = useState("top_right");
+  const [newsSliderValue, setNewsSliderValue] = useState(true);
+  const [newsDropdownValue, setNewsDropdownValue] = useState("bottom_left");
 
   const doUponSubmitButton = () => {
-    console.log("Send Changes to Mirror button pressed");
-  };
+    console.log("Form state at this time:");
 
+    console.log("Clock: ", clockSliderValue, clockDropdownValue);
+    console.log("Weather: ", weatherSliderValue, weatherDropdownValue);
+    console.log("News: ", newsSliderValue, newsDropdownValue);
+  };
 
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
 
-      <View style={styles.mainStyle}>
-        <ModuleConfigBar title="Clock" sliderValue={true} onSliderChange={(value: number) => console.log(value)} />
-      </View>
+      <ModuleConfigBar
+        title="Clock"
 
-      <View style={styles.mainStyle}>
-        <ModuleConfigBar title="Weather" sliderValue={false} onSliderChange={(value: number) => console.log(value)} />
-      </View>
+        sliderValue={clockSliderValue}
+        onSliderChange={
+          (value: boolean) => setClockSliderValue(value)}
 
-      <View style={styles.mainStyle}>
-        <ModuleConfigBar title="News" sliderValue={true} onSliderChange={(value: number) => console.log(value)} />
-      </View>
+        dropdownValue={clockDropdownValue}
+        onDropdownChange={
+          (value: string) => setClockDropdownValue(value)}
+      />
+
+      <ModuleConfigBar
+        title="Weather"
+
+        sliderValue={weatherSliderValue}
+        onSliderChange={
+          (value: boolean) => setWeatherSliderValue(value)}
+
+        dropdownValue={weatherDropdownValue}
+        onDropdownChange={
+          (value: string) => setWeatherDropdownValue(value)}
+      />
+
+      <ModuleConfigBar
+        title="News"
+
+        sliderValue={newsSliderValue}
+        onSliderChange={
+          (value: boolean) => setNewsSliderValue(value)}
+
+        dropdownValue={newsDropdownValue}
+        onDropdownChange={
+          (value: string) => setNewsDropdownValue(value)}
+      />
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponSubmitButton()} title="Send Changes to Mirror" />
