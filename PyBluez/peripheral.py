@@ -83,22 +83,17 @@ class LanguageCharacteristic(Characteristic):
             self, self.LANGUAGE_UUID,
             ["read", "write"], service)
         self.add_descriptor(LanguageDescriptor(self))
+        self.language = 0  # Default to 0 (can map to a language string later)
         print("LanguageCharacteristic initialized")
 
     def ReadValue(self, options):
-        config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
-        language = config.get('language', 'en')
-        value = [dbus.Byte(ord(c)) for c in language]
-        print("Language read:", language)
+        value = [dbus.Byte(self.language)]
+        print("Language read:", self.language)
         return value
 
     def WriteValue(self, value, options):
-        language = ''.join(chr(b) for b in value)
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        config = self.service.read_config(profile_index)
-        config['language'] = language
-        self.service.write_config(profile_index, config)
-        print("Language written:", language)
+        self.language = int(value[0])
+        print("Language written:", self.language)
 
 class UnitsCharacteristic(Characteristic):
     UNITS_UUID = "00000004-710e-4a5b-8d75-3e5b444bc3cf"
@@ -108,22 +103,17 @@ class UnitsCharacteristic(Characteristic):
             self, self.UNITS_UUID,
             ["read", "write"], service)
         self.add_descriptor(UnitsDescriptor(self))
+        self.units = 0  # Default to 0 (can map to units like 'metric' or 'imperial')
         print("UnitsCharacteristic initialized")
 
     def ReadValue(self, options):
-        config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
-        units = config.get('units', 'metric')
-        value = [dbus.Byte(ord(u)) for u in units]
-        print("Units read:", units)
+        value = [dbus.Byte(self.units)]
+        print("Units read:", self.units)
         return value
 
     def WriteValue(self, value, options):
-        units = ''.join(chr(b) for b in value)
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        config = self.service.read_config(profile_index)
-        config['units'] = units
-        self.service.write_config(profile_index, config)
-        print("Units written:", units)
+        self.units = int(value[0])
+        print("Units written:", self.units)
 
 class ClockPositionCharacteristic(Characteristic):
     CLOCK_POSITION_UUID = "00000005-710e-4a5b-8d75-3e5b444bc3cf"
@@ -133,28 +123,17 @@ class ClockPositionCharacteristic(Characteristic):
             self, self.CLOCK_POSITION_UUID,
             ["read", "write"], service)
         self.add_descriptor(ClockPositionDescriptor(self))
+        self.clock_position = 0  # Default to 0 (Positions.TOP_BAR)
         print("ClockPositionCharacteristic initialized")
 
     def ReadValue(self, options):
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        config = self.service.read_config(profile_index)
-        module = next((m for m in config['modules'] if m['module'] == 'clock'), {})
-        position = module.get('position', '')
-        position_index = positions.index(position) if position in positions else 0
-        value = [dbus.Byte(position_index)]
-        print("Clock position read:", position)
+        value = [dbus.Byte(self.clock_position)]
+        print("Clock position read:", self.clock_position)
         return value
 
     def WriteValue(self, value, options):
-        position_index = int(value[0])
-        position = positions[position_index] if 0 <= position_index < len(positions) else positions[0]
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        config = self.service.read_config(profile_index)
-        for module in config['modules']:
-            if module['module'] == 'clock':
-                module['position'] = position
-        self.service.write_config(profile_index, config)
-        print("Clock position written:", position)
+        self.clock_position = int(value[0])
+        print("Clock position written:", Positions(self.clock_position).name)
 
 class ProfileIndexDescriptor(Descriptor):
     PROFILE_INDEX_DESCRIPTOR_UUID = "2901"
