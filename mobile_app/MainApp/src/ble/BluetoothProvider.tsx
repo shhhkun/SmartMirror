@@ -78,12 +78,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   const setSystemConnectedDeviceInfoToDefault = (): void => {
     setDeviceInfos(defaultBluetoothContext.deviceInfos);
 
-    // set app connected state to false
     setDeviceStates({
-      bluetoothPermissionsOK: deviceStates.bluetoothPermissionsOK,
-      deviceIsBonded: deviceStates.deviceIsBonded,
-      deviceIsSystemConnected: false,
-      deviceIsAppConnected: deviceStates.deviceIsAppConnected,
+      ...deviceStates,
+      deviceIsSystemConnected: false
     });
 
     setTargetFieldsToDefault();
@@ -92,23 +89,13 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   const setAppConnectedDeviceInfoToFailed = (): void => {
     // set app connected state to false
     setDeviceStates({
-      bluetoothPermissionsOK: deviceStates.bluetoothPermissionsOK,
-      deviceIsBonded: deviceStates.deviceIsBonded,
-      deviceIsSystemConnected: deviceStates.deviceIsSystemConnected,
+      ...deviceStates,
       deviceIsAppConnected: false,
     });
 
-    // reset app connected info
+    // reset app connected info, maintain bonded and system connected
     setDeviceInfos({
-      // maintain bonded device info
-      bondedDeviceInfo:
-        deviceInfos.bondedDeviceInfo,
-
-      // maintain whatever was in system connected info
-      systemConnectedPeripheralInfo:
-        deviceInfos.systemConnectedPeripheralInfo,
-
-      // reset app connected info
+      ...deviceInfos,
       appConnectedPeripheralInfo:
         defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo,
     });
@@ -153,12 +140,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     try {
       await BluetoothService.connectToDevice(deviceID);
 
-      // set device app connected state to true
       setDeviceStates({
-        bluetoothPermissionsOK: deviceStates.bluetoothPermissionsOK,
-        deviceIsBonded: deviceStates.deviceIsBonded,
-        deviceIsSystemConnected: deviceStates.deviceIsSystemConnected,
-        deviceIsAppConnected: true,
+        ...deviceStates,
+        deviceIsAppConnected: true
       });
 
     }
@@ -185,19 +169,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       console.log('Peripheral extended info: ',
         JSON.stringify(peripheralRetrievedServicesInfo, null, 2));
 
-      // update fields in context
       setDeviceInfos({
-        // maintain bonded device info
-        bondedDeviceInfo:
-          deviceInfos.bondedDeviceInfo,
-
-        // maintaitn system connected info
-        systemConnectedPeripheralInfo:
-          deviceInfos.systemConnectedPeripheralInfo,
-
-        // update app connected info
-        appConnectedPeripheralInfo:
-          peripheralRetrievedServicesInfo,
+        ...deviceInfos,
+        appConnectedPeripheralInfo: peripheralRetrievedServicesInfo
       });
 
       // update targets. for the "main" characteristic
@@ -307,21 +281,15 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     try {
       await BluetoothService.requestAllPermissions();
 
-      // set bluetooth permission state true
       setDeviceStates({
+        ...deviceStates,
         bluetoothPermissionsOK: true,
-        deviceIsBonded: deviceStates.deviceIsBonded,
-        deviceIsSystemConnected: deviceStates.deviceIsSystemConnected,
-        deviceIsAppConnected: deviceStates.deviceIsAppConnected,
       });
 
     } catch (error) {
-      // set bluetooth permission state false
       setDeviceStates({
-        bluetoothPermissionsOK: false,
-        deviceIsBonded: deviceStates.deviceIsBonded,
-        deviceIsSystemConnected: deviceStates.deviceIsSystemConnected,
-        deviceIsAppConnected: deviceStates.deviceIsAppConnected,
+        ...deviceStates,
+        bluetoothPermissionsOK: false
       });
     }
   }
@@ -349,17 +317,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
         JSON.stringify(bondedDeviceOfInterest, null, 2));
 
       setDeviceInfos({
-        // set the bonded device info to this device
-        bondedDeviceInfo:
-          bondedDeviceOfInterest,
-
-        // maintain system connected info
-        systemConnectedPeripheralInfo:
-          defaultBluetoothContext.deviceInfos.systemConnectedPeripheralInfo,
-
-        // maintain app connected info
-        appConnectedPeripheralInfo:
-          defaultBluetoothContext.deviceInfos.appConnectedPeripheralInfo,
+        // set the bonded device info to this device. maintain the rest.
+        ...deviceInfos,
+        bondedDeviceInfo: bondedDeviceOfInterest
       });
     }
     catch (error) {
@@ -414,6 +374,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     const systemConnectedDeviceInfo: DeviceInfos = {
+
       // leave bonded device info as it was
       bondedDeviceInfo:
         deviceInfos.bondedDeviceInfo,

@@ -1,5 +1,7 @@
 // library imports
-import React, { useContext } from 'react';
+import React, {
+  useContext
+} from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -49,13 +51,13 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 };
 
 
+
 const styles = StyleSheet.create({
   mainStyle: {
     backgroundColor: GlobalStyles.lightBackground,
   },
 
   buttonContainer: {
-    // flex: 1, // using flexbox here is cursed; don't do
     paddingTop: 15,
     paddingBottom: 15,
     justifyContent: 'center',
@@ -63,6 +65,5 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.lightBackground,
   },
 });
-
 
 export default ModuleConfigScreen;

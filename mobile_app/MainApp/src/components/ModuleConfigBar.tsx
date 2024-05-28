@@ -5,7 +5,7 @@ import {
   View,
   Text,
   Switch,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import {
   Picker
@@ -35,8 +35,10 @@ interface ModulePositionsDropdownProps {
 
 
 const ModuleConfigBar: React.FC<ModuleConfigBarProps> = ({
-  title, sliderValue, onSliderChange }) => {
-
+  title,
+  sliderValue,
+  onSliderChange,
+}) => {
   // todo: remove this component's state variable
   const [sliderState, setSliderState] = useState<boolean>(sliderValue);
 
@@ -46,34 +48,33 @@ const ModuleConfigBar: React.FC<ModuleConfigBarProps> = ({
       <View style={styles.rowContainer}>
         <ModulePositionsDropdown options={modulePositionOptions} />
 
-        <ModuleEnableToggle value={sliderState}
-          onValueChange={(value: boolean) => setSliderState(value)} />
+        <ModuleEnableToggle
+          value={sliderState}
+          onValueChange={(value: boolean) => setSliderState(value)}
+        />
       </View>
     </View>
   );
 };
 
-
-
 const ModuleEnableToggle: React.FC<ModuleEnableToggleProps> = ({
-  value, onValueChange }) => {
+  value,
+  onValueChange,
+}) => {
   // todo: modfy this function signature to not take these params?
   // and just use the state variable from the parent component?
   // might not even need this component and can just have it in the bar.
 
   return (
     <View style={styles.toggleContainer}>
-      <Switch
-        value={value}
-        onValueChange={onValueChange}
-      />
+      <Switch value={value} onValueChange={onValueChange} />
     </View>
   );
 };
 
-
-
-const ModulePositionsDropdown: React.FC<ModulePositionsDropdownProps> = ({ options }) => {
+const ModulePositionsDropdown: React.FC<ModulePositionsDropdownProps> = ({
+  options,
+}) => {
   const [selectedValue, setSelectedValue] = useState<string>(options[0]);
 
   return (
@@ -81,21 +82,16 @@ const ModulePositionsDropdown: React.FC<ModulePositionsDropdownProps> = ({ optio
       <Picker
         selectedValue={selectedValue}
         style={styles.picker}
-
         onValueChange={(itemValue: React.SetStateAction<string>) =>
-          setSelectedValue(itemValue)}
-      >
-
+          setSelectedValue(itemValue)
+        }>
         {options.map((option, index) => (
           <Picker.Item key={index} label={option} value={option} />
         ))}
-
       </Picker>
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   sectionContainer: {
