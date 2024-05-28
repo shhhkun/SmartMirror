@@ -19,17 +19,15 @@ import {
 
 interface ModuleConfigBarProps {
   title: string;
+  dropdownValue: string;
   sliderValue: boolean;
-  onSliderChange: (value: number) => void;
-}
-
-interface ModuleEnableToggleProps {
-  value: boolean;
-  onValueChange: (value: boolean) => void;
+  onDropdownChange: (value: string) => void;
+  onSliderChange: (value: boolean) => void;
 }
 
 interface ModulePositionsDropdownProps {
-  options: string[];
+  incomingDropdownValue: string;
+  onDropdownChange: (value: string) => void;
 }
 
 
@@ -37,57 +35,52 @@ interface ModulePositionsDropdownProps {
 const ModuleConfigBar: React.FC<ModuleConfigBarProps> = ({
   title,
   sliderValue,
+  onDropdownChange,
   onSliderChange,
 }) => {
-  // todo: remove this component's state variable
-  const [sliderState, setSliderState] = useState<boolean>(sliderValue);
 
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.title}>{title}</Text>
-      <View style={styles.rowContainer}>
-        <ModulePositionsDropdown options={modulePositionOptions} />
 
-        <ModuleEnableToggle
-          value={sliderState}
-          onValueChange={(value: boolean) => setSliderState(value)}
+      <View style={styles.rowContainer}>
+
+        <ModulePositionsDropdown
+          incomingDropdownValue="top-left"
+          onDropdownChange={(value: string) => onDropdownChange(value)}
         />
+
+        <Switch
+          value={sliderValue}
+          onValueChange={(value: boolean) => onSliderChange(value)}
+        />
+
       </View>
     </View>
   );
 };
 
-const ModuleEnableToggle: React.FC<ModuleEnableToggleProps> = ({
-  value,
-  onValueChange,
-}) => {
-  // todo: modfy this function signature to not take these params?
-  // and just use the state variable from the parent component?
-  // might not even need this component and can just have it in the bar.
-
-  return (
-    <View style={styles.toggleContainer}>
-      <Switch value={value} onValueChange={onValueChange} />
-    </View>
-  );
-};
-
 const ModulePositionsDropdown: React.FC<ModulePositionsDropdownProps> = ({
-  options,
+  incomingDropdownValue,
+  onDropdownChange
 }) => {
-  const [selectedValue, setSelectedValue] = useState<string>(options[0]);
 
   return (
     <View style={styles.dropdownContainer}>
       <Picker
-        selectedValue={selectedValue}
         style={styles.picker}
-        onValueChange={(itemValue: React.SetStateAction<string>) =>
-          setSelectedValue(itemValue)
-        }>
-        {options.map((option, index) => (
-          <Picker.Item key={index} label={option} value={option} />
-        ))}
+        selectedValue={incomingDropdownValue}
+        onValueChange={(itemValue: string) =>
+          onDropdownChange(itemValue)}
+      >
+
+        {
+          // make a dropdown option for each item in modulePositionsOptions
+          modulePositionOptions.map((option, index) => (
+            <Picker.Item key={index} label={option} value={option} />
+          ))
+        }
+
       </Picker>
     </View>
   );
@@ -115,12 +108,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-
-
-  toggleContainer: {
-    marginTop: 0
-  },
-
 
   dropdownContainer: {
     marginBottom: 10,
