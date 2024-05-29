@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 // my imports
 import BluetoothProvider from './src/ble/BluetoothProvider';
-import ModuleProvider from './src/module_configuration/ModuleProvider';
+import ModuleProvider from './src/module_context/ModuleProvider';
 import HomeScreen from './src/screens/HomeScreen';
 import ScanScreen from './src/screens/ScanScreen';
 import DeviceDetailScreen from './src/screens/DeviceDetailScreen';
