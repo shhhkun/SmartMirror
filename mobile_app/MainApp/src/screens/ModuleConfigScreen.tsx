@@ -64,7 +64,40 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
         style={styles.scrollableContainer}
         showsVerticalScrollIndicator={true}>
 
-        <ModuleConfigBar
+        {/* Make module config bars for all the modules in draft config */}
+        {Object.entries(draftModuleConfiguration).map(([moduleName, moduleConfig]) => (
+          <ModuleConfigBar
+            key={moduleName}
+            title={moduleConfig.moduleDisplayName}
+
+            sliderValue={moduleConfig.moduleEnabled}
+            onSliderChange={(value: boolean) =>
+              setDraftModuleConfiguration({
+                ...draftModuleConfiguration,
+                [moduleName]: {
+                  ...moduleConfig,
+                  moduleEnabled: value
+                }
+              })
+            }
+
+            dropdownValue={moduleConfig.modulePosition}
+            onDropdownChange={(value: string) =>
+              setDraftModuleConfiguration({
+                ...draftModuleConfiguration,
+                [moduleName]: {
+                  ...moduleConfig,
+                  modulePosition: value
+                }
+              })
+            }
+          />
+        ))}
+
+
+        {/* above code is from copilot. haven't looked at it closely yet
+        but seems to work. */}
+        {/* <ModuleConfigBar
           title="Clock"
 
           sliderValue={draftModuleConfiguration.clock.moduleEnabled}
@@ -85,30 +118,34 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
             }
           })
           }
-        />
+        /> */}
 
 
 
 
       </ScrollView>
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponResetButton()}
-          title="Reset to Default"
-        />
+      <View style={styles.allButtonsContainer}>
+        <View style={styles.buttonContainer}>
+          <ButtonToNavigate onPress={() => doUponResetButton()}
+            title="Reset to Default"
+          />
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <ButtonToNavigate onPress={() => doUponSaveButton()}
+            title="Save Changes"
+          />
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <ButtonToNavigate onPress={() => doUponSubmitButton()}
+            title="Send Changes to Mirror"
+          />
+        </View>
       </View>
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponSaveButton()}
-          title="Save Changes"
-        />
-      </View>
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponSubmitButton()}
-          title="Send Changes to Mirror"
-        />
-      </View>
     </SafeAreaView >
   );
 };
@@ -122,6 +159,10 @@ const styles = StyleSheet.create({
 
   scrollableContainer: {
     height: '65%',
+  },
+
+  allButtonsContainer: {
+    paddingTop: 10,
   },
 
   buttonContainer: {
