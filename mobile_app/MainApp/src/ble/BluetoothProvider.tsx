@@ -490,7 +490,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       console.log('Wrote data: ', data);
 
     } catch (error) {
-      console.error('Error writing to characteristic in provider:', error);
+      console.error('Error writing to char in writeDataToCharacteristic:', error);
     }
   }
 
@@ -513,10 +513,10 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
         characteristicUUID,
         data);
 
-      console.log('Wrote data: ', data);
+      console.log('Successfully wrote data: ', data, ' to char: ', characteristicUUID,);
 
     } catch (error) {
-      console.error('Error writing to characteristic in provider:', error);
+      console.error('Error writing to char in writeByteArrayToAnyCharacteristic:', error);
     }
 
   }

@@ -75,6 +75,11 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
         characteristics.get('position') as string
       );
 
+      console.log(moduleName + " updated via chars " +
+        JSON.stringify([...characteristics]) + " and data " +
+        JSON.stringify([...dataToSend]));
+      console.log("---------------------------------");
+
     } catch (error) {
       console.error("Error writing single module config to mirror", error);
       throw error;

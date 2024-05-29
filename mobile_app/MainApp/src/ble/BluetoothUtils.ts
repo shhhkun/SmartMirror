@@ -102,33 +102,35 @@ export const moduleCharacteristicsHardCoded: any = {
   // pretty to jank to have this hard-coded. but should be ok if
   // we're just using the single pi and the characteristics don't change.
 
+  // main target (for profile control) = "2222"
+
   "Alerts": {
-    "enable": "????",
-    "position": "????"
+    "enable": "0002",
+    "position": "0003"
   },
   "Clock": {
-    "enable": "????",
-    "position": "????"
+    "enable": "0004",
+    "position": "0005"
   },
   "Notifications": {
-    "enable": "????",
-    "position": "????"
+    "enable": "0006",
+    "position": "0007"
   },
   "Calendar": {
-    "enable": "????",
-    "position": "????"
+    "enable": "0008",
+    "position": "0009"
   },
   "Compliments": {
-    "enable": "????",
-    "position": "????"
+    "enable": "0010",
+    "position": "0011"
   },
   "Weather": {
-    "enable": "????",
-    "position": "????"
+    "enable": "0012",
+    "position": "0013"
   },
   "News": {
-    "enable": "????",
-    "position": "????"
+    "enable": "0014",
+    "position": "0015"
   }
 }
 

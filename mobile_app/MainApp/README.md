@@ -23,24 +23,19 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 I think the issue I'm seeing of disconnecting after about a minute can be attributed to the Lightblue app. Will wait to worry more about this until I see it happen on the pi.
 
-I'll create a context for holding onto the module config file, and a draft version. When modifying the form, this will modify the draft config file. Upon pressing the submit button, this draft config will get pulled from context and seved to a variable in the UI file, then attempted to send this to the mirror. And the "true" context module config gets updated, even if the write to mirror fails.
-
 Next steps:
+- write full config to multiple characteristics is semi working. some of the characteristics did not writee successfully, but most seemed to.
+- implement read from characteristics into module functionality
 - make some more of the connection process automatic. like getting system connected info. reduce the number of buttons and steps needed.
    - the bonded > connected flow still works if you system connect in Lightblue.
    - connecting while already connected seems to be fine. so doesn't matter if this gets called again
    - can maybe do some refactoring with all this stuff when I add in the event handlers for the ble manager events.
-
-
-blocked
-- fill out props and data flow stuff for the "send changes to mirror" screen. on hold until I know if we're sending a full json / one module's json / something even more granular.
-
+- add event handeler for disconnect events in the ble manager.
+- maybe make a top right status menu/icon that shows connection status stuff. could also be a button that takes you to a dedicated status page.
+- if dropped connections are still a problem, could have something that polls the mirror every x seconds. as a keep connection alive type thing.
 
 maybe:
-- add event handeler for disconnect events in the ble manager.
-- maybe make a top right status menu that shows this stuff. could be just a button that takes you to a dedicated status page.
-- smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
-- persist info about devices and/or user states. store stuff to "disk". might not be super necessary though, if I'm using the bonded devices array.
+- persist a user's config to disk
 
 # ----------
 
@@ -72,7 +67,9 @@ or if neither of those work, try deleting the app and flashing again
 # ----------
 
 Future enhancements not implemented in protoype, but for the final sellable product:
-- Have the user be able to drag and drop rectangles on the screen, instead of just sending coordinates as text.
-- This only works if there is one BLE device connected. Things will probably break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned. In the future, we could have it only detect connected devices that match a certain ID signature for our smart mirrors. Overall I bet things will break if multiple devices are connected.
+- Have the user be able to drag and drop rectangles on the screen, instead of the form submit.
+- This app only works if there is one BLE device connected. Things will probably break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned. In the future, we could have it only detect connected devices that match a certain ID signature for our smart mirrors. Overall I bet things will break if multiple devices are connected.
+- Support for more modulec configuration other than position and enable. Something like weather location.
 - A way for the user to authenticate for their apps. Like have this app make a call to a web server of ours, that server goes and gets a token for some site, gives us the token, and we pass that token along with BLE to the Raspi.
 - iOS compatability. Permission stuff doesn't work at the moment. Theoretically, most of it should work. Except for the getBondedPeripherals() method in the library. But I doubt the flow of bonded > system connected > connected that kind of happens in this app right now would be the same on iOS. And the connect() function in the library doesn't time out on iOS, so would need a timer here.
+- Discoverability of characteristics. Instead of having them hard coded. Maybe have one characteristic that is fixed or gets discovered via its position or description. And then that is read-only and cha display some kind of array/map of the other characteristics and their associated modules.

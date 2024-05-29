@@ -217,7 +217,7 @@ class BluetoothService {
       await BleManager.write(deviceID, serviceUUID, characteristicUUID,
         dataValue);
 
-      console.log('Write to characteristic succeeded');
+      // console.log('Write to characteristic succeeded');
     }
     catch (error) {
       console.error('Error writing to characteristic in writeInt:', error);
@@ -245,7 +245,7 @@ class BluetoothService {
       await BleManager.write(deviceID, serviceUUID, characteristicUUID,
         byteArray);
 
-      console.log('Write to characteristic succeeded');
+      // console.log('Write to characteristic succeeded');
     }
     catch (error) {
       console.error('Error writing to characteristic in writeByteArray:', error);
