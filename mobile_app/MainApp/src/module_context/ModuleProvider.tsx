@@ -11,6 +11,12 @@ import {
 
 const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
+  // method to write a full config to the mirror
+
+  // method to read a full config from the mirror
+
+
+
   // constructor-like thing that runs when context is created
   useEffect(() => {
     // eventually, could pull in data from saved state here.

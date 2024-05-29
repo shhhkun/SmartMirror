@@ -26,14 +26,23 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
   const [newsSliderValue, setNewsSliderValue] = useState(true);
   const [newsDropdownValue, setNewsDropdownValue] = useState("bottom_left");
 
+  const doUponResetButton = () => {
+    console.log("Reset to default button pressed");
+  };
+
+  const doUponSaveButton = () => {
+    console.log("Saving config button pressed");
+  }
+
   const doUponSubmitButton = () => {
     console.log("Form state at this time:");
-
     console.log("Clock: ", clockSliderValue, clockDropdownValue);
     console.log("Weather: ", weatherSliderValue, weatherDropdownValue);
     console.log("News: ", newsSliderValue, newsDropdownValue);
   };
 
+  // todo: make this not as repeated and ugly where I'm repeating module bars.
+  // make this pull from the module context when it's created I think.
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
@@ -65,33 +74,25 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
           onDropdownChange={(value: string) => setNewsDropdownValue(value)}
         />
 
-        <ModuleConfigBar
-          title="News2"
-          sliderValue={newsSliderValue}
-          onSliderChange={(value: boolean) => setNewsSliderValue(value)}
-          dropdownValue={newsDropdownValue}
-          onDropdownChange={(value: string) => setNewsDropdownValue(value)}
-        />
 
-        <ModuleConfigBar
-          title="News3"
-          sliderValue={newsSliderValue}
-          onSliderChange={(value: boolean) => setNewsSliderValue(value)}
-          dropdownValue={newsDropdownValue}
-          onDropdownChange={(value: string) => setNewsDropdownValue(value)}
-        />
-
-        <ModuleConfigBar
-          title="News4"
-          sliderValue={newsSliderValue}
-          onSliderChange={(value: boolean) => setNewsSliderValue(value)}
-          dropdownValue={newsDropdownValue}
-          onDropdownChange={(value: string) => setNewsDropdownValue(value)}
-        />
       </ScrollView>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponSubmitButton()} title="Send Changes to Mirror" />
+        <ButtonToNavigate onPress={() => doUponResetButton()}
+          title="Reset to Default"
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponSaveButton()}
+          title="Save Changes"
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponSubmitButton()}
+          title="Send Changes to Mirror"
+        />
       </View>
     </SafeAreaView >
   );
@@ -105,12 +106,12 @@ const styles = StyleSheet.create({
   },
 
   scrollableContainer: {
-    height: '70%',
+    height: '65%',
   },
 
   buttonContainer: {
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingTop: 0,
+    paddingBottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: GlobalStyles.lightBackground,
