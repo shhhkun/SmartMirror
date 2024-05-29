@@ -97,4 +97,8 @@ const enum savedCharacteristicUUIDs {
 
   erikLightCharModu1 = '3333',
   erikLightCharModu2 = '4444',
+
+  // hard-coded characgeristics for everything for now
+  piClockEnableChar = '????',
+  piClockPositionChar = '?????',
 }

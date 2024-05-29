@@ -26,21 +26,19 @@ I think the issue I'm seeing of disconnecting after about a minute can be attrib
 I'll create a context for holding onto the module config file, and a draft version. When modifying the form, this will modify the draft config file. Upon pressing the submit button, this draft config will get pulled from context and seved to a variable in the UI file, then attempted to send this to the mirror. And the "true" context module config gets updated, even if the write to mirror fails.
 
 Next steps:
-- make module config context
 - make some more of the connection process automatic. like getting system connected info. reduce the number of buttons and steps needed.
    - the bonded > connected flow still works if you system connect in Lightblue.
    - connecting while already connected seems to be fine. so doesn't matter if this gets called again
    - can maybe do some refactoring with all this stuff when I add in the event handlers for the ble manager events.
-- add event handeler for disconnect events in the ble manager.
-- maybe make a top right status menu that shows this stuff. could be just a button that takes you to a dedicated status page.
+
 
 blocked
 - fill out props and data flow stuff for the "send changes to mirror" screen. on hold until I know if we're sending a full json / one module's json / something even more granular.
-- maybe make a second context for holding onto the module config JSON. have one "attribute" that is the real config. and then one that is a "draft" which gets editied in the form submit page. and upon pressing the submit button, the draft gets sent off, and upon writing successfully, the main json config then gets updated to the draft.
-- add ability and UI for communicating with more than 1 characteristic. might reconfiguretarget stuff with this. maybe make the target characteristic an array, and just for-each this for writing. or somehow form an association between certain modules and certain characteristics.
 
 
 maybe:
+- add event handeler for disconnect events in the ble manager.
+- maybe make a top right status menu that shows this stuff. could be just a button that takes you to a dedicated status page.
 - smart navigation in the app, based on bluetooth state. when permissions are enabled, no need to show the screen for permissions. when a device is connected, can take them directly to the send data screen.
 - persist info about devices and/or user states. store stuff to "disk". might not be super necessary though, if I'm using the bonded devices array.
 

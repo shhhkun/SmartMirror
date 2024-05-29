@@ -36,7 +36,8 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     console.error("writeSingleModuleConfigToMirror not implemented");
   };
 
-  const readSingleModuleConfigFromMirror = async (moduleName: string): Promise<SingleModuleConfiguration> => {
+  const readSingleModuleConfigFromMirror = async (
+    moduleName: string): Promise<SingleModuleConfiguration> => {
     // try reading the enablement and position for a single module from the mirror
 
     // todo
