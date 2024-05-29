@@ -94,7 +94,7 @@ const enum savedCharacteristicUUIDs {
   erikLightCharModu2 = '4444',
 }
 
-export const moduleCharacteristicsHardCoded: object = {
+export const moduleCharacteristicsHardCoded: any = {
   // pretty to jank to have this hard-coded. but should be ok if we're just using
   // the single pi and the characteristics don't change.
 

@@ -31,7 +31,7 @@ export const modulePositionOptionsEnum = {
   'bottom_bar': 11,
   'fullscreen_above': 12,
   'fullscreen_below': 13
-};
+} as const;
 
 const standardModuleNames: string[] = [
   // not using this for anything for now.

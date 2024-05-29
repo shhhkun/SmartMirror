@@ -13,6 +13,10 @@ import {
   FullModuleConfiguration
 } from "./ModuleContext";
 import {
+  prepareDataToSend,
+  lookupCharacteristics
+} from "./ModuleUtils";
+import {
   BluetoothContext
 } from "../ble/BluetoothContext";
 import {
@@ -43,24 +47,32 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
   const writeSingleModuleConfigToMirror = async (
     singleModule: SingleModuleConfiguration): Promise<void> => {
-    // try writing the enablement and position for a single module to the mirror
+    // try writing the enablement and position for a single module to the mirror.
+    // I'm using the module display name for this lookup.
 
-    if (!(singleModule.moduleDisplayName in moduleCharacteristicsHardCoded)) {
-      throw new Error("Don't have a saved characteristic(s) for this module name");
-    }
+    const moduleName: string = singleModule.moduleDisplayName;
 
-    const positionDataString: string = singleModule.modulePosition;
-    const positionData: number[] = [1]
+    const characteristics: Map<string, string> =
+      lookupCharacteristics(moduleName);
 
-    const enableData: number[] = [singleModule.moduleEnabled ? 1 : 0];
-
-    const positionCharacteristic = moduleCharacteristicsHardCoded[
-      singleModule.moduleDisplayName].position;
+    const dataToSend: Map<string, number[]> =
+      prepareDataToSend(singleModule.moduleEnabled, singleModule.modulePosition);
 
     try {
+      // write the enablement
+      await writeByteArrayToAnyCharacteristic(
+        dataToSend.get('enable') as number[],
+        characteristics.get('enable') as string
+      );
+
+      // write the position
+      await writeByteArrayToAnyCharacteristic(
+        dataToSend.get('position') as number[],
+        characteristics.get('position') as string
+      );
 
     } catch (error) {
-
+      console.error("Error writing single module config to mirror", error);
     }
   }
 
@@ -90,6 +102,7 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     // write them to trueModuleConfiguration and reset draftModuleConfiguration.
 
     // todo
+    const newDraftConfig: FullModuleConfiguration = {};
   };
 
 
