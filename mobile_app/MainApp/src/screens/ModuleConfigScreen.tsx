@@ -55,8 +55,6 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
     console.log("-----------------------------------");
   };
 
-  // todo: make this not as repeated and ugly where I'm repeating module bars.
-  // make this pull from the module context when it's created I think.
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>

@@ -7,13 +7,9 @@ interface SingleModuleConfiguration {
   moduleDisplayName: string;
   moduleEnabled: boolean;
   modulePosition: string;
-
-  // not implemented right now, but for when the user will be able to set
-  // their weather location or something.
-  specificModuleConfiguration?: any;
 }
 
-interface FullModuleConfiguration {
+export interface FullModuleConfiguration {
   // this is a dictionary of module names to their configurations
   [moduleName: string]: SingleModuleConfiguration;
 }
@@ -26,6 +22,8 @@ interface ModuleContextType {
 
   saveDraftConfigToTrueConfig: () => void;
   resetConfigsToDefault: () => void;
+  writeFullConfigToMirror: (moduleConfig: FullModuleConfiguration) => void;
+  readFullConfigFromMirror: () => FullModuleConfiguration;
 
 }
 
@@ -90,6 +88,12 @@ export const defaultModuleContext: ModuleContextType = {
   },
   resetConfigsToDefault: () => {
     throw new Error("resetTrueConfigToDefault not ready yet.");
+  },
+  writeFullConfigToMirror: () => {
+    throw new Error("writeFullConfigToMirror not ready yet.");
+  },
+  readFullConfigFromMirror: () => {
+    throw new Error("readFullConfigFromMirror not ready yet.");
   }
 };
 

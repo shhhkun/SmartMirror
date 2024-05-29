@@ -7,7 +7,8 @@ import React, {
 
 import {
   ModuleContext,
-  defaultModuleContext
+  defaultModuleContext,
+  FullModuleConfiguration
 } from "./ModuleContext";
 
 const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
@@ -19,17 +20,21 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
   const saveDraftConfigToTrueConfig = () => {
     setTrueModuleConfiguration(draftModuleConfiguration);
-  }
+  };
 
   const resetConfigsToDefault = () => {
     setTrueModuleConfiguration(defaultModuleContext.trueModuleConfiguration);
     setDraftModuleConfiguration(defaultModuleContext.draftModuleConfiguration);
-  }
+  };
 
+  const writeFullConfigToMirror = (moduleConfig: FullModuleConfiguration) => {
+    // todo
+  };
 
-  // todo: method to write a full config to the mirror
-
-  // todo: method to read a full config from the mirror
+  const readFullConfigFromMirror = (): FullModuleConfiguration => {
+    // todo
+    return defaultModuleContext.trueModuleConfiguration;
+  };
 
 
 
@@ -47,7 +52,9 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     setTrueModuleConfiguration,
 
     saveDraftConfigToTrueConfig,
-    resetConfigsToDefault
+    resetConfigsToDefault,
+    writeFullConfigToMirror,
+    readFullConfigFromMirror
   };
 
   return (
