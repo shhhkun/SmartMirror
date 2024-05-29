@@ -8,6 +8,7 @@ import React, {
 import {
   ModuleContext,
   defaultModuleContext,
+  SingleModuleConfiguration,
   FullModuleConfiguration
 } from "./ModuleContext";
 
@@ -27,13 +28,35 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     setDraftModuleConfiguration(defaultModuleContext.draftModuleConfiguration);
   };
 
-  const writeFullConfigToMirror = (moduleConfig: FullModuleConfiguration) => {
+  const writeSingleModuleConfigToMirror = async (
+    singleModule: SingleModuleConfiguration): Promise<void> => {
+    // try writing the enablement and position for a single module to the mirror
+
+    // todo
+    console.error("writeSingleModuleConfigToMirror not implemented");
+  };
+
+  const readSingleModuleConfigFromMirror = async (moduleName: string): Promise<SingleModuleConfiguration> => {
+    // try reading the enablement and position for a single module from the mirror
+
+    // todo
+    console.error("readSingleModuleConfigFromMirror not implemented");
+    return defaultModuleContext.trueModuleConfiguration[moduleName];
+  }
+
+  const writeFullConfigToMirror = async () => {
+    // write all the module configs to the mirror sequentially.
+    // pulling from trueModuleConfiguration
+
     // todo
   };
 
-  const readFullConfigFromMirror = (): FullModuleConfiguration => {
+  const readFullConfigFromMirror = async (): Promise<void> => {
+    // read all the module configs from the mirror sequentially.
+    // write them to draftModuleConfiguration. then upon all of them succeeding,
+    // write them to trueModuleConfiguration and reset draftModuleConfiguration.
+
     // todo
-    return defaultModuleContext.trueModuleConfiguration;
   };
 
 

@@ -2,7 +2,7 @@ import {
   createContext
 } from 'react';
 
-interface SingleModuleConfiguration {
+export interface SingleModuleConfiguration {
   moduleInternalName: string;
   moduleDisplayName: string;
   moduleEnabled: boolean;
@@ -22,8 +22,8 @@ interface ModuleContextType {
 
   saveDraftConfigToTrueConfig: () => void;
   resetConfigsToDefault: () => void;
-  writeFullConfigToMirror: (moduleConfig: FullModuleConfiguration) => void;
-  readFullConfigFromMirror: () => FullModuleConfiguration;
+  writeFullConfigToMirror: () => Promise<void>;
+  readFullConfigFromMirror: () => Promise<void>;
 
 }
 
