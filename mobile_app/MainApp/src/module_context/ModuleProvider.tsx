@@ -2,6 +2,7 @@ import React, {
   FC,
   PropsWithChildren,
   useEffect,
+  useState,
 } from "react";
 
 import {
@@ -10,10 +11,16 @@ import {
 } from "./ModuleContext";
 
 const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
+  const [trueModuleConfiguration, setTrueModuleConfiguration] =
+    useState(defaultModuleContext.trueModuleConfiguration);
+  const [draftModuleConfiguration, setDraftModuleConfiguration] =
+    useState(defaultModuleContext.draftModuleConfiguration);
 
-  // method to write a full config to the mirror
 
-  // method to read a full config from the mirror
+
+  // todo: method to write a full config to the mirror
+
+  // todo: method to read a full config from the mirror
 
 
 
@@ -25,10 +32,10 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
   // return the context provider
   const value = {
-    // idk what I'm doing here with the default context.
-    // this should probably pull the states from some state variables
-    // declared at the top of this component.
-    ...defaultModuleContext,
+    trueModuleConfiguration,
+    draftModuleConfiguration,
+    setDraftModuleConfiguration,
+    setTrueModuleConfiguration,
   };
 
   return (

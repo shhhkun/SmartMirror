@@ -21,46 +21,48 @@ interface FullModuleConfiguration {
 interface ModuleContextType {
   trueModuleConfiguration: FullModuleConfiguration;
   draftModuleConfiguration: FullModuleConfiguration;
+  setTrueModuleConfiguration: (newConfig: FullModuleConfiguration) => void;
+  setDraftModuleConfiguration: (newConfig: FullModuleConfiguration) => void;
 }
 
 const defaultModuleConfiguration: FullModuleConfiguration = {
-  "alert": {
+  alert: {
     moduleInternalName: "alert",
     moduleDisplayName: "Alerts",
     moduleEnabled: false,
     modulePosition: 'top_bar'
   },
-  "updatenotification": {
+  updatenotification: {
     moduleInternalName: "updatenotification",
     moduleDisplayName: "Notifications",
     moduleEnabled: false,
     modulePosition: 'top_left'
   },
-  "clock": {
+  clock: {
     moduleInternalName: "clock",
     moduleDisplayName: "Clock",
     moduleEnabled: true,
     modulePosition: 'top_center'
   },
-  "calendar": {
+  calendar: {
     moduleInternalName: "calendar",
     moduleDisplayName: "Calendar",
     moduleEnabled: false,
     modulePosition: 'top_right'
   },
-  "compliments": {
+  compliments: {
     moduleInternalName: "compliments",
     moduleDisplayName: "Compliments",
     moduleEnabled: true,
     modulePosition: 'upper_third'
   },
-  "weather": {
+  weather: {
     moduleInternalName: "weather",
     moduleDisplayName: "Weather",
     moduleEnabled: true,
     modulePosition: 'middle_center'
   },
-  "newsfeed": {
+  newsfeed: {
     moduleInternalName: "newsfeed",
     moduleDisplayName: "News",
     moduleEnabled: true,
@@ -73,6 +75,12 @@ const defaultModuleConfiguration: FullModuleConfiguration = {
 export const defaultModuleContext: ModuleContextType = {
   trueModuleConfiguration: defaultModuleConfiguration,
   draftModuleConfiguration: defaultModuleConfiguration,
+  setTrueModuleConfiguration: () => {
+    throw new Error("setTrueModuleConfiguration not ready yet.");
+  },
+  setDraftModuleConfiguration: () => {
+    throw new Error("setDraftModuleConfiguration not ready yet.");
+  }
 };
 
 export const ModuleContext = createContext<ModuleContextType>(

@@ -1,6 +1,7 @@
 // library imports
 import React, {
   useState,
+  useContext,
 } from 'react';
 import {
   StatusBar,
@@ -14,17 +15,17 @@ import {
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import ModuleConfigBar from '../components/ModuleConfigBar';
+import { ModuleContext } from '../module_context/ModuleContext';
 
 
 
 const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
+  // stuff from module context needed on this page
+  const { draftModuleConfiguration,
+    setTrueModuleConfiguration,
+    setDraftModuleConfiguration }
+    = useContext(ModuleContext);
 
-  const [clockSliderValue, setClockSliderValue] = useState(true);
-  const [clockDropdownValue, setClockDropdownValue] = useState("top_left");
-  const [weatherSliderValue, setWeatherSliderValue] = useState(false);
-  const [weatherDropdownValue, setWeatherDropdownValue] = useState("top_right");
-  const [newsSliderValue, setNewsSliderValue] = useState(true);
-  const [newsDropdownValue, setNewsDropdownValue] = useState("bottom_left");
 
   const doUponResetButton = () => {
     console.log("Reset to default button pressed");
@@ -35,10 +36,8 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
   }
 
   const doUponSubmitButton = () => {
-    console.log("Form state at this time:");
-    console.log("Clock: ", clockSliderValue, clockDropdownValue);
-    console.log("Weather: ", weatherSliderValue, weatherDropdownValue);
-    console.log("News: ", newsSliderValue, newsDropdownValue);
+    console.log("module context draft config is currently:");
+    console.log(JSON.stringify(draftModuleConfiguration.clock, null, 2));
   };
 
   // todo: make this not as repeated and ugly where I'm repeating module bars.
@@ -52,27 +51,28 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 
         <ModuleConfigBar
           title="Clock"
-          sliderValue={clockSliderValue}
-          onSliderChange={(value: boolean) => setClockSliderValue(value)}
-          dropdownValue={clockDropdownValue}
-          onDropdownChange={(value: string) => setClockDropdownValue(value)}
+
+          sliderValue={draftModuleConfiguration.clock.moduleEnabled}
+          onSliderChange={(value: boolean) => setDraftModuleConfiguration({
+            ...draftModuleConfiguration,
+            clock: {
+              ...draftModuleConfiguration.clock,
+              moduleEnabled: value
+            }
+          })}
+
+          dropdownValue={draftModuleConfiguration.clock.modulePosition}
+          onDropdownChange={(value: string) => setDraftModuleConfiguration({
+            ...draftModuleConfiguration,
+            clock: {
+              ...draftModuleConfiguration.clock,
+              modulePosition: value
+            }
+          })
+          }
         />
 
-        <ModuleConfigBar
-          title="Weather"
-          sliderValue={weatherSliderValue}
-          onSliderChange={(value: boolean) => setWeatherSliderValue(value)}
-          dropdownValue={weatherDropdownValue}
-          onDropdownChange={(value: string) => setWeatherDropdownValue(value)}
-        />
 
-        <ModuleConfigBar
-          title="News"
-          sliderValue={newsSliderValue}
-          onSliderChange={(value: boolean) => setNewsSliderValue(value)}
-          dropdownValue={newsDropdownValue}
-          onDropdownChange={(value: string) => setNewsDropdownValue(value)}
-        />
 
 
       </ScrollView>
