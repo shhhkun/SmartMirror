@@ -12,6 +12,9 @@ import {
 import {
   modulePositionOptions
 } from '../common/StandardModuleInfo';
+import {
+  GlobalStyles
+} from '../common/GlobalStyles';
 
 
 
@@ -66,11 +69,12 @@ const ModulePositionsDropdown: React.FC<ModulePositionsDropdownProps> = ({
     <View style={styles.dropdownContainer}>
       <Picker
         style={styles.picker}
+        dropdownIconColor={GlobalStyles.darkText}
+
         selectedValue={incomingDropdownValue}
         onValueChange={(itemValue: string) =>
           onDropdownChange(itemValue)}
       >
-
         {
           // make a dropdown option for each item in modulePositionsOptions
           modulePositionOptions.map((option, index) => (
@@ -99,6 +103,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
+    color: GlobalStyles.darkText,
   },
   rowContainer: {
     flexDirection: 'row',
@@ -111,7 +116,8 @@ const styles = StyleSheet.create({
   },
   picker: {
     height: 50,
-    width: 200,
+    width: 204, // 204 is min width to not cut off text on the physical android
+    color: GlobalStyles.darkText,
   },
 });
 

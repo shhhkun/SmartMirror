@@ -57,7 +57,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
         style={styles.scrollableContainer}
         showsVerticalScrollIndicator={true}>
 
-        {/* Make module config bars for all the modules in draft config */}
+        {/* Make module config bars for all the modules in draft config. */}
         {Object.entries(draftModuleConfiguration).map(([moduleName, moduleConfig]) => (
           <ModuleConfigBar
             key={moduleName}
@@ -86,6 +86,8 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
             }
           />
         ))}
+
+
       </ScrollView>
 
       <View style={styles.allButtonsContainer}>
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
 
   scrollableContainer: {
     height: '65%',
-    // might want some separation between this section and the buttons somehow
+    backgroundColor: GlobalStyles.lessLightBackground,
   },
 
   allButtonsContainer: {
