@@ -19,9 +19,8 @@ import {
 import {
   BluetoothContext
 } from "../ble/BluetoothContext";
-import {
-  moduleCharacteristicsHardCoded
-} from "../ble/BluetoothUtils";
+
+
 
 const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   // state stuff for this context
@@ -36,6 +35,8 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   } = useContext(BluetoothContext);
 
 
+
+  // functions for messign with states
   const saveDraftConfigToTrueConfig = () => {
     setTrueModuleConfiguration(draftModuleConfiguration);
   };
@@ -45,6 +46,9 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     setDraftModuleConfiguration(defaultModuleContext.draftModuleConfiguration);
   };
 
+
+
+  // functions for reading and writing to the mirror
   const writeSingleModuleConfigToMirror = async (
     singleModule: SingleModuleConfiguration): Promise<void> => {
     // try writing the enablement and position for a single module to the mirror.
@@ -76,10 +80,20 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     }
   }
 
+  const writeFullConfigToMirror = async () => {
+    // write all the module configs to the mirror sequentially.
+    // pulling from trueModuleConfiguration
 
+    // iterate over each module in the trueModuleConfiguration
+    Object.entries(trueModuleConfiguration).forEach(async (
+      [moduleObjectName, moduleSingleConfig]) => {
 
+      // do the write operation for this single module
+      await writeSingleModuleConfigToMirror(moduleSingleConfig);
+    });
+  };
 
-
+  // not yet implemented
   const readSingleModuleConfigFromMirror = async (
     moduleName: string): Promise<SingleModuleConfiguration> => {
     // try reading the enablement and position for a single module from the mirror
@@ -87,15 +101,9 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     // todo
     console.error("readSingleModuleConfigFromMirror not implemented");
     return defaultModuleContext.trueModuleConfiguration[moduleName];
-  }
-
-  const writeFullConfigToMirror = async () => {
-    // write all the module configs to the mirror sequentially.
-    // pulling from trueModuleConfiguration
-
-    // todo
   };
 
+  // not yet implemented
   const readFullConfigFromMirror = async (): Promise<void> => {
     // read all the module configs from the mirror sequentially.
     // write them to draftModuleConfiguration. then upon all of them succeeding,
@@ -122,6 +130,7 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
     saveDraftConfigToTrueConfig,
     resetConfigsToDefault,
+
     writeFullConfigToMirror,
     readFullConfigFromMirror
   };

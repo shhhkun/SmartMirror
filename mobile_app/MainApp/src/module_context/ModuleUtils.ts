@@ -30,6 +30,13 @@ export const prepareDataToSend = (
   return dataToSend;
 };
 
+// not yet implemented
+export const deserializeReceivedData = (
+  receivedData: number[]): [boolean, string] => {
+
+  throw new Error("Not implemented yet");
+};
+
 export const lookupCharacteristics = (
   moduleName: string): Map<string, string> => {
   // returns a dictionary of the form:
@@ -49,4 +56,4 @@ export const lookupCharacteristics = (
   outputMap.set('enable', enableChar);
   outputMap.set('position', positionChar);
   return outputMap;
-}
+};

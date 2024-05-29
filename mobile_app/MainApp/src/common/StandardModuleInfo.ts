@@ -1,7 +1,4 @@
 export const modulePositionOptions = [
-  // could make this module positions into an enum, if we want to send ints
-  // for positions instead of the strings. but I doubt message size will matter
-  // that much.
   'top_bar',
   'top_left',
   'top_center',
@@ -18,6 +15,7 @@ export const modulePositionOptions = [
 ];
 
 export const modulePositionOptionsEnum = {
+  // actually using this now, since we're sending ints only to the mirror.
   'top_bar': 1,
   'top_left': 2,
   'top_center': 3,

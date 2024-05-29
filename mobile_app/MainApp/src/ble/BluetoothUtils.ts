@@ -95,8 +95,9 @@ const enum savedCharacteristicUUIDs {
 }
 
 export const moduleCharacteristicsHardCoded: any = {
-  // pretty to jank to have this hard-coded. but should be ok if we're just using
-  // the single pi and the characteristics don't change.
+  // this uses the display names of the modules as the main item names!
+  // pretty to jank to have this hard-coded. but should be ok if
+  // we're just using the single pi and the characteristics don't change.
 
   "Alerts": {
     "enable": "????",
