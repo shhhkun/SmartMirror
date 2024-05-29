@@ -48,10 +48,10 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
   const doUponSubmitButton = () => {
     console.log("-----------------------------------");
     console.log("module context draft config is currently:");
-    console.log(JSON.stringify(draftModuleConfiguration.clock, null, 2));
+    console.log(JSON.stringify(draftModuleConfiguration, null, 2));
     console.log("-----------------------------------");
     console.log("module context true config is currently:");
-    console.log(JSON.stringify(trueModuleConfiguration.clock, null, 2));
+    console.log(JSON.stringify(trueModuleConfiguration, null, 2));
     console.log("-----------------------------------");
   };
 
@@ -93,36 +93,6 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
             }
           />
         ))}
-
-
-        {/* above code is from copilot. haven't looked at it closely yet
-        but seems to work. */}
-        {/* <ModuleConfigBar
-          title="Clock"
-
-          sliderValue={draftModuleConfiguration.clock.moduleEnabled}
-          onSliderChange={(value: boolean) => setDraftModuleConfiguration({
-            ...draftModuleConfiguration,
-            clock: {
-              ...draftModuleConfiguration.clock,
-              moduleEnabled: value
-            }
-          })}
-
-          dropdownValue={draftModuleConfiguration.clock.modulePosition}
-          onDropdownChange={(value: string) => setDraftModuleConfiguration({
-            ...draftModuleConfiguration,
-            clock: {
-              ...draftModuleConfiguration.clock,
-              modulePosition: value
-            }
-          })
-          }
-        /> */}
-
-
-
-
       </ScrollView>
 
       <View style={styles.allButtonsContainer}>
