@@ -21,23 +21,38 @@ import { ModuleContext } from '../module_context/ModuleContext';
 
 const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
   // stuff from module context needed on this page
-  const { draftModuleConfiguration,
-    setTrueModuleConfiguration,
-    setDraftModuleConfiguration }
+  const {
+    draftModuleConfiguration,
+
+    // be very careful not to mess with trueModuleConfiguration directly.
+    // just have it available here for debugging.
+    trueModuleConfiguration,
+
+    setDraftModuleConfiguration,
+    saveDraftConfigToTrueConfig,
+    resetConfigsToDefault
+  }
     = useContext(ModuleContext);
 
 
   const doUponResetButton = () => {
     console.log("Reset to default button pressed");
+    resetConfigsToDefault();
   };
 
   const doUponSaveButton = () => {
     console.log("Saving config button pressed");
+    saveDraftConfigToTrueConfig();
   }
 
   const doUponSubmitButton = () => {
+    console.log("-----------------------------------");
     console.log("module context draft config is currently:");
     console.log(JSON.stringify(draftModuleConfiguration.clock, null, 2));
+    console.log("-----------------------------------");
+    console.log("module context true config is currently:");
+    console.log(JSON.stringify(trueModuleConfiguration.clock, null, 2));
+    console.log("-----------------------------------");
   };
 
   // todo: make this not as repeated and ugly where I'm repeating module bars.

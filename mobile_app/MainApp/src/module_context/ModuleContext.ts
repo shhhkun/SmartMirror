@@ -23,6 +23,10 @@ interface ModuleContextType {
   draftModuleConfiguration: FullModuleConfiguration;
   setTrueModuleConfiguration: (newConfig: FullModuleConfiguration) => void;
   setDraftModuleConfiguration: (newConfig: FullModuleConfiguration) => void;
+
+  saveDraftConfigToTrueConfig: () => void;
+  resetConfigsToDefault: () => void;
+
 }
 
 const defaultModuleConfiguration: FullModuleConfiguration = {
@@ -80,6 +84,12 @@ export const defaultModuleContext: ModuleContextType = {
   },
   setDraftModuleConfiguration: () => {
     throw new Error("setDraftModuleConfiguration not ready yet.");
+  },
+  saveDraftConfigToTrueConfig: () => {
+    throw new Error("saveDraftConfigToTrueConfig not ready yet.");
+  },
+  resetConfigsToDefault: () => {
+    throw new Error("resetTrueConfigToDefault not ready yet.");
   }
 };
 

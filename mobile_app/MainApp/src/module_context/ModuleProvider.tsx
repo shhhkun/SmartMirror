@@ -17,6 +17,15 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     useState(defaultModuleContext.draftModuleConfiguration);
 
 
+  const saveDraftConfigToTrueConfig = () => {
+    setTrueModuleConfiguration(draftModuleConfiguration);
+  }
+
+  const resetConfigsToDefault = () => {
+    setTrueModuleConfiguration(defaultModuleContext.trueModuleConfiguration);
+    setDraftModuleConfiguration(defaultModuleContext.draftModuleConfiguration);
+  }
+
 
   // todo: method to write a full config to the mirror
 
@@ -36,6 +45,9 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     draftModuleConfiguration,
     setDraftModuleConfiguration,
     setTrueModuleConfiguration,
+
+    saveDraftConfigToTrueConfig,
+    resetConfigsToDefault
   };
 
   return (
