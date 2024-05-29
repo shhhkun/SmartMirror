@@ -23,16 +23,16 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 I think the issue I'm seeing of disconnecting after about a minute can be attributed to the Lightblue app. Will wait to worry more about this until I see it happen on the pi.
 
+I'll create a context for holding onto the module config file, and a draft version. When modifying the form, this will modify the draft config file. Upon pressing the submit button, this draft config will get pulled from context and seved to a variable in the UI file, then attempted to send this to the mirror. And the "true" context module config gets updated, even if the write to mirror fails.
+
 Next steps:
+- make module config context
 - make some more of the connection process automatic. like getting system connected info. reduce the number of buttons and steps needed.
    - the bonded > connected flow still works if you system connect in Lightblue.
    - connecting while already connected seems to be fine. so doesn't matter if this gets called again
    - can maybe do some refactoring with all this stuff when I add in the event handlers for the ble manager events.
-- make the module config screen less jank. actually capture states of the components in the form.
 - add event handeler for disconnect events in the ble manager.
 - maybe make a top right status menu that shows this stuff. could be just a button that takes you to a dedicated status page.
-- figure out how to encode/decode more complex data
-- add support for more than 1 characteristic at once in bluetooth context
 
 blocked
 - fill out props and data flow stuff for the "send changes to mirror" screen. on hold until I know if we're sending a full json / one module's json / something even more granular.

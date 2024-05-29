@@ -7,8 +7,6 @@ import React, {
 import {
   Peripheral,
   PeripheralInfo,
-  Service,
-  Characteristic,
 } from "react-native-ble-manager";
 
 import {
