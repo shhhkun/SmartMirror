@@ -11,7 +11,7 @@ import {
 
 import {
   modulePositionOptions
-} from '../ble/BluetoothUtils';
+} from '../common/StandardModuleInfo';
 
 
 
