@@ -1,6 +1,5 @@
 // library imports
 import React, {
-  useState,
   useContext,
 } from 'react';
 import {
@@ -127,6 +126,7 @@ const styles = StyleSheet.create({
 
   scrollableContainer: {
     height: '65%',
+    // might want some separation between this section and the buttons somehow
   },
 
   allButtonsContainer: {

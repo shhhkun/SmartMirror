@@ -20,6 +20,11 @@ interface ModuleContextType {
   setTrueModuleConfiguration: (newConfig: FullModuleConfiguration) => void;
   setDraftModuleConfiguration: (newConfig: FullModuleConfiguration) => void;
 
+  // eventually could have an attribute for last read/written config.
+  // and then the send to mirror command would only send things that have
+  // changed. not going to implement for now, but could do if latency on writes
+  // is an issue.
+
   saveDraftConfigToTrueConfig: () => void;
   resetConfigsToDefault: () => void;
   writeFullConfigToMirror: () => Promise<void>;

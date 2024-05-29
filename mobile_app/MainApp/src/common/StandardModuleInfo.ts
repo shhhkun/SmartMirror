@@ -17,6 +17,22 @@ export const modulePositionOptions = [
   'fullscreen_below'
 ];
 
+export const modulePositionOptionsEnum = {
+  'top_bar': 1,
+  'top_left': 2,
+  'top_center': 3,
+  'top_right': 4,
+  'upper_third': 5,
+  'middle_center': 6,
+  'lower_third': 7,
+  'bottom_left': 8,
+  'bottom_center': 9,
+  'bottom_right': 10,
+  'bottom_bar': 11,
+  'fullscreen_above': 12,
+  'fullscreen_below': 13
+};
+
 const standardModuleNames: string[] = [
   // not using this for anything for now.
   "alert",

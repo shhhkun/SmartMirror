@@ -1,3 +1,5 @@
+// file of stuff that doesn't need the bluetooth context or manager library
+
 // library imports
 import { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
 
@@ -8,23 +10,7 @@ import {
   defaultBluetoothContext
 } from './BluetoothContext';
 
-// functions that don't need to touch the context states or the BLE manager
-// directly. for selecting from lists of peripherals, services, characteristics.
-// and serialization stuff.
 
-function selectPeripheralByName(peripheralsArray: Peripheral[]): Peripheral {
-
-  // go through our list of saved devices. if one of our saved names is in the
-  // bonded devices list, select that one.
-  for (let thisPeripheral of peripheralsArray) {
-    if (thisPeripheral.name && savedDeviceNames.includes(thisPeripheral.name)) {
-      return thisPeripheral;
-    }
-  }
-
-  // if not found, just return the first peripheral in the list
-  return peripheralsArray[0];
-}
 
 export function selectOurDeviceFromBondedDevices(
   peripheralsArray: Peripheral[]): Peripheral {
@@ -37,7 +23,16 @@ export function selectOurDeviceFromBondedDevices(
     throw new Error('No bonded devices found');
   }
 
-  return selectPeripheralByName(peripheralsArray);
+  // go through our list of saved devices. if one of our saved names is in the
+  // bonded devices list, select that one.
+  for (let thisPeripheral of peripheralsArray) {
+    if (thisPeripheral.name && savedDeviceNames.includes(thisPeripheral.name)) {
+      return thisPeripheral;
+    }
+  }
+
+  // if not found, just return the first peripheral in the list
+  return peripheralsArray[0];
 }
 
 export function selectTargetServiceAndCharacteristic(
@@ -97,8 +92,39 @@ const enum savedCharacteristicUUIDs {
 
   erikLightCharModu1 = '3333',
   erikLightCharModu2 = '4444',
-
-  // hard-coded characgeristics for everything for now
-  piClockEnableChar = '????',
-  piClockPositionChar = '?????',
 }
+
+export const moduleCharacteristicsHardCoded: object = {
+  // pretty to jank to have this hard-coded. but should be ok if we're just using
+  // the single pi and the characteristics don't change.
+
+  "Alerts": {
+    "enable": "????",
+    "position": "????"
+  },
+  "Clock": {
+    "enable": "????",
+    "position": "????"
+  },
+  "Notifications": {
+    "enable": "????",
+    "position": "????"
+  },
+  "Calendar": {
+    "enable": "????",
+    "position": "????"
+  },
+  "Compliments": {
+    "enable": "????",
+    "position": "????"
+  },
+  "Weather": {
+    "enable": "????",
+    "position": "????"
+  },
+  "News": {
+    "enable": "????",
+    "position": "????"
+  }
+}
+

@@ -1,6 +1,7 @@
 import React, {
   FC,
   PropsWithChildren,
+  useContext,
   useEffect,
   useState,
 } from "react";
@@ -11,12 +12,24 @@ import {
   SingleModuleConfiguration,
   FullModuleConfiguration
 } from "./ModuleContext";
+import {
+  BluetoothContext
+} from "../ble/BluetoothContext";
+import {
+  moduleCharacteristicsHardCoded
+} from "../ble/BluetoothUtils";
 
 const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
+  // state stuff for this context
   const [trueModuleConfiguration, setTrueModuleConfiguration] =
     useState(defaultModuleContext.trueModuleConfiguration);
   const [draftModuleConfiguration, setDraftModuleConfiguration] =
     useState(defaultModuleContext.draftModuleConfiguration);
+
+  // parts of bluetooth context needed by functions in this context
+  const {
+    writeByteArrayToAnyCharacteristic
+  } = useContext(BluetoothContext);
 
 
   const saveDraftConfigToTrueConfig = () => {
@@ -32,9 +45,28 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     singleModule: SingleModuleConfiguration): Promise<void> => {
     // try writing the enablement and position for a single module to the mirror
 
-    // todo
-    console.error("writeSingleModuleConfigToMirror not implemented");
-  };
+    if (!(singleModule.moduleDisplayName in moduleCharacteristicsHardCoded)) {
+      throw new Error("Don't have a saved characteristic(s) for this module name");
+    }
+
+    const positionDataString: string = singleModule.modulePosition;
+    const positionData: number[] = [1]
+
+    const enableData: number[] = [singleModule.moduleEnabled ? 1 : 0];
+
+    const positionCharacteristic = moduleCharacteristicsHardCoded[
+      singleModule.moduleDisplayName].position;
+
+    try {
+
+    } catch (error) {
+
+    }
+  }
+
+
+
+
 
   const readSingleModuleConfigFromMirror = async (
     moduleName: string): Promise<SingleModuleConfiguration> => {
