@@ -7,12 +7,21 @@ export interface SingleModuleConfiguration {
   moduleDisplayName: string;
   moduleEnabled: boolean;
   modulePosition: string;
-}
+};
 
 export interface FullModuleConfiguration {
-  // this is a dictionary of module names to their configurations
+  // this is a dictionary of module names to their configurations. of the form:
+  // {
+  //   "ModuleName": {
+  //     moduleInternalName: "ModuleName",
+  //     moduleDisplayName: "Module Display Name",
+  //     moduleEnabled: true,
+  //     modulePosition: "top_bar"
+  //   }
+  // }
+
   [moduleName: string]: SingleModuleConfiguration;
-}
+};
 
 interface ModuleContextType {
   trueModuleConfiguration: FullModuleConfiguration;
@@ -29,8 +38,7 @@ interface ModuleContextType {
   resetConfigsToDefault: () => void;
   writeFullConfigToMirror: () => Promise<void>;
   readFullConfigFromMirror: () => Promise<void>;
-
-}
+};
 
 const defaultModuleConfiguration: FullModuleConfiguration = {
   alert: {

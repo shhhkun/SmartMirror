@@ -1,7 +1,10 @@
 // file of stuff that doesn't need the bluetooth context or manager library
 
 // library imports
-import { Peripheral, PeripheralInfo } from 'react-native-ble-manager';
+import {
+  Peripheral,
+  PeripheralInfo
+} from 'react-native-ble-manager';
 
 // my imports
 import {

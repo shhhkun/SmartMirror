@@ -194,7 +194,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       deviceInfos.systemConnectedPeripheralInfo ===
       defaultBluetoothContext.deviceInfos.systemConnectedPeripheralInfo
     ) {
-      console.error('No connected device to check');
+      console.error('No connected device to check. Returning false from checkIfDeviceIsReadWritable');
       return false;
     }
 
@@ -496,13 +496,14 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const writeByteArrayToAnyCharacteristic = async (data: number[],
     characteristicUUID: string): Promise<void> => {
+    // this fucntion now throws errors! changed on 5-29-24. didn't previously.
+
     // should eventually consolidate this and the other write function into one.
     // for now, just duplicated code pretty much.
 
     const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();
     if (!okToReadWrite) {
-      console.error('Device not read-writable (writeByteArrayToAnyCharacteristic)');
-      return;
+      throw new Error('Device not read-writable (writeByteArrayToAnyCharacteristic)');
     }
 
     try {

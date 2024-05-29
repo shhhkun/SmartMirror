@@ -22,14 +22,11 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
   // stuff from module context needed on this page
   const {
     draftModuleConfiguration,
-
-    // be very careful not to mess with trueModuleConfiguration directly.
-    // just have it available here for debugging.
     trueModuleConfiguration,
-
     setDraftModuleConfiguration,
     saveDraftConfigToTrueConfig,
-    resetConfigsToDefault
+    resetConfigsToDefault,
+    writeFullConfigToMirror
   }
     = useContext(ModuleContext);
 
@@ -44,14 +41,13 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
     saveDraftConfigToTrueConfig();
   }
 
-  const doUponSubmitButton = () => {
-    console.log("-----------------------------------");
-    console.log("module context draft config is currently:");
-    console.log(JSON.stringify(draftModuleConfiguration, null, 2));
-    console.log("-----------------------------------");
-    console.log("module context true config is currently:");
-    console.log(JSON.stringify(trueModuleConfiguration, null, 2));
-    console.log("-----------------------------------");
+  const doUponSubmitButton = async () => {
+    try {
+      await writeFullConfigToMirror();
+    }
+    catch (error) {
+      console.error("Error sending config to mirror: " + error);
+    }
   };
 
   return (

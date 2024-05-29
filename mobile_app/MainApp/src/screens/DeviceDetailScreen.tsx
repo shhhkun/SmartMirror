@@ -96,10 +96,9 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
           title="Go to Profile Switcher" />
       </View>
 
-      <View style={styles.mainStyle}>
-        <NiceTextArea title="Read Data">
-          {JSON.stringify(readData, null, 2)}
-        </NiceTextArea>
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => navigation.navigate('ModuleConfig')}
+          title="Go To Module Config" />
       </View>
 
     </SafeAreaView >

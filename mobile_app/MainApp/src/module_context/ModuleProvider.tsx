@@ -77,6 +77,7 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
     } catch (error) {
       console.error("Error writing single module config to mirror", error);
+      throw error;
     }
   }
 
@@ -85,12 +86,17 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     // pulling from trueModuleConfiguration
 
     // iterate over each module in the trueModuleConfiguration
-    Object.entries(trueModuleConfiguration).forEach(async (
-      [moduleObjectName, moduleSingleConfig]) => {
+    for (const [moduleObjectName, moduleSingleConfig] of
+      Object.entries(trueModuleConfiguration)) {
 
-      // do the write operation for this single module
-      await writeSingleModuleConfigToMirror(moduleSingleConfig);
-    });
+      try {
+        // do the write operation for this single module
+        await writeSingleModuleConfigToMirror(moduleSingleConfig);
+      } catch (error) {
+        console.error("Error writing single module config to mirror", error);
+        throw error;
+      }
+    }
   };
 
   // not yet implemented
