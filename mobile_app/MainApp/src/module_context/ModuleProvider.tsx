@@ -14,7 +14,8 @@ import {
 } from "./ModuleContext";
 import {
   prepareDataToSend,
-  lookupCharacteristics
+  lookupCharacteristics,
+  deserializeReceivedData
 } from "./ModuleUtils";
 import {
   BluetoothContext
@@ -31,7 +32,8 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
   // parts of bluetooth context needed by functions in this context
   const {
-    writeByteArrayToAnyCharacteristic
+    writeByteArrayToAnyCharacteristic,
+    readFromAnyCharacteristic
   } = useContext(BluetoothContext);
 
 
@@ -113,21 +115,31 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   // not yet implemented
   const readSingleModuleConfigFromMirror = async (
     moduleName: string): Promise<SingleModuleConfiguration> => {
-    // try reading the enablement and position for a single module from the mirror
+    // read the enablement and position characteristics for a single
+    // module from the mirror.
 
+    // look up which characteristics belong to this module
+    const charsForThisModule: Map<string, string> = lookupCharacteristics(moduleName);
+    const enableChar: string = charsForThisModule.get('enable') as string;
+    const positionChar: string = charsForThisModule.get('position') as string;
 
-    // this should first look up the characteristics for this module name,
-    // probably with the lookupCharacteristics function.
+    // read from both characteristics and stash the data in variables
+    let enableData: number[];
+    let positionData: number[];
+    try {
+      enableData = await readFromAnyCharacteristic(enableChar);
+      positionData = await readFromAnyCharacteristic(positionChar);
+    } catch (error) {
+      console.error("Error reading single module config from mirror", error);
+      throw error;
+    }
 
-    // then read both those charactersitcs and put them in variables.
+    // deserialize the data into a SingleModuleConfiguration object
+    const newSingleModuleConfig: SingleModuleConfiguration = deserializeReceivedData(
+      enableData, positionData, moduleName
+    );
 
-    // then call the main deserialize function to deserialize those and form a
-    // SingleModuleConfiguration object.
-
-
-    // todo
-    console.error("readSingleModuleConfigFromMirror not implemented");
-    return defaultModuleContext.trueModuleConfiguration[moduleName];
+    return newSingleModuleConfig;
   };
 
   // not yet implemented

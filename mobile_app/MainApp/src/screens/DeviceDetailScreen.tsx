@@ -42,7 +42,7 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 
   const doUponReadButtonPress = async (): Promise<void> => {
     try {
-      const returnedData: any = await readFromCharacteristic();
+      const returnedData: number[] = await readFromCharacteristic();
       setReadData(returnedData);
       console.log('Read from characteristic button pressed');
     }

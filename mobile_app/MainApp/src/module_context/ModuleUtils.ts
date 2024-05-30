@@ -55,7 +55,6 @@ export const lookupCharacteristics = (
 };
 
 // not yet implemented below here
-
 const deserializeEnableData = (enableData: number[]): boolean => {
   return false;
 };
@@ -63,7 +62,6 @@ const deserializeEnableData = (enableData: number[]): boolean => {
 const deserializePositionData = (positionData: number[]): string => {
   return "";
 }
-
 
 export const deserializeReceivedData = (
   enableData: number[], positionData: number[], moduleDisplayName: string):

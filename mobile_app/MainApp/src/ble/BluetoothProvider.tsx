@@ -471,6 +471,34 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
+  const readFromAnyCharacteristic = async (
+    characteristicUUID: string): Promise<number[]> => {
+    // basically the same function as above, except characteristic can be specified
+
+    const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();
+    if (!okToReadWrite) {
+      console.error('Device not read-writable (readFromAnyCharacteristic)');
+      return [];
+    }
+
+    // do the actual read operation
+    try {
+      // use the targets stored in the target states
+      const returnedData: number[] = await BluetoothService.read(
+        targetInfos.targetDeviceID,
+        targetInfos.targetServiceUUID,
+        characteristicUUID);
+
+      console.log('Read data: ', returnedData);
+
+      return returnedData;
+    }
+    catch (error) {
+      console.error('Error reading from characteristic in readFromAnyCharacteristic:', error);
+      throw error;
+    }
+  }
+
   const writeDataToCharacteristic = async (data: number): Promise<void> => {
     // not really using this function for now. using byte arrays from now on.
 
@@ -544,6 +572,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     connectAndGetAppConnectedDeviceInfo,
     appConnectFromBonded,
     readFromCharacteristic,
+    readFromAnyCharacteristic,
     writeDataToCharacteristic,
     writeByteArrayToAnyCharacteristic
   };
