@@ -92,12 +92,12 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => navigation.navigate("ProfileSelect")}
+        <ButtonToNavigate onPress={() => navigation.navigate("Profile Selection")}
           title="Go to Profile Switcher" />
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => navigation.navigate('ModuleConfig')}
+        <ButtonToNavigate onPress={() => navigation.navigate('Module Configuration')}
           title="Go To Module Config" />
       </View>
 
