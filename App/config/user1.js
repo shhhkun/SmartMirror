@@ -76,6 +76,7 @@ var config = {
 		}
 	  },
 	  {
+		// counter
 		module: "counter",
 		position: "top_left",
 		disabled: 1,
