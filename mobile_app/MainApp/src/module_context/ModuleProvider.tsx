@@ -109,10 +109,18 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
   const updateDraftConfigWithSingleModule = (
     singleModule: SingleModuleConfiguration): void => {
-    // todo
-  }
 
-  // not yet implemented
+    // assume we're using display name in the mobile-app-side config file
+    const moduleName: string = singleModule.moduleDisplayName;
+
+    setDraftModuleConfiguration(
+      {
+        ...draftModuleConfiguration,
+        [moduleName]: singleModule
+      }
+    );
+  };
+
   const readSingleModuleConfigFromMirror = async (
     moduleName: string): Promise<SingleModuleConfiguration> => {
     // read the enablement and position characteristics for a single
@@ -142,24 +150,44 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     return newSingleModuleConfig;
   };
 
-  // not yet implemented
   const readFullConfigFromMirror = async (): Promise<void> => {
     // read all the module configs from the mirror sequentially.
     // write them to draftModuleConfiguration. then upon all of them succeeding,
     // write them to trueModuleConfiguration and reset draftModuleConfiguration.
 
+    // foreach through the full module config's main module items,
+    // like "Alerts", "Clock", etc.
+    // I'm doing this over the modules in trueModuleConfiguration,
+    // in order to avoid any weirdness about iterating over
+    // draftModuleConfiguration while it's also being modified.
+    Object.keys(trueModuleConfiguration).forEach(async key => {
 
-    // this should call the following in a loop 7 times,
-    // depending on the number of modules we know about:
-    //   call readSingleModuleConfigFromMirror
-    //   then updateDraftConfigWithSingleModule
+      const thisModulesDisplayName: string =
+        trueModuleConfiguration[key].moduleDisplayName;
 
-    // if all of them succeed, then call saveDraftConfigToTrueConfig.
-    // otherwise, maybe display some error.
+      try {
+        // do the actual read operation for this single module
+        const singleConfigCreatedFromRead: SingleModuleConfiguration =
+          await readSingleModuleConfigFromMirror(thisModulesDisplayName)
 
+        // update the draft config with the new data
+        updateDraftConfigWithSingleModule(singleConfigCreatedFromRead);
 
-    // todo
-    const newDraftConfig: FullModuleConfiguration = {};
+      } catch (error) {
+        console.error("Error reading a single module config from mirror", error);
+
+        // todo: I think this throw is not actually throwing to the real caller
+        // of readFullConfigFromMirror. I think it's just throwing to the
+        // function inside the forEach. I think I need to do something like
+        // this:
+        // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
+        throw error;
+      }
+
+    });
+
+    // assuming all the reads succeeded, save the draft config to the true config
+    saveDraftConfigToTrueConfig();
   };
 
 

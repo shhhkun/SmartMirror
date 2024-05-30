@@ -54,15 +54,28 @@ export const lookupCharacteristics = (
   return outputMap;
 };
 
-// not yet implemented below here
 const deserializeEnableData = (enableData: number[]): boolean => {
-  return false;
+  const outputValue: boolean = enableData[0] === 1;
+  return outputValue;
 };
 
+// semi implemented
 const deserializePositionData = (positionData: number[]): string => {
-  return "";
-}
+  // deserialize this position int based on the position options enum
 
+  const positionEnumValue: number = positionData[0];
+
+  // todo: take a second look at this!
+  // this is an insanely cursed looking line. have no idea if this works, but
+  // this is what copilot was able to suggest that finally silenced all the
+  // type errors.
+  const positionString: string = Object.keys(modulePositionOptionsEnum).find(
+    (key: string) => (modulePositionOptionsEnum as { [key: string]: number })[key] === positionEnumValue) as string;
+
+  return positionString;
+};
+
+// not implemented yet
 export const deserializeReceivedData = (
   enableData: number[], positionData: number[], moduleDisplayName: string):
   SingleModuleConfiguration => {
