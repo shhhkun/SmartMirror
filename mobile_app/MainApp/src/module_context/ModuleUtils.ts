@@ -4,6 +4,9 @@ import {
 import {
   moduleCharacteristicsHardCoded
 } from '../ble/BluetoothUtils';
+import {
+  SingleModuleConfiguration
+} from './ModuleContext';
 
 
 export const prepareDataToSend = (
@@ -30,13 +33,6 @@ export const prepareDataToSend = (
   return dataToSend;
 };
 
-// not yet implemented
-export const deserializeReceivedData = (
-  receivedData: number[]): [boolean, string] => {
-
-  throw new Error("Not implemented yet");
-};
-
 export const lookupCharacteristics = (
   moduleName: string): Map<string, string> => {
   // returns a dictionary of the form:
@@ -56,4 +52,25 @@ export const lookupCharacteristics = (
   outputMap.set('enable', enableChar);
   outputMap.set('position', positionChar);
   return outputMap;
+};
+
+// not yet implemented below here
+
+const deserializeEnableData = (enableData: number[]): boolean => {
+  return false;
+};
+
+const deserializePositionData = (positionData: number[]): string => {
+  return "";
+}
+
+
+export const deserializeReceivedData = (
+  enableData: number[], positionData: number[], moduleDisplayName: string):
+  SingleModuleConfiguration => {
+  // takes in serialized data for enable and position, and the name
+  // of the module these characteristics correspond to. returns a
+  // SingleModuleConfiguration object.
+
+  throw new Error("Not implemented yet");
 };

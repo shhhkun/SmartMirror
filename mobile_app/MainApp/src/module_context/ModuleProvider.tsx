@@ -36,7 +36,7 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
 
 
-  // functions for messign with states
+  // functions for messing with states
   const saveDraftConfigToTrueConfig = () => {
     setTrueModuleConfiguration(draftModuleConfiguration);
   };
@@ -75,6 +75,7 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
         characteristics.get('position') as string
       );
 
+      // printout for successfull write
       console.log(moduleName + " updated via chars " +
         JSON.stringify([...characteristics]) + " and data " +
         JSON.stringify([...dataToSend]));
@@ -104,10 +105,25 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     }
   };
 
+  const updateDraftConfigWithSingleModule = (
+    singleModule: SingleModuleConfiguration): void => {
+    // todo
+  }
+
   // not yet implemented
   const readSingleModuleConfigFromMirror = async (
     moduleName: string): Promise<SingleModuleConfiguration> => {
     // try reading the enablement and position for a single module from the mirror
+
+
+    // this should first look up the characteristics for this module name,
+    // probably with the lookupCharacteristics function.
+
+    // then read both those charactersitcs and put them in variables.
+
+    // then call the main deserialize function to deserialize those and form a
+    // SingleModuleConfiguration object.
+
 
     // todo
     console.error("readSingleModuleConfigFromMirror not implemented");
@@ -119,6 +135,16 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     // read all the module configs from the mirror sequentially.
     // write them to draftModuleConfiguration. then upon all of them succeeding,
     // write them to trueModuleConfiguration and reset draftModuleConfiguration.
+
+
+    // this should call the following in a loop 7 times,
+    // depending on the number of modules we know about:
+    //   call readSingleModuleConfigFromMirror
+    //   then updateDraftConfigWithSingleModule
+
+    // if all of them succeed, then call saveDraftConfigToTrueConfig.
+    // otherwise, maybe display some error.
+
 
     // todo
     const newDraftConfig: FullModuleConfiguration = {};

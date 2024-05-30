@@ -472,7 +472,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   const writeDataToCharacteristic = async (data: number): Promise<void> => {
-    // for now, just accepting data as an int
+    // not really using this function for now. using byte arrays from now on.
 
     const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();
     if (!okToReadWrite) {

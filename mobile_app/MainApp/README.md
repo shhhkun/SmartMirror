@@ -24,7 +24,6 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 I think the issue I'm seeing of disconnecting after about a minute can be attributed to the Lightblue app. Will wait to worry more about this until I see it happen on the pi.
 
 Next steps:
-- write full config to multiple characteristics is semi working. some of the characteristics did not writee successfully, but most seemed to.
 - implement read from characteristics into module functionality
 - make some more of the connection process automatic. like getting system connected info. reduce the number of buttons and steps needed.
    - the bonded > connected flow still works if you system connect in Lightblue.
@@ -73,3 +72,4 @@ Future enhancements not implemented in protoype, but for the final sellable prod
 - A way for the user to authenticate for their apps. Like have this app make a call to a web server of ours, that server goes and gets a token for some site, gives us the token, and we pass that token along with BLE to the Raspi.
 - iOS compatability. Permission stuff doesn't work at the moment. Theoretically, most of it should work. Except for the getBondedPeripherals() method in the library. But I doubt the flow of bonded > system connected > connected that kind of happens in this app right now would be the same on iOS. And the connect() function in the library doesn't time out on iOS, so would need a timer here.
 - Discoverability of characteristics. Instead of having them hard coded. Maybe have one characteristic that is fixed or gets discovered via its position or description. And then that is read-only and cha display some kind of array/map of the other characteristics and their associated modules.
+- Add support for multiple users, maybe with a login function in the app.
