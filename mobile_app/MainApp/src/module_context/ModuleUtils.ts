@@ -8,6 +8,20 @@ import {
   SingleModuleConfiguration
 } from './ModuleContext';
 
+const serializeEnableData = (enableData: boolean): number[] => {
+  // serialize this bool into a [0] or [1]
+
+  const outputNumber: number = enableData ? 1 : 0;
+  return [outputNumber];
+};
+
+const serializePositionData = (
+  positionData: keyof typeof modulePositionOptionsEnum): number[] => {
+  // serialize this position string based on the position options enum
+
+  const positionEnumValue: number = modulePositionOptionsEnum[positionData];
+  return [positionEnumValue];
+};
 
 export const prepareDataToSend = (
   enableData: boolean, positionData: string): Map<string, number[]> => {
@@ -17,18 +31,15 @@ export const prepareDataToSend = (
   //   'position': [6]
   // }
 
+  const serializedEnableData: number[] = serializeEnableData(
+    enableData);
+
+  const serializedPositionData: number[] = serializePositionData(
+    positionData as keyof typeof modulePositionOptionsEnum);
+
   const dataToSend: Map<string, number[]> = new Map();
-
-  const enableByteArray: number[] = [enableData ? 1 : 0];
-  dataToSend.set('enable', enableByteArray);
-
-  // convert the position string to the enum value.
-  // need that weird typeof thing to make type checker not complain.
-  const positionEnumValue: number = modulePositionOptionsEnum[
-    positionData as keyof typeof modulePositionOptionsEnum];
-
-  const positionByteArray: number[] = [positionEnumValue];
-  dataToSend.set('position', positionByteArray);
+  dataToSend.set('enable', serializedEnableData);
+  dataToSend.set('position', serializedPositionData);
 
   return dataToSend;
 };
@@ -59,18 +70,12 @@ const deserializeEnableData = (enableData: number[]): boolean => {
   return outputValue;
 };
 
-// semi implemented
 const deserializePositionData = (positionData: number[]): string => {
   // deserialize this position int based on the position options enum
 
   const positionEnumValue: number = positionData[0];
 
-  // todo: take a second look at this!
-  // this is an insanely cursed looking line. have no idea if this works, but
-  // this is what copilot was able to suggest that finally silenced all the
-  // type errors.
-  const positionString: string = Object.keys(modulePositionOptionsEnum).find(
-    (key: string) => (modulePositionOptionsEnum as { [key: string]: number })[key] === positionEnumValue) as string;
+  const positionString: string = modulePositionOptionsEnum[positionEnumValue];
 
   return positionString;
 };
@@ -82,6 +87,15 @@ export const deserializeReceivedData = (
   // takes in serialized data for enable and position, and the name
   // of the module these characteristics correspond to. returns a
   // SingleModuleConfiguration object.
+
+  const deserializedEnableData: boolean = deserializeEnableData(enableData);
+  const deserializedPositionData: string = deserializePositionData(positionData);
+
+  // look up the internal name of the module based on the display name.
+  // might want this function to accept the FullModuleConfiguration object
+  // so that it can look up in there.
+  // moduleInternalName: string;
+  // moduleDisplayName: string;
 
   throw new Error("Not implemented yet");
 };
