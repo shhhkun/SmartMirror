@@ -5,6 +5,7 @@ const core = require("./app");
 const Log = require("./logger");
 const fs = require("fs");
 const path = require("path");
+const { spawn } = require('child_process'); // used to spawn fingerprint py file as a child process
 
 let config = process.env.config ? JSON.parse(process.env.config) : {};
 const userConfig = {
@@ -82,21 +83,21 @@ function createWindow() {
     mainWindow.webContents.sendInputEvent({ type: "mouseMove", x: 0, y: 0 });
   });
 
-  mainWindow.on("closed", function () {
+  mainWindow.on("closed", function() {
     mainWindow = null;
   });
 
   if (config.kioskmode) {
-    mainWindow.on("blur", function () {
+    mainWindow.on("blur", function() {
       mainWindow.focus();
     });
 
-    mainWindow.on("leave-full-screen", function () {
+    mainWindow.on("leave-full-screen", function() {
       mainWindow.setFullScreen(true);
     });
 
-    mainWindow.on("resize", function () {
-      setTimeout(function () {
+    mainWindow.on("resize", function() {
+      setTimeout(function() {
         mainWindow.reload();
       }, 1000);
     });
@@ -121,7 +122,7 @@ function createWindow() {
   });
 }
 
-app.on("window-all-closed", function () {
+app.on("window-all-closed", function() {
   if (process.env.JEST_WORKER_ID !== undefined) {
     app.quit();
   } else {
@@ -129,7 +130,7 @@ app.on("window-all-closed", function () {
   }
 });
 
-app.on("activate", function () {
+app.on("activate", function() {
   if (mainWindow === null) {
     createWindow();
   }
@@ -186,6 +187,7 @@ function loadConfiguration() {
   }
 }
 
+// This function watches the userId file and the user-specific configuration file
 function watchFiles() {
   const userIdPath = path.join(__dirname, 'userId.js');
   let userConfigPath = path.join(__dirname, "..", "config", `${userId}.js`);
@@ -206,6 +208,7 @@ function watchFiles() {
     });
   }
 
+  // This watches the userId file
   fs.watch(userIdPath, (eventType, filename) => {
     if (filename === 'userId.js') {
       console.log("userId file changed");
@@ -228,6 +231,25 @@ function watchFiles() {
 
   watchUserConfig();
 }
+
+// This will run the fingerprint python script and watch its output
+const configDir = path.join(__dirname, "..", "config");
+const pythonScriptPath = path.join(__dirname, "..", "fingerprint_scanner", "fingerprint.py");
+const pythonProcess = spawn("python3", [pythonScriptPath]);
+
+// The logic for the python fingerprint, read outputs and looks for keywords
+pythonProcess.stdout.on("data", (data) => {
+  const output = data.toString(); // Converts Buffer to string
+
+  // Logic for calling commands
+  if (output.includes('user')) {
+    // Change the userID to be the found user ID
+  } else if (output.includes('READ_FAIL')) {
+    // start the countdown timer prompting user if they want to enroll a new fingerprint
+  } else if (output.includes('ONBOARDING')) {
+    // Call the onboarding function
+  }
+});
 
 if (["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].includes(config.address)) {
   core.start().then((c) => {
