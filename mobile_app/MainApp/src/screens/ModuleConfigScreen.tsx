@@ -26,9 +26,9 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
     setDraftModuleConfiguration,
     saveDraftConfigToTrueConfig,
     resetConfigsToDefault,
-    writeFullConfigToMirror
-  }
-    = useContext(ModuleContext);
+    writeFullConfigToMirror,
+    readFullConfigFromMirror
+  } = useContext(ModuleContext);
 
 
   const doUponResetButton = () => {
@@ -40,6 +40,16 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
     console.log("Saving config button pressed");
     saveDraftConfigToTrueConfig();
   }
+
+  const doUponReadButton = async () => {
+    console.log("Read from mirror button pressed");
+    try {
+      await readFullConfigFromMirror();
+    }
+    catch (error) {
+      console.error("Error reading config from mirror from UI: " + error);
+    }
+  };
 
   const doUponSubmitButton = async () => {
     try {
@@ -100,6 +110,12 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
         <View style={styles.buttonContainer}>
           <ButtonToNavigate onPress={() => doUponSaveButton()}
             title="Save Changes"
+          />
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <ButtonToNavigate onPress={() => doUponReadButton()}
+            title="Read from Mirror"
           />
         </View>
 

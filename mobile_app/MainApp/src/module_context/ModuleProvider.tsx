@@ -164,6 +164,12 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     // write them to draftModuleConfiguration. then upon all of them succeeding,
     // write them to trueModuleConfiguration and reset draftModuleConfiguration.
 
+    // this reads the fullModuleConfig into the trueModuleConfig. but the draft
+    // module config is what's exposed in the UI form. that's a little jank.
+    // should be ok since as I'm reading in individual module configs,
+    // I'm updating the draft config with them. so the draft config should be
+    // up to date by the time the read is done.
+
     // iterate through the full module config's main module items (clock, etc.)
     // I'm doing this over the modules in trueModuleConfiguration,
     // in order to avoid any weirdness about iterating over
