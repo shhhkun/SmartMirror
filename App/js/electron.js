@@ -271,7 +271,7 @@ pythonProcess.stdout.on("data", (data) => {
   } else if (output.includes('ONBOARDING')) {
     // Call the onboarding function
   }
-}
+});
 
 if (["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].includes(config.address)) {
   core.start().then((c) => {
