@@ -6,6 +6,7 @@ import board
 import busio
 from digitalio import DigitalInOut, Direction
 import adafruit_fingerprint
+import os # used to change dirs
 
 led = DigitalInOut(board.D13)
 led.direction = Direction.OUTPUT
@@ -159,6 +160,12 @@ def enroll_finger(location):
 
 ##################################################
 
+# used to keep track of
+failed_attempts = 0
+
+def change_user():
+    # Change dirs to access the file to change users
+    os.chdir('../App/js')
 
 def get_num():
     """Use input() to get a valid number from 1 to 127. Retry till success!"""
@@ -170,40 +177,63 @@ def get_num():
             pass
     return i
 
+# My code that will always run to detect new fingerprints
+# This is meant to work with the electron.js program for MM. This will output to console so that
+# the electron.js program can detect and switch users accordingly. It does this by first always
+# looking for a fingerprint, once it finds one, it will change the active user by editing the
+# userId.js file userID string to the found fingerprint. If no fingerprint is found, it will
+# output "User not found" to the console so that the electron.js program can detect and prompt
+# the user if they would like to enroll a new fingerprint, if the user does want to enroll a new
+# fingerprint, then the user will just place the unenrolled fingerprint again and it will create
+# a new user and enroll the fingerprint. If it was a mistake, the user can just ignore the prompt
+# and placed an enrolled fingerprint again and it will detect the user and switch accordingly.
+#
+# TLDR; Code below will always be looking for enrolled fingerprints and edit userId.js file to
+# change user profiles by editing a string in the file, otherwise if it doesn't find a fingerprint
+# it will print "User not found" to the console twice so that the electron.js program can detect 2
+# negatives and create a new user.
 while True:
     # Initial check to make sure it can find fingerprints
     if finger.read_templates() != adafruit_fingerprint.OK:
         raise RuntimeError("Failed to read templates")
-    
-    # Will always find a fingerprint first, and then react accordingly
 
-
-
-
-
-
-while True:
-    print("----------------")
-    if finger.read_templates() != adafruit_fingerprint.OK:
-        raise RuntimeError("Failed to read templates")
-    print("Fingerprint templates:", finger.templates)
-    print("e) enroll print")
-    print("f) find print")
-    print("d) delete print")
-    print("----------------")
-    c = input("> ")
-
-    if c == "e":
+    # If failed fingerprints is 2, then it will prompt the user to enroll a new fingerprint
+    if failed_attempts == 2:
+        failed_attempts = 0 # Reset failed attempts
+        print("ENROLLING")
         enroll_finger(get_num())
-    if c == "f":
-        if get_fingerprint():
-            print("Detected #", finger.finger_id, "with confidence", finger.confidence)
-            return int(finger.finger_id) # Will return and terminate the program when finger is found
-        else:
-            print("User not found") # Print error message to stdout for 
-            return 0 # user is not found 
-    if c == "d":
-        if finger.delete_model(get_num()) == adafruit_fingerprint.OK:
-            print("Deleted!")
-        else:
-            print("Failed to delete")
+    if get_fingerprint(): # Will always find a fingerprint first, and then react accordingly
+        # Resets counter for failed attempts
+        failed_attempts = 0
+        # Prints to console for node.js module to detect and switch user accordingly
+        print("user", finger.finger_id, "with confidence", finger.confidence) # Debugging only
+    else:
+        # Prints no user found so js module can detect and prompt if they want to enroll a new user
+        print("READ_FAIL") # Input for ProfileManager
+        failed_attempts += 1
+
+
+# while True:
+#     print("----------------")
+#     if finger.read_templates() != adafruit_fingerprint.OK:
+#         raise RuntimeError("Failed to read templates")
+#     print("Fingerprint templates:", finger.templates)
+#     print("e) enroll print")
+#     print("f) find print")
+#     print("d) delete print")
+#     print("----------------")
+#     c = input("> ")
+
+#     if c == "e":
+#         enroll_finger(get_num())
+#     if c == "f":
+#         if get_fingerprint():
+#             # Prints to console for node.js module to detect and switch user accordingly
+#             print("Detected #", finger.finger_id, "with confidence", finger.confidence)
+#         else:
+#             print("User not found") # Print error message to stdout for
+#     if c == "d":
+#         if finger.delete_model(get_num()) == adafruit_fingerprint.OK:
+#             print("Deleted!")
+#         else:
+#             print("Failed to delete")
