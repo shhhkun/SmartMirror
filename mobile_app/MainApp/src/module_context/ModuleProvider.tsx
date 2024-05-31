@@ -142,9 +142,16 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       throw error;
     }
 
-    // deserialize the data into a SingleModuleConfiguration object
+    // deserialize the data into a SingleModuleConfiguration object.
+    {
+      // a little jank that that function is looking up a module name in the full
+      // config. but should be fine for now.
+      // that's just becasue of the internal name thing. and I'm not using
+      // internal names, but just have that there in case the peripheral puts
+      // the internal names in the characteristic descriptions.
+    }
     const newSingleModuleConfig: SingleModuleConfiguration = deserializeReceivedData(
-      enableData, positionData, moduleName
+      enableData, positionData, moduleName, trueModuleConfiguration
     );
 
     return newSingleModuleConfig;

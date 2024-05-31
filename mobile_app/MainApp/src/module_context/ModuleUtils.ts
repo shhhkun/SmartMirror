@@ -5,7 +5,8 @@ import {
   moduleCharacteristicsHardCoded
 } from '../ble/BluetoothUtils';
 import {
-  SingleModuleConfiguration
+  SingleModuleConfiguration,
+  FullModuleConfiguration
 } from './ModuleContext';
 
 const serializeEnableData = (enableData: boolean): number[] => {
@@ -80,9 +81,25 @@ const deserializePositionData = (positionData: number[]): string => {
   return positionString;
 };
 
-// not implemented yet
+const getInternalNameFromDisplayName = (
+  displayName: string, trueModuleConfig: FullModuleConfiguration): string => {
+
+  // iterate over each module in the trueModuleConfiguration
+  for (const [moduleObjectName, moduleSingleConfig] of
+    Object.entries(trueModuleConfig)) {
+
+    if (moduleSingleConfig.moduleDisplayName === displayName) {
+      return moduleObjectName;
+    }
+
+  }
+
+  throw new Error("Couldn't find internal name for this display name");
+}
+
 export const deserializeReceivedData = (
-  enableData: number[], positionData: number[], moduleDisplayName: string):
+  enableData: number[], positionData: number[], moduleDisplayName: string,
+  trueModuleConfig: FullModuleConfiguration):
   SingleModuleConfiguration => {
   // takes in serialized data for enable and position, and the name
   // of the module these characteristics correspond to. returns a
@@ -91,11 +108,15 @@ export const deserializeReceivedData = (
   const deserializedEnableData: boolean = deserializeEnableData(enableData);
   const deserializedPositionData: string = deserializePositionData(positionData);
 
-  // look up the internal name of the module based on the display name.
-  // might want this function to accept the FullModuleConfiguration object
-  // so that it can look up in there.
-  // moduleInternalName: string;
-  // moduleDisplayName: string;
+  const internalModuleName: string = getInternalNameFromDisplayName(
+    moduleDisplayName, trueModuleConfig);
 
-  throw new Error("Not implemented yet");
+  const outputConfig: SingleModuleConfiguration = {
+    moduleInternalName: internalModuleName,
+    moduleDisplayName: moduleDisplayName,
+    moduleEnabled: deserializedEnableData,
+    modulePosition: deserializedPositionData
+  };
+
+  return outputConfig;
 };
