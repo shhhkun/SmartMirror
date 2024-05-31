@@ -85,8 +85,6 @@ const defaultModuleConfiguration: FullModuleConfiguration = {
   }
 };
 
-
-
 export const defaultModuleContext: ModuleContextType = {
   trueModuleConfiguration: defaultModuleConfiguration,
   draftModuleConfiguration: defaultModuleConfiguration,

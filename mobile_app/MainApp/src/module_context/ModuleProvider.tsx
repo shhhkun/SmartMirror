@@ -78,10 +78,12 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       );
 
       // printout for successfull write
-      console.log(moduleName + " updated via chars " +
-        JSON.stringify([...characteristics]) + " and data " +
-        JSON.stringify([...dataToSend]));
-      console.log("---------------------------------");
+      {
+        console.log(moduleName + " updated via chars " +
+          JSON.stringify([...characteristics]) + " and data " +
+          JSON.stringify([...dataToSend]));
+        console.log("---------------------------------");
+      }
 
     } catch (error) {
       console.error("Error writing single module config to mirror", error);
@@ -162,12 +164,11 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     // write them to draftModuleConfiguration. then upon all of them succeeding,
     // write them to trueModuleConfiguration and reset draftModuleConfiguration.
 
-    // foreach through the full module config's main module items,
-    // like "Alerts", "Clock", etc.
+    // iterate through the full module config's main module items (clock, etc.)
     // I'm doing this over the modules in trueModuleConfiguration,
     // in order to avoid any weirdness about iterating over
     // draftModuleConfiguration while it's also being modified.
-    Object.keys(trueModuleConfiguration).forEach(async key => {
+    for (const key of Object.keys(trueModuleConfiguration)) {
 
       const thisModulesDisplayName: string =
         trueModuleConfiguration[key].moduleDisplayName;
@@ -175,25 +176,19 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       try {
         // do the actual read operation for this single module
         const singleConfigCreatedFromRead: SingleModuleConfiguration =
-          await readSingleModuleConfigFromMirror(thisModulesDisplayName)
+          await readSingleModuleConfigFromMirror(thisModulesDisplayName);
 
         // update the draft config with the new data
         updateDraftConfigWithSingleModule(singleConfigCreatedFromRead);
 
       } catch (error) {
         console.error("Error reading a single module config from mirror", error);
-
-        // todo: I think this throw is not actually throwing to the real caller
-        // of readFullConfigFromMirror. I think it's just throwing to the
-        // function inside the forEach. I think I need to do something like
-        // this:
-        // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
         throw error;
       }
-
-    });
+    }
 
     // assuming all the reads succeeded, save the draft config to the true config
+    console.log("All modules read from mirror successfully. Saving to true config.");
     saveDraftConfigToTrueConfig();
   };
 

@@ -9,6 +9,8 @@ import {
   FullModuleConfiguration
 } from './ModuleContext';
 
+
+
 const serializeEnableData = (enableData: boolean): number[] => {
   // serialize this bool into a [0] or [1]
 
@@ -95,7 +97,7 @@ const getInternalNameFromDisplayName = (
   }
 
   throw new Error("Couldn't find internal name for this display name");
-}
+};
 
 export const deserializeReceivedData = (
   enableData: number[], positionData: number[], moduleDisplayName: string,
