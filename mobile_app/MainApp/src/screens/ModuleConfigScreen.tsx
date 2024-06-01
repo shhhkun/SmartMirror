@@ -73,6 +73,8 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
         {/* just gonna hard code a couple module bars, to see if the issue is
         with this mapping loop thing. */}
         <ModuleConfigBar
+          // this key thing is important for triggering re-render stuff
+          key={"alert"}
           title="Alerts"
           sliderValue={draftModuleConfiguration.alert.moduleEnabled}
           onSliderChange={(value: boolean) =>
@@ -96,29 +98,6 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
           }
         />
 
-        <ModuleConfigBar
-          title="Notifications"
-          sliderValue={draftModuleConfiguration.updatenotification.moduleEnabled}
-          onSliderChange={(value: boolean) =>
-            setDraftModuleConfiguration({
-              ...draftModuleConfiguration,
-              updatenotification: {
-                ...draftModuleConfiguration.updatenotification,
-                moduleEnabled: value
-              }
-            })
-          }
-          dropdownValue={draftModuleConfiguration.updatenotification.modulePosition}
-          onDropdownChange={(value: string) =>
-            setDraftModuleConfiguration({
-              ...draftModuleConfiguration,
-              updatenotification: {
-                ...draftModuleConfiguration.updatenotification,
-                modulePosition: value
-              }
-            })
-          }
-        />
 
         {/* Make module config bars for all the modules in draft config.
         {Object.entries(draftModuleConfiguration).map(([moduleName, moduleConfig]) => (

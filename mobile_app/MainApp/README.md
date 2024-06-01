@@ -24,8 +24,7 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 I think the issue I'm seeing of disconnecting after about a minute can be attributed to the Lightblue app. Will wait to worry more about this until I see it happen on the pi.
 
 Next steps:
-- read characteristics for module config works. but having issues with form state.
-   - news toggle seems to wrok perfectly with reading and writing. news position mees to semi work. the other module bars do not work.
+- reading from the device is working (at least with one module bar). as in getting the right value back. but sliders and dropdowns are not updating.
 - make some more of the connection process automatic. like getting system connected info. reduce the number of buttons and steps needed.
    - the bonded > connected flow still works if you system connect in Lightblue.
    - connecting while already connected seems to be fine. so doesn't matter if this gets called again

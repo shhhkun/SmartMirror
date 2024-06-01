@@ -119,12 +119,12 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       " and position data: " + JSON.stringify(singleModule.modulePosition));
     console.log("---------------------------------");
 
-    setDraftModuleConfiguration(
-      {
-        ...draftModuleConfiguration,
-        [moduleName]: singleModule
-      }
-    );
+    // update the draft config. create a a new object, to avoid weird
+    // non-rendering issues. Wasn't the fix though.
+    setDraftModuleConfiguration(prevConfig => ({
+      ...prevConfig,
+      [moduleName]: singleModule
+    }));
   };
 
   const readSingleModuleConfigFromMirror = async (
@@ -202,7 +202,7 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     saveDraftConfigToTrueConfig();
 
     console.log("Upon finishing full modules read, draft config is: " +
-      JSON.stringify(draftModuleConfiguration));
+      JSON.stringify(draftModuleConfiguration.alert));
     console.log("---------------------------------");
   };
 
