@@ -24,7 +24,8 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 I think the issue I'm seeing of disconnecting after about a minute can be attributed to the Lightblue app. Will wait to worry more about this until I see it happen on the pi.
 
 Next steps:
-- read characteristics for module config works. but form state is not updating. might just simplify to only use true config?
+- read characteristics for module config works. but having issues with form state.
+   - news toggle seems to wrok perfectly with reading and writing. news position mees to semi work. the other module bars do not work.
 - make some more of the connection process automatic. like getting system connected info. reduce the number of buttons and steps needed.
    - the bonded > connected flow still works if you system connect in Lightblue.
    - connecting while already connected seems to be fine. so doesn't matter if this gets called again
@@ -32,6 +33,7 @@ Next steps:
 - add event handeler for disconnect events in the ble manager.
 - maybe make a top right status menu/icon that shows connection status stuff. could also be a button that takes you to a dedicated status page.
 - if dropped connections are still a problem, could have something that polls the mirror every x seconds. as a keep connection alive type thing.
+- make a draw.io block diagram of how this app works.
 
 maybe:
 - persist a user's config to disk

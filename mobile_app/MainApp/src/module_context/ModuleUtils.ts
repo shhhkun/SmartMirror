@@ -96,7 +96,7 @@ const getInternalNameFromDisplayName = (
 
   }
 
-  throw new Error("Couldn't find internal name for this display name");
+  throw new Error("Couldn't find internal module name for this display name");
 };
 
 export const deserializeReceivedData = (

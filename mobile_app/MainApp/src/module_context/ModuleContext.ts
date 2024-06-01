@@ -40,50 +40,99 @@ interface ModuleContextType {
   readFullConfigFromMirror: () => Promise<void>;
 };
 
+// new defaultModuleConfiguration for testing.
 const defaultModuleConfiguration: FullModuleConfiguration = {
   alert: {
     moduleInternalName: "alert",
     moduleDisplayName: "Alerts",
-    moduleEnabled: false,
-    modulePosition: 'top_bar'
+    moduleEnabled: true,
+    modulePosition: 'top_left'
   },
   updatenotification: {
     moduleInternalName: "updatenotification",
     moduleDisplayName: "Notifications",
-    moduleEnabled: false,
+    moduleEnabled: true,
     modulePosition: 'top_left'
   },
   clock: {
     moduleInternalName: "clock",
     moduleDisplayName: "Clock",
     moduleEnabled: true,
-    modulePosition: 'top_center'
+    modulePosition: 'top_left'
   },
   calendar: {
     moduleInternalName: "calendar",
     moduleDisplayName: "Calendar",
-    moduleEnabled: false,
-    modulePosition: 'top_right'
+    moduleEnabled: true,
+    modulePosition: 'top_left'
   },
   compliments: {
     moduleInternalName: "compliments",
     moduleDisplayName: "Compliments",
     moduleEnabled: true,
-    modulePosition: 'upper_third'
+    modulePosition: 'top_left'
   },
   weather: {
     moduleInternalName: "weather",
     moduleDisplayName: "Weather",
     moduleEnabled: true,
-    modulePosition: 'middle_center'
+    modulePosition: 'top_left'
   },
   newsfeed: {
     moduleInternalName: "newsfeed",
     moduleDisplayName: "News",
     moduleEnabled: true,
-    modulePosition: 'lower_third'
+    modulePosition: 'top_left'
   }
 };
+
+// old defaultModuleConfiguration
+{
+  // const defaultModuleConfiguration: FullModuleConfiguration = {
+  //   alert: {
+  //     moduleInternalName: "alert",
+  //     moduleDisplayName: "Alerts",
+  //     moduleEnabled: false,
+  //     modulePosition: 'top_bar'
+  //   },
+  //   updatenotification: {
+  //     moduleInternalName: "updatenotification",
+  //     moduleDisplayName: "Notifications",
+  //     moduleEnabled: false,
+  //     modulePosition: 'top_left'
+  //   },
+  //   clock: {
+  //     moduleInternalName: "clock",
+  //     moduleDisplayName: "Clock",
+  //     moduleEnabled: true,
+  //     modulePosition: 'top_center'
+  //   },
+  //   calendar: {
+  //     moduleInternalName: "calendar",
+  //     moduleDisplayName: "Calendar",
+  //     moduleEnabled: false,
+  //     modulePosition: 'top_right'
+  //   },
+  //   compliments: {
+  //     moduleInternalName: "compliments",
+  //     moduleDisplayName: "Compliments",
+  //     moduleEnabled: true,
+  //     modulePosition: 'upper_third'
+  //   },
+  //   weather: {
+  //     moduleInternalName: "weather",
+  //     moduleDisplayName: "Weather",
+  //     moduleEnabled: true,
+  //     modulePosition: 'middle_center'
+  //   },
+  //   newsfeed: {
+  //     moduleInternalName: "newsfeed",
+  //     moduleDisplayName: "News",
+  //     moduleEnabled: true,
+  //     modulePosition: 'lower_third'
+  //   }
+  // };
+}
 
 export const defaultModuleContext: ModuleContextType = {
   trueModuleConfiguration: defaultModuleConfiguration,

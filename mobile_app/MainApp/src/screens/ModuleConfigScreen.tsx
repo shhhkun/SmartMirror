@@ -52,6 +52,10 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 
   const doUponSubmitButton = async () => {
     try {
+      // this button will also perform a save to true config
+      saveDraftConfigToTrueConfig();
+
+      // do the actual write
       await writeFullConfigToMirror();
     }
     catch (error) {
@@ -66,10 +70,62 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
         style={styles.scrollableContainer}
         showsVerticalScrollIndicator={true}>
 
-        {/* Make module config bars for all the modules in draft config. */}
+        {/* just gonna hard code a couple module bars, to see if the issue is
+        with this mapping loop thing. */}
+        <ModuleConfigBar
+          title="Alerts"
+          sliderValue={draftModuleConfiguration.alert.moduleEnabled}
+          onSliderChange={(value: boolean) =>
+            setDraftModuleConfiguration({
+              ...draftModuleConfiguration,
+              alert: {
+                ...draftModuleConfiguration.alert,
+                moduleEnabled: value
+              }
+            })
+          }
+          dropdownValue={draftModuleConfiguration.alert.modulePosition}
+          onDropdownChange={(value: string) =>
+            setDraftModuleConfiguration({
+              ...draftModuleConfiguration,
+              alert: {
+                ...draftModuleConfiguration.alert,
+                modulePosition: value
+              }
+            })
+          }
+        />
+
+        <ModuleConfigBar
+          title="Notifications"
+          sliderValue={draftModuleConfiguration.updatenotification.moduleEnabled}
+          onSliderChange={(value: boolean) =>
+            setDraftModuleConfiguration({
+              ...draftModuleConfiguration,
+              updatenotification: {
+                ...draftModuleConfiguration.updatenotification,
+                moduleEnabled: value
+              }
+            })
+          }
+          dropdownValue={draftModuleConfiguration.updatenotification.modulePosition}
+          onDropdownChange={(value: string) =>
+            setDraftModuleConfiguration({
+              ...draftModuleConfiguration,
+              updatenotification: {
+                ...draftModuleConfiguration.updatenotification,
+                modulePosition: value
+              }
+            })
+          }
+        />
+
+        {/* Make module config bars for all the modules in draft config.
         {Object.entries(draftModuleConfiguration).map(([moduleName, moduleConfig]) => (
           <ModuleConfigBar
-            key={moduleName}
+            // idk what this key is for, so commenting out
+            // key={moduleName}
+
             title={moduleConfig.moduleDisplayName}
 
             sliderValue={moduleConfig.moduleEnabled}
@@ -94,7 +150,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
               })
             }
           />
-        ))}
+        ))} */}
 
 
       </ScrollView>

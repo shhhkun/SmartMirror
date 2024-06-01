@@ -495,7 +495,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       return returnedData;
     }
     catch (error) {
-      console.error('Error reading from characteristic in readFromAnyCharacteristic:', error);
+      console.error('Error reading from char ' + characteristicUUID +
+        ' in readFromAnyCharacteristic:', error);
       throw error;
     }
   }

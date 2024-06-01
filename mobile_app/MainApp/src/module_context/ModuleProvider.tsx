@@ -200,6 +200,10 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     // assuming all the reads succeeded, save the draft config to the true config
     console.log("All modules read from mirror successfully. Saving to true config.");
     saveDraftConfigToTrueConfig();
+
+    console.log("Upon finishing full modules read, draft config is: " +
+      JSON.stringify(draftModuleConfiguration));
+    console.log("---------------------------------");
   };
 
 
