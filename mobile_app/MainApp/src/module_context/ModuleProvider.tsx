@@ -10,7 +10,6 @@ import {
   ModuleContext,
   defaultModuleContext,
   SingleModuleConfiguration,
-  FullModuleConfiguration
 } from "./ModuleContext";
 import {
   prepareDataToSend,
@@ -114,6 +113,11 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
     // assume we're using display name in the mobile-app-side config file
     const moduleName: string = singleModule.moduleDisplayName;
+
+    console.log("Updating draft config with module: " + moduleName +
+      " with enable data: " + JSON.stringify(singleModule.moduleEnabled) +
+      " and position data: " + JSON.stringify(singleModule.modulePosition));
+    console.log("---------------------------------");
 
     setDraftModuleConfiguration(
       {

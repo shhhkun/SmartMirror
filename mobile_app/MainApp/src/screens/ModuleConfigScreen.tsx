@@ -22,7 +22,6 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
   // stuff from module context needed on this page
   const {
     draftModuleConfiguration,
-    trueModuleConfiguration,
     setDraftModuleConfiguration,
     saveDraftConfigToTrueConfig,
     resetConfigsToDefault,
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
   },
 
   scrollableContainer: {
-    height: '65%',
+    height: '55%',
     backgroundColor: GlobalStyles.lessLightBackground,
   },
 

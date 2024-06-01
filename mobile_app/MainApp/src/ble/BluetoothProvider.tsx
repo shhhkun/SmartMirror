@@ -489,7 +489,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
         targetInfos.targetServiceUUID,
         characteristicUUID);
 
-      console.log('Read data: ', returnedData);
+      console.log('Read data: ' + returnedData +
+        ' from char: ' + characteristicUUID);
 
       return returnedData;
     }
