@@ -43,21 +43,54 @@ run python script natively on pi
 
 **CLOCK (POSITION):**
 
-    > desc: unit system used
+    > desc: clock position on monitor
     > UID: 00000005-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
                           "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
                           "fullscreen_above", "fullscreen_below"
 
-ADDING REST OF ADJUSTABLE items via UID and mapping soon:
-
 **UPDATE NOTIFICATION (POSITION):**
+
+    > desc: notifications position on monitor
+    > UID: 00000006-710e-4a5b-8d75-3e5b444bc3cf
+    > accepts integer = 0, 1, 2, ...
+    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
+                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
+                          "fullscreen_above", "fullscreen_below"
 
 **CALENDAR (POSITION):**
 
+    > desc: calendar position on monitor
+    > UID: 00000007-710e-4a5b-8d75-3e5b444bc3cf
+    > accepts integer = 0, 1, 2, ...
+    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
+                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
+                          "fullscreen_above", "fullscreen_below"
+
 **COMPLIMENTS (POSITION):**
+
+    > desc: compliments position on monitor
+    > UID: 00000008-710e-4a5b-8d75-3e5b444bc3cf
+    > accepts integer = 0, 1, 2, ...
+    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
+                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
+                          "fullscreen_above", "fullscreen_below"
 
 **WEATHER (POSITION):**
 
+    > desc: weather position on monitor
+    > UID: 00000009-710e-4a5b-8d75-3e5b444bc3cf
+    > accepts integer = 0, 1, 2, ...
+    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
+                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
+                          "fullscreen_above", "fullscreen_below"
+
 **NEWS (POSITION):**
+
+    > desc: news position on monitor
+    > UID: 00000010-710e-4a5b-8d75-3e5b444bc3cf
+    > accepts integer = 0, 1, 2, ...
+    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
+                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
+                          "fullscreen_above", "fullscreen_below"
