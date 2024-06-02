@@ -21,24 +21,28 @@ run python script natively on pi
 # config file (configurable items via UID):
 
 **USER ID:**
+
     > desc: user profile index
     > UID: 00000002-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > changes opened config file: file0.js, file1.js, ...
 
 **LANGUAGE:**
+
     > desc: language for UI
     > UID: 00000003-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > languages[integer] = "en", ...
 
 **UNITS:**
+
     > desc: unit system used
     > UID: 00000004-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > unitsys[integer] = "metric", ...
 
 **CLOCK (POSITION):**
+
     > desc: unit system used
     > UID: 00000005-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
