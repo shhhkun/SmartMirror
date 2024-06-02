@@ -76,9 +76,10 @@ var config = {
 		}
 	  },
 	  {
+		// counter
 		module: "counter",
 		position: "top_left",
-		disabled: 1,
+		disabled: 0,
 		config: {
 		  countdownSeconds: 30
 		}
