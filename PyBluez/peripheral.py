@@ -293,7 +293,7 @@ class UserProfileDescriptor(Descriptor):
         return value
 
 class ProfileIndexDescriptor(Descriptor):
-    PROFILE_INDEX_DESCRIPTOR_UUID = "2901"
+    PROFILE_INDEX_DESCRIPTOR_UUID = "2902"
     PROFILE_INDEX_DESCRIPTOR_VALUE = "Profile Index Descriptor"
 
     def __init__(self, characteristic):
@@ -311,7 +311,7 @@ class ProfileIndexDescriptor(Descriptor):
         return value
 
 class LanguageDescriptor(Descriptor):
-    LANGUAGE_DESCRIPTOR_UUID = "2901"
+    LANGUAGE_DESCRIPTOR_UUID = "2903"
     LANGUAGE_DESCRIPTOR_VALUE = "Language Descriptor"
 
     def __init__(self, characteristic):
@@ -329,7 +329,7 @@ class LanguageDescriptor(Descriptor):
         return value
 
 class UnitsDescriptor(Descriptor):
-    UNITS_DESCRIPTOR_UUID = "2901"
+    UNITS_DESCRIPTOR_UUID = "2904"
     UNITS_DESCRIPTOR_VALUE = "Units Descriptor"
 
     def __init__(self, characteristic):
@@ -347,7 +347,7 @@ class UnitsDescriptor(Descriptor):
         return value
 
 class ClockPositionDescriptor(Descriptor):
-    CLOCK_POSITION_DESCRIPTOR_UUID = "2901"
+    CLOCK_POSITION_DESCRIPTOR_UUID = "2905"
     CLOCK_POSITION_DESCRIPTOR_VALUE = "Clock Position Descriptor"
 
     def __init__(self, characteristic):
@@ -365,7 +365,7 @@ class ClockPositionDescriptor(Descriptor):
         return value
 
 class UpdateNotificationPositionDescriptor(Descriptor):
-    UPDATE_NOTIFICATION_POSITION_DESCRIPTOR_UUID = "2901"
+    UPDATE_NOTIFICATION_POSITION_DESCRIPTOR_UUID = "2906"
     UPDATE_NOTIFICATION_POSITION_DESCRIPTOR_VALUE = "Update Notification Position Descriptor"
 
     def __init__(self, characteristic):
@@ -383,7 +383,7 @@ class UpdateNotificationPositionDescriptor(Descriptor):
         return value
 
 class CalendarPositionDescriptor(Descriptor):
-    CALENDAR_POSITION_DESCRIPTOR_UUID = "2901"
+    CALENDAR_POSITION_DESCRIPTOR_UUID = "2907"
     CALENDAR_POSITION_DESCRIPTOR_VALUE = "Calendar Position Descriptor"
 
     def __init__(self, characteristic):
@@ -401,7 +401,7 @@ class CalendarPositionDescriptor(Descriptor):
         return value
 
 class ComplimentsPositionDescriptor(Descriptor):
-    COMPLIMENTS_POSITION_DESCRIPTOR_UUID = "2901"
+    COMPLIMENTS_POSITION_DESCRIPTOR_UUID = "2908"
     COMPLIMENTS_POSITION_DESCRIPTOR_VALUE = "Compliments Position Descriptor"
 
     def __init__(self, characteristic):
@@ -419,7 +419,7 @@ class ComplimentsPositionDescriptor(Descriptor):
         return value
 
 class WeatherPositionDescriptor(Descriptor):
-    WEATHER_POSITION_DESCRIPTOR_UUID = "2901"
+    WEATHER_POSITION_DESCRIPTOR_UUID = "2909"
     WEATHER_POSITION_DESCRIPTOR_VALUE = "Weather Position Descriptor"
 
     def __init__(self, characteristic):
@@ -437,7 +437,7 @@ class WeatherPositionDescriptor(Descriptor):
         return value
 
 class NewsPositionDescriptor(Descriptor):
-    NEWS_POSITION_DESCRIPTOR_UUID = "2901"
+    NEWS_POSITION_DESCRIPTOR_UUID = "2910"
     NEWS_POSITION_DESCRIPTOR_VALUE = "News Position Descriptor"
 
     def __init__(self, characteristic):
