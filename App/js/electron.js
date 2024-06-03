@@ -237,8 +237,14 @@ const userIdPath = path.join(__dirname, 'userId.js');
 const pythonScriptPath = path.join(__dirname, "..", "fingerprint_scanner", "fingerprint.py");
 const pythonProcess = spawn("python3", [pythonScriptPath]);
 
+//DEBUG
+console.log("Post const definitions");
+
 // The logic for the python fingerprint, read outputs and looks for keywords
 pythonProcess.stdout.on("data", (data) => {
+  //DEBUG
+  console.log("In stdout.on");
+
   const output = data.toString(); // Converts Buffer to string
 
   // Logic for calling commands
