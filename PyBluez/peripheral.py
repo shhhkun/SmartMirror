@@ -31,31 +31,39 @@ positions = [
 ]
 
 def write_to_js_config(profile_index, characteristic_name, value):
-    config_path = os.path.join(CONFIG_DIR, f"file{profile_index}.js")
+    config_path = f"file{profile_index}.js"
     # Read the existing configuration from the JavaScript file
     with open(config_path, 'r') as file:
         config_content = file.read()
 
     # Modify the configuration object based on the characteristic being written
     if characteristic_name == "language":
-        new_config_content = config_content.replace(f'language: "{config_content.split("language: \"")[1].split("\"")[0]}"', f'language: "{value}"')
+        old_value = config_content.split('language: "')[1].split('"')[0]
+        new_config_content = config_content.replace(f'language: "{old_value}"', f'language: "{value}"')
     elif characteristic_name == "units":
-        new_config_content = config_content.replace(f'units: "{config_content.split("units: \"")[1].split("\"")[0]}"', f'units: "{value}"')
+        old_value = config_content.split('units: "')[1].split('"')[0]
+        new_config_content = config_content.replace(f'units: "{old_value}"', f'units: "{value}"')
     elif characteristic_name == "clock_position":
-        new_config_content = config_content.replace(f'position: "{config_content.split("position: \"")[1].split("\"")[0]}"', f'position: "{value}"', 1)
+        old_value = config_content.split('module: "clock",')[1].split('position: "')[1].split('"')[0]
+        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
     elif characteristic_name == "update_notification_position":
-        new_config_content = config_content.replace(f'position: "{config_content.split("position: \"")[2].split("\"")[0]}"', f'position: "{value}"', 1)
+        old_value = config_content.split('module: "updatenotification",')[1].split('position: "')[1].split('"')[0]
+        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
     elif characteristic_name == "calendar_position":
-        new_config_content = config_content.replace(f'position: "{config_content.split("position: \"")[3].split("\"")[0]}"', f'position: "{value}"', 1)
+        old_value = config_content.split('module: "calendar",')[1].split('position: "')[1].split('"')[0]
+        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
     elif characteristic_name == "compliments_position":
-        new_config_content = config_content.replace(f'position: "{config_content.split("position: \"")[4].split("\"")[0]}"', f'position: "{value}"', 1)
+        old_value = config_content.split('module: "compliments",')[1].split('position: "')[1].split('"')[0]
+        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
     elif characteristic_name == "weather_position":
-        new_config_content = config_content.replace(f'position: "{config_content.split("position: \"")[5].split("\"")[0]}"', f'position: "{value}"', 1)
+        old_value = config_content.split('module: "weather",')[1].split('position: "')[1].split('"')[0]
+        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
     elif characteristic_name == "news_position":
-        new_config_content = config_content.replace(f'position: "{config_content.split("position: \"")[6].split("\"")[0]}"', f'position: "{value}"', 1)
+        old_value = config_content.split('module: "newsfeed",')[1].split('position: "')[1].split('"')[0]
+        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
     else:
         # Handle other characteristics similarly
-        pass
+        return
 
     # Write the modified configuration back to the JavaScript file
     with open(config_path, 'w') as file:
