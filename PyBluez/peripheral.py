@@ -167,6 +167,7 @@ class ClockPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.clock_position = int(value[0])
         print("Clock position written:", self.clock_position)
+        write_to_js_config(self.service.index, "clock_position", positions[self.clock_position])
 
 class UpdateNotificationPositionCharacteristic(Characteristic):
     UPDATE_NOTIFICATION_POSITION_UUID = "00000006-710e-4a5b-8d75-3e5b444bc3cf"
@@ -187,7 +188,7 @@ class UpdateNotificationPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.update_notification_position = int(value[0])
         print("Update notification position written:", self.update_notification_position)
-
+        write_to_js_config(self.service.index, "update_notification_position", positions[self.update_notification_position])
 
 class CalendarPositionCharacteristic(Characteristic):
     CALENDAR_POSITION_UUID = "00000007-710e-4a5b-8d75-3e5b444bc3cf"
@@ -208,7 +209,7 @@ class CalendarPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.calendar_position = int(value[0])
         print("Calendar position written:", self.calendar_position)
-
+        write_to_js_config(self.service.index, "calendar_position", positions[self.calendar_position])
 
 class ComplimentsPositionCharacteristic(Characteristic):
     COMPLIMENTS_POSITION_UUID = "00000008-710e-4a5b-8d75-3e5b444bc3cf"
@@ -229,7 +230,7 @@ class ComplimentsPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.compliments_position = int(value[0])
         print("Compliments position written:", self.compliments_position)
-
+        write_to_js_config(self.service.index, "compliments_position", positions[self.compliments_position])
 
 class WeatherPositionCharacteristic(Characteristic):
     WEATHER_POSITION_UUID = "00000009-710e-4a5b-8d75-3e5b444bc3cf"
@@ -250,7 +251,7 @@ class WeatherPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.weather_position = int(value[0])
         print("Weather position written:", self.weather_position)
-
+        write_to_js_config(self.service.index, "weather_position", positions[self.weather_position])
 
 class NewsPositionCharacteristic(Characteristic):
     NEWS_POSITION_UUID = "0000000A-710e-4a5b-8d75-3e5b444bc3cf"
@@ -271,7 +272,7 @@ class NewsPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.news_position = int(value[0])
         print("News position written:", self.news_position)
-
+        write_to_js_config(self.service.index, "news_position", positions[self.news_position])
 
 # Descriptors
 class UserProfileDescriptor(Descriptor):
