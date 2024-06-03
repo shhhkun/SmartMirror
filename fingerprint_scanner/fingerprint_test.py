@@ -193,6 +193,7 @@ def get_num():
 # it will print "User not found" to the console twice so that the electron.js program can detect 2
 # negatives and create a new user.
 while True:
+    time.sleep(1) # Will sleep the counter to not spam console
     # Initial check to make sure it can find fingerprints
     if finger.read_templates() != adafruit_fingerprint.OK:
         raise RuntimeError("Failed to read templates")
