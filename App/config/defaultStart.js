@@ -11,23 +11,29 @@ var config = {
 		module: "alert",
 		disabled: 0 // 0 or 1
 	  },
+    {
+      module: "welcome", 
+      position: "lower_third",
+      size: "large",
+      disabled: 0
+    },    
 	  {
 		// updatenotification
 		module: "updatenotification",
-		position: "top_bar",
+		position: "",
 		disabled: 0 // 0 or 1
 	  },
 	  {
 		// clock
 		module: "clock",
-		position: "top_left",
+		position: "",
 		disabled: 0 // 0 or 1
 	  },
 	  {
 		// calendar
 		module: "calendar",
 		header: "US Holidays",
-		position: "top_left",
+		position: "",
 		disabled: 0, // 0 or 1
 		config: {
 		  calendars: [
@@ -41,13 +47,13 @@ var config = {
 	  {
 		// compliments
 		module: "compliments",
-		position: "lower_third",
+		position: "",
 		disabled: 0 // 0 or 1
 	  },
 	  {
 		// weather
 		module: "weather",
-		position: "top_right",
+		position: "",
 		disabled: 0, // 0 or 1
 		config: {
 		  weatherProvider: "openweathermap",
@@ -60,7 +66,7 @@ var config = {
 	  {
 		// newsfeed
 		module: "newsfeed",
-		position: "bottom_bar",
+		position: "",
 		disabled: 0, // 0 or 1
 		config: {
 		  feeds: [
@@ -78,13 +84,13 @@ var config = {
 	  {
 		// counter
 		module: "counter",
-		position: "top_left",
+		position: "",
     disabled: 1,
 		config: {
 		  countdownSeconds: 10,
       alwaysLoadNodeHelper: true
 		}
-	  }	  
+	  }
 	]
 };
 
