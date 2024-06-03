@@ -1,6 +1,7 @@
 Module.register("counter", {
   defaults: {
-    countdownSeconds: 30
+    countdownSeconds: 30,
+    alwaysLoadNodeHelper: true
   },
 
   getTemplate() {
@@ -30,7 +31,7 @@ Module.register("counter", {
 
   onCountdownFinished() {
     Log.info("Countdown finished for module: " + this.name);
-    this.hide(); // Hide the module immediately
+    //this.hide(); // Hide the module immediately
     this.sendSocketNotification("COUNTDOWN_FINISHED", this.name);
   },
 

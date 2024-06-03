@@ -81,7 +81,8 @@ var config = {
 		position: "top_left",
     disabled: 1,
 		config: {
-		  countdownSeconds: 10
+		  countdownSeconds: 10,
+      alwaysLoadNodeHelper: true
 		}
 	  }	  
 	]

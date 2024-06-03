@@ -5,12 +5,29 @@ const fs = require("fs");
 module.exports = NodeHelper.create({
   start() {
     console.log(`Starting module helper: ${this.name}`);
+    this.loadConfig();
   },
 
   socketNotificationReceived(notification, payload) {
     if (notification === "COUNTDOWN_FINISHED") {
       console.log(`Received COUNTDOWN_FINISHED notification for module: ${this.name}`);
       this.disableCounterModule();
+    }
+  },
+
+  loadConfig() {
+    const configFilePath = path.join(__dirname, "..", "..", "config", "config.js");
+    delete require.cache[require.resolve(configFilePath)];
+
+    if (fs.existsSync(configFilePath)) {
+      const config = require(configFilePath);
+      this.config = config.modules.find(m => m.module === "counter");
+      if (!this.config) {
+        console.log(`Counter module config not found in config file.`);
+      }
+    } else {
+      console.warn(`Configuration file (${configFilePath}) not found. Using an empty configuration.`);
+      this.config = {};
     }
   },
 
@@ -34,7 +51,7 @@ module.exports = NodeHelper.create({
         if (insideCounterModule && line.includes("disabled:")) {
           updatedContent += "    disabled: 1,\n";
           insideCounterModule = false;
-        } else { 
+        } else {
           updatedContent += line + "\n";
         }
       }
