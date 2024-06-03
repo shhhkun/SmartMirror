@@ -69,6 +69,22 @@ def write_to_js_config(profile_index, characteristic_name, value):
     # Write the modified configuration back to the JavaScript file
     with open(config_path, 'w') as file:
         file.write(new_config_content)
+        
+class UserProfileService(Service):
+    USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, index):
+        Service.__init__(self, index, self.USER_PROFILE_SVC_UUID, True)
+        self.add_characteristic(ProfileIndexCharacteristic(self))
+        self.add_characteristic(LanguageCharacteristic(self))
+        self.add_characteristic(UnitsCharacteristic(self))
+        self.add_characteristic(ClockPositionCharacteristic(self))
+        self.add_characteristic(UpdateNotificationPositionCharacteristic(self))
+        self.add_characteristic(CalendarPositionCharacteristic(self))
+        self.add_characteristic(ComplimentsPositionCharacteristic(self))
+        self.add_characteristic(WeatherPositionCharacteristic(self))
+        self.add_characteristic(NewsPositionCharacteristic(self))
+        print("UserProfileService initialized")
 
 class ProfileIndexCharacteristic(Characteristic):
     PROFILE_INDEX_UUID = "00000002-710e-4a5b-8d75-3e5b444bc3cf"
@@ -460,20 +476,14 @@ def register_ad_error_cb(error):
 
 app = Application()
 app.add_service(UserProfileService(0))
-app.add_service(UserProfileService(1))
+#app.add_service(UserProfileService(1))
+app.register()
 
 adv = UserProfileAdvertisement(0)
-
-def handler(signum, frame):
-    raise KeyboardInterrupt
-
-signal.signal(signal.SIGINT, handler)
-
-app.register()
 adv.register()
 
 try:
     while True:
-        time.sleep(1)
+        app.run()
 except KeyboardInterrupt:
-    print("Program interrupted, exiting...")
+    app.quit()
