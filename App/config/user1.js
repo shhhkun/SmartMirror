@@ -2,7 +2,7 @@ var config = {
 	address: "localhost",
 	port: 8080,
 	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"],
-	language: "es",
+	language: "en",
 	timeFormat: 24,
 	units: "metric",
 	modules: [

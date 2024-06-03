@@ -5,7 +5,7 @@ Module.register("compliments", {
 			anytime: ["Welcome"],
 			morning: ["Good morning!"],
 			afternoon: ["Good afternoon!"],
-			evening: [],
+			evening: ["Good evening!"],
 			"....-01-01": ["Happy new year!"]
 		},
 		updateInterval: 30000,

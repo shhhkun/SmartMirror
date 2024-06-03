@@ -163,6 +163,7 @@ function loadConfiguration() {
   try {
     const configDir = path.join(__dirname, "..", "config");
     const defaultConfigPath = path.join(configDir, "config.js");
+    const defaultUser = path.join(configDir, "default.js");
     const userConfigPath = path.join(configDir, `${userId}.js`);
 
     console.log("Default config path:", defaultConfigPath);
@@ -172,7 +173,7 @@ function loadConfiguration() {
       console.log(`User ${userId} does not exist. Creating a new configuration file.`);
       existingUsers.push(userId);
       fs.writeFileSync(path.join(__dirname, 'userId.js'), `exports.userId = "${userId}";\nexports.existingUsers = ${JSON.stringify(existingUsers)};`);
-      fs.copyFileSync(defaultConfigPath, userConfigPath);
+      fs.copyFileSync(defaultUser, userConfigPath);
     }
 
     if (fs.existsSync(userConfigPath)) {
