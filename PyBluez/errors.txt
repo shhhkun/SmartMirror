@@ -1,12 +1,9 @@
-python script.py 
+sudo python3 peripheral.py 
 Traceback (most recent call last):
-  File "/usr/local/lib/python3.9/dist-packages/PyBluez-0.30-py3.9-linux-aarch64.egg/bluetooth/bluez.py", line 271, in advertise_service
-_bluetooth.error: no advertisable device
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/admin/Desktop/SmartMirror/PyBluez/script.py", line 33, in <module>
-    bluetooth.advertise_service(
-  File "/usr/local/lib/python3.9/dist-packages/PyBluez-0.30-py3.9-linux-aarch64.egg/bluetooth/bluez.py", line 275, in advertise_service
-bluetooth.btcommon.BluetoothError: no advertisable device
+  File "/home/admin/Desktop/SmartMirror/PyBluez/cputemp/peripheral.py", line 468, in <module>
+    app.add_service(UserProfileService(0))
+  File "/home/admin/Desktop/SmartMirror/PyBluez/cputemp/peripheral.py", line 77, in __init__
+    self.add_characteristic(ProfileIndexCharacteristic(self))
+  File "/home/admin/Desktop/SmartMirror/PyBluez/cputemp/peripheral.py", line 108, in __init__
+    self.add_descriptor(UserProfileDescriptor(self))
+NameError: name 'UserProfileDescriptor' is not defined
