@@ -70,35 +70,6 @@ def write_to_js_config(profile_index, characteristic_name, value):
     with open(config_path, 'w') as file:
         file.write(new_config_content)
 
-class UserProfileService(Service):
-    USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"
-
-    def __init__(self, index):
-        Service.__init__(self, index, self.USER_PROFILE_SVC_UUID, True)
-        self.add_characteristic(ProfileIndexCharacteristic(self))
-        self.add_characteristic(LanguageCharacteristic(self))
-        self.add_characteristic(UnitsCharacteristic(self))
-        self.add_characteristic(ClockPositionCharacteristic(self))
-        self.add_characteristic(UpdateNotificationPositionCharacteristic(self))
-        self.add_characteristic(CalendarPositionCharacteristic(self))
-        self.add_characteristic(ComplimentsPositionCharacteristic(self))
-        self.add_characteristic(WeatherPositionCharacteristic(self))
-        self.add_characteristic(NewsPositionCharacteristic(self))
-        print("UserProfileService initialized")
-
-    def get_config_path(self, profile_index):
-        return os.path.join(CONFIG_DIR, f"file{profile_index}.js")
-
-    def read_config(self, profile_index):
-        path = self.get_config_path(profile_index)
-        with open(path, 'r') as file:
-            return file.read()
-
-    def write_config(self, profile_index, config):
-        path = self.get_config_path(profile_index)
-        with open(path, 'w') as file:
-            file.write(config)
-
 class ProfileIndexCharacteristic(Characteristic):
     PROFILE_INDEX_UUID = "00000002-710e-4a5b-8d75-3e5b444bc3cf"
 
@@ -118,8 +89,8 @@ class ProfileIndexCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.profile_index = int(value[0])
         print("Profile index written:", self.profile_index)
-        # Write to the JavaScript configuration file
-        self.service.write_config(self.profile_index, f"var profileIndex = {self.profile_index};")
+
+
 class LanguageCharacteristic(Characteristic):
     LANGUAGE_UUID = "00000003-710e-4a5b-8d75-3e5b444bc3cf"
 
@@ -132,18 +103,13 @@ class LanguageCharacteristic(Characteristic):
         print("LanguageCharacteristic initialized")
 
     def ReadValue(self, options):
-        config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
-        # Extract language value from the JavaScript configuration file
-        language = config.split("language: \"")[1].split("\"")[0]
-        value = [dbus.Byte(ord(c)) for c in language]
-        print("Language read:", language)
+        value = [dbus.Byte(self.language)]
+        print("Language read:", self.language)
         return value
 
     def WriteValue(self, value, options):
-        language = ''.join(chr(b) for b in value)
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        write_to_js_config(profile_index, "language", language)
-        print("Language written:", language)
+        self.language = int(value[0])
+        print("Language written:", self.language)
 
 class UnitsCharacteristic(Characteristic):
     UNITS_UUID = "00000004-710e-4a5b-8d75-3e5b444bc3cf"
@@ -157,18 +123,14 @@ class UnitsCharacteristic(Characteristic):
         print("UnitsCharacteristic initialized")
 
     def ReadValue(self, options):
-        config = self.service.read_config(self.service.get_characteristic(ProfileIndexCharacteristic).profile_index)
-        # Extract units value from the JavaScript configuration file
-        units = config.split("units: \"")[1].split("\"")[0]
-        value = [dbus.Byte(ord(u)) for u in units]
-        print("Units read:", units)
+        value = [dbus.Byte(self.units)]
+        print("Units read:", self.units)
         return value
 
     def WriteValue(self, value, options):
-        units = ''.join(chr(b) for b in value)
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        write_to_js_config(profile_index, "units", units)
-        print("Units written:", units)
+        self.units = int(value[0])
+        print("Units written:", self.units)
+
 
 class ClockPositionCharacteristic(Characteristic):
     CLOCK_POSITION_UUID = "00000005-710e-4a5b-8d75-3e5b444bc3cf"
@@ -182,21 +144,13 @@ class ClockPositionCharacteristic(Characteristic):
         print("ClockPositionCharacteristic initialized")
 
     def ReadValue(self, options):
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        config = self.service.read_config(profile_index)
-        # Extract clock position value from the JavaScript configuration file
-        clock_position = config.split("position: \"")[1].split("\"")[0]
-        position_index = positions.index(clock_position) if clock_position in positions else 0
-        value = [dbus.Byte(position_index)]
-        print("Clock position read:", clock_position)
+        value = [dbus.Byte(self.clock_position)]
+        print("Clock position read:", self.clock_position)
         return value
 
     def WriteValue(self, value, options):
-        position_index = int(value[0])
-        clock_position = positions[position_index]
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        write_to_js_config(profile_index, "clock_position", clock_position)
-        print("Clock position written:", clock_position)
+        self.clock_position = int(value[0])
+        print("Clock position written:", self.clock_position)
 
 class UpdateNotificationPositionCharacteristic(Characteristic):
     UPDATE_NOTIFICATION_POSITION_UUID = "00000006-710e-4a5b-8d75-3e5b444bc3cf"
@@ -210,23 +164,14 @@ class UpdateNotificationPositionCharacteristic(Characteristic):
         print("UpdateNotificationPositionCharacteristic initialized")
 
     def ReadValue(self, options):
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        config = self.service.read_config(profile_index)
-        # Extract update notification position value from the JavaScript configuration file
-        update_notification_position = config.split("position: \"")[1].split("\"")[0]
-        position_index = positions.index(update_notification_position) if update_notification_position in positions else 0
-        value = [dbus.Byte(position_index)]
-        print("Update notification position read:", update_notification_position)
+        value = [dbus.Byte(self.update_notification_position)]
+        print("Update notification position read:", self.update_notification_position)
         return value
 
     def WriteValue(self, value, options):
-        position_index = int(value[0])
-        update_notification_position = positions[position_index]
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        write_to_js_config(profile_index, "update_notification_position", update_notification_position)
-        print("Update notification position written:", update_notification_position)
+        self.update_notification_position = int(value[0])
+        print("Update notification position written:", self.update_notification_position)
 
-# Similarly, you can define other characteristic classes with the required modifications.
 
 class CalendarPositionCharacteristic(Characteristic):
     CALENDAR_POSITION_UUID = "00000007-710e-4a5b-8d75-3e5b444bc3cf"
@@ -240,21 +185,14 @@ class CalendarPositionCharacteristic(Characteristic):
         print("CalendarPositionCharacteristic initialized")
 
     def ReadValue(self, options):
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        config = self.service.read_config(profile_index)
-        # Extract calendar position value from the JavaScript configuration file
-        calendar_position = config.split("position: \"")[1].split("\"")[0]
-        position_index = positions.index(calendar_position) if calendar_position in positions else 0
-        value = [dbus.Byte(position_index)]
-        print("Calendar position read:", calendar_position)
+        value = [dbus.Byte(self.calendar_position)]
+        print("Calendar position read:", self.calendar_position)
         return value
 
     def WriteValue(self, value, options):
-        position_index = int(value[0])
-        calendar_position = positions[position_index]
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        write_to_js_config(profile_index, "calendar_position", calendar_position)
-        print("Calendar position written:", calendar_position)
+        self.calendar_position = int(value[0])
+        print("Calendar position written:", self.calendar_position)
+
 
 class ComplimentsPositionCharacteristic(Characteristic):
     COMPLIMENTS_POSITION_UUID = "00000008-710e-4a5b-8d75-3e5b444bc3cf"
@@ -268,21 +206,14 @@ class ComplimentsPositionCharacteristic(Characteristic):
         print("ComplimentsPositionCharacteristic initialized")
 
     def ReadValue(self, options):
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        config = self.service.read_config(profile_index)
-        # Extract compliments position value from the JavaScript configuration file
-        compliments_position = config.split("position: \"")[1].split("\"")[0]
-        position_index = positions.index(compliments_position) if compliments_position in positions else 0
-        value = [dbus.Byte(position_index)]
-        print("Compliments position read:", compliments_position)
+        value = [dbus.Byte(self.compliments_position)]
+        print("Compliments position read:", self.compliments_position)
         return value
 
     def WriteValue(self, value, options):
-        position_index = int(value[0])
-        compliments_position = positions[position_index]
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        write_to_js_config(profile_index, "compliments_position", compliments_position)
-        print("Compliments position written:", compliments_position)
+        self.compliments_position = int(value[0])
+        print("Compliments position written:", self.compliments_position)
+
 
 class WeatherPositionCharacteristic(Characteristic):
     WEATHER_POSITION_UUID = "00000009-710e-4a5b-8d75-3e5b444bc3cf"
@@ -296,21 +227,14 @@ class WeatherPositionCharacteristic(Characteristic):
         print("WeatherPositionCharacteristic initialized")
 
     def ReadValue(self, options):
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        config = self.service.read_config(profile_index)
-        # Extract weather position value from the JavaScript configuration file
-        weather_position = config.split("position: \"")[1].split("\"")[0]
-        position_index = positions.index(weather_position) if weather_position in positions else 0
-        value = [dbus.Byte(position_index)]
-        print("Weather position read:", weather_position)
+        value = [dbus.Byte(self.weather_position)]
+        print("Weather position read:", self.weather_position)
         return value
 
     def WriteValue(self, value, options):
-        position_index = int(value[0])
-        weather_position = positions[position_index]
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        write_to_js_config(profile_index, "weather_position", weather_position)
-        print("Weather position written:", weather_position)
+        self.weather_position = int(value[0])
+        print("Weather position written:", self.weather_position)
+
 
 class NewsPositionCharacteristic(Characteristic):
     NEWS_POSITION_UUID = "0000000A-710e-4a5b-8d75-3e5b444bc3cf"
@@ -324,21 +248,14 @@ class NewsPositionCharacteristic(Characteristic):
         print("NewsPositionCharacteristic initialized")
 
     def ReadValue(self, options):
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        config = self.service.read_config(profile_index)
-        # Extract news position value from the JavaScript configuration file
-        news_position = config.split("position: \"")[1].split("\"")[0]
-        position_index = positions.index(news_position) if news_position in positions else 0
-        value = [dbus.Byte(position_index)]
-        print("News position read:", news_position)
+        value = [dbus.Byte(self.news_position)]
+        print("News position read:", self.news_position)
         return value
 
     def WriteValue(self, value, options):
-        position_index = int(value[0])
-        news_position = positions[position_index]
-        profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
-        write_to_js_config(profile_index, "news_position", news_position)
-        print("News position written:", news_position)
+        self.news_position = int(value[0])
+        print("News position written:", self.news_position)
+
 
 # Descriptors
 class UserProfileDescriptor(Descriptor):
