@@ -1,6 +1,6 @@
 Module.register("welcome", {
   defaults: {
-    welcomeMessage: "Welcome! Please press your finger onto the sensor to begin",
+    welcomeMessage: "Welcome! Please press your finger onto the sensor to begin.",
     size: "large"
   },
 
