@@ -7,7 +7,7 @@ from service import Application, Service, Characteristic, Descriptor
 
 GATT_CHRC_IFACE = "org.bluez.GattCharacteristic1"
 
-CONFIG_DIR = os.getcwd()  # Use the current working directory for the config files
+CONFIG_DIR = os.getcwd()  # use the current working directory for the config files
 
 class Positions(Enum):
     TOP_BAR = 0
