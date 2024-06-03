@@ -238,28 +238,33 @@ const pythonScriptPath = path.join(__dirname, "..", "fingerprint_scanner", "fing
 const pythonProcess = spawn("python3", [pythonScriptPath]);
 
 //DEBUG
-console.log("Post const definitions");
+console.log("1.Post const definitions");
 
 // The logic for the python fingerprint, read outputs and looks for keywords
 pythonProcess.stdout.on("data", (data) => {
   //DEBUG
-  console.log("In stdout.on");
+  console.log("2. In stdout.on");
 
   const output = data.toString(); // Converts Buffer to string
 
   // Logic for calling commands
   const match = output.match(/(user\d+)/); // regex for the output to see if it matches a found user
   if (match) {
+    //DEBUG
+    console.log("3. In match");
+
     // Change the userID to be the found user ID
     const userID = match[1]; // should capture just the user id
     const newContent = `exports.userId = "${userID}";`;
 
     // Will try to write the new user ID to the userId.js file
     try {
+      //DEBUG
+      console.log("4. In try");
       fs.writeFileSync(userIdPath, newContent); // NOTE: do I need utf-8? lets try without it first
       console.log("Wrote to userid file");
     } catch (error) {
-      console.error("Error writing to userid file");
+      console.log("Error writing to userid file");
     }
   } else {
     console.warn("Unexpected output from fingerpint py file!");
