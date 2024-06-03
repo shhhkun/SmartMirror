@@ -31,6 +31,23 @@ positions = [
     "fullscreen_above", "fullscreen_below"
 ]
 
+class Languages(Enum):
+    ENGLISH = 0
+    SPANISH = 1
+    CHINESE = 2
+    
+languages = [
+    "en", "es", "zh"
+]
+
+class MetricSys(Enum):
+    METRIC = 0
+    IMPERIAL = 1
+    
+metricsys = [
+    "metric", "imperial"
+]
+
 def write_to_js_config(profile_index, characteristic_name, value):
     config_path = f"file{profile_index}.js"
     # Read the existing configuration from the JavaScript file
@@ -126,6 +143,7 @@ class LanguageCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.language = int(value[0])
         print("Language written:", self.language)
+        write_to_js_config(self.service.index, "language", languages[self.language])
 
 class UnitsCharacteristic(Characteristic):
     UNITS_UUID = "00000004-710e-4a5b-8d75-3e5b444bc3cf"
@@ -146,7 +164,7 @@ class UnitsCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.units = int(value[0])
         print("Units written:", self.units)
-
+        write_to_js_config(self.service.index, "units", metricsys[self.units])
 
 class ClockPositionCharacteristic(Characteristic):
     CLOCK_POSITION_UUID = "00000005-710e-4a5b-8d75-3e5b444bc3cf"
