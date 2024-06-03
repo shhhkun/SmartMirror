@@ -120,7 +120,6 @@ class ProfileIndexCharacteristic(Characteristic):
         print("Profile index written:", self.profile_index)
         # Write to the JavaScript configuration file
         self.service.write_config(self.profile_index, f"var profileIndex = {self.profile_index};")
-
 class LanguageCharacteristic(Characteristic):
     LANGUAGE_UUID = "00000003-710e-4a5b-8d75-3e5b444bc3cf"
 
@@ -226,6 +225,8 @@ class UpdateNotificationPositionCharacteristic(Characteristic):
         profile_index = self.service.get_characteristic(ProfileIndexCharacteristic).profile_index
         write_to_js_config(profile_index, "update_notification_position", update_notification_position)
         print("Update notification position written:", update_notification_position)
+
+# Similarly, you can define other characteristic classes with the required modifications.
 
 class CalendarPositionCharacteristic(Characteristic):
     CALENDAR_POSITION_UUID = "00000007-710e-4a5b-8d75-3e5b444bc3cf"
