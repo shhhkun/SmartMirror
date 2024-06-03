@@ -1,7 +1,8 @@
 import dbus
 import os
 from enum import Enum
-
+import signal
+import time
 from advertisement import Advertisement
 from service import Application, Service, Characteristic, Descriptor
 
@@ -545,10 +546,16 @@ app.add_service(UserProfileService(1))
 
 adv = UserProfileAdvertisement(0)
 
+def handler(signum, frame):
+    raise KeyboardInterrupt
+
+signal.signal(signal.SIGINT, handler)
+
 app.register()
 adv.register()
 
 try:
-    mainloop.run()
+    while True:
+        time.sleep(1)
 except KeyboardInterrupt:
-    mainloop.quit()
+    print("Program interrupted, exiting...")
