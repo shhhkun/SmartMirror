@@ -85,15 +85,15 @@ def write_to_js_config(profile_index, characteristic_name, value):
         if characteristic_name == "language":
             old_value = config_content.split('language: "')[1].split('"')[0]
             new_config_content = config_content.replace(f'language: "{old_value}"', f'language: "{value}"')
-        elif characteristic_name == "language_disable":
-            old_value = config_content.split('module: "language",')[1].split('disabled: ')[1].split(',')[0]
-            new_config_content = config_content.replace(f'disabled: {old_value}', f'disabled: {value}')
+        #elif characteristic_name == "language_disable":
+        #    old_value = config_content.split('module: "language",')[1].split('disabled: ')[1].split(',')[0]
+        #    new_config_content = config_content.replace(f'disabled: {old_value}', f'disabled: {value}')
         elif characteristic_name == "units":
             old_value = config_content.split('units: "')[1].split('"')[0]
             new_config_content = config_content.replace(f'units: "{old_value}"', f'units: "{value}"')
-        elif characteristic_name == "units_disable":
-            old_value = config_content.split('module: "units",')[1].split('disabled: ')[1].split(',')[0]
-            new_config_content = config_content.replace(f'disabled: {old_value}', f'disabled: {value}')
+        #elif characteristic_name == "units_disable":
+        #    old_value = config_content.split('module: "units",')[1].split('disabled: ')[1].split(',')[0]
+        #    new_config_content = config_content.replace(f'disabled: {old_value}', f'disabled: {value}')
         elif characteristic_name == "clock_position":
             old_value = config_content.split('module: "clock",')[1].split('position: "')[1].split('"')[0]
             new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
@@ -124,9 +124,9 @@ class UserProfileService(Service):
         Service.__init__(self, index, self.USER_PROFILE_SVC_UUID, True)
         self.add_characteristic(ProfileIndexCharacteristic(self))
         self.add_characteristic(LanguageCharacteristic(self))
-        self.add_characteristic(LanguageDisableCharacteristic(self))
+        #self.add_characteristic(LanguageDisableCharacteristic(self))
         self.add_characteristic(UnitsCharacteristic(self))
-        self.add_characteristic(UnitsDisableCharacteristic(self))
+        #self.add_characteristic(UnitsDisableCharacteristic(self))
         self.add_characteristic(ClockPositionCharacteristic(self))
         self.add_characteristic(ClockDisableCharacteristic(self))
         self.add_characteristic(UpdateNotificationPositionCharacteristic(self))
@@ -182,27 +182,6 @@ class LanguageCharacteristic(Characteristic):
         self.language = int(value[0])
         print("Language written:", self.language)
         write_to_js_config(self.service.index, "language", languages[self.language])
-        
-class LanguageDisableCharacteristic(Characteristic):
-    LANGUAGE_DISABLE_UUID = "00000004-710e-4a5b-8d75-3e5b444bc3cf"
-
-    def __init__(self, service):
-        Characteristic.__init__(
-            self, self.LANGUAGE_DISABLE_UUID,
-            ["read", "write"], service)
-        self.add_descriptor(LanguageDisableDescriptor(self))
-        self.disabled = 0
-        print("LanguageDisableCharacteristic initialized")
-
-    def ReadValue(self, options):
-        value = [dbus.Byte(self.disabled)]
-        print("Language disable read:", self.disabled)
-        return value
-
-    def WriteValue(self, value, options):
-        self.disabled = int(value[0])
-        print("Language disable written:", self.disabled)
-        write_to_js_config(self.service.index, "language_disable", self.disabled)
 
 class UnitsCharacteristic(Characteristic):
     UNITS_UUID = "00000005-710e-4a5b-8d75-3e5b444bc3cf"
@@ -224,27 +203,6 @@ class UnitsCharacteristic(Characteristic):
         self.units = int(value[0])
         print("Units written:", self.units)
         write_to_js_config(self.service.index, "units", metricsys[self.units])
-        
-class UnitsDisableCharacteristic(Characteristic):
-    UNITS_DISABLE_UUID = "00000006-710e-4a5b-8d75-3e5b444bc3cf"
-
-    def __init__(self, service):
-        Characteristic.__init__(
-            self, self.UNITS_DISABLE_UUID,
-            ["read", "write"], service)
-        self.add_descriptor(UnitsDisableDescriptor(self))
-        self.disabled = 0
-        print("UnitsDisableCharacteristic initialized")
-
-    def ReadValue(self, options):
-        value = [dbus.Byte(self.disabled)]
-        print("Units disable read:", self.disabled)
-        return value
-
-    def WriteValue(self, value, options):
-        self.disabled = int(value[0])
-        print("Units disable written:", self.disabled)
-        write_to_js_config(self.service.index, "units_disable", self.disabled)
 
 class ClockPositionCharacteristic(Characteristic):
     CLOCK_POSITION_UUID = "00000007-710e-4a5b-8d75-3e5b444bc3cf"
@@ -286,6 +244,7 @@ class ClockDisableCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.disabled = int(value[0])
         print("Clock disable written:", self.disabled)
+        print("Writing value:", value)
         write_to_js_config(self.service.index, "clock_disable", self.disabled)
 
 class UpdateNotificationPositionCharacteristic(Characteristic):
@@ -552,17 +511,6 @@ class LanguageDescriptor(Descriptor):
             value.append(dbus.Byte(c.encode()))
 
         return value
-    
-class LanguageDisableDescriptor(Descriptor):
-    def __init__(self, characteristic):
-        Descriptor.__init__(
-            self, '2901',
-            ["read"],
-            characteristic)
-        self.value = "Language Disable".encode()
-
-    def ReadValue(self, options):
-        return self.value
 
 class UnitsDescriptor(Descriptor):
     UNITS_DESCRIPTOR_UUID = "2904"
@@ -581,17 +529,6 @@ class UnitsDescriptor(Descriptor):
             value.append(dbus.Byte(c.encode()))
 
         return value
-
-class UnitsDisableDescriptor(Descriptor):
-    def __init__(self, characteristic):
-        Descriptor.__init__(
-            self, '2901',
-            ["read"],
-            characteristic)
-        self.value = "Units Disable".encode()
-
-    def ReadValue(self, options):
-        return self.value
 
 class ClockPositionDescriptor(Descriptor):
     CLOCK_POSITION_DESCRIPTOR_UUID = "2905"
