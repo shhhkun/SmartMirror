@@ -2,6 +2,10 @@ import {
   createContext
 } from 'react';
 
+// will need to do some refactoring here if we want to support multiple users.
+// will probably want an encapsulating object/dict/type thing that holds all
+// the users.
+
 export interface SingleModuleConfiguration {
   moduleInternalName: string;
   moduleDisplayName: string;
@@ -21,6 +25,10 @@ export interface FullModuleConfiguration {
   // }
 
   [moduleName: string]: SingleModuleConfiguration;
+};
+
+export interface SystemSettingsFullConfiguration {
+  // this will be specific to each user.
 };
 
 // might want a new attribute in the context for system settings. for language
@@ -45,12 +53,13 @@ interface ModuleContextType {
 
 // new defaultModuleConfiguration for testing.
 const defaultModuleConfiguration: FullModuleConfiguration = {
-  alert: {
-    moduleInternalName: "alert",
-    moduleDisplayName: "Alerts",
-    moduleEnabled: true,
-    modulePosition: 'top_left'
-  },
+  // not supporting changing alerts at the moment
+  // alert: {
+  //   moduleInternalName: "alert",
+  //   moduleDisplayName: "Alerts",
+  //   moduleEnabled: true,
+  //   modulePosition: 'top_left'
+  // },
   updatenotification: {
     moduleInternalName: "updatenotification",
     moduleDisplayName: "Notifications",
@@ -135,7 +144,7 @@ const defaultModuleConfiguration: FullModuleConfiguration = {
   //     modulePosition: 'lower_third'
   //   }
   // };
-}
+};
 
 export const defaultModuleContext: ModuleContextType = {
   trueModuleConfiguration: defaultModuleConfiguration,

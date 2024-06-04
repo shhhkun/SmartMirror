@@ -21,7 +21,7 @@ import {
 import {
   selectOurDeviceFromBondedDevices,
   selectTargetServiceAndCharacteristic,
-  parseModuleNamesAndCharacteristics
+  // parseModuleNamesAndCharacteristics
 } from './BluetoothUtils';
 import BluetoothService from './BluetoothService';
 
@@ -58,15 +58,18 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     setTargetInfos(newTargetInfos);
   }
 
-  const populateCharacteristicsMap = (appConnectedPeripheralInfo:
-    PeripheralInfo): void => {
-    // will take the retrieveServices PeripheralInfo array and populate the
-    // characteristicsMap with module names and characteristic UUIDs.
+  // populateCharacteristicsMap not implemented rn.
+  {
+    // const populateCharacteristicsMap = (appConnectedPeripheralInfo:
+    //   PeripheralInfo): void => {
+    //   // will take the retrieveServices PeripheralInfo array and populate the
+    //   // characteristicsMap with module names and characteristic UUIDs.
 
-    // thisn function is just hard coded for now.
-    setCharacteristicsMap(
-      parseModuleNamesAndCharacteristics(appConnectedPeripheralInfo)
-    );
+    //   // thisn function is just hard coded for now.
+    //   setCharacteristicsMap(
+    //     parseModuleNamesAndCharacteristics(appConnectedPeripheralInfo)
+    //   );
+    // }
   }
 
   const setTargetFieldsToDefault = (): void => {
@@ -238,34 +241,38 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     return true;
   }
 
-  // not yet implemented
-  const checkIfDeviceIsReadable = async (serviceUUID: string,
-    characteristicUUID: string): Promise<boolean> => {
-    // todo
-    // will call checkIfDeviceIsReadWritable, and check if read is allowed
+  // checkIfDeviceIsReadable not implemented. don't need it rn.
+  {
+    // const checkIfDeviceIsReadable = async (serviceUUID: string,
+    //   characteristicUUID: string): Promise<boolean> => {
+    //   // todo
+    //   // will call checkIfDeviceIsReadWritable, and check if read is allowed
 
-    if (!await checkIfDeviceIsReadWritable()) {
-      return false;
-    }
+    //   if (!await checkIfDeviceIsReadWritable()) {
+    //     return false;
+    //   }
 
-    // todo
+    //   // todo
 
-    return false;
+    //   return false;
+    // }
   }
 
-  // not yet implemented
-  const checkIfDeviceIsWritable = async (serviceUUID: string,
-    characteristicUUID: string): Promise<boolean> => {
-    // todo
-    // will call checkIfDeviceIsReadWritable, and check if write is allowed
+  // checkIfDeviceIsWritable not implemented. don't need it rn.
+  {
+    // const checkIfDeviceIsWritable = async (serviceUUID: string,
+    //   characteristicUUID: string): Promise<boolean> => {
+    //   // todo
+    //   // will call checkIfDeviceIsReadWritable, and check if write is allowed
 
-    if (!await checkIfDeviceIsReadWritable()) {
-      return false;
-    }
+    //   if (!await checkIfDeviceIsReadWritable()) {
+    //     return false;
+    //   }
 
-    // todo
+    //   // todo
 
-    return false;
+    //   return false;
+    // }
   }
 
 
@@ -429,7 +436,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   }
 
-  // haven't seen this work yet. not using rn.
+  // haven't seen appConnectFromBonded work yet. not using rn.
   const appConnectFromBonded = async (): Promise<void> => {
     // this failed when I tried it. however, the indivudual steps work when
     // triggered from buttons. maybe need to have delays between.
@@ -556,7 +563,6 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   // constructor-like thing that runs when context is created
   useEffect(() => {
     initializeDriver();
-    // eventually, could pull in data from saved state here.
   }, []);
 
 
