@@ -56,6 +56,7 @@ def read_user_id():
             content = file.read()
             match = re.search(r'exports.userId = "(.*?)"', content)
             if match:
+                print(f"current user id: {match.group(1)}")
                 return match.group(1)
     return None
 
