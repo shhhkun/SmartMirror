@@ -81,10 +81,10 @@ def write_to_js_config(characteristic_name, key, value):
         config_content = re.sub(r'units: ".*?"', f'units: "{value}"', config_content)
     elif characteristic_name in ["clock", "updatenotification", "calendar", "compliments", "weather", "news"]:
         if key == "position":
-            config_content = re.sub(r'position: ".*?" // {characteristic_name} position', f'position: "{value}" // {characteristic_name} position', config_content)
+            config_content = re.sub(rf'position: ".*?"( // {characteristic_name} position)', f'position: "{value}"\\1', config_content)
         elif key == "disabled":
-            config_content = re.sub(f'disabled: \d // {characteristic_name} disable', f'disabled: {value} // {characteristic_name} disable', config_content)
-
+            config_content = re.sub(rf'disabled: .*?( // {characteristic_name} disabled)', f'disabled: {value}\\1', config_content)
+            
     # Write updated content back to file
     with open(file_path, 'w') as file:
         file.write(config_content)
