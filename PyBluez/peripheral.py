@@ -245,6 +245,8 @@ class ClockDisableCharacteristic(Characteristic):
         self.disabled = int(value[0])
         print("Clock disable written:", self.disabled)
         print("Writing value:", value)
+        print("Self service index:", self.service.index)
+        print("Self disabled:", self.disabled)
         write_to_js_config(self.service.index, "clock_disable", self.disabled)
 
 class UpdateNotificationPositionCharacteristic(Characteristic):
