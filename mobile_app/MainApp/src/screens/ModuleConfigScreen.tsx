@@ -72,7 +72,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 
         {/* just gonna hard code a couple module bars, to see if the issue is
         with this mapping loop thing. */}
-        <ModuleConfigBar
+        {/* <ModuleConfigBar
           // this key thing is important for triggering re-render stuff
           key={"alert"}
           title="Alerts"
@@ -96,14 +96,13 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
               }
             })
           }
-        />
+        /> */}
 
 
-        {/* Make module config bars for all the modules in draft config.
+        {/* Make module config bars for all the modules in draft config. */}
         {Object.entries(draftModuleConfiguration).map(([moduleName, moduleConfig]) => (
           <ModuleConfigBar
-            // idk what this key is for, so commenting out
-            // key={moduleName}
+            key={moduleName}
 
             title={moduleConfig.moduleDisplayName}
 
@@ -129,7 +128,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
               })
             }
           />
-        ))} */}
+        ))}
 
 
       </ScrollView>

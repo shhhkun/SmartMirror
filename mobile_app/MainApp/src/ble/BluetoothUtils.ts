@@ -9,7 +9,7 @@ import {
 // my imports
 import {
   TargetInfos,
-  CharacteristicsMap,
+  // CharacteristicsMap,
   defaultBluetoothContext
 } from './BluetoothContext';
 
@@ -64,17 +64,20 @@ export function selectTargetServiceAndCharacteristic(
   return outputTargetInfos;
 }
 
-export function parseModuleNamesAndCharacteristics(
-  peripheralInfo: PeripheralInfo): CharacteristicsMap {
-  // todo: make this not hard coded
+// not using this rn
+{
+  // export function parseModuleNamesAndCharacteristics(
+  //   peripheralInfo: PeripheralInfo): CharacteristicsMap {
+  //   // todo: make this not hard coded
 
-  // for now, this will just return some hard-coded module names and UUIDs.
-  const moduleNamesAndCharacteristics: CharacteristicsMap = {
-    "Clock": savedCharacteristicUUIDs.erikLightCharModu1,
-    "Weather": savedCharacteristicUUIDs.erikLightCharModu2
-  }
+  //   // for now, this will just return some hard-coded module names and UUIDs.
+  //   const moduleNamesAndCharacteristics: CharacteristicsMap = {
+  //     "Clock": savedCharacteristicUUIDs.erikLightCharModu1,
+  //     "Weather": savedCharacteristicUUIDs.erikLightCharModu2
+  //   }
 
-  return moduleNamesAndCharacteristics;
+  //   return moduleNamesAndCharacteristics;
+  // }
 }
 
 
@@ -102,35 +105,81 @@ export const moduleCharacteristicsHardCoded: any = {
   // pretty to jank to have this hard-coded. but should be ok if
   // we're just using the single pi and the characteristics don't change.
 
-  // main target (for profile control) = "2222"
+  // main target (for profile control) = "00000002-710e-4a5b-8d75-3e5b444bc3cf"
 
-  "Alerts": {
-    "enable": "0002",
-    "position": "0003"
-  },
+  // language characteristic (unsuported rn) = "00000003-710e-4a5b-8d75-3e5b444bc3cf"
+  // units characteristic (unsupported rn) = "00000004-710e-4a5b-8d75-3e5b444bc3cf"
+
+  // not supporting changing alerts at the moment
+  // "Alerts": {
+  //   "enable": "0002",
+  //   "position": "0003"
+  // },
+
   "Clock": {
-    "enable": "0004",
-    "position": "0005"
+    // "enable": "0004",
+    "position": "00000005-710e-4a5b-8d75-3e5b444bc3cf"
   },
   "Notifications": {
-    "enable": "0006",
-    "position": "0007"
+    // "enable": "0006",
+    "position": "00000006-710e-4a5b-8d75-3e5b444bc3cf"
   },
   "Calendar": {
-    "enable": "0008",
-    "position": "0009"
+    // "enable": "0008",
+    "position": "00000007-710e-4a5b-8d75-3e5b444bc3cf"
   },
   "Compliments": {
-    "enable": "0010",
-    "position": "0011"
+    // "enable": "0010",
+    "position": "00000008-710e-4a5b-8d75-3e5b444bc3cf"
   },
   "Weather": {
-    "enable": "0012",
-    "position": "0013"
+    // "enable": "0012",
+    "position": "00000009-710e-4a5b-8d75-3e5b444bc3cf"
   },
   "News": {
-    "enable": "0014",
-    "position": "0015"
+    // "enable": "0014",
+    "position": "00000010-710e-4a5b-8d75-3e5b444bc3cf"
   }
 }
 
+// module characteristics for when testing in Erik's lightblue
+{
+  // export const moduleCharacteristicsHardCoded: any = {
+  //   // this uses the display names of the modules as the main item names!
+  //   // pretty to jank to have this hard-coded. but should be ok if
+  //   // we're just using the single pi and the characteristics don't change.
+
+  //   // main target (for profile control) = "2222"
+
+  //   // not messing with alerts at the moment.
+  //   // "Alerts": {
+  //   //   "enable": "0002",
+  //   //   "position": "0003"
+  //   // },
+
+  //   "Clock": {
+  //     "enable": "0004",
+  //     "position": "0005"
+  //   },
+  //   "Notifications": {
+  //     "enable": "0006",
+  //     "position": "0007"
+  //   },
+  //   "Calendar": {
+  //     "enable": "0008",
+  //     "position": "0009"
+  //   },
+  //   "Compliments": {
+  //     "enable": "0010",
+  //     "position": "0011"
+  //   },
+  //   "Weather": {
+  //     "enable": "0012",
+  //     "position": "0013"
+  //   },
+  //   "News": {
+  //     "enable": "0014",
+  //     "position": "0015"
+  //   }
+  // }
+}
