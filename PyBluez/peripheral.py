@@ -81,7 +81,7 @@ def write_to_js_config(characteristic_name, key, value):
         config_content = re.sub(r'units: ".*?"', f'units: "{value}"', config_content)
     elif characteristic_name in ["clock", "updatenotification", "calendar", "compliments", "weather", "news"]:
         if key == "position":
-            config_content = re.sub(rf'position: ".*?"( // {characteristic_name} position)', f'position: "{value}"\\1', config_content)
+            config_content = re.sub(rf'position: ".*?",( // {characteristic_name} position)', f'position: "{value}"\\1', config_content)
         elif key == "disabled":
             config_content = re.sub(rf'disabled: .*?( // {characteristic_name} disabled)', f'disabled: {value}\\1', config_content)
             
@@ -109,7 +109,6 @@ class UserProfileService(Service):
         self.add_characteristic(WeatherDisableCharacteristic(self))
         self.add_characteristic(NewsPositionCharacteristic(self))
         self.add_characteristic(NewsDisableCharacteristic(self))
-        print("UserProfileService initialized")
 
 class ProfileIndexCharacteristic(Characteristic):
     PROFILE_INDEX_UUID = "00000002-710e-4a5b-8d75-3e5b444bc3cf"
@@ -120,7 +119,6 @@ class ProfileIndexCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(ProfileIndexDescriptor(self))
         self.profile_index = 0
-        print("ProfileIndexCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.profile_index)]
@@ -141,7 +139,6 @@ class LanguageCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(LanguageDescriptor(self))
         self.language = 0
-        print("LanguageCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.language)]
@@ -162,7 +159,6 @@ class UnitsCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(UnitsDescriptor(self))
         self.units = 0
-        print("UnitsCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.units)]
@@ -183,7 +179,6 @@ class ClockPositionCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(ClockPositionDescriptor(self))
         self.clock_position = 0
-        print("ClockPositionCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.clock_position)]
@@ -204,7 +199,6 @@ class ClockDisableCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(ClockDisableDescriptor(self))
         self.disabled = 0
-        print("ClockDisableCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.disabled)]
@@ -227,7 +221,6 @@ class UpdateNotificationPositionCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(UpdateNotificationPositionDescriptor(self))
         self.update_notification_position = 0
-        print("UpdateNotificationPositionCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.update_notification_position)]
@@ -248,7 +241,6 @@ class UpdateNotificationDisableCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(UpdateNotificationDisableDescriptor(self))
         self.disabled = 0
-        print("UpdateNotificationDisableCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.disabled)]
@@ -269,7 +261,6 @@ class CalendarPositionCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(CalendarPositionDescriptor(self))
         self.calendar_position = 0
-        print("CalendarPositionCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.calendar_position)]
@@ -290,7 +281,6 @@ class CalendarDisableCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(CalendarDisableDescriptor(self))
         self.disabled = 0
-        print("CalendarDisableCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.disabled)]
@@ -311,7 +301,6 @@ class ComplimentsPositionCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(ComplimentsPositionDescriptor(self))
         self.compliments_position = 0
-        print("ComplimentsPositionCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.compliments_position)]
@@ -332,7 +321,6 @@ class ComplimentsDisableCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(ComplimentsDisableDescriptor(self))
         self.disabled = 0
-        print("ComplimentsDisableCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.disabled)]
@@ -353,7 +341,6 @@ class WeatherPositionCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(WeatherPositionDescriptor(self))
         self.weather_position = 0
-        print("WeatherPositionCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.weather_position)]
@@ -374,7 +361,6 @@ class WeatherDisableCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(WeatherDisableDescriptor(self))
         self.disabled = 0
-        print("WeatherDisableCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.disabled)]
@@ -395,7 +381,6 @@ class NewsPositionCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(NewsPositionDescriptor(self))
         self.news_position = 0
-        print("NewsPositionCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.news_position)]
@@ -416,7 +401,6 @@ class NewsDisableCharacteristic(Characteristic):
             ["read", "write"], service)
         self.add_descriptor(NewsDisableDescriptor(self))
         self.disabled = 0
-        print("NewsDisableCharacteristic initialized")
 
     def ReadValue(self, options):
         value = [dbus.Byte(self.disabled)]
@@ -428,96 +412,60 @@ class NewsDisableCharacteristic(Characteristic):
         print("News disable written:", self.disabled)
         write_to_js_config("news", "disabled", self.disabled)
 
-# Descriptors
 class UserProfileDescriptor(Descriptor):
-    USER_PROFILE_DESCRIPTOR_UUID = "2901"
-    USER_PROFILE_DESCRIPTOR_VALUE = "User Profile Descriptor"
-
     def __init__(self, characteristic):
         Descriptor.__init__(
-            self, self.USER_PROFILE_DESCRIPTOR_UUID,
-            ["read"], characteristic)
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "User Profile Descriptor".encode()
 
     def ReadValue(self, options):
-        value = []
-        desc = self.USER_PROFILE_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
-        return value
+        return self.value
 
 class ProfileIndexDescriptor(Descriptor):
-    PROFILE_INDEX_DESCRIPTOR_UUID = "2902"
-    PROFILE_INDEX_DESCRIPTOR_VALUE = "Profile Index Descriptor"
-
     def __init__(self, characteristic):
         Descriptor.__init__(
-            self, self.PROFILE_INDEX_DESCRIPTOR_UUID,
-            ["read"], characteristic)
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Profile Index".encode()
 
     def ReadValue(self, options):
-        value = []
-        desc = self.PROFILE_INDEX_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
-        return value
+        return self.value
 
 class LanguageDescriptor(Descriptor):
-    LANGUAGE_DESCRIPTOR_UUID = "2903"
-    LANGUAGE_DESCRIPTOR_VALUE = "Language Descriptor"
-
     def __init__(self, characteristic):
         Descriptor.__init__(
-            self, self.LANGUAGE_DESCRIPTOR_UUID,
-            ["read"], characteristic)
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Language".encode()
 
     def ReadValue(self, options):
-        value = []
-        desc = self.LANGUAGE_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
-        return value
+        return self.value
 
 class UnitsDescriptor(Descriptor):
-    UNITS_DESCRIPTOR_UUID = "2904"
-    UNITS_DESCRIPTOR_VALUE = "Units Descriptor"
-
     def __init__(self, characteristic):
         Descriptor.__init__(
-            self, self.UNITS_DESCRIPTOR_UUID,
-            ["read"], characteristic)
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Units".encode()
 
     def ReadValue(self, options):
-        value = []
-        desc = self.UNITS_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
-        return value
+        return self.value
 
 class ClockPositionDescriptor(Descriptor):
-    CLOCK_POSITION_DESCRIPTOR_UUID = "2905"
-    CLOCK_POSITION_DESCRIPTOR_VALUE = "Clock Position Descriptor"
-
     def __init__(self, characteristic):
         Descriptor.__init__(
-            self, self.CLOCK_POSITION_DESCRIPTOR_UUID,
-            ["read"], characteristic)
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Clock Position".encode()
 
     def ReadValue(self, options):
-        value = []
-        desc = self.CLOCK_POSITION_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
-        return value
+        return self.value
     
 class ClockDisableDescriptor(Descriptor):
     def __init__(self, characteristic):
@@ -531,22 +479,15 @@ class ClockDisableDescriptor(Descriptor):
         return self.value
 
 class UpdateNotificationPositionDescriptor(Descriptor):
-    UPDATE_NOTIFICATION_POSITION_DESCRIPTOR_UUID = "2906"
-    UPDATE_NOTIFICATION_POSITION_DESCRIPTOR_VALUE = "Update Notification Position Descriptor"
-
     def __init__(self, characteristic):
         Descriptor.__init__(
-            self, self.UPDATE_NOTIFICATION_POSITION_DESCRIPTOR_UUID,
-            ["read"], characteristic)
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Update Notification Position".encode()
 
     def ReadValue(self, options):
-        value = []
-        desc = self.UPDATE_NOTIFICATION_POSITION_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
-        return value
+        return self.value
 
 class UpdateNotificationDisableDescriptor(Descriptor):
     def __init__(self, characteristic):
@@ -560,22 +501,15 @@ class UpdateNotificationDisableDescriptor(Descriptor):
         return self.value
 
 class CalendarPositionDescriptor(Descriptor):
-    CALENDAR_POSITION_DESCRIPTOR_UUID = "2907"
-    CALENDAR_POSITION_DESCRIPTOR_VALUE = "Calendar Position Descriptor"
-
     def __init__(self, characteristic):
         Descriptor.__init__(
-            self, self.CALENDAR_POSITION_DESCRIPTOR_UUID,
-            ["read"], characteristic)
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Calendar Position".encode()
 
     def ReadValue(self, options):
-        value = []
-        desc = self.CALENDAR_POSITION_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
-        return value
+        return self.value
 
 class CalendarDisableDescriptor(Descriptor):
     def __init__(self, characteristic):
@@ -589,22 +523,15 @@ class CalendarDisableDescriptor(Descriptor):
         return self.value
 
 class ComplimentsPositionDescriptor(Descriptor):
-    COMPLIMENTS_POSITION_DESCRIPTOR_UUID = "2908"
-    COMPLIMENTS_POSITION_DESCRIPTOR_VALUE = "Compliments Position Descriptor"
-
     def __init__(self, characteristic):
         Descriptor.__init__(
-            self, self.COMPLIMENTS_POSITION_DESCRIPTOR_UUID,
-            ["read"], characteristic)
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Compliments Position".encode()
 
     def ReadValue(self, options):
-        value = []
-        desc = self.COMPLIMENTS_POSITION_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
-        return value
+        return self.value
     
 class ComplimentsDisableDescriptor(Descriptor):
     def __init__(self, characteristic):
@@ -618,22 +545,15 @@ class ComplimentsDisableDescriptor(Descriptor):
         return self.value
 
 class WeatherPositionDescriptor(Descriptor):
-    WEATHER_POSITION_DESCRIPTOR_UUID = "2909"
-    WEATHER_POSITION_DESCRIPTOR_VALUE = "Weather Position Descriptor"
-
     def __init__(self, characteristic):
         Descriptor.__init__(
-            self, self.WEATHER_POSITION_DESCRIPTOR_UUID,
-            ["read"], characteristic)
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Weather Position".encode()
 
     def ReadValue(self, options):
-        value = []
-        desc = self.WEATHER_POSITION_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
-        return value
+        return self.value
     
 class WeatherDisableDescriptor(Descriptor):
     def __init__(self, characteristic):
@@ -647,22 +567,15 @@ class WeatherDisableDescriptor(Descriptor):
         return self.value
 
 class NewsPositionDescriptor(Descriptor):
-    NEWS_POSITION_DESCRIPTOR_UUID = "2910"
-    NEWS_POSITION_DESCRIPTOR_VALUE = "News Position Descriptor"
-
     def __init__(self, characteristic):
         Descriptor.__init__(
-            self, self.NEWS_POSITION_DESCRIPTOR_UUID,
-            ["read"], characteristic)
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "News Position".encode()
 
     def ReadValue(self, options):
-        value = []
-        desc = self.NEWS_POSITION_DESCRIPTOR_VALUE
-
-        for c in desc:
-            value.append(dbus.Byte(c.encode()))
-
-        return value
+        return self.value
     
 class NewsDisableDescriptor(Descriptor):
     def __init__(self, characteristic):
