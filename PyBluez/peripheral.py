@@ -1,5 +1,6 @@
 import dbus
 import os
+import re
 from enum import Enum
 import signal
 import time
@@ -48,40 +49,64 @@ metricsys = [
     "metric", "imperial"
 ]
 
-def write_to_js_config(profile_index, characteristic_name, value):
-    config_path = f"file{profile_index}.js"
-    # Read the existing configuration from the JavaScript file
-    with open(config_path, 'r') as file:
-        config_content = file.read()
+def read_user_id():
+    user_id_file_path = os.path.expanduser("~/SmartMirror/App/js/userId.js")
+    if os.path.exists(user_id_file_path):
+        with open(user_id_file_path, 'r') as file:
+            content = file.read()
+            match = re.search(r'exports.userId = "(.*?)"', content)
+            if match:
+                return match.group(1)
+    return None
 
-    # Modify the configuration object based on the characteristic being written
-    if characteristic_name == "language":
-        old_value = config_content.split('language: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'language: "{old_value}"', f'language: "{value}"')
-    elif characteristic_name == "units":
-        old_value = config_content.split('units: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'units: "{old_value}"', f'units: "{value}"')
-    elif characteristic_name == "clock_position":
-        old_value = config_content.split('module: "clock",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-    elif characteristic_name == "update_notification_position":
-        old_value = config_content.split('module: "updatenotification",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-    elif characteristic_name == "calendar_position":
-        old_value = config_content.split('module: "calendar",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-    elif characteristic_name == "compliments_position":
-        old_value = config_content.split('module: "compliments",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-    elif characteristic_name == "weather_position":
-        old_value = config_content.split('module: "weather",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-    elif characteristic_name == "news_position":
-        old_value = config_content.split('module: "newsfeed",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
+def write_to_js_config(profile_index, characteristic_name, value):
+    # Read userId from userId.js
+    user_id = read_user_id()
+    if user_id and user_id.startswith("user"):
+        # Proceed with writing to the config file
+        config_path = os.path.expanduser(f"~/SmartMirror/configs/file{profile_index}.js")
+        
+        # Check if the config file exists
+        if not os.path.exists(config_path):
+            print(f"Config file {config_path} does not exist.")
+            return
+        
+        # Read the existing configuration content
+        with open(config_path, 'r') as file:
+            config_content = file.read()
+        
+        # Modify the configuration object based on the characteristic being written
+        new_config_content = config_content
+        if characteristic_name == "language":
+            old_value = config_content.split('language: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'language: "{old_value}"', f'language: "{value}"')
+        elif characteristic_name == "language_disable":
+            old_value = config_content.split('module: "language",')[1].split('disabled: ')[1].split(',')[0]
+            new_config_content = config_content.replace(f'disabled: {old_value}', f'disabled: {value}')
+        elif characteristic_name == "units":
+            old_value = config_content.split('units: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'units: "{old_value}"', f'units: "{value}"')
+        elif characteristic_name == "units_disable":
+            old_value = config_content.split('module: "units",')[1].split('disabled: ')[1].split(',')[0]
+            new_config_content = config_content.replace(f'disabled: {old_value}', f'disabled: {value}')
+        elif characteristic_name == "clock_position":
+            old_value = config_content.split('module: "clock",')[1].split('position: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
+        elif characteristic_name == "clock_disable":
+            old_value = config_content.split('module: "clock",')[1].split('disabled: ')[1].split(',')[0]
+            new_config_content = config_content.replace(f'disabled: {old_value}', f'disabled: {value}')
+        elif characteristic_name == "update_notification_position":
+            old_value = config_content.split('module: "updatenotification",')[1].split('position: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
+        elif characteristic_name == "update_notification_disable":
+            old_value = config_content.split('module: "updatenotification",')[1].split('disabled: ')[1].split(',')[0]
+            new_config_content = config_content.replace(f'disabled: {old_value}', f'disabled: {value}')
+        
+        # Write the modified configuration back to the JavaScript file
+        with open(config_path, 'w') as file:
+            file.write(new_config_content)
     else:
-        # Handle other characteristics similarly
-        return
+        print("Not writing to a file. User ID is not user-specific.")
 
     # Write the modified configuration back to the JavaScript file
     with open(config_path, 'w') as file:
@@ -89,18 +114,26 @@ def write_to_js_config(profile_index, characteristic_name, value):
         
 class UserProfileService(Service):
     USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"
-
+    
     def __init__(self, index):
         Service.__init__(self, index, self.USER_PROFILE_SVC_UUID, True)
         self.add_characteristic(ProfileIndexCharacteristic(self))
         self.add_characteristic(LanguageCharacteristic(self))
+        self.add_characteristic(LanguageDisableCharacteristic(self))
         self.add_characteristic(UnitsCharacteristic(self))
+        self.add_characteristic(UnitsDisableCharacteristic(self))
         self.add_characteristic(ClockPositionCharacteristic(self))
+        self.add_characteristic(ClockDisableCharacteristic(self))
         self.add_characteristic(UpdateNotificationPositionCharacteristic(self))
+        self.add_characteristic(UpdateNotificationDisableCharacteristic(self))
         self.add_characteristic(CalendarPositionCharacteristic(self))
+        self.add_characteristic(CalendarDisableCharacteristic(self))
         self.add_characteristic(ComplimentsPositionCharacteristic(self))
+        self.add_characteristic(ComplimentsDisableCharacteristic(self))
         self.add_characteristic(WeatherPositionCharacteristic(self))
+        self.add_characteristic(WeatherDisableCharacteristic(self))
         self.add_characteristic(NewsPositionCharacteristic(self))
+        self.add_characteristic(NewsDisableCharacteristic(self))
         print("UserProfileService initialized")
 
 class ProfileIndexCharacteristic(Characteristic):
@@ -144,9 +177,30 @@ class LanguageCharacteristic(Characteristic):
         self.language = int(value[0])
         print("Language written:", self.language)
         write_to_js_config(self.service.index, "language", languages[self.language])
+        
+class LanguageDisableCharacteristic(Characteristic):
+    LANGUAGE_DISABLE_UUID = "00000004-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, service):
+        Characteristic.__init__(
+            self, self.LANGUAGE_DISABLE_UUID,
+            ["read", "write"], service)
+        self.add_descriptor(LanguageDisableDescriptor(self))
+        self.disabled = 0
+        print("LanguageDisableCharacteristic initialized")
+
+    def ReadValue(self, options):
+        value = [dbus.Byte(self.disabled)]
+        print("Language disable read:", self.disabled)
+        return value
+
+    def WriteValue(self, value, options):
+        self.disabled = int(value[0])
+        print("Language disable written:", self.disabled)
+        write_to_js_config(self.service.index, "language_disable", self.disabled)
 
 class UnitsCharacteristic(Characteristic):
-    UNITS_UUID = "00000004-710e-4a5b-8d75-3e5b444bc3cf"
+    UNITS_UUID = "00000005-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -165,6 +219,27 @@ class UnitsCharacteristic(Characteristic):
         self.units = int(value[0])
         print("Units written:", self.units)
         write_to_js_config(self.service.index, "units", metricsys[self.units])
+        
+class UnitsDisableCharacteristic(Characteristic):
+    UNITS_DISABLE_UUID = "00000006-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, service):
+        Characteristic.__init__(
+            self, self.UNITS_DISABLE_UUID,
+            ["read", "write"], service)
+        self.add_descriptor(UnitsDisableDescriptor(self))
+        self.disabled = 0
+        print("UnitsDisableCharacteristic initialized")
+
+    def ReadValue(self, options):
+        value = [dbus.Byte(self.disabled)]
+        print("Units disable read:", self.disabled)
+        return value
+
+    def WriteValue(self, value, options):
+        self.disabled = int(value[0])
+        print("Units disable written:", self.disabled)
+        write_to_js_config(self.service.index, "units_disable", self.disabled)
 
 class ClockPositionCharacteristic(Characteristic):
     CLOCK_POSITION_UUID = "00000005-710e-4a5b-8d75-3e5b444bc3cf"
@@ -186,9 +261,30 @@ class ClockPositionCharacteristic(Characteristic):
         self.clock_position = int(value[0])
         print("Clock position written:", self.clock_position)
         write_to_js_config(self.service.index, "clock_position", positions[self.clock_position])
+        
+class ClockDisableCharacteristic(Characteristic):
+    CLOCK_DISABLE_UUID = "00000006-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, service):
+        Characteristic.__init__(
+            self, self.CLOCK_DISABLE_UUID,
+            ["read", "write"], service)
+        self.add_descriptor(ClockDisableDescriptor(self))
+        self.disabled = 0
+        print("ClockDisableCharacteristic initialized")
+
+    def ReadValue(self, options):
+        value = [dbus.Byte(self.disabled)]
+        print("Clock disable read:", self.disabled)
+        return value
+
+    def WriteValue(self, value, options):
+        self.disabled = int(value[0])
+        print("Clock disable written:", self.disabled)
+        write_to_js_config(self.service.index, "clock_disable", self.disabled)
 
 class UpdateNotificationPositionCharacteristic(Characteristic):
-    UPDATE_NOTIFICATION_POSITION_UUID = "00000006-710e-4a5b-8d75-3e5b444bc3cf"
+    UPDATE_NOTIFICATION_POSITION_UUID = "00000007-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -207,9 +303,30 @@ class UpdateNotificationPositionCharacteristic(Characteristic):
         self.update_notification_position = int(value[0])
         print("Update notification position written:", self.update_notification_position)
         write_to_js_config(self.service.index, "update_notification_position", positions[self.update_notification_position])
+        
+class UpdateNotificationDisableCharacteristic(Characteristic):
+    UPDATE_NOTIFICATION_DISABLE_UUID = "00000008-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, service):
+        Characteristic.__init__(
+            self, self.UPDATE_NOTIFICATION_DISABLE_UUID,
+            ["read", "write"], service)
+        self.add_descriptor(UpdateNotificationDisableDescriptor(self))
+        self.disabled = 0
+        print("UpdateNotificationDisableCharacteristic initialized")
+
+    def ReadValue(self, options):
+        value = [dbus.Byte(self.disabled)]
+        print("Update notification disable read:", self.disabled)
+        return value
+
+    def WriteValue(self, value, options):
+        self.disabled = int(value[0])
+        print("Update notification disable written:", self.disabled)
+        write_to_js_config(self.service.index, "update_notification_disable", self.disabled)
 
 class CalendarPositionCharacteristic(Characteristic):
-    CALENDAR_POSITION_UUID = "00000007-710e-4a5b-8d75-3e5b444bc3cf"
+    CALENDAR_POSITION_UUID = "00000009-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -228,9 +345,30 @@ class CalendarPositionCharacteristic(Characteristic):
         self.calendar_position = int(value[0])
         print("Calendar position written:", self.calendar_position)
         write_to_js_config(self.service.index, "calendar_position", positions[self.calendar_position])
+        
+class CalendarDisableCharacteristic(Characteristic):
+    CALENDAR_DISABLE_UUID = "0000000A-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, service):
+        Characteristic.__init__(
+            self, self.CALENDAR_DISABLE_UUID,
+            ["read", "write"], service)
+        self.add_descriptor(CalendarDisableDescriptor(self))
+        self.disabled = 0
+        print("CalendarDisableCharacteristic initialized")
+
+    def ReadValue(self, options):
+        value = [dbus.Byte(self.disabled)]
+        print("Calendar disable read:", self.disabled)
+        return value
+
+    def WriteValue(self, value, options):
+        self.disabled = int(value[0])
+        print("Calendar disable written:", self.disabled)
+        write_to_js_config(self.service.index, "calendar_disable", self.disabled)
 
 class ComplimentsPositionCharacteristic(Characteristic):
-    COMPLIMENTS_POSITION_UUID = "00000008-710e-4a5b-8d75-3e5b444bc3cf"
+    COMPLIMENTS_POSITION_UUID = "0000000B-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -249,9 +387,30 @@ class ComplimentsPositionCharacteristic(Characteristic):
         self.compliments_position = int(value[0])
         print("Compliments position written:", self.compliments_position)
         write_to_js_config(self.service.index, "compliments_position", positions[self.compliments_position])
+        
+class ComplimentsDisableCharacteristic(Characteristic):
+    COMPLIMENTS_DISABLE_UUID = "0000000C-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, service):
+        Characteristic.__init__(
+            self, self.COMPLIMENTS_DISABLE_UUID,
+            ["read", "write"], service)
+        self.add_descriptor(ComplimentsDisableDescriptor(self))
+        self.disabled = 0
+        print("ComplimentsDisableCharacteristic initialized")
+
+    def ReadValue(self, options):
+        value = [dbus.Byte(self.disabled)]
+        print("Compliments disable read:", self.disabled)
+        return value
+
+    def WriteValue(self, value, options):
+        self.disabled = int(value[0])
+        print("Compliments disable written:", self.disabled)
+        write_to_js_config(self.service.index, "compliments_disable", self.disabled)
 
 class WeatherPositionCharacteristic(Characteristic):
-    WEATHER_POSITION_UUID = "00000009-710e-4a5b-8d75-3e5b444bc3cf"
+    WEATHER_POSITION_UUID = "0000000D-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -270,9 +429,30 @@ class WeatherPositionCharacteristic(Characteristic):
         self.weather_position = int(value[0])
         print("Weather position written:", self.weather_position)
         write_to_js_config(self.service.index, "weather_position", positions[self.weather_position])
+        
+class WeatherDisableCharacteristic(Characteristic):
+    WEATHER_DISABLE_UUID = "0000000E-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, service):
+        Characteristic.__init__(
+            self, self.WEATHER_DISABLE_UUID,
+            ["read", "write"], service)
+        self.add_descriptor(WeatherDisableDescriptor(self))
+        self.disabled = 0
+        print("WeatherDisableCharacteristic initialized")
+
+    def ReadValue(self, options):
+        value = [dbus.Byte(self.disabled)]
+        print("Weather disable read:", self.disabled)
+        return value
+
+    def WriteValue(self, value, options):
+        self.disabled = int(value[0])
+        print("Weather disable written:", self.disabled)
+        write_to_js_config(self.service.index, "weather_disable", self.disabled)
 
 class NewsPositionCharacteristic(Characteristic):
-    NEWS_POSITION_UUID = "0000000A-710e-4a5b-8d75-3e5b444bc3cf"
+    NEWS_POSITION_UUID = "0000000F-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -291,6 +471,27 @@ class NewsPositionCharacteristic(Characteristic):
         self.news_position = int(value[0])
         print("News position written:", self.news_position)
         write_to_js_config(self.service.index, "news_position", positions[self.news_position])
+        
+class NewsDisableCharacteristic(Characteristic):
+    NEWS_DISABLE_UUID = "0000001F-710e-4a5b-8d75-3e5b444bc3cf"
+
+    def __init__(self, service):
+        Characteristic.__init__(
+            self, self.NEWS_DISABLE_UUID,
+            ["read", "write"], service)
+        self.add_descriptor(NewsDisableDescriptor(self))
+        self.disabled = 0
+        print("NewsDisableCharacteristic initialized")
+
+    def ReadValue(self, options):
+        value = [dbus.Byte(self.disabled)]
+        print("News disable read:", self.disabled)
+        return value
+
+    def WriteValue(self, value, options):
+        self.disabled = int(value[0])
+        print("News disable written:", self.disabled)
+        write_to_js_config(self.service.index, "news_disable", self.disabled)
 
 # Descriptors
 class UserProfileDescriptor(Descriptor):
@@ -346,6 +547,17 @@ class LanguageDescriptor(Descriptor):
             value.append(dbus.Byte(c.encode()))
 
         return value
+    
+class LanguageDisableDescriptor(Descriptor):
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Language Disable".encode()
+
+    def ReadValue(self, options):
+        return self.value
 
 class UnitsDescriptor(Descriptor):
     UNITS_DESCRIPTOR_UUID = "2904"
@@ -365,6 +577,17 @@ class UnitsDescriptor(Descriptor):
 
         return value
 
+class UnitsDisableDescriptor(Descriptor):
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Units Disable".encode()
+
+    def ReadValue(self, options):
+        return self.value
+
 class ClockPositionDescriptor(Descriptor):
     CLOCK_POSITION_DESCRIPTOR_UUID = "2905"
     CLOCK_POSITION_DESCRIPTOR_VALUE = "Clock Position Descriptor"
@@ -382,6 +605,17 @@ class ClockPositionDescriptor(Descriptor):
             value.append(dbus.Byte(c.encode()))
 
         return value
+    
+class ClockDisableDescriptor(Descriptor):
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Clock Disable".encode()
+
+    def ReadValue(self, options):
+        return self.value
 
 class UpdateNotificationPositionDescriptor(Descriptor):
     UPDATE_NOTIFICATION_POSITION_DESCRIPTOR_UUID = "2906"
@@ -401,6 +635,17 @@ class UpdateNotificationPositionDescriptor(Descriptor):
 
         return value
 
+class UpdateNotificationDisableDescriptor(Descriptor):
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Update Notification Disable".encode()
+
+    def ReadValue(self, options):
+        return self.value
+
 class CalendarPositionDescriptor(Descriptor):
     CALENDAR_POSITION_DESCRIPTOR_UUID = "2907"
     CALENDAR_POSITION_DESCRIPTOR_VALUE = "Calendar Position Descriptor"
@@ -419,6 +664,17 @@ class CalendarPositionDescriptor(Descriptor):
 
         return value
 
+class CalendarDisableDescriptor(Descriptor):
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Calendar Disable".encode()
+
+    def ReadValue(self, options):
+        return self.value
+
 class ComplimentsPositionDescriptor(Descriptor):
     COMPLIMENTS_POSITION_DESCRIPTOR_UUID = "2908"
     COMPLIMENTS_POSITION_DESCRIPTOR_VALUE = "Compliments Position Descriptor"
@@ -436,6 +692,17 @@ class ComplimentsPositionDescriptor(Descriptor):
             value.append(dbus.Byte(c.encode()))
 
         return value
+    
+class ComplimentsDisableDescriptor(Descriptor):
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Compliments Disable".encode()
+
+    def ReadValue(self, options):
+        return self.value
 
 class WeatherPositionDescriptor(Descriptor):
     WEATHER_POSITION_DESCRIPTOR_UUID = "2909"
@@ -454,6 +721,17 @@ class WeatherPositionDescriptor(Descriptor):
             value.append(dbus.Byte(c.encode()))
 
         return value
+    
+class WeatherDisableDescriptor(Descriptor):
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "Weather Disable".encode()
+
+    def ReadValue(self, options):
+        return self.value
 
 class NewsPositionDescriptor(Descriptor):
     NEWS_POSITION_DESCRIPTOR_UUID = "2910"
@@ -472,6 +750,17 @@ class NewsPositionDescriptor(Descriptor):
             value.append(dbus.Byte(c.encode()))
 
         return value
+    
+class NewsDisableDescriptor(Descriptor):
+    def __init__(self, characteristic):
+        Descriptor.__init__(
+            self, '2901',
+            ["read"],
+            characteristic)
+        self.value = "News Disable".encode()
+
+    def ReadValue(self, options):
+        return self.value
 
 class UserProfileAdvertisement(Advertisement):
     def __init__(self, index):
