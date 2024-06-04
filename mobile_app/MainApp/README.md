@@ -21,13 +21,10 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 I think the issue I'm seeing of disconnecting after about a minute can be attributed to the Lightblue app. Will wait to worry more about this until I see it happen on the pi.
 
 Next steps:
-- adjust UI for the actual characteristics we're using. put in new stuff for language and units (UI and context stuff)
-- reading from the device is working (at least with one module bar). as in getting the right value back. but sliders and dropdowns are not updating.
-- make some more of the connection process automatic. like getting system connected info. reduce the number of buttons and steps needed.
-   - the bonded > connected flow still works if you system connect in Lightblue.
-   - connecting while already connected seems to be fine. so doesn't matter if this gets called again
-   - can maybe do some refactoring with all this stuff when I add in the event handlers for the ble manager events.
-- clean up the pages in the app. new bages should be ??. unsure what the profile switching ointerface should be.
+- get read module stuff to config working + form state updating correctly. sliders and dropdowns not updating correctly for now.
+- [blocked] test reading and writing module info to the actual pi.
+- clean up the connectiion process. make it one button, instead of several. bascially just fix the appConnectFromBonded function in ble provider.
+- put in a UI page for messing with langauge and units.
 - make a draw.io block diagram of how this app works.
 - record a video of correct app operation.
 
@@ -36,6 +33,13 @@ maybe:
 - add event handeler for disconnect events in the ble manager.
 - maybe make a top right status menu/icon that shows connection status stuff. could also be a button that takes you to a dedicated status page.
 - if dropped connections are still a problem, could have something that polls the mirror every x seconds. as a keep connection alive type thing.
+
+# ----------
+
+To go from lightblue testing to raspi testing:
+- in bluetooth utils:
+-     change savedDeviceNames to comment out all but this device
+-     change moduleCharacteristicsHardCoded to the correct one
 
 # ----------
 
