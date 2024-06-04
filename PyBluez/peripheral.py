@@ -1,5 +1,6 @@
 import dbus
 import os
+import re
 from enum import Enum
 import signal
 import time
@@ -60,44 +61,67 @@ metricsys = [
 #           files are named user0.js, user1.js, user2.js, ...
 # --------------------------------------------------------------------------
 
+import os
+import re
+
+def read_user_id():
+    user_id_file_path = os.path.expanduser("~/SmartMirror/App/js/userId.js")
+    if os.path.exists(user_id_file_path):
+        with open(user_id_file_path, 'r') as file:
+            content = file.read()
+            match = re.search(r'exports.userId = "(.*?)"', content)
+            if match:
+                return match.group(1)
+    return None
+
 def write_to_js_config(profile_index, characteristic_name, value):
-    config_path = f"file{profile_index}.js"
-    # Read the existing configuration from the JavaScript file
-    with open(config_path, 'r') as file:
-        config_content = file.read()
-
-    # Modify the configuration object based on the characteristic being written
-    if characteristic_name == "language":
-        old_value = config_content.split('language: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'language: "{old_value}"', f'language: "{value}"')
-    elif characteristic_name == "units":
-        old_value = config_content.split('units: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'units: "{old_value}"', f'units: "{value}"')
-    elif characteristic_name == "clock_position":
-        old_value = config_content.split('module: "clock",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-    elif characteristic_name == "update_notification_position":
-        old_value = config_content.split('module: "updatenotification",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-    elif characteristic_name == "calendar_position":
-        old_value = config_content.split('module: "calendar",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-    elif characteristic_name == "compliments_position":
-        old_value = config_content.split('module: "compliments",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-    elif characteristic_name == "weather_position":
-        old_value = config_content.split('module: "weather",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-    elif characteristic_name == "news_position":
-        old_value = config_content.split('module: "newsfeed",')[1].split('position: "')[1].split('"')[0]
-        new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
+    # Read userId from userId.js
+    user_id = read_user_id()
+    if user_id and user_id.startswith("user"):
+        # Proceed with writing to the config file
+        config_path = f"file{profile_index}.js"
+        
+        # Check if the config file exists
+        if not os.path.exists(config_path):
+            print(f"Config file {config_path} does not exist.")
+            return
+        
+        # Read the existing configuration content
+        with open(config_path, 'r') as file:
+            config_content = file.read()
+        
+        # Modify the configuration object based on the characteristic being written
+        if characteristic_name == "language":
+            old_value = config_content.split('language: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'language: "{old_value}"', f'language: "{value}"')
+        elif characteristic_name == "units":
+            old_value = config_content.split('units: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'units: "{old_value}"', f'units: "{value}"')
+        elif characteristic_name == "clock_position":
+            old_value = config_content.split('module: "clock",')[1].split('position: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
+        elif characteristic_name == "update_notification_position":
+            old_value = config_content.split('module: "updatenotification",')[1].split('position: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
+        elif characteristic_name == "calendar_position":
+            old_value = config_content.split('module: "calendar",')[1].split('position: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
+        elif characteristic_name == "compliments_position":
+            old_value = config_content.split('module: "compliments",')[1].split('position: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
+        elif characteristic_name == "weather_position":
+            old_value = config_content.split('module: "weather",')[1].split('position: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
+        elif characteristic_name == "news_position":
+            old_value = config_content.split('module: "newsfeed",')[1].split('position: "')[1].split('"')[0]
+            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
+        
+        # Write the modified configuration back to the JavaScript file
+        with open(config_path, 'w') as file:
+            file.write(new_config_content)
     else:
-        # Handle other characteristics similarly
+        print("Not writing to a file. User ID is not user-specific.")
         return
-
-    # Write the modified configuration back to the JavaScript file
-    with open(config_path, 'w') as file:
-        file.write(new_config_content)
         
 class UserProfileService(Service):
     USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"
