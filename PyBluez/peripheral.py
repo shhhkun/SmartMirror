@@ -49,24 +49,6 @@ metricsys = [
     "metric", "imperial"
 ]
 
-<<<<<<< HEAD
-=======
-# --------------------------------------------------------------------------
-# implement reading from ~/SmartMirror/App/js/userId.js
-# read from first line to check for existence of "user#" pattern
-# if exists: 
-#           parse out # and that determines which config file to write to
-# if not:
-#           don't write to config file
-#
-# config file exists in ~/SmartMirror/App/config
-#           files are named user0.js, user1.js, user2.js, ...
-# --------------------------------------------------------------------------
-
-import os
-import re
-
->>>>>>> 7ff5e6846c4e51cd6d35c006beaf65eff2c33eab
 def read_user_id():
     user_id_file_path = os.path.expanduser("~/SmartMirror/App/js/userId.js")
     if os.path.exists(user_id_file_path):
@@ -82,11 +64,7 @@ def write_to_js_config(profile_index, characteristic_name, value):
     user_id = read_user_id()
     if user_id and user_id.startswith("user"):
         # Proceed with writing to the config file
-<<<<<<< HEAD
         config_path = os.path.expanduser(f"~/SmartMirror/configs/file{profile_index}.js")
-=======
-        config_path = f"file{profile_index}.js"
->>>>>>> 7ff5e6846c4e51cd6d35c006beaf65eff2c33eab
         
         # Check if the config file exists
         if not os.path.exists(config_path):
@@ -98,7 +76,6 @@ def write_to_js_config(profile_index, characteristic_name, value):
             config_content = file.read()
         
         # Modify the configuration object based on the characteristic being written
-<<<<<<< HEAD
         new_config_content = config_content
         if characteristic_name == "language":
             old_value = config_content.split('language: "')[1].split('"')[0]
@@ -124,46 +101,16 @@ def write_to_js_config(profile_index, characteristic_name, value):
         elif characteristic_name == "update_notification_disable":
             old_value = config_content.split('module: "updatenotification",')[1].split('disabled: ')[1].split(',')[0]
             new_config_content = config_content.replace(f'disabled: {old_value}', f'disabled: {value}')
-=======
-        if characteristic_name == "language":
-            old_value = config_content.split('language: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'language: "{old_value}"', f'language: "{value}"')
-        elif characteristic_name == "units":
-            old_value = config_content.split('units: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'units: "{old_value}"', f'units: "{value}"')
-        elif characteristic_name == "clock_position":
-            old_value = config_content.split('module: "clock",')[1].split('position: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-        elif characteristic_name == "update_notification_position":
-            old_value = config_content.split('module: "updatenotification",')[1].split('position: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-        elif characteristic_name == "calendar_position":
-            old_value = config_content.split('module: "calendar",')[1].split('position: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-        elif characteristic_name == "compliments_position":
-            old_value = config_content.split('module: "compliments",')[1].split('position: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-        elif characteristic_name == "weather_position":
-            old_value = config_content.split('module: "weather",')[1].split('position: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-        elif characteristic_name == "news_position":
-            old_value = config_content.split('module: "newsfeed",')[1].split('position: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
->>>>>>> 7ff5e6846c4e51cd6d35c006beaf65eff2c33eab
         
         # Write the modified configuration back to the JavaScript file
         with open(config_path, 'w') as file:
             file.write(new_config_content)
     else:
         print("Not writing to a file. User ID is not user-specific.")
-<<<<<<< HEAD
 
     # Write the modified configuration back to the JavaScript file
     with open(config_path, 'w') as file:
         file.write(new_config_content)
-=======
-        return
->>>>>>> 7ff5e6846c4e51cd6d35c006beaf65eff2c33eab
         
 class UserProfileService(Service):
     USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"
