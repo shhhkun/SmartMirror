@@ -49,6 +49,9 @@ metricsys = [
     "metric", "imperial"
 ]
 
+import os
+import re
+
 def read_user_id():
     user_id_file_path = os.path.expanduser("~/Desktop/SmartMirror/App/js/userId.js")
     if os.path.exists(user_id_file_path):
@@ -61,26 +64,34 @@ def read_user_id():
     return None
 
 def write_to_js_config(characteristic_name, key, value):
+    # Read user id
+    user_id = read_user_id()
+    if user_id:
+        config_file_path = os.path.expanduser(f"~/Desktop/SmartMirror/App/config/user{user_id}.js")
+    else:
+        print("User ID not found. Unable to determine config file path.")
+        return
+
+    # Read config content
+    with open(config_file_path, "r") as f:
+        config_content = f.read()
+
     if characteristic_name == "language":
-        config["language"] = value
         config_content = config_content.replace(f'language: "{config["language"]}"', f'language: "{value}"')
     elif characteristic_name == "units":
-        config["units"] = value
         config_content = config_content.replace(f'units: "{config["units"]}"', f'units: "{value}"')
     else:
         # Handle position and disabled attributes for modules
         for module in config["modules"]:
             if module.get("module") == characteristic_name:
                 if key == "position":
-                    module["position"] = value
                     config_content = config_content.replace(f'position: "{module["position"]}" // {characteristic_name} {key}', f'position: "{value}" // {characteristic_name} {key}')
                 elif key == "disabled":
-                    module["disabled"] = value
                     config_content = config_content.replace(f'disabled: {module["disabled"]} // {characteristic_name} {key}', f'disabled: {value} // {characteristic_name} {key}')
                 # Handle other attributes if needed
 
     # Write the updated config_content to the config file
-    with open("config.js", "w") as f:
+    with open(config_file_path, "w") as f:
         f.write(config_content)
         
 class UserProfileService(Service):
