@@ -2,17 +2,17 @@ import {
   createContext
 } from 'react';
 
-// not done yet.
 export interface SystemSettingsFullConfiguration {
-  // this will be specific to each user.
-};
+  language: string;
+  units: string;
+}
 
 export interface SingleModuleConfiguration {
   moduleInternalName: string;
   moduleDisplayName: string;
   moduleEnabled: boolean;
   modulePosition: string;
-};
+}
 
 export interface FullModuleConfiguration {
   // this is a dictionary of module names to their configurations. of the form:
@@ -26,12 +26,19 @@ export interface FullModuleConfiguration {
   // }
 
   [moduleName: string]: SingleModuleConfiguration;
-};
+}
 
-// not done yet. a way of holding multiple users configs.
+export interface FullSingleUserConfiguration {
+  // all of the specific settings for a single user.
+  usersSystemSettings: SystemSettingsFullConfiguration;
+  usersFullModuleConfiguration: FullModuleConfiguration;
+}
+
+// not using yet.
 export interface AllUsersFullConfigurations {
-  // some kind of dict that maps user IDs (names) to their full configurations.
-};
+  // some kind of dict that maps unique user ID strigns to their user configs.
+  [userId: string]: FullSingleUserConfiguration;
+}
 
 interface ModuleContextType {
   trueModuleConfiguration: FullModuleConfiguration;
@@ -48,9 +55,8 @@ interface ModuleContextType {
   resetConfigsToDefault: () => void;
   writeFullConfigToMirror: () => Promise<void>;
   readFullConfigFromMirror: () => Promise<void>;
-};
+}
 
-// new defaultModuleConfiguration for testing.
 const defaultModuleConfiguration: FullModuleConfiguration = {
   // not supporting changing alerts at the moment
   // alert: {
@@ -95,54 +101,6 @@ const defaultModuleConfiguration: FullModuleConfiguration = {
     moduleEnabled: true,
     modulePosition: 'top_left'
   }
-};
-
-// old defaultModuleConfiguration
-{
-  // const defaultModuleConfiguration: FullModuleConfiguration = {
-  //   alert: {
-  //     moduleInternalName: "alert",
-  //     moduleDisplayName: "Alerts",
-  //     moduleEnabled: false,
-  //     modulePosition: 'top_bar'
-  //   },
-  //   updatenotification: {
-  //     moduleInternalName: "updatenotification",
-  //     moduleDisplayName: "Notifications",
-  //     moduleEnabled: false,
-  //     modulePosition: 'top_left'
-  //   },
-  //   clock: {
-  //     moduleInternalName: "clock",
-  //     moduleDisplayName: "Clock",
-  //     moduleEnabled: true,
-  //     modulePosition: 'top_center'
-  //   },
-  //   calendar: {
-  //     moduleInternalName: "calendar",
-  //     moduleDisplayName: "Calendar",
-  //     moduleEnabled: false,
-  //     modulePosition: 'top_right'
-  //   },
-  //   compliments: {
-  //     moduleInternalName: "compliments",
-  //     moduleDisplayName: "Compliments",
-  //     moduleEnabled: true,
-  //     modulePosition: 'upper_third'
-  //   },
-  //   weather: {
-  //     moduleInternalName: "weather",
-  //     moduleDisplayName: "Weather",
-  //     moduleEnabled: true,
-  //     modulePosition: 'middle_center'
-  //   },
-  //   newsfeed: {
-  //     moduleInternalName: "newsfeed",
-  //     moduleDisplayName: "News",
-  //     moduleEnabled: true,
-  //     modulePosition: 'lower_third'
-  //   }
-  // };
 };
 
 export const defaultModuleContext: ModuleContextType = {

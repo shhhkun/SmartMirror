@@ -39,6 +39,14 @@ maybe:
 
 # ----------
 
+To go from lightblue testing to raspi testing:
+- in bluetooth utils:
+-     change savedDeviceNames to comment out all but this device
+-     change moduleCharacteristicsHardCoded to the correct one
+
+
+# ----------
+
 To run in Android Studio emulator on Erik's machine:
 
 run
