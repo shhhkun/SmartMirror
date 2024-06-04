@@ -5,6 +5,19 @@ from enum import Enum
 
 CONFIG_DIR = os.getcwd()
 
+# Define the Characteristic base class
+class Characteristic:
+    def __init__(self, uuid, properties, service):
+        self.uuid = uuid
+        self.properties = properties
+        self.service = service
+
+    def ReadValue(self, options):
+        pass
+
+    def WriteValue(self, value, options):
+        pass
+
 class Positions(Enum):
     TOP_BAR = 0
     TOP_LEFT = 1
