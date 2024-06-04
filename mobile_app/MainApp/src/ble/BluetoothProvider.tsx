@@ -47,7 +47,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     catch (error) {
       console.error('Error initializing BLE driver:', error);
     }
-  }
+  };
 
   const updateTargetsFromAppPeripheralInfo = (appConnectedPeripheralInfo:
     PeripheralInfo): void => {
@@ -56,7 +56,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       appConnectedPeripheralInfo);
 
     setTargetInfos(newTargetInfos);
-  }
+  };
 
   // populateCharacteristicsMap not implemented rn.
   {
@@ -74,7 +74,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const setTargetFieldsToDefault = (): void => {
     setTargetInfos(defaultBluetoothContext.targetInfos);
-  }
+  };
 
   const setSystemConnectedDeviceInfoToDefault = (): void => {
     setDeviceInfos(defaultBluetoothContext.deviceInfos);
@@ -85,7 +85,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     });
 
     setTargetFieldsToDefault();
-  }
+  };
 
   const setAppConnectedDeviceInfoToFailed = (): void => {
     // set app connected state to false
@@ -102,7 +102,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     });
 
     setTargetFieldsToDefault();
-  }
+  };
 
   const verifySystemDeviceConnected = async (): Promise<boolean> => {
     // make sure we have system device info saved
@@ -135,7 +135,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       console.error('Error checking if connected:', error);
       return false;
     }
-  }
+  };
 
   const appConnectToDevice = async (deviceID: string): Promise<void> => {
     try {
@@ -152,7 +152,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       setAppConnectedDeviceInfoToFailed();
       throw error;
     }
-  }
+  };
 
   const retrieveServicesFromConnectedDevice = async (
     deviceID: string): Promise<void> => {
@@ -179,7 +179,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       updateTargetsFromAppPeripheralInfo(peripheralRetrievedServicesInfo);
 
       // update the characteristics map. for module names and characteristic UUIDs
-      populateCharacteristicsMap(peripheralRetrievedServicesInfo);
+      // not using this rn.
+      // populateCharacteristicsMap(peripheralRetrievedServicesInfo);
 
     }
     catch (error) {
@@ -187,7 +188,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       setAppConnectedDeviceInfoToFailed();
       throw error;
     }
-  }
+  };
 
   const checkIfDeviceIsReadWritable = async (): Promise<boolean> => {
     // this function only returns a bool. doesn't throw errors.
@@ -239,7 +240,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     return true;
-  }
+  };
 
   // checkIfDeviceIsReadable not implemented. don't need it rn.
   {
@@ -297,7 +298,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
         bluetoothPermissionsOK: false
       });
     }
-  }
+  };
 
   const getBondedDevice = async (): Promise<void> => {
     // gets the list of bonded devices. and then populates bonded device info
@@ -330,7 +331,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     catch (error) {
       console.error('Error getting bonded devices from context provider:', error);
     }
-  }
+  };
 
   const connectToBondedDevice = async (): Promise<void> => {
 
@@ -351,7 +352,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     } catch (error) {
       console.error('Error connecting to bonded device in connectToBondedDevice:', error);
     }
-  }
+  };
 
   const getSystemConnectedDeviceInfo = async (): Promise<void> => {
     // checks for devices connected to the phone, which may or may not actually
@@ -400,7 +401,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setDeviceInfos(systemConnectedDeviceInfo);
     setTargetFieldsToDefault();
-  }
+  };
 
   const connectAndGetAppConnectedDeviceInfo = async (): Promise<void> => {
     // iniates the app-specific connection, retrieves services, and updates context
@@ -434,7 +435,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       throw error;
     }
 
-  }
+  };
 
   // haven't seen appConnectFromBonded work yet. not using rn.
   const appConnectFromBonded = async (): Promise<void> => {
@@ -449,7 +450,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       console.error('Error connecting from bonded:', error);
       throw error;
     }
-  }
+  };
 
   const readFromCharacteristic = async (): Promise<number[]> => {
     // returns a byte array
@@ -476,7 +477,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       console.error('Error reading from characteristic in provider:', error);
       throw error;
     }
-  }
+  };
 
   const readFromAnyCharacteristic = async (
     characteristicUUID: string): Promise<number[]> => {
@@ -506,7 +507,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
         ' in readFromAnyCharacteristic:', error);
       throw error;
     }
-  }
+  };
 
   const writeDataToCharacteristic = async (data: number): Promise<void> => {
     // not really using this function for now. using byte arrays from now on.
@@ -529,7 +530,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     } catch (error) {
       console.error('Error writing to char in writeDataToCharacteristic:', error);
     }
-  }
+  };
 
   const writeByteArrayToAnyCharacteristic = async (data: number[],
     characteristicUUID: string): Promise<void> => {
@@ -556,7 +557,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       console.error('Error writing to char in writeByteArrayToAnyCharacteristic:', error);
     }
 
-  }
+  };
 
 
 
