@@ -172,7 +172,9 @@ function loadConfiguration() {
     if (!existingUsers.includes(userId)) {
       console.log(`User ${userId} does not exist. Creating a new configuration file.`);
       existingUsers.push(userId);
-      fs.writeFileSync(path.join(__dirname, 'userId.js'), `exports.userId = "${userId}";\nexports.existingUsers = ${JSON.stringify(existingUsers)};`);
+      const numNewUsers = existingUsers.length - userIdModule.numUsers;
+      userIdModule.numUsers += numNewUsers;
+      fs.writeFileSync(path.join(__dirname, 'userId.js'), `exports.userId = "${userId}";\nexports.existingUsers = ${JSON.stringify(existingUsers)};\nexports.numUsers = ${userIdModule.numUsers};`);
       fs.copyFileSync(defaultUser, userConfigPath);
     }
 
