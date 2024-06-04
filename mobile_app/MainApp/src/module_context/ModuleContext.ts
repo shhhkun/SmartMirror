@@ -23,6 +23,9 @@ export interface FullModuleConfiguration {
   [moduleName: string]: SingleModuleConfiguration;
 };
 
+// might want a new attribute in the context for system settings. for language
+// and units.
+
 interface ModuleContextType {
   trueModuleConfiguration: FullModuleConfiguration;
   draftModuleConfiguration: FullModuleConfiguration;
