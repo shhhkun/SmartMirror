@@ -81,7 +81,7 @@ def write_to_js_config(characteristic_name, key, value):
         config_content = re.sub(r'units: ".*?"', f'units: "{value}"', config_content)
     elif characteristic_name in ["clock", "updatenotification", "calendar", "compliments", "weather", "news"]:
         if key == "position":
-            config_content = re.sub(rf'position: ".*?",( // {characteristic_name} position)', f'position: "{value}"\\1', config_content)
+            config_content = re.sub(rf'position: ".*?",( // {characteristic_name} position)', f'position: "{value}",\\1', config_content)
         elif key == "disabled":
             config_content = re.sub(rf'disabled: .*?( // {characteristic_name} disabled)', f'disabled: {value}\\1', config_content)
             
