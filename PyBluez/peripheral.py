@@ -61,6 +61,10 @@ def read_user_id():
     return None
 
 def write_to_js_config(profile_index, characteristic_name, value):
+    print(f"profile index: {profile_index}")
+    print(f"characteristic name: {characteristic_name}")
+    print(f"value: {value}")
+    
     # Read userId from userId.js
     user_id = read_user_id()
     if user_id and user_id.startswith("user"):
