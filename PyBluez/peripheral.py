@@ -50,7 +50,7 @@ metricsys = [
 ]
 
 def read_user_id():
-    user_id_file_path = os.path.expanduser("~/SmartMirror/App/js/userId.js")
+    user_id_file_path = os.path.expanduser("~/Desktop/SmartMirror/App/js/userId.js")
     if os.path.exists(user_id_file_path):
         with open(user_id_file_path, 'r') as file:
             content = file.read()
@@ -64,7 +64,7 @@ def write_to_js_config(profile_index, characteristic_name, value):
     user_id = read_user_id()
     if user_id and user_id.startswith("user"):
         # Proceed with writing to the config file
-        config_path = os.path.expanduser(f"~/SmartMirror/configs/file{profile_index}.js")
+        config_path = os.path.expanduser(f"~/Desktop/SmartMirror/configs/file{profile_index}.js")
         
         # Check if the config file exists
         if not os.path.exists(config_path):
