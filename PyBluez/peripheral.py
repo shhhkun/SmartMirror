@@ -48,6 +48,18 @@ metricsys = [
     "metric", "imperial"
 ]
 
+# --------------------------------------------------------------------------
+# implement reading from ~/SmartMirror/App/js/userId.js
+# read from first line to check for existence of "user#" pattern
+# if exists: 
+#           parse out # and that determines which config file to write to
+# if not:
+#           don't write to config file
+#
+# config file exists in ~/SmartMirror/App/config
+#           files are named user0.js, user1.js, user2.js, ...
+# --------------------------------------------------------------------------
+
 def write_to_js_config(profile_index, characteristic_name, value):
     config_path = f"file{profile_index}.js"
     # Read the existing configuration from the JavaScript file
