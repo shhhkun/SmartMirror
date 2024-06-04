@@ -242,7 +242,7 @@ class UnitsDisableCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "units_disable", self.disabled)
 
 class ClockPositionCharacteristic(Characteristic):
-    CLOCK_POSITION_UUID = "00000005-710e-4a5b-8d75-3e5b444bc3cf"
+    CLOCK_POSITION_UUID = "00000007-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -263,7 +263,7 @@ class ClockPositionCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "clock_position", positions[self.clock_position])
         
 class ClockDisableCharacteristic(Characteristic):
-    CLOCK_DISABLE_UUID = "00000006-710e-4a5b-8d75-3e5b444bc3cf"
+    CLOCK_DISABLE_UUID = "00000008-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -284,7 +284,7 @@ class ClockDisableCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "clock_disable", self.disabled)
 
 class UpdateNotificationPositionCharacteristic(Characteristic):
-    UPDATE_NOTIFICATION_POSITION_UUID = "00000007-710e-4a5b-8d75-3e5b444bc3cf"
+    UPDATE_NOTIFICATION_POSITION_UUID = "00000009-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -305,7 +305,7 @@ class UpdateNotificationPositionCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "update_notification_position", positions[self.update_notification_position])
         
 class UpdateNotificationDisableCharacteristic(Characteristic):
-    UPDATE_NOTIFICATION_DISABLE_UUID = "00000008-710e-4a5b-8d75-3e5b444bc3cf"
+    UPDATE_NOTIFICATION_DISABLE_UUID = "0000000A-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -326,7 +326,7 @@ class UpdateNotificationDisableCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "update_notification_disable", self.disabled)
 
 class CalendarPositionCharacteristic(Characteristic):
-    CALENDAR_POSITION_UUID = "00000009-710e-4a5b-8d75-3e5b444bc3cf"
+    CALENDAR_POSITION_UUID = "0000000B-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -347,7 +347,7 @@ class CalendarPositionCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "calendar_position", positions[self.calendar_position])
         
 class CalendarDisableCharacteristic(Characteristic):
-    CALENDAR_DISABLE_UUID = "0000000A-710e-4a5b-8d75-3e5b444bc3cf"
+    CALENDAR_DISABLE_UUID = "0000000C-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -368,7 +368,7 @@ class CalendarDisableCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "calendar_disable", self.disabled)
 
 class ComplimentsPositionCharacteristic(Characteristic):
-    COMPLIMENTS_POSITION_UUID = "0000000B-710e-4a5b-8d75-3e5b444bc3cf"
+    COMPLIMENTS_POSITION_UUID = "0000000D-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -389,7 +389,7 @@ class ComplimentsPositionCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "compliments_position", positions[self.compliments_position])
         
 class ComplimentsDisableCharacteristic(Characteristic):
-    COMPLIMENTS_DISABLE_UUID = "0000000C-710e-4a5b-8d75-3e5b444bc3cf"
+    COMPLIMENTS_DISABLE_UUID = "0000000E-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -410,7 +410,7 @@ class ComplimentsDisableCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "compliments_disable", self.disabled)
 
 class WeatherPositionCharacteristic(Characteristic):
-    WEATHER_POSITION_UUID = "0000000D-710e-4a5b-8d75-3e5b444bc3cf"
+    WEATHER_POSITION_UUID = "0000000F-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -431,7 +431,7 @@ class WeatherPositionCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "weather_position", positions[self.weather_position])
         
 class WeatherDisableCharacteristic(Characteristic):
-    WEATHER_DISABLE_UUID = "0000000E-710e-4a5b-8d75-3e5b444bc3cf"
+    WEATHER_DISABLE_UUID = "0000001F-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -452,7 +452,7 @@ class WeatherDisableCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "weather_disable", self.disabled)
 
 class NewsPositionCharacteristic(Characteristic):
-    NEWS_POSITION_UUID = "0000000F-710e-4a5b-8d75-3e5b444bc3cf"
+    NEWS_POSITION_UUID = "0000002F-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(
@@ -473,7 +473,7 @@ class NewsPositionCharacteristic(Characteristic):
         write_to_js_config(self.service.index, "news_position", positions[self.news_position])
         
 class NewsDisableCharacteristic(Characteristic):
-    NEWS_DISABLE_UUID = "0000001F-710e-4a5b-8d75-3e5b444bc3cf"
+    NEWS_DISABLE_UUID = "0000003F-710e-4a5b-8d75-3e5b444bc3cf"
 
     def __init__(self, service):
         Characteristic.__init__(

@@ -20,7 +20,7 @@ run python script natively on pi
 
 # config file (configurable items via UID):
 
-**USER ID:**
+**PROFILE INDEX:**
 
     > desc: user profile index
     > UID: 00000002-710e-4a5b-8d75-3e5b444bc3cf
@@ -33,64 +33,72 @@ run python script natively on pi
     > UID: 00000003-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > languages[integer] = "en", ...
+    > DISABLE UID: 00000004-710e-4a5b-8d75-3e5b444bc3cf
 
 **UNITS:**
 
     > desc: unit system used
-    > UID: 00000004-710e-4a5b-8d75-3e5b444bc3cf
+    > UID: 00000005-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > unitsys[integer] = "metric", ...
+    > DISABLE UID: 00000006-710e-4a5b-8d75-3e5b444bc3cf
 
 **CLOCK (POSITION):**
 
     > desc: clock position on monitor
-    > UID: 00000005-710e-4a5b-8d75-3e5b444bc3cf
-    > accepts integer = 0, 1, 2, ...
-    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
-                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
-                          "fullscreen_above", "fullscreen_below"
-
-**UPDATE NOTIFICATION (POSITION):**
-
-    > desc: notifications position on monitor
-    > UID: 00000006-710e-4a5b-8d75-3e5b444bc3cf
-    > accepts integer = 0, 1, 2, ...
-    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
-                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
-                          "fullscreen_above", "fullscreen_below"
-
-**CALENDAR (POSITION):**
-
-    > desc: calendar position on monitor
     > UID: 00000007-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
                           "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
                           "fullscreen_above", "fullscreen_below"
+    > DISABLE UID: 00000008-710e-4a5b-8d75-3e5b444bc3cf
 
-**COMPLIMENTS (POSITION):**
+**UPDATE NOTIFICATION (POSITION):**
 
-    > desc: compliments position on monitor
-    > UID: 00000008-710e-4a5b-8d75-3e5b444bc3cf
-    > accepts integer = 0, 1, 2, ...
-    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
-                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
-                          "fullscreen_above", "fullscreen_below"
-
-**WEATHER (POSITION):**
-
-    > desc: weather position on monitor
+    > desc: notifications position on monitor
     > UID: 00000009-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
                           "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
                           "fullscreen_above", "fullscreen_below"
+    > DISABLE UID: 0000000A-710e-4a5b-8d75-3e5b444bc3cf
 
-**NEWS (POSITION):**
+**CALENDAR (POSITION):**
 
-    > desc: news position on monitor
-    > UID: 00000010-710e-4a5b-8d75-3e5b444bc3cf
+    > desc: calendar position on monitor
+    > UID: 0000000B-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
                           "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
                           "fullscreen_above", "fullscreen_below"
+    > DISABLE UID: 0000000C-710e-4a5b-8d75-3e5b444bc3cf
+
+**COMPLIMENTS (POSITION):**
+
+    > desc: compliments position on monitor
+    > UID: 0000000D-710e-4a5b-8d75-3e5b444bc3cf
+    > accepts integer = 0, 1, 2, ...
+    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
+                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
+                          "fullscreen_above", "fullscreen_below"
+    > DISABLE UID: 0000000E-710e-4a5b-8d75-3e5b444bc3cf
+
+**WEATHER (POSITION):**
+
+    > desc: weather position on monitor
+    > UID: 0000000F-710e-4a5b-8d75-3e5b444bc3cf
+    > accepts integer = 0, 1, 2, ...
+    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
+                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
+                          "fullscreen_above", "fullscreen_below"
+    > DISABLE UID: 0000001F-710e-4a5b-8d75-3e5b444bc3cf
+
+**NEWS (POSITION):**
+
+    > desc: news position on monitor
+    > UID: 0000002F-710e-4a5b-8d75-3e5b444bc3cf
+    > accepts integer = 0, 1, 2, ...
+    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
+                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
+                          "fullscreen_above", "fullscreen_below"
+    > DISABLE UID: 0000003F-710e-4a5b-8d75-3e5b444bc3cf
