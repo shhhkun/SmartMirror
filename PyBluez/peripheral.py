@@ -60,42 +60,28 @@ def read_user_id():
                 return match.group(1)
     return None
 
-def write_to_js_config(characteristic_name, value):
-    print(f"characteristic name: {characteristic_name}")
-    print(f"value: {value}")
-    
-    # Read userId from userId.js
-    user_id = read_user_id()
-    if user_id and user_id.startswith("user"):
-        # Proceed with writing to the config file
-        config_path = os.path.expanduser(f"~/Desktop/SmartMirror/App/config/{user_id}.js")
-        
-        # Check if the config file exists
-        if not os.path.exists(config_path):
-            print(f"Config file {config_path} does not exist.")
-            return
-        
-        # Read the existing configuration content
-        with open(config_path, 'r') as file:
-            config_content = file.readlines()
-        
-        # Modify the configuration object based on the characteristic being written
-        new_config_content = []
-        for line in config_content:
-            # Check if the line contains the module and characteristic being modified
-            if characteristic_name in line:
-                # Update the value if the line corresponds to the characteristic
-                if f'module: "{characteristic_name}",' in line:
-                    # Update the line with the new value
-                    line = line.replace(line.split(":")[1].strip(), f'"{value}"')
-            # Append the line to the new configuration content
-            new_config_content.append(line)
-        
-        # Write the modified configuration back to the JavaScript file
-        with open(config_path, 'w') as file:
-            file.writelines(new_config_content)
+def write_to_js_config(characteristic_name, key, value):
+    if characteristic_name == "language":
+        config["language"] = value
+        config_content = config_content.replace(f'language: "{config["language"]}"', f'language: "{value}"')
+    elif characteristic_name == "units":
+        config["units"] = value
+        config_content = config_content.replace(f'units: "{config["units"]}"', f'units: "{value}"')
     else:
-        print("Not writing to a file. User ID is not user-specific.")
+        # Handle position and disabled attributes for modules
+        for module in config["modules"]:
+            if module.get("module") == characteristic_name:
+                if key == "position":
+                    module["position"] = value
+                    config_content = config_content.replace(f'position: "{module["position"]}" // {characteristic_name} {key}', f'position: "{value}" // {characteristic_name} {key}')
+                elif key == "disabled":
+                    module["disabled"] = value
+                    config_content = config_content.replace(f'disabled: {module["disabled"]} // {characteristic_name} {key}', f'disabled: {value} // {characteristic_name} {key}')
+                # Handle other attributes if needed
+
+    # Write the updated config_content to the config file
+    with open("config.js", "w") as f:
+        f.write(config_content)
         
 class UserProfileService(Service):
     USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"
@@ -104,9 +90,7 @@ class UserProfileService(Service):
         Service.__init__(self, index, self.USER_PROFILE_SVC_UUID, True)
         self.add_characteristic(ProfileIndexCharacteristic(self))
         self.add_characteristic(LanguageCharacteristic(self))
-        #self.add_characteristic(LanguageDisableCharacteristic(self))
         self.add_characteristic(UnitsCharacteristic(self))
-        #self.add_characteristic(UnitsDisableCharacteristic(self))
         self.add_characteristic(ClockPositionCharacteristic(self))
         self.add_characteristic(ClockDisableCharacteristic(self))
         self.add_characteristic(UpdateNotificationPositionCharacteristic(self))
@@ -161,7 +145,7 @@ class LanguageCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.language = int(value[0])
         print("Language written:", self.language)
-        write_to_js_config("language", languages[self.language])
+        write_to_js_config("language", "", languages[self.language])
 
 class UnitsCharacteristic(Characteristic):
     UNITS_UUID = "00000005-710e-4a5b-8d75-3e5b444bc3cf"
@@ -182,7 +166,7 @@ class UnitsCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.units = int(value[0])
         print("Units written:", self.units)
-        write_to_js_config("units", metricsys[self.units])
+        write_to_js_config("units", "", metricsys[self.units])
 
 class ClockPositionCharacteristic(Characteristic):
     CLOCK_POSITION_UUID = "00000007-710e-4a5b-8d75-3e5b444bc3cf"
@@ -203,7 +187,7 @@ class ClockPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.clock_position = int(value[0])
         print("Clock position written:", self.clock_position)
-        write_to_js_config("clock_position", positions[self.clock_position])
+        write_to_js_config("clock", "position", positions[self.clock_position])
         
 class ClockDisableCharacteristic(Characteristic):
     CLOCK_DISABLE_UUID = "00000008-710e-4a5b-8d75-3e5b444bc3cf"
@@ -226,7 +210,7 @@ class ClockDisableCharacteristic(Characteristic):
         print("Clock disable written:", self.disabled)
         print("Writing value:", value)
         print("Self disabled:", self.disabled)
-        write_to_js_config("clock_disable", self.disabled)
+        write_to_js_config("clock", "disabled", self.disabled)
 
 class UpdateNotificationPositionCharacteristic(Characteristic):
     UPDATE_NOTIFICATION_POSITION_UUID = "00000009-710e-4a5b-8d75-3e5b444bc3cf"
@@ -247,7 +231,7 @@ class UpdateNotificationPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.update_notification_position = int(value[0])
         print("Update notification position written:", self.update_notification_position)
-        write_to_js_config("update_notification_position", positions[self.update_notification_position])
+        write_to_js_config("updatenotification", "position", positions[self.update_notification_position])
         
 class UpdateNotificationDisableCharacteristic(Characteristic):
     UPDATE_NOTIFICATION_DISABLE_UUID = "0000000A-710e-4a5b-8d75-3e5b444bc3cf"
@@ -268,7 +252,7 @@ class UpdateNotificationDisableCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.disabled = int(value[0])
         print("Update notification disable written:", self.disabled)
-        write_to_js_config("update_notification_disable", self.disabled)
+        write_to_js_config("updatenotification", "disabled", self.disabled)
 
 class CalendarPositionCharacteristic(Characteristic):
     CALENDAR_POSITION_UUID = "0000000B-710e-4a5b-8d75-3e5b444bc3cf"
@@ -289,7 +273,7 @@ class CalendarPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.calendar_position = int(value[0])
         print("Calendar position written:", self.calendar_position)
-        write_to_js_config("calendar_position", positions[self.calendar_position])
+        write_to_js_config("calendar", "position", positions[self.calendar_position])
         
 class CalendarDisableCharacteristic(Characteristic):
     CALENDAR_DISABLE_UUID = "0000000C-710e-4a5b-8d75-3e5b444bc3cf"
@@ -310,7 +294,7 @@ class CalendarDisableCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.disabled = int(value[0])
         print("Calendar disable written:", self.disabled)
-        write_to_js_config("calendar_disable", self.disabled)
+        write_to_js_config("calendar", "disabled", self.disabled)
 
 class ComplimentsPositionCharacteristic(Characteristic):
     COMPLIMENTS_POSITION_UUID = "0000000D-710e-4a5b-8d75-3e5b444bc3cf"
@@ -331,7 +315,7 @@ class ComplimentsPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.compliments_position = int(value[0])
         print("Compliments position written:", self.compliments_position)
-        write_to_js_config("compliments_position", positions[self.compliments_position])
+        write_to_js_config("compliments", "position", positions[self.compliments_position])
         
 class ComplimentsDisableCharacteristic(Characteristic):
     COMPLIMENTS_DISABLE_UUID = "0000000E-710e-4a5b-8d75-3e5b444bc3cf"
@@ -352,7 +336,7 @@ class ComplimentsDisableCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.disabled = int(value[0])
         print("Compliments disable written:", self.disabled)
-        write_to_js_config("compliments_disable", self.disabled)
+        write_to_js_config("compliments", "disabled", self.disabled)
 
 class WeatherPositionCharacteristic(Characteristic):
     WEATHER_POSITION_UUID = "0000000F-710e-4a5b-8d75-3e5b444bc3cf"
@@ -373,7 +357,7 @@ class WeatherPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.weather_position = int(value[0])
         print("Weather position written:", self.weather_position)
-        write_to_js_config("weather_position", positions[self.weather_position])
+        write_to_js_config("weather", "position", positions[self.weather_position])
         
 class WeatherDisableCharacteristic(Characteristic):
     WEATHER_DISABLE_UUID = "0000001F-710e-4a5b-8d75-3e5b444bc3cf"
@@ -394,7 +378,7 @@ class WeatherDisableCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.disabled = int(value[0])
         print("Weather disable written:", self.disabled)
-        write_to_js_config("weather_disable", self.disabled)
+        write_to_js_config("weather" "disabled", self.disabled)
 
 class NewsPositionCharacteristic(Characteristic):
     NEWS_POSITION_UUID = "0000002F-710e-4a5b-8d75-3e5b444bc3cf"
@@ -415,7 +399,7 @@ class NewsPositionCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.news_position = int(value[0])
         print("News position written:", self.news_position)
-        write_to_js_config("news_position", positions[self.news_position])
+        write_to_js_config("news", "position", positions[self.news_position])
         
 class NewsDisableCharacteristic(Characteristic):
     NEWS_DISABLE_UUID = "0000003F-710e-4a5b-8d75-3e5b444bc3cf"
@@ -436,7 +420,7 @@ class NewsDisableCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         self.disabled = int(value[0])
         print("News disable written:", self.disabled)
-        write_to_js_config("news_disable", self.disabled)
+        write_to_js_config("news", "disabled", self.disabled)
 
 # Descriptors
 class UserProfileDescriptor(Descriptor):
