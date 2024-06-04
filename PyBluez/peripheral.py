@@ -64,7 +64,7 @@ def write_to_js_config(profile_index, characteristic_name, value):
     user_id = read_user_id()
     if user_id and user_id.startswith("user"):
         # Proceed with writing to the config file
-        config_path = os.path.expanduser(f"~/Desktop/SmartMirror/configs/file{profile_index}.js")
+        config_path = os.path.expanduser(f"~/Desktop/SmartMirror/App/config/user{profile_index}.js")
         
         # Check if the config file exists
         if not os.path.exists(config_path):
