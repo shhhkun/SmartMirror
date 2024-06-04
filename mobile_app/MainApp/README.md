@@ -4,9 +4,6 @@ Uses react-native-ble-manager for BLE functionality.
 Docs for this bluetooth manager library:
 http://innoveit.github.io/react-native-ble-manager/methods/#startoptions
 
-Example project to refer to for getting bonded devices:
-https://blog.logrocket.com/using-react-native-ble-manager-mobile-app/
-
 # ----------
 
 Description of functionality:
@@ -30,13 +27,15 @@ Next steps:
    - the bonded > connected flow still works if you system connect in Lightblue.
    - connecting while already connected seems to be fine. so doesn't matter if this gets called again
    - can maybe do some refactoring with all this stuff when I add in the event handlers for the ble manager events.
-- add event handeler for disconnect events in the ble manager.
-- maybe make a top right status menu/icon that shows connection status stuff. could also be a button that takes you to a dedicated status page.
-- if dropped connections are still a problem, could have something that polls the mirror every x seconds. as a keep connection alive type thing.
+- clean up the pages in the app. new bages should be ??. unsure what the profile switching ointerface should be.
 - make a draw.io block diagram of how this app works.
+- record a video of correct app operation.
 
 maybe:
 - persist a user's config to disk
+- add event handeler for disconnect events in the ble manager.
+- maybe make a top right status menu/icon that shows connection status stuff. could also be a button that takes you to a dedicated status page.
+- if dropped connections are still a problem, could have something that polls the mirror every x seconds. as a keep connection alive type thing.
 
 # ----------
 
@@ -74,4 +73,4 @@ Future enhancements not implemented in protoype, but for the final sellable prod
 - A way for the user to authenticate for their apps. Like have this app make a call to a web server of ours, that server goes and gets a token for some site, gives us the token, and we pass that token along with BLE to the Raspi.
 - iOS compatability. Permission stuff doesn't work at the moment. Theoretically, most of it should work. Except for the getBondedPeripherals() method in the library. But I doubt the flow of bonded > system connected > connected that kind of happens in this app right now would be the same on iOS. And the connect() function in the library doesn't time out on iOS, so would need a timer here.
 - Discoverability of characteristics. Instead of having them hard coded. Maybe have one characteristic that is fixed or gets discovered via its position or description. And then that is read-only and cha display some kind of array/map of the other characteristics and their associated modules.
-- Add support for multiple users, maybe with a login function in the app.
+- Add support for multiple users, maybe with a login function in the app. And a web server to store data.

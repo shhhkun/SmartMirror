@@ -117,29 +117,29 @@ export const moduleCharacteristicsHardCoded: any = {
   // },
 
   "Clock": {
-    // "enable": "0004",
-    "position": "00000005-710e-4a5b-8d75-3e5b444bc3cf"
-  },
-  "Notifications": {
-    // "enable": "0006",
-    "position": "00000006-710e-4a5b-8d75-3e5b444bc3cf"
-  },
-  "Calendar": {
-    // "enable": "0008",
+    "enable": "00000008-710e-4a5b-8d75-3e5b444bc3cf",
     "position": "00000007-710e-4a5b-8d75-3e5b444bc3cf"
   },
-  "Compliments": {
-    // "enable": "0010",
-    "position": "00000008-710e-4a5b-8d75-3e5b444bc3cf"
-  },
-  "Weather": {
-    // "enable": "0012",
+  "Notifications": {
+    "enable": "0000000A-710e-4a5b-8d75-3e5b444bc3cf",
     "position": "00000009-710e-4a5b-8d75-3e5b444bc3cf"
   },
+  "Calendar": {
+    "enable": "0000000C-710e-4a5b-8d75-3e5b444bc3cf",
+    "position": "0000000B-710e-4a5b-8d75-3e5b444bc3cf"
+  },
+  "Compliments": {
+    "enable": "0000000E-710e-4a5b-8d75-3e5b444bc3cf",
+    "position": "0000000D-710e-4a5b-8d75-3e5b444bc3cf"
+  },
+  "Weather": {
+    "enable": "0000001F-710e-4a5b-8d75-3e5b444bc3cf",
+    "position": "0000000F-710e-4a5b-8d75-3e5b444bc3cf"
+  },
   "News": {
-    // "enable": "0014",
-    "position": "00000010-710e-4a5b-8d75-3e5b444bc3cf"
-  }
+    "enable": "0000003F-710e-4a5b-8d75-3e5b444bc3cf",
+    "position": "0000002F-710e-4a5b-8d75-3e5b444bc3cf"
+  },
 }
 
 // module characteristics for when testing in Erik's lightblue

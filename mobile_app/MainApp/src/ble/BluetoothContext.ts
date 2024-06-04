@@ -63,6 +63,8 @@ export interface TargetInfos {
   // retrieveServices again to get the rest of the characteristics.
 }
 
+// not actually using the characteristics map for now. would be used if we
+// weren't hard-coding what characteristics correspond to what modules.
 export interface CharacteristicsMap {
   // a map structure where keys are module names (or module name - attribute)
   // as strings, and values are the characteristic UUIDs as strings.
