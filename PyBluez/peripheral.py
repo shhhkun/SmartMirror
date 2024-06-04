@@ -77,32 +77,23 @@ def write_to_js_config(characteristic_name, value):
         
         # Read the existing configuration content
         with open(config_path, 'r') as file:
-            config_content = file.read()
+            config_content = file.readlines()
         
         # Modify the configuration object based on the characteristic being written
-        new_config_content = config_content
-        if characteristic_name == "language":
-            old_value = config_content.split('language: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'language: "{old_value}"', f'language: "{value}"')
-        elif characteristic_name == "units":
-            old_value = config_content.split('units: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'units: "{old_value}"', f'units: "{value}"')
-        elif characteristic_name == "clock_position":
-            old_value = config_content.split('module: "clock",')[1].split('position: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-        elif characteristic_name == "clock_disable":
-            old_value = config_content.split('module: "clock",')[1].split('disabled: ')[1].split(',')[0]
-            new_config_content = config_content.replace(f'disabled: {old_value}', f'disabled: {value}')
-        elif characteristic_name == "update_notification_position":
-            old_value = config_content.split('module: "updatenotification",')[1].split('position: "')[1].split('"')[0]
-            new_config_content = config_content.replace(f'position: "{old_value}"', f'position: "{value}"')
-        elif characteristic_name == "update_notification_disable":
-            old_value = config_content.split('module: "updatenotification",')[1].split('disabled: ')[1].split(',')[0]
-            new_config_content = config_content.replace(f'disabled: {old_value}', f'disabled: {value}')
+        new_config_content = []
+        for line in config_content:
+            # Check if the line contains the module and characteristic being modified
+            if characteristic_name in line:
+                # Update the value if the line corresponds to the characteristic
+                if f'module: "{characteristic_name}",' in line:
+                    # Update the line with the new value
+                    line = line.replace(line.split(":")[1].strip(), f'"{value}"')
+            # Append the line to the new configuration content
+            new_config_content.append(line)
         
         # Write the modified configuration back to the JavaScript file
         with open(config_path, 'w') as file:
-            file.write(new_config_content)
+            file.writelines(new_config_content)
     else:
         print("Not writing to a file. User ID is not user-specific.")
         
