@@ -49,9 +49,6 @@ metricsys = [
     "metric", "imperial"
 ]
 
-import os
-import re
-
 def read_user_id():
     user_id_file_path = os.path.expanduser("~/Desktop/SmartMirror/App/js/userId.js")
     if os.path.exists(user_id_file_path):
@@ -64,31 +61,39 @@ def read_user_id():
     return None
 
 def write_to_js_config(characteristic_name, key, value):
-    # Read user id
+    # Read current user id
     user_id = read_user_id()
-    if user_id:
-        config_file_path = os.path.expanduser(f"~/Desktop/SmartMirror/App/config/user{user_id}.js")
-    else:
-        print("User ID not found. Unable to determine config file path.")
+    if user_id is None:
         return
 
-    # Read config content
-    with open(config_file_path, "r") as f:
-        config_content = f.read()
+    # Define file path
+    file_path = f"~/Desktop/SmartMirror/App/config/user{user_id}.js"
+    file_path = os.path.expanduser(file_path)
 
+    # Read content from file
+    with open(file_path, 'r') as file:
+        config_content = file.read()
+
+    # Update config based on characteristic_name and key
     if characteristic_name == "language":
-        config_content = config_content.replace(f'language: "{config["language"]}"', f'language: "{value}"')
+        config_content = re.sub(r'language: ".*?"', f'language: "{value}"', config_content)
     elif characteristic_name == "units":
-        config_content = config_content.replace(f'units: "{config["units"]}"', f'units: "{value}"')
+        config_content = re.sub(r'units: ".*?"', f'units: "{value}"', config_content)
     elif characteristic_name in ["clock", "updatenotification", "calendar", "compliments", "weather", "news"]:
         if key == "position":
-            config_content = config_content.replace(f'position: "{module["position"]}" // {characteristic_name} {key}', f'position: "{value}" // {characteristic_name} {key}')
+            config_content = re.sub(rf'position: ".*?" // {characteristic_name} position', f'position: "{value}" // {characteristic_name} position', config_content)
         elif key == "disabled":
-            config_content = config_content.replace(f'disabled: {module["disabled"]} // {characteristic_name} {key}', f'disabled: {value} // {characteristic_name} {key}')
+            config_content = re.sub(rf'disabled: \d // {characteristic_name} disable', f'disabled: {value} // {characteristic_name} disable', config_content)
 
-    # Write the updated config_content to the config file
-    with open(config_file_path, "w") as f:
-        f.write(config_content)
+    # Write updated content back to file
+    with open(file_path, 'w') as file:
+        file.write(config_content)
+
+# Example calls to the function
+write_to_js_config("clock", "position", "top_right")
+write_to_js_config("units", "units", "imperial")
+write_to_js_config("language", "language", "fr")
+
         
 class UserProfileService(Service):
     USER_PROFILE_SVC_UUID = "00000001-710e-4a5b-8d75-3e5b444bc3cf"
