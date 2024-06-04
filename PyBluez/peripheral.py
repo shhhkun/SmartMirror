@@ -80,15 +80,11 @@ def write_to_js_config(characteristic_name, key, value):
         config_content = config_content.replace(f'language: "{config["language"]}"', f'language: "{value}"')
     elif characteristic_name == "units":
         config_content = config_content.replace(f'units: "{config["units"]}"', f'units: "{value}"')
-    else:
-        # Handle position and disabled attributes for modules
-        for module in config["modules"]:
-            if module.get("module") == characteristic_name:
-                if key == "position":
-                    config_content = config_content.replace(f'position: "{module["position"]}" // {characteristic_name} {key}', f'position: "{value}" // {characteristic_name} {key}')
-                elif key == "disabled":
-                    config_content = config_content.replace(f'disabled: {module["disabled"]} // {characteristic_name} {key}', f'disabled: {value} // {characteristic_name} {key}')
-                # Handle other attributes if needed
+    elif characteristic_name in ["clock", "updatenotification", "calendar", "compliments", "weather", "news"]:
+        if key == "position":
+            config_content = config_content.replace(f'position: "{module["position"]}" // {characteristic_name} {key}', f'position: "{value}" // {characteristic_name} {key}')
+        elif key == "disabled":
+            config_content = config_content.replace(f'disabled: {module["disabled"]} // {characteristic_name} {key}', f'disabled: {value} // {characteristic_name} {key}')
 
     # Write the updated config_content to the config file
     with open(config_file_path, "w") as f:
