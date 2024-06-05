@@ -15,7 +15,7 @@ export const modulePositionOptions = [
 ];
 
 export enum modulePositionOptionsEnum {
-  top_bar = 1,
+  top_bar = 0,
   top_left,
   top_center,
   top_right,

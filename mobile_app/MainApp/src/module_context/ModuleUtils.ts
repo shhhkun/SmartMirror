@@ -12,10 +12,12 @@ import {
 
 
 const serializeEnableData = (enableData: boolean): number[] => {
-  // serialize this bool into a [0] or [1]
+  // convert this bool into a "disabled" int
 
-  const outputNumber: number = enableData ? 1 : 0;
-  return [outputNumber];
+  const disabledValue: boolean = !enableData;
+
+  const outputValue: number = disabledValue ? 1 : 0;
+  return [outputValue];
 };
 
 const serializePositionData = (

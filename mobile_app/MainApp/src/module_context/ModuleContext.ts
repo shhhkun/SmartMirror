@@ -83,30 +83,30 @@ const defaultModuleConfiguration: FullModuleConfiguration = {
     moduleEnabled: true,
     modulePosition: 'top_left'
   },
-  calendar: {
-    moduleInternalName: "calendar",
-    moduleDisplayName: "Calendar",
-    moduleEnabled: true,
-    modulePosition: 'top_left'
-  },
-  compliments: {
-    moduleInternalName: "compliments",
-    moduleDisplayName: "Compliments",
-    moduleEnabled: true,
-    modulePosition: 'top_left'
-  },
-  weather: {
-    moduleInternalName: "weather",
-    moduleDisplayName: "Weather",
-    moduleEnabled: true,
-    modulePosition: 'top_left'
-  },
-  newsfeed: {
-    moduleInternalName: "newsfeed",
-    moduleDisplayName: "News",
-    moduleEnabled: true,
-    modulePosition: 'top_left'
-  }
+  // calendar: {
+  //   moduleInternalName: "calendar",
+  //   moduleDisplayName: "Calendar",
+  //   moduleEnabled: true,
+  //   modulePosition: 'top_left'
+  // },
+  // compliments: {
+  //   moduleInternalName: "compliments",
+  //   moduleDisplayName: "Compliments",
+  //   moduleEnabled: true,
+  //   modulePosition: 'top_left'
+  // },
+  // weather: {
+  //   moduleInternalName: "weather",
+  //   moduleDisplayName: "Weather",
+  //   moduleEnabled: true,
+  //   modulePosition: 'top_left'
+  // },
+  // newsfeed: {
+  //   moduleInternalName: "newsfeed",
+  //   moduleDisplayName: "News",
+  //   moduleEnabled: true,
+  //   modulePosition: 'top_left'
+  // }
 };
 
 export const defaultModuleContext: ModuleContextType = {

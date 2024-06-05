@@ -110,8 +110,8 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     }
   };
 
-  const updateDraftConfigWithSingleModule = (
-    singleModule: SingleModuleConfiguration): void => {
+  const updateDraftConfigWithSingleModule = async (
+    singleModule: SingleModuleConfiguration): Promise<void> => {
 
     // assume we're using display name in the mobile-app-side config file
     const moduleName: string = singleModule.moduleDisplayName;
@@ -121,12 +121,15 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       " and position data: " + JSON.stringify(singleModule.modulePosition));
     console.log("---------------------------------");
 
-    // update the draft config. create a a new object, to avoid weird
-    // non-rendering issues. Wasn't the fix though.
-    setDraftModuleConfiguration(prevConfig => ({
-      ...prevConfig,
+    // add a short delay. this didn't fix anything really.
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    // update draft config with this specific module
+    setDraftModuleConfiguration({
+      ...draftModuleConfiguration,
       [moduleName]: singleModule
-    }));
+    }
+    )
   };
 
   const readSingleModuleConfigFromMirror = async (
@@ -191,19 +194,19 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
           await readSingleModuleConfigFromMirror(thisModulesDisplayName);
 
         // printout for testing with Notifications
-        if (singleConfigCreatedFromRead.moduleDisplayName === "Notifications") {
-          console.log("Read module: " + thisModulesDisplayName +
-            " with enable data: " + singleConfigCreatedFromRead.moduleEnabled +
-            " and position data: " + singleConfigCreatedFromRead.modulePosition);
-        }
+        // if (singleConfigCreatedFromRead.moduleDisplayName === "Notifications") {
+        //   console.log("Read module: " + thisModulesDisplayName +
+        //     " with enable data: " + singleConfigCreatedFromRead.moduleEnabled +
+        //     " and position data: " + singleConfigCreatedFromRead.modulePosition);
+        // }
 
-        updateDraftConfigWithSingleModule(singleConfigCreatedFromRead);
+        await updateDraftConfigWithSingleModule(singleConfigCreatedFromRead);
 
         // another printout for testing with Notifications
-        if (singleConfigCreatedFromRead.moduleDisplayName === "Notifications") {
-          console.log("Draft config after updating with alerts: " +
-            JSON.stringify(draftModuleConfiguration.alert));
-        }
+        // if (singleConfigCreatedFromRead.moduleDisplayName === "Notifications") {
+        //   console.log("Draft config after updating with alerts: " +
+        //     JSON.stringify(draftModuleConfiguration.alert));
+        // }
 
       } catch (error) {
         console.error("Error reading a single module config from mirror", error);
