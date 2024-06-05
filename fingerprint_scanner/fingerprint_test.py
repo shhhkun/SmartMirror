@@ -167,6 +167,7 @@ def change_user():
     # Change dirs to access the file to change users
     os.chdir('../App/js')
 
+# My edited code to assign a number to each new user
 def get_num():
     """Use input() to get a valid number from 1 to 127. Retry till success!"""
     i = 0
@@ -176,6 +177,16 @@ def get_num():
         except ValueError:
             pass
     return i
+
+# def get_num():
+#     """Use input() to get a valid number from 1 to 127. Retry till success!"""
+#     i = 0
+#     while (i > 127) or (i < 1):
+#         try:
+#             i = int(input("Enter ID # from 1-127: "))
+#         except ValueError:
+#             pass
+#     return i
 
 # My code that will always run to detect new fingerprints
 # This is meant to work with the electron.js program for MM. This will output to console so that
@@ -193,7 +204,7 @@ def get_num():
 # it will print "User not found" to the console twice so that the electron.js program can detect 2
 # negatives and create a new user.
 while True:
-    time.sleep(1) # Will sleep the counter to not spam console
+    time.sleep(1) # Will sleep the counter to not spam consoled
     # Initial check to make sure it can find fingerprints
     if finger.read_templates() != adafruit_fingerprint.OK:
         raise RuntimeError("Failed to read templates")

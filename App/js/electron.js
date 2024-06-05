@@ -234,7 +234,9 @@ function watchFiles() {
 
 // This will run the fingerprint python script and watch its output
 const userIdPath = path.join(__dirname, 'userId.js');
-const pythonScriptPath = path.join(__dirname, "..", "fingerprint_scanner", "fingerprint.py");
+const pythonScriptPath = path.join(__dirname, "..", "..", "fingerprint_scanner", "fingerprint_test.py");
+//DEBUG
+console.log("Python script path:", pythonScriptPath);
 const pythonProcess = spawn("python3", [pythonScriptPath]);
 
 //DEBUG
@@ -248,7 +250,7 @@ pythonProcess.stdout.on("data", (data) => {
   const output = data.toString(); // Converts Buffer to string
 
   // Logic for calling commands
-  const match = output.match(/(user\d+)/); // regex for the output to see if it matches a found user
+  const match = output.match(/"(user\d+)";/); // regex for the output to see if it matches a found user
   if (match) {
     //DEBUG
     console.log("3. In match");
