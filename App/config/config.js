@@ -14,16 +14,14 @@ var config = {
     {
       module: "MMM-NowPlayingOnSpotify",
       position: "top_left",
-      disabled: 0,
-      showCoverArt: true,
     
       config: {
         clientID: "d8264bf147e445f4b36ccbdef94e4024",
         clientSecret: "6f6d58b29297488495419155630023e0",
-        accessToken: "BQC1GDO0g9I-yNcj_V03i4zmDDoNincgxXLe4jKZwUuSIleh2np7MpVNMS1SV1yDoLanGfV6MV6RJ05pz_5BVqLLepbSc9aGOKCCypuyGad73-Q1tMRJEtW6obqlHIOJA067R2nNdrEnY6WFGBpnncD_ljdJU6Xn0RoBzCh4IXy9--ntLlUFpqFhFGvlGg",
-        refreshToken: "AQCYVsRbq7FxB8weak_ARMVy9B7Xl7JUY1d72GmZFnc01N2_azdAbtSnTWyuxfNZPXHSSeLV2_dfVCHLQTq5D47Hch1PS-X2pvChDEZb97VWxps6Zl-TBI7m8h8o5ANCav0"
+        accessToken: "BQAPCg4Rd8yQdYvxQe02-osipY7mwweBJDH2CFXKbIR438D6ENlBXAArHuvpf2tnzQM9jYuSrkodlV2M7d_Jc-UQYj87QhKAVO8zJeI5bZUrK-6OJCszuTVzgGALv9SjoiPxZXAbGkj-BfIsgCNQB9O7bScRNZCG2XT-Kemb8Neu0dDmEL7_4QIScTLDOg",
+        refreshToken: "AQBWRAJuTVrJ7d8pxnEwmoDxPYnJJOMnXH220490DX8n5cDYfVGxIbpFaIXraMqp8N9gFdvknK7u2Ti396cV--gT2ZddKYyt43DMTzRw0Btg9ZMKGxGLdtpFifLq1jUGxlc"
       }
-    },    
+    },
 	  {
 		// updatenotification
 		module: "updatenotification",

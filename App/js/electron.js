@@ -245,34 +245,35 @@ function watchFiles() {
 
 // This will run the fingerprint python script and watch its output
 const userIdPath = path.join(__dirname, 'userId.js');
-const pythonScriptPath = path.join(__dirname, "..", "fingerprint_scanner", "fingerprint.py");
+const pythonScriptPath = path.join(__dirname, "..", "..","fingerprint_scanner", "fingerprint_test.py");
 const pythonProcess = spawn("python3", [pythonScriptPath]);
 
 // The logic for the python fingerprint, read outputs and looks for keywords
 pythonProcess.stdout.on("data", (data) => {
-  const output = data.toString(); // Converts Buffer to string
+  const output = data.toString().trim(); // Converts Buffer to string and removes leading/trailing whitespace
+
+  console.log("Received output from Python script:", output); // Log the actual output
 
   // Logic for calling commands
-  const match = output.match(/(user\d+)/); // regex for the output to see if it matches a found user
+  const match = output.match(/(user\d+)/);
   if (match) {
     // Change the userID to be the found user ID
-    const userID = match[1]; // should capture just the user id
+    const userID = match[1]; // should capture the entire user ID, including 'user' prefix
     const newContent = `exports.userId = "${userID}";`;
 
     // Will try to write the new user ID to the userId.js file
     try {
-      fs.writeFileSync(userIdPath, newContent); // NOTE: do I need utf-8? lets try without it first
+      fs.writeFileSync(userIdPath, newContent);
       console.log("Wrote to userid file");
     } catch (error) {
-      console.error("Error writing to userid file");
+      console.log("Error writing to userid file");
     }
-  } else {
-    console.warn("Unexpected output from fingerpint py file!");
-  }
-  if (output.includes('READ_FAIL')) {
+  } else if (output.includes('READ_FAIL')) {
     // start the countdown timer prompting user if they want to enroll a new fingerprint
   } else if (output.includes('ONBOARDING')) {
     // Call the onboarding function
+  } else {
+    console.warn("Unexpected output from fingerprint py file!");
   }
 });
 
