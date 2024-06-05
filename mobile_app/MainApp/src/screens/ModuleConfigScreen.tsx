@@ -63,41 +63,18 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
+
+  // for debugging notifications read state stuff
+  console.log("rendering module config bars with notifications data: " +
+    JSON.stringify(draftModuleConfiguration.updatenotification))
+
+
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
       <ScrollView
         style={styles.scrollableContainer}
         showsVerticalScrollIndicator={true}>
-
-        {/* just gonna hard code a couple module bars, to see if the issue is
-        with this mapping loop thing. */}
-        {/* <ModuleConfigBar
-          // this key thing is important for triggering re-render stuff
-          key={"alert"}
-          title="Alerts"
-          sliderValue={draftModuleConfiguration.alert.moduleEnabled}
-          onSliderChange={(value: boolean) =>
-            setDraftModuleConfiguration({
-              ...draftModuleConfiguration,
-              alert: {
-                ...draftModuleConfiguration.alert,
-                moduleEnabled: value
-              }
-            })
-          }
-          dropdownValue={draftModuleConfiguration.alert.modulePosition}
-          onDropdownChange={(value: string) =>
-            setDraftModuleConfiguration({
-              ...draftModuleConfiguration,
-              alert: {
-                ...draftModuleConfiguration.alert,
-                modulePosition: value
-              }
-            })
-          }
-        /> */}
-
 
         {/* Make module config bars for all the modules in draft config. */}
         {Object.entries(draftModuleConfiguration).map(([moduleName, moduleConfig]) => (

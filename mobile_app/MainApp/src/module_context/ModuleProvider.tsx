@@ -188,8 +188,20 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
         const singleConfigCreatedFromRead: SingleModuleConfiguration =
           await readSingleModuleConfigFromMirror(thisModulesDisplayName);
 
-        // update the draft config with the new data
+        // printout for testing with Notifications
+        if (singleConfigCreatedFromRead.moduleDisplayName === "Notifications") {
+          console.log("Read module: " + thisModulesDisplayName +
+            " with enable data: " + singleConfigCreatedFromRead.moduleEnabled +
+            " and position data: " + singleConfigCreatedFromRead.modulePosition);
+        }
+
         updateDraftConfigWithSingleModule(singleConfigCreatedFromRead);
+
+        // another printout for testing with Notifications
+        if (singleConfigCreatedFromRead.moduleDisplayName === "Notifications") {
+          console.log("Draft config after updating with alerts: " +
+            JSON.stringify(draftModuleConfiguration.alert));
+        }
 
       } catch (error) {
         console.error("Error reading a single module config from mirror", error);

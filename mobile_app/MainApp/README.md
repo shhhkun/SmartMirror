@@ -25,6 +25,7 @@ Next steps:
 - [blocked] test reading and writing module info to the actual pi.
 - clean up the connectiion process. make it one button, instead of several. bascially just fix the appConnectFromBonded function in ble provider.
 - put in a UI page for messing with langauge and units.
+- make the UI more pretty.
 - make a draw.io block diagram of how this app works.
 - record a video of correct app operation.
 
