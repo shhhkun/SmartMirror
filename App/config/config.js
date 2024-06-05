@@ -2,33 +2,33 @@ var config = {
 	address: "localhost",
 	port: 8080,
 	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"],
-	language: "en",
+	language: "es",
 	timeFormat: 24,
-	units: "metric",
+	units: "imperial",
 	modules: [
 	  {
 		// alert
 		module: "alert",
-		disabled: 0 // 0 or 1
+		disabled: 0 // alert disabled
 	  },
 	  {
 		// updatenotification
 		module: "updatenotification",
-		position: "top_bar",
-		disabled: 0 // 0 or 1
+		position: "top_bar", // updatenotification position
+		disabled: 0 // updatenotification disabled
 	  },
 	  {
 		// clock
 		module: "clock",
-		position: "top_left",
-		disabled: 0 // 0 or 1
+		position: "bottom_bar" // clock position
+		disabled: 0 // clock disabled
 	  },
 	  {
 		// calendar
 		module: "calendar",
 		header: "US Holidays",
-		position: "top_left",
-		disabled: 0, // 0 or 1
+		position: "top_left", // calendar position
+		disabled: 0, // calendar disabled
 		config: {
 		  calendars: [
 			{
@@ -41,14 +41,14 @@ var config = {
 	  {
 		// compliments
 		module: "compliments",
-		position: "lower_third",
-		disabled: 0 // 0 or 1
+		position: "lower_third", // compliments position
+		disabled: 0 // compliments disabled
 	  },
 	  {
 		// weather
 		module: "weather",
-		position: "top_right",
-		disabled: 0, // 0 or 1
+		position: "top_right", // weather position
+		disabled: 0, // weather disabled
 		config: {
 		  weatherProvider: "openweathermap",
 		  type: "current",
@@ -60,8 +60,8 @@ var config = {
 	  {
 		// newsfeed
 		module: "newsfeed",
-		position: "bottom_bar",
-		disabled: 0, // 0 or 1
+		position: "bottom_bar", // news position
+		disabled: 0, // news disabled
 		config: {
 		  feeds: [
 			{
