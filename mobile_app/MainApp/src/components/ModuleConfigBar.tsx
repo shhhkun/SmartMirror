@@ -10,7 +10,7 @@ import {
 } from '@react-native-picker/picker';
 
 import {
-  modulePositionOptions
+  modulePositionDisplayOptions
 } from '../common/StandardModuleInfo';
 import {
   GlobalStyles
@@ -77,7 +77,7 @@ const ModulePositionsDropdown: React.FC<ModulePositionsDropdownProps> = ({
       >
         {
           // make a dropdown option for each item in modulePositionsOptions
-          modulePositionOptions.map((option, index) => (
+          modulePositionDisplayOptions.map((option, index) => (
             <Picker.Item key={index} label={option} value={option} />
           ))
         }

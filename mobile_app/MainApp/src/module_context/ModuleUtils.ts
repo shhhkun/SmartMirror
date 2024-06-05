@@ -1,5 +1,6 @@
 import {
-  modulePositionOptionsEnum
+  modulePositionOptionsEnum,
+  modulePositionDisplayToEnumMap
 } from '../common/StandardModuleInfo';
 import {
   moduleCharacteristicsHardCoded
@@ -21,10 +22,20 @@ const serializeEnableData = (enableData: boolean): number[] => {
 };
 
 const serializePositionData = (
-  positionData: keyof typeof modulePositionOptionsEnum): number[] => {
+  positionDisplayString: string): number[] => {
+
+  // positionData: keyof typeof modulePositionOptionsEnum): number[] => {
   // serialize this position string based on the position options enum
 
-  const positionEnumValue: number = modulePositionOptionsEnum[positionData];
+  // look up the enum value for this position string
+  if (!(positionDisplayString in modulePositionDisplayToEnumMap)) {
+    throw new Error("Don't have a saved enum value for this position string");
+  }
+
+  const internalPositionName: modulePositionOptionsEnum = modulePositionDisplayToEnumMap[positionDisplayString];
+  const lookupKeyThing: keyof typeof modulePositionOptionsEnum = internalPositionName;
+
+  const positionEnumValue: number = modulePositionOptionsEnum[internalPositionName as keyof typeof modulePositionOptionsEnum];
   return [positionEnumValue];
 };
 
