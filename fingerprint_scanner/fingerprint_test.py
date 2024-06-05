@@ -7,6 +7,7 @@ import busio
 from digitalio import DigitalInOut, Direction
 import adafruit_fingerprint
 import os # used to change dirs
+import re # Needed for regex
 
 led = DigitalInOut(board.D13)
 led.direction = Direction.OUTPUT
@@ -167,13 +168,26 @@ def change_user():
     # Change dirs to access the file to change users
     os.chdir('../App/js')
 
+# Opens userId.js file and reads the number of users currently enrolled
+def read_num_users(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            for line in file:
+                match = re.search(r'exports\.numUsers\s*=\s*(\d+);', line)
+                if match:
+                    num_users_str = match.group(1)
+                    return int(num_users_str)
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+    return None  # Return None if the file wasn't found or the number wasn't found
+
 # My edited code to assign a number to each new user
 def get_num():
     """Use input() to get a valid number from 1 to 127. Retry till success!"""
     i = 0
     while (i > 127) or (i < 1):
         try:
-            i = int(input("Enter ID # from 1-127: "))
+            i = read_num_users('../App/js/userId.js') # will open userId.js and read the number of users
         except ValueError:
             pass
     return i
