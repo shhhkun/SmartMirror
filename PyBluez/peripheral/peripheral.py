@@ -36,9 +36,16 @@ class Languages(Enum):
     ENGLISH = 0
     SPANISH = 1
     CHINESE = 2
+    RUSSIAN = 3
+    FRENCH = 4
+    PORTUGUESE = 5
+    HINDI = 6
+    JAPANESE = 7
+    GERMAN = 8
+    VIETNAMESE = 9
     
 languages = [
-    "en", "es", "zh"
+    "en", "es", "zh", "ru", "fr", "pt", "hi", "ja", "de", "vi"
 ]
 
 class MetricSys(Enum):
