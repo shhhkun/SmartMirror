@@ -83,9 +83,9 @@ export function selectTargetServiceAndCharacteristic(
 
 
 const savedDeviceNames: string[] = [
-  'erik_lightblue',
+  // 'erik_lightblue',
+  'raspberrypi',
   'Blank',
-  'raspberrypi'
 ];
 
 const enum savedServiceUUIDs {
@@ -101,85 +101,85 @@ const enum savedCharacteristicUUIDs {
   erikLightCharModu2 = '4444',
 }
 
-// export const moduleCharacteristicsHardCoded: any = {
-//   // this uses the display names of the modules as the main item names!
-//   // pretty to jank to have this hard-coded. but should be ok if
-//   // we're just using the single pi and the characteristics don't change.
-
-//   // main target (for profile control) = "00000002-710e-4a5b-8d75-3e5b444bc3cf"
-
-//   // language characteristic (unsuported rn) = "00000003-710e-4a5b-8d75-3e5b444bc3cf"
-//   // units characteristic (unsupported rn) = "00000004-710e-4a5b-8d75-3e5b444bc3cf"
-
-//   // not supporting changing alerts at the moment
-//   // "Alerts": {
-//   //   "enable": "0002",
-//   //   "position": "0003"
-//   // },
-
-//   "Clock": {
-//     "enable": "00000008-710e-4a5b-8d75-3e5b444bc3cf",
-//     "position": "00000007-710e-4a5b-8d75-3e5b444bc3cf"
-//   },
-//   "Notifications": {
-//     "enable": "0000000A-710e-4a5b-8d75-3e5b444bc3cf",
-//     "position": "00000009-710e-4a5b-8d75-3e5b444bc3cf"
-//   },
-//   "Calendar": {
-//     "enable": "0000000C-710e-4a5b-8d75-3e5b444bc3cf",
-//     "position": "0000000B-710e-4a5b-8d75-3e5b444bc3cf"
-//   },
-//   "Compliments": {
-//     "enable": "0000000E-710e-4a5b-8d75-3e5b444bc3cf",
-//     "position": "0000000D-710e-4a5b-8d75-3e5b444bc3cf"
-//   },
-//   "Weather": {
-//     "enable": "0000001F-710e-4a5b-8d75-3e5b444bc3cf",
-//     "position": "0000000F-710e-4a5b-8d75-3e5b444bc3cf"
-//   },
-//   "News": {
-//     "enable": "0000003F-710e-4a5b-8d75-3e5b444bc3cf",
-//     "position": "0000002F-710e-4a5b-8d75-3e5b444bc3cf"
-//   },
-// }
-
-// module characteristics for when testing in Erik's lightblue
 export const moduleCharacteristicsHardCoded: any = {
   // this uses the display names of the modules as the main item names!
   // pretty to jank to have this hard-coded. but should be ok if
   // we're just using the single pi and the characteristics don't change.
 
-  // main target (for profile control) = "2222"
+  // main target (for profile control) = "00000002-710e-4a5b-8d75-3e5b444bc3cf"
 
-  // not messing with alerts at the moment.
+  // language characteristic (unsuported rn) = "00000003-710e-4a5b-8d75-3e5b444bc3cf"
+  // units characteristic (unsupported rn) = "00000004-710e-4a5b-8d75-3e5b444bc3cf"
+
+  // not supporting changing alerts at the moment
   // "Alerts": {
   //   "enable": "0002",
   //   "position": "0003"
   // },
 
   "Clock": {
-    "enable": "0004",
-    "position": "0005"
+    "enable": "00000006-710e-4a5b-8d75-3e5b444bc3cf",
+    "position": "00000005-710e-4a5b-8d75-3e5b444bc3cf"
   },
   "Notifications": {
-    "enable": "0006",
-    "position": "0007"
+    "enable": "0000000A-710e-4a5b-8d75-3e5b444bc3cf",
+    "position": "00000009-710e-4a5b-8d75-3e5b444bc3cf"
   },
   "Calendar": {
-    "enable": "0008",
-    "position": "0009"
+    "enable": "0000000C-710e-4a5b-8d75-3e5b444bc3cf",
+    "position": "0000000B-710e-4a5b-8d75-3e5b444bc3cf"
   },
   "Compliments": {
-    "enable": "0010",
-    "position": "0011"
+    "enable": "0000000E-710e-4a5b-8d75-3e5b444bc3cf",
+    "position": "0000000D-710e-4a5b-8d75-3e5b444bc3cf"
   },
   "Weather": {
-    "enable": "0012",
-    "position": "0013"
+    "enable": "0000001F-710e-4a5b-8d75-3e5b444bc3cf",
+    "position": "0000000F-710e-4a5b-8d75-3e5b444bc3cf"
   },
   "News": {
-    "enable": "0014",
-    "position": "0015"
-  }
+    "enable": "0000003F-710e-4a5b-8d75-3e5b444bc3cf",
+    "position": "0000002F-710e-4a5b-8d75-3e5b444bc3cf"
+  },
 }
+
+// module characteristics for when testing in Erik's lightblue
+// export const moduleCharacteristicsHardCoded: any = {
+//   // this uses the display names of the modules as the main item names!
+//   // pretty to jank to have this hard-coded. but should be ok if
+//   // we're just using the single pi and the characteristics don't change.
+
+//   // main target (for profile control) = "2222"
+
+//   // not messing with alerts at the moment.
+//   // "Alerts": {
+//   //   "enable": "0002",
+//   //   "position": "0003"
+//   // },
+
+//   "Clock": {
+//     "enable": "0004",
+//     "position": "0005"
+//   },
+//   "Notifications": {
+//     "enable": "0006",
+//     "position": "0007"
+//   },
+//   "Calendar": {
+//     "enable": "0008",
+//     "position": "0009"
+//   },
+//   "Compliments": {
+//     "enable": "0010",
+//     "position": "0011"
+//   },
+//   "Weather": {
+//     "enable": "0012",
+//     "position": "0013"
+//   },
+//   "News": {
+//     "enable": "0014",
+//     "position": "0015"
+//   }
+// }
 

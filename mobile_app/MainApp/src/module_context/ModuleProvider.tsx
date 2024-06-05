@@ -233,6 +233,7 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     systemSettings,
     trueModuleConfiguration,
     draftModuleConfiguration,
+    setSystemSettings,
     setDraftModuleConfiguration,
     setTrueModuleConfiguration,
 
