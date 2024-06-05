@@ -2,7 +2,7 @@ var config = {
 	address: "localhost",
 	port: 8080,
 	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"],
-	language: "es",
+	language: "en",
 	timeFormat: 24,
 	units: "imperial",
 	modules: [
@@ -11,17 +11,30 @@ var config = {
 		module: "alert",
 		disabled: 0 // alert disabled
 	  },
+    {
+      module: "MMM-NowPlayingOnSpotify",
+      position: "top_left",
+      disabled: 0,
+      showCoverArt: true,
+    
+      config: {
+        clientID: "d8264bf147e445f4b36ccbdef94e4024",
+        clientSecret: "6f6d58b29297488495419155630023e0",
+        accessToken: "BQC1GDO0g9I-yNcj_V03i4zmDDoNincgxXLe4jKZwUuSIleh2np7MpVNMS1SV1yDoLanGfV6MV6RJ05pz_5BVqLLepbSc9aGOKCCypuyGad73-Q1tMRJEtW6obqlHIOJA067R2nNdrEnY6WFGBpnncD_ljdJU6Xn0RoBzCh4IXy9--ntLlUFpqFhFGvlGg",
+        refreshToken: "AQCYVsRbq7FxB8weak_ARMVy9B7Xl7JUY1d72GmZFnc01N2_azdAbtSnTWyuxfNZPXHSSeLV2_dfVCHLQTq5D47Hch1PS-X2pvChDEZb97VWxps6Zl-TBI7m8h8o5ANCav0"
+      }
+    },    
 	  {
 		// updatenotification
 		module: "updatenotification",
 		position: "top_bar", // updatenotification position
-		disabled: 0 // updatenotification disabled
+		disabled: 69 // updatenotification disabled
 	  },
 	  {
 		// clock
 		module: "clock",
 		position: "bottom_bar", // clock position
-		disabled: 0 // clock disabled
+		disabled: 2 // clock disabled
 	  },
 	  {
 		// calendar
@@ -33,7 +46,7 @@ var config = {
 		  calendars: [
 			{
 			  symbol: "calendar-check",
-			  url: "webcal://www.calendarlabs.com/ical-calendar/ics/76/US_Holidays.ics"
+			  url: "https://calendar.google.com/calendar/ical/dsarni%40ucsc.edu/public/basic.ics"
 			}
 		  ]
 		}
