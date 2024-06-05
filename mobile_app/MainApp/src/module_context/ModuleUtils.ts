@@ -1,6 +1,5 @@
 import {
-  modulePositionOptionsEnum,
-  modulePositionDisplayToEnumMap
+  betterPositionsMap
 } from '../common/StandardModuleInfo';
 import {
   moduleCharacteristicsHardCoded
@@ -23,19 +22,15 @@ const serializeEnableData = (enableData: boolean): number[] => {
 
 const serializePositionData = (
   positionDisplayString: string): number[] => {
+  // serialize this position string based on the position map
 
-  // positionData: keyof typeof modulePositionOptionsEnum): number[] => {
-  // serialize this position string based on the position options enum
-
-  // look up the enum value for this position string
-  if (!(positionDisplayString in modulePositionDisplayToEnumMap)) {
-    throw new Error("Don't have a saved enum value for this position string");
+  if (!(positionDisplayString in betterPositionsMap)) {
+    throw new Error("Don't have a saved position for display string " +
+      positionDisplayString);
   }
 
-  const internalPositionName: modulePositionOptionsEnum = modulePositionDisplayToEnumMap[positionDisplayString];
-  const lookupKeyThing: keyof typeof modulePositionOptionsEnum = internalPositionName;
+  const positionEnumValue: number = betterPositionsMap[positionDisplayString];
 
-  const positionEnumValue: number = modulePositionOptionsEnum[internalPositionName as keyof typeof modulePositionOptionsEnum];
   return [positionEnumValue];
 };
 
@@ -51,7 +46,7 @@ export const prepareDataToSend = (
     enableData);
 
   const serializedPositionData: number[] = serializePositionData(
-    positionData as keyof typeof modulePositionOptionsEnum);
+    positionData);
 
   const dataToSend: Map<string, number[]> = new Map();
   dataToSend.set('enable', serializedEnableData);
@@ -86,12 +81,15 @@ const deserializeEnableData = (enableData: number[]): boolean => {
   return outputValue;
 };
 
+// need to fix this based on the new enum
 const deserializePositionData = (positionData: number[]): string => {
   // deserialize this position int based on the position options enum
 
-  const positionEnumValue: number = positionData[0];
+  const positionPureNumber: number = positionData[0];
 
-  const positionString: string = modulePositionOptionsEnum[positionEnumValue];
+  // look up the string corresponding to this number in the positions map
+  const positionString: string = Object.keys(betterPositionsMap).find(
+    key => betterPositionsMap[key] === positionPureNumber) || '';
 
   return positionString;
 };

@@ -69,43 +69,43 @@ const defaultModuleConfiguration: FullModuleConfiguration = {
   //   moduleInternalName: "alert",
   //   moduleDisplayName: "Alerts",
   //   moduleEnabled: true,
-  //   modulePosition: 'top_left'
+  //   modulePosition: 'Top Left'
   // },
   updatenotification: {
     moduleInternalName: "updatenotification",
     moduleDisplayName: "Notifications",
     moduleEnabled: true,
-    modulePosition: 'top_left'
+    modulePosition: 'Top Left'
   },
   clock: {
     moduleInternalName: "clock",
     moduleDisplayName: "Clock",
     moduleEnabled: true,
-    modulePosition: 'top_left'
+    modulePosition: 'Top Left'
   },
   // calendar: {
   //   moduleInternalName: "calendar",
   //   moduleDisplayName: "Calendar",
   //   moduleEnabled: true,
-  //   modulePosition: 'top_left'
+  //   modulePosition: 'Top Left'
   // },
   // compliments: {
   //   moduleInternalName: "compliments",
   //   moduleDisplayName: "Compliments",
   //   moduleEnabled: true,
-  //   modulePosition: 'top_left'
+  //   modulePosition: 'Top Left'
   // },
   // weather: {
   //   moduleInternalName: "weather",
   //   moduleDisplayName: "Weather",
   //   moduleEnabled: true,
-  //   modulePosition: 'top_left'
+  //   modulePosition: 'Top Left'
   // },
   // newsfeed: {
   //   moduleInternalName: "newsfeed",
   //   moduleDisplayName: "News",
   //   moduleEnabled: true,
-  //   modulePosition: 'top_left'
+  //   modulePosition: 'Top Left'
   // }
 };
 
