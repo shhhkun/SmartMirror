@@ -38,7 +38,7 @@ run python script natively on pi
 **UNITS:**
 
     > desc: unit system used
-    > UID: 00000005-710e-4a5b-8d75-3e5b444bc3cf
+    > UID: 00000004-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > unitsys[integer] = "metric", ...
     > DISABLE UID: 00000006-710e-4a5b-8d75-3e5b444bc3cf
@@ -46,6 +46,16 @@ run python script natively on pi
 **CLOCK (POSITION):**
 
     > desc: clock position on monitor
+    > UID: 00000005-710e-4a5b-8d75-3e5b444bc3cf
+    > accepts integer = 0, 1, 2, ...
+    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
+                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
+                          "fullscreen_above", "fullscreen_below"
+    > DISABLE UID: 00000006-710e-4a5b-8d75-3e5b444bc3cf
+
+**UPDATE NOTIFICATION (POSITION):**
+
+    > desc: notifications position on monitor
     > UID: 00000007-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
@@ -53,9 +63,9 @@ run python script natively on pi
                           "fullscreen_above", "fullscreen_below"
     > DISABLE UID: 00000008-710e-4a5b-8d75-3e5b444bc3cf
 
-**UPDATE NOTIFICATION (POSITION):**
+**CALENDAR (POSITION):**
 
-    > desc: notifications position on monitor
+    > desc: calendar position on monitor
     > UID: 00000009-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
@@ -63,9 +73,9 @@ run python script natively on pi
                           "fullscreen_above", "fullscreen_below"
     > DISABLE UID: 0000000A-710e-4a5b-8d75-3e5b444bc3cf
 
-**CALENDAR (POSITION):**
+**COMPLIMENTS (POSITION):**
 
-    > desc: calendar position on monitor
+    > desc: compliments position on monitor
     > UID: 0000000B-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
@@ -73,9 +83,9 @@ run python script natively on pi
                           "fullscreen_above", "fullscreen_below"
     > DISABLE UID: 0000000C-710e-4a5b-8d75-3e5b444bc3cf
 
-**COMPLIMENTS (POSITION):**
+**WEATHER (POSITION):**
 
-    > desc: compliments position on monitor
+    > desc: weather position on monitor
     > UID: 0000000D-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
@@ -83,22 +93,12 @@ run python script natively on pi
                           "fullscreen_above", "fullscreen_below"
     > DISABLE UID: 0000000E-710e-4a5b-8d75-3e5b444bc3cf
 
-**WEATHER (POSITION):**
+**NEWS (POSITION):**
 
-    > desc: weather position on monitor
+    > desc: news position on monitor
     > UID: 0000000F-710e-4a5b-8d75-3e5b444bc3cf
     > accepts integer = 0, 1, 2, ...
     > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
                           "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
                           "fullscreen_above", "fullscreen_below"
     > DISABLE UID: 0000001F-710e-4a5b-8d75-3e5b444bc3cf
-
-**NEWS (POSITION):**
-
-    > desc: news position on monitor
-    > UID: 0000002F-710e-4a5b-8d75-3e5b444bc3cf
-    > accepts integer = 0, 1, 2, ...
-    > position[integer] = "top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", 
-                          "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar",
-                          "fullscreen_above", "fullscreen_below"
-    > DISABLE UID: 0000003F-710e-4a5b-8d75-3e5b444bc3cf
