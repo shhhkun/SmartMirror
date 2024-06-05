@@ -20,7 +20,7 @@ var config = {
 	  {
 		// clock
 		module: "clock",
-		position: "bottom_bar" // clock position
+		position: "bottom_bar", // clock position
 		disabled: 0 // clock disabled
 	  },
 	  {
