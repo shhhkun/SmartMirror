@@ -50,10 +50,12 @@ export function selectTargetServiceAndCharacteristic(
   // eventually can set service and characteristic based on their descriptions
   // or positions in arrays. but for now, just have them hard-coded.
   const serviceUUID: string =
-    savedServiceUUIDs.erikLightblueService;
+    savedServiceUUIDs.serjoProfileService;
 
-  const characteristicUUID: string =
-    savedCharacteristicUUIDs.erikLightChar;
+  // hard coding service ID to profile char for now
+  const characteristicUUID: string = '00000002-710e-4a5b-8d75-3e5b444bc3cf';
+  // const characteristicUUID: string =
+  //   savedCharacteristicUUIDs.erikLightChar;
 
 
   const outputTargetInfos: TargetInfos = {
@@ -64,7 +66,7 @@ export function selectTargetServiceAndCharacteristic(
   return outputTargetInfos;
 }
 
-// not using this rn
+// parseModuleNamesAndCharacteristics - not using this rn
 {
   // export function parseModuleNamesAndCharacteristics(
   //   peripheralInfo: PeripheralInfo): CharacteristicsMap {
@@ -83,6 +85,10 @@ export function selectTargetServiceAndCharacteristic(
 
 
 const savedDeviceNames: string[] = [
+  // this list of names is used when selecting our device from a list of bonded
+  // devices. if the name of the device is in this list, it (and its IDs) will
+  // be populated into target states.
+
   // 'erik_lightblue',
   'raspberrypi',
   'Blank',

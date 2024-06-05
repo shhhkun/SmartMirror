@@ -39,8 +39,10 @@ maybe:
 
 To go from lightblue testing to raspi testing:
 - in bluetooth utils:
+-     change which service ID I'm using from the saved struct
 -     change savedDeviceNames to comment out all but this device
 -     change moduleCharacteristicsHardCoded to the correct one
+-
 
 # ----------
 
