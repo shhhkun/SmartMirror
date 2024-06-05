@@ -41,6 +41,7 @@ export interface AllUsersFullConfigurations {
 }
 
 interface ModuleContextType {
+  systemSettings: SystemSettingsFullConfiguration;
   trueModuleConfiguration: FullModuleConfiguration;
   draftModuleConfiguration: FullModuleConfiguration;
   setTrueModuleConfiguration: (newConfig: FullModuleConfiguration) => void;
@@ -56,6 +57,11 @@ interface ModuleContextType {
   writeFullConfigToMirror: () => Promise<void>;
   readFullConfigFromMirror: () => Promise<void>;
 }
+
+const defaultSystemSettings: SystemSettingsFullConfiguration = {
+  language: 'en',
+  units: 'imperial'
+};
 
 const defaultModuleConfiguration: FullModuleConfiguration = {
   // not supporting changing alerts at the moment
@@ -104,6 +110,7 @@ const defaultModuleConfiguration: FullModuleConfiguration = {
 };
 
 export const defaultModuleContext: ModuleContextType = {
+  systemSettings: defaultSystemSettings,
   trueModuleConfiguration: defaultModuleConfiguration,
   draftModuleConfiguration: defaultModuleConfiguration,
   setTrueModuleConfiguration: () => {

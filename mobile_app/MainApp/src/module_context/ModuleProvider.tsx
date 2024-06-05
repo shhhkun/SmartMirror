@@ -24,6 +24,8 @@ import {
 
 const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   // state stuff for this context
+  const [systemSettings, setSystemSettings] =
+    useState(defaultModuleContext.systemSettings);
   const [trueModuleConfiguration, setTrueModuleConfiguration] =
     useState(defaultModuleContext.trueModuleConfiguration);
   const [draftModuleConfiguration, setDraftModuleConfiguration] =
@@ -228,6 +230,7 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
 
   // return the context provider
   const value = {
+    systemSettings,
     trueModuleConfiguration,
     draftModuleConfiguration,
     setDraftModuleConfiguration,
