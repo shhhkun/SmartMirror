@@ -1,3 +1,3 @@
-exports.userId = "user1";
-exports.existingUsers = ["defaultStart","default","user1"];
+exports.userId = "Daniel";
+exports.existingUsers = ["defaultStart","default","Daniel"];
 exports.numUsers = 3;

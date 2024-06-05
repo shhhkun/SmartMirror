@@ -11,6 +11,19 @@ var config = {
 		module: "alert",
 		disabled: 0 // 0 or 1
 	  },
+    {
+      module: "MMM-NowPlayingOnSpotify",
+      position: "top_left",
+      disabled: 1,
+      showCoverArt: true,
+    
+      config: {
+        clientID: "",
+        clientSecret: "",
+        accessToken: "",
+        refreshToken: ""
+      }
+    }, 
 	  {
 		// updatenotification
 		module: "updatenotification",

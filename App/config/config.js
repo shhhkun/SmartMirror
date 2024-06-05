@@ -39,7 +39,7 @@ var config = {
 	  {
 		// calendar
 		module: "calendar",
-		header: "US Holidays",
+		header: "Daniels Calendar",
 		position: "top_left", // calendar position
 		disabled: 0, // calendar disabled
 		config: {
