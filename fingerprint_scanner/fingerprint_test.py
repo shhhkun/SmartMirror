@@ -188,8 +188,11 @@ def get_num():
     while (i > 127) or (i < 1):
         try:
             i = read_num_users('../App/js/userId.js') # will open userId.js and read the number of users
+            if i == None:
+                print("Error reading number of users")
         except ValueError:
             pass
+    print("i is: ", i)
     return i
 
 # def get_num():
@@ -227,6 +230,7 @@ while True:
     if failed_attempts == 2:
         failed_attempts = 0 # Reset failed attempts
         print("ENROLLING", flush=True)
+
         enroll_finger(get_num())
     if get_fingerprint(): # Will always find a fingerprint first, and then react accordingly
         # Resets counter for failed attempts
