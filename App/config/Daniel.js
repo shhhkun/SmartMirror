@@ -25,21 +25,20 @@ var config = {
 	  {
 		// updatenotification
 		module: "updatenotification",
-		position: "top_bar", // updatenotification position
-		disabled: 69 // updatenotification disabled
+		position: "top_left", // updatenotification position
+		disabled: 0 // updatenotification disabled
 	  },
 	  {
 		// clock
 		module: "clock",
-		position: "bottom_bar", // clock position
-		disabled: 2 // clock disabled
+		position: "top_left", // clock position
+		disabled: 0 // clock disabled
 	  },
 	  {
 		// calendar
 		module: "calendar",
 		header: "Daniels Calendar",
 		position: "top_left", // calendar position
-		disabled: 0, // calendar disabled
 		config: {
 		  calendars: [
 			{
@@ -47,32 +46,32 @@ var config = {
 			  url: "https://calendar.google.com/calendar/ical/dsarni%40ucsc.edu/public/basic.ics"
 			}
 		  ]
-		}
+		},
+		disabled: 0 // calendar disabled
 	  },
 	  {
 		// compliments
 		module: "compliments",
-		position: "lower_third", // compliments position
+		position: "bottom_bar", // compliments position
 		disabled: 0 // compliments disabled
 	  },
 	  {
 		// weather
 		module: "weather",
 		position: "top_right", // weather position
-		disabled: 0, // weather disabled
 		config: {
 		  weatherProvider: "openweathermap",
 		  type: "current",
 		  location: "Santa Cruz",
 		  //locationID: "5368361",
 		  apiKey: "945780832dc712da979aa1bc89616956"
-		}
+		},
+		disabled: 0 // weather disabled
 	  },
 	  {
 		// newsfeed
 		module: "newsfeed",
-		position: "bottom_bar", // news position
-		disabled: 0, // news disabled
+		position: "top_left", // news position
 		config: {
 		  feeds: [
 			{
@@ -84,7 +83,8 @@ var config = {
 		  showPublishDate: true,
 		  broadcastNewsFeeds: true,
 		  broadcastNewsUpdates: true
-		}
+		},
+	       disabled: 0 // news disabled
 	  },
 	  {
 		// counter
