@@ -442,9 +442,35 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // this failed when I tried it. however, the indivudual steps work when
     // triggered from buttons. maybe need to have delays between.
     try {
+      console.log('Calling connectToBondedDevice');
       await connectToBondedDevice();
+
+      // putting in some delays between each step to see if that helps anything.
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      console.log('Calling getSystemConnectedDeviceInfo');
       await getSystemConnectedDeviceInfo();
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // try calling connect to bonded device again, because idk
+      console.log('Calling connectToBondedDevice again');
+      await connectToBondedDevice();
+
+      console.log('long delay to let connection settle');
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
+      // try call system connected again, because idk
+      console.log('Calling getSystemConnectedDeviceInfo again');
+      await getSystemConnectedDeviceInfo();
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // !!!!!! this is what's failing !!!!!!
+      console.log('Calling connectAndGetAppConnectedDeviceInfo');
       await connectAndGetAppConnectedDeviceInfo();
+
+      // one more delay at the end, to let everything settle
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
     } catch (error) {
       console.error('Error connecting from bonded:', error);

@@ -58,7 +58,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
   };
 
   // have this functionality removed for now
-  const doUponFullConnectionButton = async (): Promise<void> => {
+  const doUponFullConnection = async (): Promise<void> => {
     try {
       await appConnectFromBonded();
     } catch (error) {
@@ -90,10 +90,10 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       {/* haven't seen this function work yet, so removing from UI for now */}
-      {/* <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponFullConnectionButton()}
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponFullConnection()}
           title="Do Full Connection" />
-      </View> */}
+      </View>
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponSystemConnectedDevicesButton()}
