@@ -437,20 +437,25 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   };
 
-  // haven't seen appConnectFromBonded work yet
   const appConnectFromBonded = async (): Promise<void> => {
-    // this failed when I tried it. however, the indivudual steps work when
-    // triggered from buttons. maybe need to have delays between.
+    // this works if you first press > get bonded > connect to bonded >
+    // get system connected info > this. in that case, it does get a non-empty
+    // array back from system connected info.
 
-    // system connected info is not returning anything. that seems
-    // to be the problem.
+    // however, if you do get bonded > this, then system connected info returns
+    // an empty array. so that's the problem.
+
+    // I think the issue in here is how state stuff is modified within a function.
+    // I'm writing a new state in here, then trying to read that state.
+    // But it's probably pulling the old state from when the function was
+    // originally called.
 
     try {
       console.log('Calling connectToBondedDevice');
       await connectToBondedDevice();
 
       // putting in some delays between each step to see if that helps anything.
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 5000));
 
       console.log('Calling getSystemConnectedDeviceInfo');
 
@@ -459,24 +464,9 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
       await new Promise((resolve) => setTimeout(resolve, 5000));
 
-      // // try calling connect to bonded device again, because idk
-      // console.log('Calling connectToBondedDevice again');
-      // await connectToBondedDevice();
 
-      // console.log('long delay to let connection settle');
-      // await new Promise((resolve) => setTimeout(resolve, 5000));
-
-      // // try call system connected again, because idk
-      // console.log('Calling getSystemConnectedDeviceInfo again');
-      // await getSystemConnectedDeviceInfo();
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // !!!!!! this is what's failing !!!!!!
       console.log('Calling connectAndGetAppConnectedDeviceInfo');
       await connectAndGetAppConnectedDeviceInfo();
-
-      // one more delay at the end, to let everything settle
-      await new Promise((resolve) => setTimeout(resolve, 500));
 
     } catch (error) {
       console.error('Error connecting from bonded:', error);

@@ -52,11 +52,22 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
   };
 
   const doUponFullConnectionButton = async (): Promise<void> => {
-    try {
-      await appConnectFromBonded();
-    } catch (error) {
-      console.error('Error doing full connection in UI:', error);
-    }
+    // try {
+    //   await appConnectFromBonded();
+    // } catch (error) {
+    //   console.error('Error doing full connection in UI:', error);
+    // }
+
+    // extremely cursed: just calling the other button functions with this
+    await doUponGetBondedDevicesButton();
+
+    await new Promise(r => setTimeout(r, 1000));
+
+    await doUponConnectToBondedDeviceButton();
+
+    await new Promise(r => setTimeout(r, 1000));
+
+    await doUponSystemConnectedDevicesButton();
   };
 
 

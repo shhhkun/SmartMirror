@@ -35,13 +35,13 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Team 3 Smart Mirror">
-          This mobile app is an interface for sending a JSON configuration file
-          to the Smart Mirror via BLE. Press the button below to connect you device.
+          This mobile app allows you to configure your Smart Mirror via Bluetooth.
+          Press the button below to enable device permisisons and connect to your mirror.
         </NiceTextArea>
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponNavigateButtonPress()} title="Go To Devices Page" />
+        <ButtonToNavigate onPress={() => doUponNavigateButtonPress()} title="Go To Device Page" />
       </View>
 
     </SafeAreaView >

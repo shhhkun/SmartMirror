@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingTop: 0,
+    paddingBottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: GlobalStyles.lightBackground,

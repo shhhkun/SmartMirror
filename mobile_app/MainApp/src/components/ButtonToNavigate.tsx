@@ -22,9 +22,11 @@ const styles = StyleSheet.create({
   buttonContainer: {
     backgroundColor: GlobalStyles.lightBackground,
     width: 250,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   button: {
-    paddingVertical: 12,
+    paddingVertical: 8,
     paddingHorizontal: 30,
     borderRadius: 8,
     alignItems: 'center',
