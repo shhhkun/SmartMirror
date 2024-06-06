@@ -5,14 +5,14 @@ const core = require("./app");
 const Log = require("./logger");
 const fs = require("fs");
 const path = require("path");
-const { spawn } = require('child_process'); // used to spawn fingerprint py file as a child process
+const { spawn } = require("child_process"); // used to spawn fingerprint py file as a child process
 
 let config = process.env.config ? JSON.parse(process.env.config) : {};
 const userConfig = {
   config: {}
 };
 
-const userIdModule = require('./userId');
+const userIdModule = require("./userId");
 let userId = userIdModule.userId;
 let existingUsers = userIdModule.existingUsers || [];
 
@@ -30,8 +30,13 @@ function createWindow() {
     Log.warn("Could not get display size, using defaults ...");
   }
 
-  let electronSwitchesDefaults = ["autoplay-policy", "no-user-gesture-required"];
-  app.commandLine.appendSwitch(...new Set(electronSwitchesDefaults, config.electronSwitches));
+  let electronSwitchesDefaults = [
+    "autoplay-policy",
+    "no-user-gesture-required"
+  ];
+  app.commandLine.appendSwitch(
+    ...new Set(electronSwitchesDefaults, config.electronSwitches)
+  );
   let electronOptionsDefaults = {
     width: electronSize.width,
     height: electronSize.height,
@@ -57,7 +62,11 @@ function createWindow() {
     electronOptionsDefaults.fullscreen = true;
   }
 
-  const electronOptions = Object.assign({}, electronOptionsDefaults, config.electronOptions);
+  const electronOptions = Object.assign(
+    {},
+    electronOptionsDefaults,
+    config.electronOptions
+  );
 
   mainWindow = new BrowserWindow(electronOptions);
 
@@ -68,7 +77,12 @@ function createWindow() {
     prefix = "http://";
   }
 
-  let address = (config.address === void 0) | (config.address === "") | (config.address === "0.0.0.0") ? (config.address = "localhost") : config.address;
+  let address =
+    (config.address === void 0) |
+    (config.address === "") |
+    (config.address === "0.0.0.0")
+      ? (config.address = "localhost")
+      : config.address;
   const port = process.env.MM_PORT || config.port;
   mainWindow.loadURL(`${prefix}${address}:${port}`);
 
@@ -84,38 +98,48 @@ function createWindow() {
     mainWindow.webContents.sendInputEvent({ type: "mouseMove", x: 0, y: 0 });
   });
 
-  mainWindow.on("closed", function() {
+  mainWindow.on("closed", function () {
     mainWindow = null;
   });
 
   if (config.kioskmode) {
-    mainWindow.on("blur", function() {
+    mainWindow.on("blur", function () {
       mainWindow.focus();
     });
 
-    mainWindow.on("leave-full-screen", function() {
+    mainWindow.on("leave-full-screen", function () {
       mainWindow.setFullScreen(true);
     });
 
-    mainWindow.on("resize", function() {
-      setTimeout(function() {
+    mainWindow.on("resize", function () {
+      setTimeout(function () {
         mainWindow.reload();
       }, 1000);
     });
   }
 
-  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-    let curHeaders = details.responseHeaders;
-    if (config["ignoreXOriginHeader"] || false) {
-      curHeaders = Object.fromEntries(Object.entries(curHeaders).filter((header) => !(/x-frame-options/i).test(header[0])));
-    }
+  mainWindow.webContents.session.webRequest.onHeadersReceived(
+    (details, callback) => {
+      let curHeaders = details.responseHeaders;
+      if (config["ignoreXOriginHeader"] || false) {
+        curHeaders = Object.fromEntries(
+          Object.entries(curHeaders).filter(
+            (header) => !/x-frame-options/i.test(header[0])
+          )
+        );
+      }
 
-    if (config["ignoreContentSecurityPolicy"] || false) {
-      curHeaders = Object.fromEntries(Object.entries(curHeaders).filter((header) => !(/content-security-policy/i).test(header[0])));
-    }
+      if (config["ignoreContentSecurityPolicy"] || false) {
+        curHeaders = Object.fromEntries(
+          Object.entries(curHeaders).filter(
+            (header) => !/content-security-policy/i.test(header[0])
+          )
+        );
+      }
 
-    callback({ responseHeaders: curHeaders });
-  });
+      callback({ responseHeaders: curHeaders });
+    }
+  );
 
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
@@ -123,7 +147,7 @@ function createWindow() {
   });
 }
 
-app.on("window-all-closed", function() {
+app.on("window-all-closed", function () {
   if (process.env.JEST_WORKER_ID !== undefined) {
     app.quit();
   } else {
@@ -131,7 +155,7 @@ app.on("window-all-closed", function() {
   }
 });
 
-app.on("activate", function() {
+app.on("activate", function () {
   if (mainWindow === null) {
     createWindow();
   }
@@ -147,10 +171,13 @@ app.on("before-quit", async (event) => {
   process.exit(0);
 });
 
-app.on("certificate-error", (event, webContents, url, error, certificate, callback) => {
-  event.preventDefault();
-  callback(true);
-});
+app.on(
+  "certificate-error",
+  (event, webContents, url, error, certificate, callback) => {
+    event.preventDefault();
+    callback(true);
+  }
+);
 
 if (process.env.clientonly) {
   app.whenReady().then(() => {
@@ -170,19 +197,28 @@ function loadConfiguration() {
     console.log("User config path:", userConfigPath);
 
     if (!existingUsers.includes(userId)) {
-      console.log(`User ${userId} does not exist. Creating a new configuration file.`);
+      console.log(
+        `User ${userId} does not exist. Creating a new configuration file.`
+      );
       existingUsers.push(userId);
       const numNewUsers = existingUsers.length - userIdModule.numUsers;
       userIdModule.numUsers += numNewUsers;
-      fs.writeFileSync(path.join(__dirname, 'userId.js'), `exports.userId = "${userId}";\nexports.existingUsers = ${JSON.stringify(existingUsers)};\nexports.numUsers = ${userIdModule.numUsers};`);
+      fs.writeFileSync(
+        path.join(__dirname, "userId.js"),
+        `exports.userId = "${userId}";\nexports.existingUsers = ${JSON.stringify(existingUsers)};\nexports.numUsers = ${userIdModule.numUsers};`
+      );
       fs.copyFileSync(defaultUser, userConfigPath);
     }
 
     if (fs.existsSync(userConfigPath)) {
-      console.log(`Copying user-specific configuration file (${userConfigPath}) to ${defaultConfigPath}`);
+      console.log(
+        `Copying user-specific configuration file (${userConfigPath}) to ${defaultConfigPath}`
+      );
       fs.copyFileSync(userConfigPath, defaultConfigPath);
     } else {
-      console.warn(`Configuration file not found for user ${userId}. Using default configuration.`);
+      console.warn(
+        `Configuration file not found for user ${userId}. Using default configuration.`
+      );
     }
 
     //delete require.cache[require.resolve(defaultConfigPath)];
@@ -190,7 +226,9 @@ function loadConfiguration() {
     if (fs.existsSync(defaultConfigPath)) {
       userConfig.config = require(defaultConfigPath);
     } else {
-      console.warn(`Default configuration file (${defaultConfigPath}) not found. Using an empty configuration.`);
+      console.warn(
+        `Default configuration file (${defaultConfigPath}) not found. Using an empty configuration.`
+      );
       userConfig.config = {};
     }
   } catch (error) {
@@ -200,7 +238,7 @@ function loadConfiguration() {
 
 // This function watches the userId file and the user-specific configuration file
 function watchFiles() {
-  const userIdPath = path.join(__dirname, 'userId.js');
+  const userIdPath = path.join(__dirname, "userId.js");
   let userConfigPath = path.join(__dirname, "..", "config", `${userId}.js`);
   let userConfigWatcher = null;
 
@@ -212,7 +250,9 @@ function watchFiles() {
     userConfigPath = path.join(__dirname, "..", "config", `${userId}.js`);
     userConfigWatcher = fs.watch(userConfigPath, (eventType, filename) => {
       if (filename === `${userId}.js`) {
-        console.log(`User-specific configuration file (${userConfigPath}) changed`);
+        console.log(
+          `User-specific configuration file (${userConfigPath}) changed`
+        );
         loadConfiguration();
         mainWindow.webContents.reload();
       }
@@ -221,7 +261,7 @@ function watchFiles() {
 
   // This watches the userId file
   fs.watch(userIdPath, (eventType, filename) => {
-    if (filename === 'userId.js') {
+    if (filename === "userId.js") {
       console.log("userId file changed");
       delete require.cache[require.resolve(userIdPath)];
       const updatedUserIdModule = require(userIdPath);
@@ -243,8 +283,15 @@ function watchFiles() {
   watchUserConfig();
 }
 // This will run the fingerprint python script and watch its output
-const userIdPath = path.join(__dirname, 'userId.js');
-const pythonScriptPath = path.join(__dirname, "..", "..", "fingerprint_scanner", "fingerprint_test.py");
+numFailures = 0;
+const userIdPath = path.join(__dirname, "userId.js");
+const pythonScriptPath = path.join(
+  __dirname,
+  "..",
+  "..",
+  "fingerprint_scanner",
+  "fingerprint_test.py"
+);
 //DEBUG
 console.log("Python script path:", pythonScriptPath);
 const pythonProcess = spawn("python3", [pythonScriptPath]);
@@ -273,13 +320,11 @@ pythonProcess.stdout.on("data", (data) => {
     console.log("Inside numFailures");
     numFailures = 0; // Reset the number of failures
     console.warn("Failed to read fingerprint 2 times, enrolling");
-
   } else if (userMatch) {
     numFailures = 0; // Reset the number of failures
     //DEBUG
     console.log("3. In userMatch: ", userMatch);
     console.log("3.1 Reset number of failures to: ", numFailures);
-
 
     // Change the userID to be the found user ID
     const userID = userMatch[1]; // should capture just the user id
@@ -307,8 +352,11 @@ pythonProcess.stdout.on("data", (data) => {
   }
 });
 
-
-if (["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].includes(config.address)) {
+if (
+  ["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].includes(
+    config.address
+  )
+) {
   core.start().then((c) => {
     config = c;
     console.log("RESET");
