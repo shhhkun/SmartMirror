@@ -257,8 +257,10 @@ pythonProcess.stdout.on("data", (data) => {
   //debug
   console.log("2.5 Output:", output);
   console.log("2.6 userMatch:", userMatch);
+  console.log("2.7 failedMatch:", failedMatch);
 
   if (numFailures >= 2) {
+    console.log("Inside numFailures");
     numFailures = 0; // Reset the number of failures
     console.warn("Failed to read fingerprint 2 times, enrolling");
 
