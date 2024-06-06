@@ -20,8 +20,7 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Functional stuff to fix:
 - make connection happen with one button. if I can't get it working, then oh well. can just do the 4-button connection in demo, or have it connected beforehand.
-- get weather modify working.
-- make the UI more pretty.
+- get weather modify working. not essential
 
 Documentation stuff:
 - make a draw.io block diagram of how this app works.

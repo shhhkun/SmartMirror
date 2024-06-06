@@ -98,7 +98,7 @@ const ProfileSelectScreen = ({ navigation }: { navigation: any }) => {
         </View>
       </View>
 
-      <View style={styles.button}>
+      <View style={styles.readButton}>
         <ButtonToNavigate onPress={() => readUserFromMirror()}
           title="Read from Characteristic" />
       </View>
@@ -127,6 +127,14 @@ const styles = StyleSheet.create({
 
   button: {
     paddingTop: 0,
+    paddingBottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: GlobalStyles.lightBackground,
+  },
+
+  readButton: {
+    paddingTop: 20,
     paddingBottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
