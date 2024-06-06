@@ -242,7 +242,6 @@ function watchFiles() {
 
   watchUserConfig();
 }
-
 // This will run the fingerprint python script and watch its output
 const userIdPath = path.join(__dirname, 'userId.js');
 const pythonScriptPath = path.join(__dirname, "..", "..", "fingerprint_scanner", "fingerprint_test.py");
@@ -259,10 +258,10 @@ pythonProcess.stdout.on("data", (data) => {
   console.log("2. In stdout.on");
 
   const output = data.toString(); // Converts Buffer to string
-  const numFailures = 0; // Number of failures to read the fingerprint
+  numFailures = 0; // Number of failures to read the fingerprint
 
   // Logic for calling commands
-  const userMatch = output.match(/"(user\d+)";/); // regex for the output to see if it userMatches a found user
+  const userMatch = output.match(/(user\d+)/); // regex for the output to see if it userMatches a found user
   const failedMatch = output.match(/READ_FAIL/); // regex for the output to see if it failed
 
   //debug
