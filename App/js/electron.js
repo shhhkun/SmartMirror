@@ -292,7 +292,7 @@ pythonProcess.stdout.on("data", (data) => {
     console.warn("Fingerprint failed to read");
 
     // Will now display the module that ask the user if they want to enroll a new fingerprint
-    // Implement here...
+    // IMPLEMENT
   }
 });
 
