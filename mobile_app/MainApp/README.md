@@ -20,10 +20,11 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 
 Functional stuff to fix:
 - make slide for BLE custom protocol
+- record a video of correct app operation. after I get whatever working.
+
 - make connection happen with one button. if I can't get it working, then oh well. can just do the 4-button connection in demo, or have it connected beforehand.
 - add lang and units config page
 - get weather modify working. not essential
-- record a video of correct app operation. after I get whatever working.
 
 
 

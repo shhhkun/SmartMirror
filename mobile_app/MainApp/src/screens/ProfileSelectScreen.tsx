@@ -81,9 +81,10 @@ const ProfileSelectScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.userSelectButtonContainer}>
-        <View style={styles.button}>
+        {/* daniel's profile is causing an error, so hiding. */}
+        {/* <View style={styles.button}>
           <ButtonToNavigate onPress={() => sendUserNumberToMirror("Daniel")} title="Daniel" />
-        </View>
+        </View> */}
 
         <View style={styles.button}>
           <ButtonToNavigate onPress={() => sendUserNumberToMirror("Erick")} title="Erick" />
@@ -100,7 +101,7 @@ const ProfileSelectScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.readButton}>
         <ButtonToNavigate onPress={() => readUserFromMirror()}
-          title="Read from Characteristic" />
+          title="Check Current User" />
       </View>
 
       <View style={styles.mainStyle}>

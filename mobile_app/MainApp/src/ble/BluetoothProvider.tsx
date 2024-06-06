@@ -374,7 +374,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     if (peripheralsArray.length == 0) {
-      console.log('No connected devices found');
+      console.error('No connected devices found');
       setSystemConnectedDeviceInfoToDefault();
       return;
     }
