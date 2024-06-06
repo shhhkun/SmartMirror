@@ -90,7 +90,12 @@ var config = {
 		  countdownSeconds: 10,
       alwaysLoadNodeHelper: true
 		}
-	  }
+	  },
+    {
+      module: "affirmations",
+      position: "",
+      disabled: 1
+    }
 	]
 };
 

@@ -78,13 +78,18 @@ var config = {
     {
       // counter
       module: "counter",
-      position: "top_left",
+      position: "lower_third",
       disabled: 1,
       config: {
         countdownSeconds: 10,
         alwaysLoadNodeHelper: true
       }
-    }
+    },
+    {
+      module: "affirmations",
+      position: "lower_third",
+      disabled: 0
+    }	  
   ]
 };
 
