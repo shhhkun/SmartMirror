@@ -32,11 +32,11 @@ export const modulePositionDisplayOptions = [
 ];
 
 export const usersMap: { [key: string]: number } = {
-  "Unknown": 0,
-  "Daniel": 1,
-  "Erick": 2,
-  "Erik": 3,
-  "Serjo": 4,
-  "Andy": 5,
-  "Evan": 6,
+  "Daniel": 0,
+  "Erick": 1,
+  "Erik": 2,
+  "Serjo": 3,
+  "Andy": 4,
+  "Evan": 5,
+  "Unknown": 9,
 };

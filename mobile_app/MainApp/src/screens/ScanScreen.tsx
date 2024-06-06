@@ -8,9 +8,6 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-// BLE service really shouldn't be called in here. but doing for debugging.
-import BluetoothService from '../ble/BluetoothService';
-
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
