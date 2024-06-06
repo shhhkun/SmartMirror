@@ -307,7 +307,7 @@ pythonProcess.stdout.on("data", (data) => {
   let numFailures = 0; // Number of failures to read the fingerprint
 
   // Logic for calling commands
-  const userMatch = output.match(/(user\d+)/); // regex for the output to see if it userMatches a found user
+  const userMatch = output.match(/(user \d+)/); // regex for the output to see if it userMatches a found user
   const failedMatch = output.match(/READ_FAIL/); // regex for the output to see if it failed
 
   //debug
