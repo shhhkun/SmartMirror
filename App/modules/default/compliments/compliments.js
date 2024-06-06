@@ -1,5 +1,4 @@
 Module.register("compliments", {
-	// Module config defaults.
 	defaults: {
 		compliments: {
 			anytime: ["Welcome"],
@@ -18,15 +17,12 @@ Module.register("compliments", {
 		random: true
 	},
 	lastIndexUsed: -1,
-	// Set currentweather from module
 	currentWeatherType: "",
 
-	// Define required scripts.
 	getScripts () {
 		return ["moment.js"];
 	},
 
-	// Define start sequence.
 	async start () {
 		Log.info(`Starting module: ${this.name}`);
 
@@ -39,19 +35,14 @@ Module.register("compliments", {
 		}
 
 		const userId = await this.loadUserId();
-		this.config.compliments.anytime[0] = `Hi ${userId}!`;
+		const userName = await this.loadUserName(userId);
+		this.config.compliments.anytime[0] = `Hi ${userName}!`;
 
-		// Schedule update timer.
 		setInterval(() => {
 			this.updateDom(this.config.fadeSpeed);
 		}, this.config.updateInterval);
 	},
 
-	/**
-	 * Generate a random index for a list of compliments.
-	 * @param {string[]} compliments Array with compliments.
-	 * @returns {number} a random index of given array
-	 */
 	randomIndex (compliments) {
 		if (compliments.length <= 1) {
 			return 0;
@@ -72,16 +63,11 @@ Module.register("compliments", {
 		return complimentIndex;
 	},
 
-	/**
-	 * Retrieve an array of compliments for the time of the day.
-	 * @returns {string[]} array with compliments for the time of the day.
-	 */
 	complimentArray () {
 		const hour = moment().hour();
 		const date = moment().format("YYYY-MM-DD");
 		let compliments = [];
 
-		// Add time of day compliments
 		if (hour >= this.config.morningStartTime && hour < this.config.morningEndTime && this.config.compliments.hasOwnProperty("morning")) {
 			compliments = [...this.config.compliments.morning];
 		} else if (hour >= this.config.afternoonStartTime && hour < this.config.afternoonEndTime && this.config.compliments.hasOwnProperty("afternoon")) {
@@ -90,15 +76,12 @@ Module.register("compliments", {
 			compliments = [...this.config.compliments.evening];
 		}
 
-		// Add compliments based on weather
 		if (this.currentWeatherType in this.config.compliments) {
 			Array.prototype.push.apply(compliments, this.config.compliments[this.currentWeatherType]);
 		}
 
-		// Add compliments for anytime
 		Array.prototype.push.apply(compliments, this.config.compliments.anytime);
 
-		// Add compliments for special days
 		for (let entry in this.config.compliments) {
 			if (new RegExp(entry).test(date)) {
 				Array.prototype.push.apply(compliments, this.config.compliments[entry]);
@@ -120,32 +103,30 @@ Module.register("compliments", {
 		}
 	},
 
-	/**
-	 * Retrieve a random compliment.
-	 * @returns {string} a compliment
-	 */
+	async loadUserName(userId) {
+		try {
+			const response = await fetch(`../../config/${userId}.js`);
+			const configContent = await response.text();
+			const nameMatch = configContent.match(/\/\/\s*Name\s*=\s*(.+)/i);
+			return nameMatch ? nameMatch[1].trim() : userId;
+		} catch (error) {
+			console.error('Error loading user name:', error);
+			return userId;
+		}
+	},
+
 	getRandomCompliment () {
-		// get the current time of day compliments list
 		const compliments = this.complimentArray();
-		// variable for index to next message to display
 		let index;
-		// are we randomizing
 		if (this.config.random) {
-			// yes
 			index = this.randomIndex(compliments);
 		} else {
-			// no, sequential
-			// if doing sequential, don't fall off the end
 			index = this.lastIndexUsed >= compliments.length - 1 ? 0 : ++this.lastIndexUsed;
 		}
 
 		return compliments[index] || "";
 	},
 
-	/**
-	 * Retrieve a file from the local filesystem
-	 * @returns {Promise} Resolved when the file is loaded
-	 */
 	async loadComplimentFile () {
 		const isRemote = this.config.remoteFile.indexOf("http://") === 0 || this.config.remoteFile.indexOf("https://") === 0,
 			url = isRemote ? this.config.remoteFile : this.file(this.config.remoteFile);
@@ -153,35 +134,25 @@ Module.register("compliments", {
 		return await response.text();
 	},
 
-	// Override dom generator.
 	getDom () {
 		const wrapper = document.createElement("div");
 		wrapper.className = this.config.classes ? this.config.classes : "thin xlarge bright pre-line";
-		// get the compliment text
 		const complimentText = this.getRandomCompliment();
-		// split it into parts on newline text
 		const parts = complimentText.split("\n");
-		// create a span to hold the compliment
 		const compliment = document.createElement("span");
-		// process all the parts of the compliment text
 		for (const part of parts) {
 			if (part !== "") {
-				// create a text element for each part
 				compliment.appendChild(document.createTextNode(part));
-				// add a break
 				compliment.appendChild(document.createElement("BR"));
 			}
 		}
-		// only add compliment to wrapper if there is actual text in there
 		if (compliment.children.length > 0) {
-			// remove the last break
 			compliment.lastElementChild.remove();
 			wrapper.appendChild(compliment);
 		}
 		return wrapper;
 	},
 
-	// Override notification handler.
 	notificationReceived (notification, payload, sender) {
 		if (notification === "CURRENTWEATHER_TYPE") {
 			this.currentWeatherType = payload.type;

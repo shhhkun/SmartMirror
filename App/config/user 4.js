@@ -1,3 +1,4 @@
+// Name = Serjo
 var config = {
   address: "localhost",
   port: 8080,
@@ -36,12 +37,12 @@ var config = {
           }
         ]
       },
-      disabled: 0 // calendar disabled
+      disabled: 1 // calendar disabled
     },
     {
       // compliments
       module: "compliments",
-      position: "lower_third", // compliments position
+      position: "top_left", // compliments position
       disabled: 0 // compliments disabled
     },
     {
