@@ -192,7 +192,7 @@ def get_num():
                 print("Error reading number of users")
         except ValueError:
             pass
-    i++
+    i += 1
     print("i is: ", i)
     return i
 
