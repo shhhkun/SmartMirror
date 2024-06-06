@@ -1,0 +1,25 @@
+<mxfile host="app.diagrams.net" modified="2024-06-06T09:41:25.041Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15" etag="SotpyeqaRKQaSM8rnXJp" version="24.4.14" type="device">
+  <diagram name="Page-1" id="DdN8gcbU7JunrORzqN6u">
+    <mxGraphModel dx="836" dy="1576" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vSsWBTN-UY_8RYTxE0du-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="vSsWBTN-UY_8RYTxE0du-2" target="vSsWBTN-UY_8RYTxE0du-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vSsWBTN-UY_8RYTxE0du-2" value="&lt;div&gt;Device&lt;/div&gt;" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="110" y="90" width="340" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="vSsWBTN-UY_8RYTxE0du-3" value="Smart Mirror Service" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="vSsWBTN-UY_8RYTxE0du-2">
+          <mxGeometry x="10" y="35" width="320" height="245" as="geometry" />
+        </mxCell>
+        <mxCell id="vSsWBTN-UY_8RYTxE0du-4" value="&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;  Characteristics:&lt;/span&gt;&lt;/div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Current Profile: &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;int, read/write&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;i&gt;Module Registry:&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;int, read/write&lt;/span&gt;&lt;/i&gt;&lt;/span&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;Calendar Enable:   &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;int, read/write&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;Calendar Position:    &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;int, read/write&lt;/span&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;i&gt;Calendar Options: &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;JSON, read/write&lt;/i&gt;&lt;/span&gt;&lt;br&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;i&gt;&#x9;&lt;/i&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Notifications Enable: &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;int, read/write&lt;/span&gt;&lt;i&gt;&lt;br&gt;&lt;/i&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;...&lt;/span&gt;&lt;br&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="vSsWBTN-UY_8RYTxE0du-3">
+          <mxGeometry x="21" y="42.5" width="280" height="187.5" as="geometry" />
+        </mxCell>
+        <mxCell id="vSsWBTN-UY_8RYTxE0du-5" value="Encrypted BLE Connection" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="240" width="80" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

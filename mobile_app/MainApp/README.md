@@ -19,7 +19,6 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 # ----------
 
 Functional stuff to fix:
-- make slide for BLE central
 - make slide for BLE custom protocol
 - make connection happen with one button. if I can't get it working, then oh well. can just do the 4-button connection in demo, or have it connected beforehand.
 - add lang and units config page

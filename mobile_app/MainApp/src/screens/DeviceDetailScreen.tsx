@@ -89,10 +89,11 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
             title="Manually Change Profiles" />
         </View>
 
-        <View style={styles.button}>
+        {/* hiding this for now */}
+        {/* <View style={styles.button}>
           <ButtonToNavigate onPress={() => navigation.navigate("System Settings")}
             title="Configure System Settings" />
-        </View>
+        </View> */}
 
         <View style={styles.button}>
           <ButtonToNavigate onPress={() => navigation.navigate('Module Configuration')}
