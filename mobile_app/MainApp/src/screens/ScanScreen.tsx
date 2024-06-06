@@ -48,7 +48,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     await doUponGetBondedDevicesButton();
     await new Promise(r => setTimeout(r, 500));
     await doUponConnectToBondedDeviceButton();
-  }
+  };
 
   const doUponSystemConnectedDevicesButton = async (): Promise<void> => {
     try {

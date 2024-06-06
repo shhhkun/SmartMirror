@@ -14,22 +14,9 @@ export const betterPositionsMap: Record<string, number> = {
   'Fullscreen Below': 12
 };
 
-// pretty dumb to have this not be just selecting the keys of the map, but whatever
-export const modulePositionDisplayOptions = [
-  'Top Bar',
-  'Top Left',
-  'Top Center',
-  'Top Right',
-  'Upper Third',
-  'Middle Center',
-  'Lower Third',
-  'Bottom Left',
-  'Bottom Center',
-  'Bottom Right',
-  'Bottom Bar',
-  'Fullscreen Above',
-  'Fullscreen Below'
-];
+
+export const modulePositionDisplayOptions: string[] = Object.keys(betterPositionsMap);
+
 
 export const usersMap: { [key: string]: number } = {
   "Daniel": 0,
@@ -38,5 +25,20 @@ export const usersMap: { [key: string]: number } = {
   "Serjo": 3,
   "Andy": 4,
   "Evan": 5,
+  "Unknown": 9,
+};
+
+// not right values in here rn
+export const languageMap: { [key: string]: number } = {
+  "English": 0,
+  "Spanish": 1,
+  "Russian": 2,
+  "Unknown": 9,
+};
+
+// not right values in here rn
+export const unitsMap: { [key: string]: number } = {
+  "Metric": 0,
+  "Imperial": 1,
   "Unknown": 9,
 };

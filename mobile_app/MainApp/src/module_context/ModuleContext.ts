@@ -44,6 +44,7 @@ interface ModuleContextType {
   systemSettings: SystemSettingsFullConfiguration;
   trueModuleConfiguration: FullModuleConfiguration;
   draftModuleConfiguration: FullModuleConfiguration;
+  setSystemSettings: (newSettings: SystemSettingsFullConfiguration) => void;
   setTrueModuleConfiguration: (newConfig: FullModuleConfiguration) => void;
   setDraftModuleConfiguration: (newConfig: FullModuleConfiguration) => void;
 
@@ -122,6 +123,9 @@ export const defaultModuleContext: ModuleContextType = {
   },
   setDraftModuleConfiguration: () => {
     throw new Error("setDraftModuleConfiguration not ready yet.");
+  },
+  setSystemSettings: () => {
+    throw new Error("setSystemSettings not ready yet.");
   },
   saveDraftConfigToTrueConfig: () => {
     throw new Error("saveDraftConfigToTrueConfig not ready yet.");

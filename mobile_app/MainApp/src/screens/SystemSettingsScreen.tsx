@@ -15,56 +15,70 @@ import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 import { BluetoothContext } from '../ble/BluetoothContext';
-import { usersMap } from '../common/StandardModuleInfo';
+import { ModuleContext } from '../module_context/ModuleContext';
+import {
+  languageMap,
+  unitsMap
+} from '../common/StandardModuleInfo';
+
+// probably want a picker thing in here to select options.
+// and then just call the write to any characteristic with a hard coded
+// UUID in here.
 
 
 
 const SystemSettingsScreen = ({ navigation }: { navigation: any }) => {
-  // context provider stuff needed for this screen
+  // bluetooth context stuff needed for this screen
   const {
     readFromCharacteristic,
-    writeDataToCharacteristic
+    writeDataToCharacteristic,
   } = useContext(BluetoothContext);
 
+  // module context stuff needed for this screen
+  const {
+    systemSettings,
+    setSystemSettings,
+  } = useContext(ModuleContext);
+
   // state stuff for this screen
-  const [readData, setReadData]
-    = useState<string>("Unknown");
+  // const [readData, setReadData]
+  //   = useState<string>("Unknown");
 
 
-  const sendUserNumberToMirror = async (personName: string): Promise<void> => {
-    if (!usersMap[personName]) {
-      console.error('User not currently registered with an ID');
-      return;
-    }
+  // const sendUserNumberToMirror = async (personName: string): Promise<void> => {
+  //   if (!usersMap[personName]) {
+  //     console.error('User not currently registered with an ID');
+  //     return;
+  //   }
 
-    try {
-      await writeDataToCharacteristic(usersMap[personName]);
-    }
-    catch (error) {
-      console.error('Error writing to characteristic from UI:', error);
-    }
-  };
+  //   try {
+  //     await writeDataToCharacteristic(usersMap[personName]);
+  //   }
+  //   catch (error) {
+  //     console.error('Error writing to characteristic from UI:', error);
+  //   }
+  // };
 
-  const getUsersNameFromNumber = (number: number): string => {
-    for (const [key, value] of Object.entries(usersMap)) {
-      if (value === number) {
-        return key;
-      }
-    }
-    return 'Unknown';
-  };
+  // const getUsersNameFromNumber = (number: number): string => {
+  //   for (const [key, value] of Object.entries(usersMap)) {
+  //     if (value === number) {
+  //       return key;
+  //     }
+  //   }
+  //   return 'Unknown';
+  // };
 
-  const readUserFromMirror = async (): Promise<void> => {
-    try {
-      const returnedData: number[] = await readFromCharacteristic();
-      const usersName: string = getUsersNameFromNumber(returnedData[0]);
-      setReadData(usersName);
-    }
-    catch (error) {
-      console.error('Error reading from characteristic:', error);
-      setReadData('Unknown');
-    }
-  };
+  // const readUserFromMirror = async (): Promise<void> => {
+  //   try {
+  //     const returnedData: number[] = await readFromCharacteristic();
+  //     const usersName: string = getUsersNameFromNumber(returnedData[0]);
+  //     setReadData(usersName);
+  //   }
+  //   catch (error) {
+  //     console.error('Error reading from characteristic:', error);
+  //     setReadData('Unknown');
+  //   }
+  // };
 
 
 
@@ -82,33 +96,14 @@ const SystemSettingsScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.userSelectButtonContainer}>
         <View style={styles.button}>
-          <ButtonToNavigate onPress={() => sendUserNumberToMirror("Daniel")} title="Daniel" />
+          <ButtonToNavigate onPress={() => console.log("Daniel")} title="Daniel" />
         </View>
 
-        <View style={styles.button}>
-          <ButtonToNavigate onPress={() => sendUserNumberToMirror("Erick")} title="Erick" />
-        </View>
-
-        <View style={styles.button}>
-          <ButtonToNavigate onPress={() => sendUserNumberToMirror("Erik")} title="Erik" />
-        </View>
-
-        <View style={styles.button}>
-          <ButtonToNavigate onPress={() => sendUserNumberToMirror("Serjo")} title="Serjo" />
-        </View>
       </View>
 
       <View style={styles.readButton}>
-        <ButtonToNavigate onPress={() => readUserFromMirror()}
+        <ButtonToNavigate onPress={() => console.log("hi")}
           title="Read from Characteristic" />
-      </View>
-
-      <View style={styles.mainStyle}>
-        <NiceTextArea title="Current Logged In User:">
-
-          {readData}
-
-        </NiceTextArea>
       </View>
 
     </SafeAreaView >
