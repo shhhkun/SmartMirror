@@ -239,7 +239,7 @@ while True:
         # Resets counter for failed attempts
         failed_attempts = 0
         # Prints to console for node.js module to detect and switch user accordingly
-        print("user", finger.finger_id, "with confidence", finger.confidence) # Debugging only
+        print("user", finger.finger_id, "with confidence", finger.confidence, flush=True)
     else:
         # Prints no user found so js module can detect and prompt if they want to enroll a new user
         print("READ_FAIL", flush=True) # Input for ProfileManager
