@@ -51,6 +51,39 @@ Module.register("counter", {
           this.hide();
         }, 1000);
       }
+    } else if (notification === "ENABLE_COUNTER_MODULE") {
+      const userId = payload;
+      const userConfigFilePath = path.join(__dirname, "..", "config", `${userId}.js`);
+
+      if (fs.existsSync(userConfigFilePath)) {
+        const userConfigContent = fs.readFileSync(userConfigFilePath, "utf8");
+        const lines = userConfigContent.split("\n");
+
+        let updatedContent = "";
+        let insideCounterModule = false;
+
+        for (const line of lines) {
+          if (line.includes("module: \"counter\"")) {
+            insideCounterModule = true;
+          }
+
+          if (insideCounterModule && line.includes("disabled:")) {
+            updatedContent += "    disabled: 0,\n";
+            insideCounterModule = false;
+          } else {
+            updatedContent += line + "\n";
+          }
+        }
+
+        fs.writeFileSync(userConfigFilePath, updatedContent.trim());
+
+        console.log(`Enabled counter module in user-specific config file for user: ${userId}`);
+        this.config.disabled = false;
+        this.show();
+        this.start();
+      } else {
+        console.log(`User-specific config file not found for user: ${userId}`);
+      }
     }
   }
 });

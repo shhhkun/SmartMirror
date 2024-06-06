@@ -88,7 +88,7 @@ var config = {
     {
       module: "affirmations",
       position: "lower_third",
-      disabled: 0
+      disabled: 1
     }	  
   ]
 };

@@ -185,7 +185,7 @@ function loadConfiguration() {
       console.warn(`Configuration file not found for user ${userId}. Using default configuration.`);
     }
 
-    delete require.cache[require.resolve(defaultConfigPath)];
+    //delete require.cache[require.resolve(defaultConfigPath)];
 
     if (fs.existsSync(defaultConfigPath)) {
       userConfig.config = require(defaultConfigPath);
@@ -259,16 +259,35 @@ pythonProcess.stdout.on("data", (data) => {
   console.log("2. In stdout.on");
 
   const output = data.toString(); // Converts Buffer to string
+  const numFailures = 0; // Number of failures to read the fingerprint
 
   // Logic for calling commands
-  const match = output.match(/(user\d+)/); // regex for the output to see if it matches a found user
-  if (match) {
+  const userMatch = output.match(/"(user\d+)";/); // regex for the output to see if it userMatches a found user
+  const failedMatch = output.match(/READ_FAIL/); // regex for the output to see if it failed
+
+  //debug
+  console.log("2.5 Output:", output);
+  console.log("2.6 userMatch:", userMatch);
+  console.log("2.7 failedMatch:", failedMatch);
+
+  if (numFailures >= 2) {
+    console.log("Inside numFailures");
+    numFailures = 0; // Reset the number of failures
+    console.warn("Failed to read fingerprint 2 times, enrolling");
+
+  } else if (userMatch) {
+    numFailures = 0; // Reset the number of failures
     //DEBUG
-    console.log("3. In match");
+    console.log("3. In userMatch: ", userMatch);
+    console.log("3.1 Reset number of failures to: ", numFailures);
+
 
     // Change the userID to be the found user ID
-    const userID = match[1]; // should capture the entire user ID, including 'user' prefix and number
+    const userID = userMatch[1]; // should capture just the user id
     const newContent = `exports.userId = "${userID}";`;
+
+    //DEBUG
+    console.log("3.5 New content:", newContent);
 
     // Will try to write the new user ID to the userId.js file
     try {
@@ -279,15 +298,16 @@ pythonProcess.stdout.on("data", (data) => {
     } catch (error) {
       console.log("Error writing to userid file");
     }
-  } else {
-    console.warn("Unexpected output from fingerpint py file!");
-  }
-  if (output.includes('READ_FAIL')) {
-    // start the countdown timer prompting user if they want to enroll a new fingerprint
-  } else if (output.includes('ONBOARDING')) {
-    // Call the onboarding function
+  } else if (failedMatch) {
+    numFailures += 1; // Increment the number of failures
+    console.warn("Fingerprint failed to read");
+
+    // Will now display the module that ask the user if they want to enroll a new fingerprint
+    // IMPLEMENT
+    mainWindow.webContents.send("ENABLE_COUNTER_MODULE", userId);
   }
 });
+
 
 if (["localhost", "127.0.0.1", "::1", "::ffff:127.0.0.1", undefined].includes(config.address)) {
   core.start().then((c) => {
