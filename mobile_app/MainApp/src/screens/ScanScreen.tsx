@@ -43,6 +43,13 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  // this prob doesn't really work, but it's here
+  const getBondedAndConnectToBonded = async (): Promise<void> => {
+    await doUponGetBondedDevicesButton();
+    await new Promise(r => setTimeout(r, 500));
+    await doUponConnectToBondedDeviceButton();
+  }
+
   const doUponSystemConnectedDevicesButton = async (): Promise<void> => {
     try {
       await getSystemConnectedDeviceInfo();
@@ -111,6 +118,11 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
           <ButtonToNavigate onPress={() => doUponConnectToBondedDeviceButton()}
             title="Connect to Device" />
         </View>
+
+        {/* <View style={styles.button}>
+          <ButtonToNavigate onPress={() => getBondedAndConnectToBonded()}
+            title="Get Bonded and Connect" />
+        </View> */}
 
         {/* this function doesn't really work, so hiding from the UI for now */}
         {/* <View style={styles.buttonContainer}>
