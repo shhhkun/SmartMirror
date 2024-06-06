@@ -27,7 +27,11 @@ Next steps:
 
 - make the UI more pretty.
 - make a draw.io block diagram of how this app works.
+- update slide on BLE central
+- make slide for BLE custom protocol
 - record a video of correct app operation.
+
+
 
 Could not do, if needed, below here:
 - get read module stuff to config working + form state updating correctly. sliders and dropdowns not updating correctly for now. might not have for demo though.

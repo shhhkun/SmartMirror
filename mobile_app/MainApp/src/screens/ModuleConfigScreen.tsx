@@ -21,8 +21,10 @@ import { ModuleContext } from '../module_context/ModuleContext';
 const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
   // stuff from module context needed on this page
   const {
-    draftModuleConfiguration,
-    setDraftModuleConfiguration,
+    // draftModuleConfiguration, // no longer using draft config
+    trueModuleConfiguration,
+    // setDraftModuleConfiguration, // no longer using draft config
+    setTrueModuleConfiguration,
     saveDraftConfigToTrueConfig,
     resetConfigsToDefault,
     writeFullConfigToMirror,
@@ -35,9 +37,12 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
     resetConfigsToDefault();
   };
 
-  const doUponSaveButton = () => {
-    console.log("Saving config button pressed");
-    saveDraftConfigToTrueConfig();
+  // no longer need save. just using true config now.
+  {
+    // const doUponSaveButton = () => {
+    //   console.log("Saving config button pressed");
+    //   saveDraftConfigToTrueConfig();
+    // }
   }
 
   // not using read right now. hiding.
@@ -60,7 +65,8 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
       // functions (like writeFullConfigToMirror) will pull the context state
       // from when this function was originally called, and not what's updated
       // after a function call like this.
-      saveDraftConfigToTrueConfig();
+
+      // saveDraftConfigToTrueConfig();
 
       // do the actual write
       await writeFullConfigToMirror();
@@ -71,11 +77,6 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
   };
 
 
-  // for debugging notifications read state stuff
-  console.log("rendering module config bars with notifications data: " +
-    JSON.stringify(draftModuleConfiguration.updatenotification))
-
-
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
@@ -84,7 +85,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
         showsVerticalScrollIndicator={true}>
 
         {/* Make module config bars for all the modules in draft config. */}
-        {Object.entries(draftModuleConfiguration).map(([moduleName, moduleConfig]) => (
+        {Object.entries(trueModuleConfiguration).map(([moduleName, moduleConfig]) => (
           <ModuleConfigBar
             key={moduleName}
 
@@ -92,8 +93,9 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 
             sliderValue={moduleConfig.moduleEnabled}
             onSliderChange={(value: boolean) =>
-              setDraftModuleConfiguration({
-                ...draftModuleConfiguration,
+              // set the draft config to the new value
+              setTrueModuleConfiguration({
+                ...trueModuleConfiguration,
                 [moduleName]: {
                   ...moduleConfig,
                   moduleEnabled: value
@@ -103,8 +105,8 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 
             dropdownValue={moduleConfig.modulePosition}
             onDropdownChange={(value: string) =>
-              setDraftModuleConfiguration({
-                ...draftModuleConfiguration,
+              setTrueModuleConfiguration({
+                ...trueModuleConfiguration,
                 [moduleName]: {
                   ...moduleConfig,
                   modulePosition: value
@@ -124,11 +126,12 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
           />
         </View>
 
-        <View style={styles.buttonContainer}>
+        {/* just using the true config and not the draft config, so don;t need save rn */}
+        {/* <View style={styles.buttonContainer}>
           <ButtonToNavigate onPress={() => doUponSaveButton()}
             title="Save Changes"
           />
-        </View>
+        </View> */}
 
         {/* read functionality pretty broken rn, so hiding from UI */}
         {/* <View style={styles.buttonContainer}>
@@ -157,7 +160,7 @@ const styles = StyleSheet.create({
   },
 
   scrollableContainer: {
-    height: '55%',
+    height: '70%',
     backgroundColor: GlobalStyles.lessLightBackground,
   },
 
@@ -166,8 +169,8 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    paddingTop: 0,
-    paddingBottom: 0,
+    paddingTop: 10,
+    paddingBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: GlobalStyles.lightBackground,
