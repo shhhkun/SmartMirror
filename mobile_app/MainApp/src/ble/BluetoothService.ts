@@ -20,7 +20,7 @@ class BluetoothService {
 
     } catch (error) {
       console.error('Error initializing BLE manager: ${error} (BluetoothService.initialize)');
-      throw error; // Re-throw the error to propagate it to the caller if needed
+      throw error;
     }
   }
 
@@ -170,8 +170,7 @@ class BluetoothService {
 
     } catch (error) {
       console.error('Error retrieving services:', error);
-
-      throw error; // Re-throw the error to propagate it to the caller
+      throw error;
     }
   }
 
@@ -224,7 +223,7 @@ class BluetoothService {
       throw error;
     }
   }
-
+  // consolidate these 2 write functions into one!
   static async writeByteArray(deviceID: string, serviceUUID: string,
     characteristicUUID: string, byteArray: number[]): Promise<void> {
     // this is just duplicated code from above for now pretty much.
@@ -253,9 +252,9 @@ class BluetoothService {
     }
   }
 
-  // not implemented yet. un-private this when written.
-  private static async disconnect(deviceID: string): Promise<void> {
-    console.error('this function is not implemented yet')
+  static async disconnect(deviceID: string): Promise<void> {
+    // untested and unused right now
+    console.error('disconnect function not really implemented yet')
     return BleManager.disconnect(deviceID);
   }
 }

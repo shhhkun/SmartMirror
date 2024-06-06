@@ -19,12 +19,9 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 # ----------
 
 Functional stuff to fix:
-- make slide for BLE custom protocol
-- record a video of correct app operation. after I get whatever working.
-
 - make connection happen with one button. if I can't get it working, then oh well. can just do the 4-button connection in demo, or have it connected beforehand.
 - add lang and units config page
-- get weather modify working. not essential
+- get weather modify working. not essential. literally just that configuration is failing.
 
 
 
@@ -34,6 +31,7 @@ Could not do, if needed, below here:
 
 Eventually but probably won't implement:
 - persist a user's config to disk
+- want to refactor module context stuff. that was all a bit rushed and jank. also not sure where it would make sense to hold on to characteristics - in the BLE context chars map, or somehwere in modules.
 - add event handeler for disconnect events in the ble manager.
 - maybe make a top right status menu/icon that shows connection status stuff. could also be a button that takes you to a dedicated status page.
 - if dropped connections are still a problem, could have something that polls the mirror every x seconds. as a keep connection alive type thing.

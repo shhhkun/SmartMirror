@@ -22,7 +22,7 @@ const serializeEnableData = (enableData: boolean): number[] => {
 
 const serializePositionData = (
   positionDisplayString: string): number[] => {
-  // serialize this position string based on the position map
+  // serialize this position string to an int, based on the positions map
 
   if (!(positionDisplayString in betterPositionsMap)) {
     throw new Error("Don't have a saved position for display string " +
@@ -117,6 +117,8 @@ export const deserializeReceivedData = (
   // takes in serialized data for enable and position, and the name
   // of the module these characteristics correspond to. returns a
   // SingleModuleConfiguration object.
+  // needs to trueModuleConfig to look up the internal name from the display
+  // name, which is pretty jank. would want to refactor eventually.
 
   const deserializedEnableData: boolean = deserializeEnableData(enableData);
   const deserializedPositionData: string = deserializePositionData(positionData);

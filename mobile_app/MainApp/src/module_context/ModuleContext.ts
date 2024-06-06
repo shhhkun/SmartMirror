@@ -2,13 +2,18 @@ import {
   createContext
 } from 'react';
 
+// kinda unused rn
 export interface SystemSettingsFullConfiguration {
   language: string;
   units: string;
 }
 
 export interface SingleModuleConfiguration {
+  // these internal names are not used for anything right now, since we
+  // actually aren't getting some kind of mapping of modules to chars from
+  // the mirror. But will keep in for now.
   moduleInternalName: string;
+
   moduleDisplayName: string;
   moduleEnabled: boolean;
   modulePosition: string;
@@ -34,7 +39,7 @@ export interface FullSingleUserConfiguration {
   usersFullModuleConfiguration: FullModuleConfiguration;
 }
 
-// not using yet.
+// not using rn; will use for encapsulating a user if/when we support multiple users.
 export interface AllUsersFullConfigurations {
   // some kind of dict that maps unique user ID strigns to their user configs.
   [userId: string]: FullSingleUserConfiguration;

@@ -242,39 +242,6 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     return true;
   };
 
-  // checkIfDeviceIsReadable not implemented. don't need it rn.
-  {
-    // const checkIfDeviceIsReadable = async (serviceUUID: string,
-    //   characteristicUUID: string): Promise<boolean> => {
-    //   // todo
-    //   // will call checkIfDeviceIsReadWritable, and check if read is allowed
-
-    //   if (!await checkIfDeviceIsReadWritable()) {
-    //     return false;
-    //   }
-
-    //   // todo
-
-    //   return false;
-    // }
-  }
-
-  // checkIfDeviceIsWritable not implemented. don't need it rn.
-  {
-    // const checkIfDeviceIsWritable = async (serviceUUID: string,
-    //   characteristicUUID: string): Promise<boolean> => {
-    //   // todo
-    //   // will call checkIfDeviceIsReadWritable, and check if write is allowed
-
-    //   if (!await checkIfDeviceIsReadWritable()) {
-    //     return false;
-    //   }
-
-    //   // todo
-
-    //   return false;
-    // }
-  }
 
 
 
@@ -474,11 +441,11 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  // todo: rename to read from target characteristic. and have it just call the below fuction.
   const readFromCharacteristic = async (): Promise<number[]> => {
-    // returns a byte array
+    // returns a byte array (which probably needs to be deserialized)
 
-    const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();
-    if (!okToReadWrite) {
+    if (! await checkIfDeviceIsReadWritable()) {
       console.error('Device not read-writable (readFromCharacteristic)');
       return [];
     }
@@ -531,6 +498,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  // make this function call the below function
   const writeDataToCharacteristic = async (data: number): Promise<void> => {
     // not really using this function for now. using byte arrays from now on.
 

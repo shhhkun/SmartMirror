@@ -16,13 +16,13 @@ import { BluetoothContext } from '../ble/BluetoothContext';
 
 
 const ScanScreen = ({ navigation }: { navigation: any }) => {
-  // parts of the context we need
+  // stuff from the BLE context provider we need in this screen
   const {
     getBondedDevice,
     connectToBondedDevice,
     getSystemConnectedDeviceInfo,
     connectAndGetAppConnectedDeviceInfo,
-    // appConnectFromBonded // broken so not using rn
+    appConnectFromBonded // broken so not using rn
   } = useContext(BluetoothContext);
 
 
@@ -41,13 +41,6 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     } catch (error) {
       console.error('Error connecting to bonded device in UI:', error);
     }
-  };
-
-  // this prob doesn't really work, but it's here
-  const getBondedAndConnectToBonded = async (): Promise<void> => {
-    await doUponGetBondedDevicesButton();
-    await new Promise(r => setTimeout(r, 500));
-    await doUponConnectToBondedDeviceButton();
   };
 
   const doUponSystemConnectedDevicesButton = async (): Promise<void> => {
@@ -119,11 +112,6 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
             title="Connect to Device" />
         </View>
 
-        {/* <View style={styles.button}>
-          <ButtonToNavigate onPress={() => getBondedAndConnectToBonded()}
-            title="Get Bonded and Connect" />
-        </View> */}
-
         {/* this function doesn't really work, so hiding from the UI for now */}
         {/* <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponFullConnectionButton()}
@@ -156,11 +144,9 @@ const styles = StyleSheet.create({
   mainStyle: {
     backgroundColor: GlobalStyles.lightBackground,
   },
-
   buttonContainer: {
     paddingTop: 40,
   },
-
   button: {
     paddingTop: 0,
     paddingBottom: 0,
