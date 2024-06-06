@@ -90,6 +90,11 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
         </View>
 
         <View style={styles.button}>
+          <ButtonToNavigate onPress={() => navigation.navigate("System Settings")}
+            title="Configure System Settings" />
+        </View>
+
+        <View style={styles.button}>
           <ButtonToNavigate onPress={() => navigation.navigate('Module Configuration')}
             title="Configure Apps" />
         </View>

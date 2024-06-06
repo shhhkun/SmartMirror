@@ -1,4 +1,4 @@
-Mobile app to send a config JSON file to the smart mirror via bluetooth.
+Mobile app to configure the smart mirror via BLE.
 Uses react-native-ble-manager for BLE functionality.
 
 Docs for this bluetooth manager library:
@@ -24,8 +24,7 @@ Functional stuff to fix:
 - get weather modify working. not essential
 
 Documentation stuff:
-- make a draw.io block diagram of how this app works.
-- update slide on BLE central
+- make slide for BLE central
 - make slide for BLE custom protocol
 - record a video of correct app operation.
 

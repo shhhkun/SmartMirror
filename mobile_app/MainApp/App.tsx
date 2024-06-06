@@ -10,6 +10,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import ScanScreen from './src/screens/ScanScreen';
 import DeviceDetailScreen from './src/screens/DeviceDetailScreen';
 import ProfileSelectScreen from './src/screens/ProfileSelectScreen';
+import SystemSettingsScreen from './src/screens/SystemSettingsScreen';
 import ModuleConfigScreen from './src/screens/ModuleConfigScreen';
 
 
@@ -39,6 +40,11 @@ const App = () => {
               name="Profile Selection"
               component={ProfileSelectScreen}
               options={{ title: '' }}
+            />
+            <Stack.Screen
+              name="System Settings"
+              component={SystemSettingsScreen}
+              options={{ title: 'Configure Your System' }}
             />
             <Stack.Screen
               name="Module Configuration"
