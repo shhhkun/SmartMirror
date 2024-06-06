@@ -1,6 +1,5 @@
 import React, {
   useContext,
-  useState,
 } from 'react';
 import {
   StatusBar,
@@ -8,6 +7,9 @@ import {
   View,
   SafeAreaView,
 } from 'react-native';
+
+// BLE service really shouldn't be called in here. but doing for debugging.
+import BluetoothService from '../ble/BluetoothService';
 
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
@@ -52,6 +54,8 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
   };
 
   const doUponFullConnectionButton = async (): Promise<void> => {
+    // this function really doesn't work
+
     // try {
     //   await appConnectFromBonded();
     // } catch (error) {
@@ -67,7 +71,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
     await new Promise(r => setTimeout(r, 1000));
 
-    await doUponSystemConnectedDevicesButton();
+    await BluetoothService.getSystemConnectedPeripherals();
   };
 
 
@@ -77,9 +81,9 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       <StatusBar></StatusBar>
 
       <View style={styles.mainStyle}>
-        <NiceTextArea title="Connected Devices">
-          Pair to a peripheral in your device settings,
-          then press the "show system connected devices" button.
+        <NiceTextArea title="Device Pairing">
+          Pair to your mirror in your device settings, then return here and
+          press the "connect" buttons.
         </NiceTextArea>
       </View>
 
@@ -93,11 +97,11 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
           title="Connect to Bonded Device" />
       </View>
 
-      {/* haven't seen this function work yet, so removing from UI for now */}
-      <View style={styles.buttonContainer}>
+      {/* this function doesn't really work, so hiding from the UI for now */}
+      {/* <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponFullConnectionButton()}
           title="Do Full Connection" />
-      </View>
+      </View> */}
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponSystemConnectedDevicesButton()}

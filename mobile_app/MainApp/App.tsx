@@ -22,11 +22,29 @@ const App = () => {
       <ModuleProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Devices" component={ScanScreen} />
-            <Stack.Screen name="DeviceDetail" component={DeviceDetailScreen} />
-            <Stack.Screen name="Profile Selection" component={ProfileSelectScreen} />
-            <Stack.Screen name="Module Configuration" component={ModuleConfigScreen} />
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ title: 'Home' }} />
+            <Stack.Screen
+              name="Devices"
+              component={ScanScreen}
+              options={{ title: '' }} />
+            <Stack.Screen
+              name="DeviceDetail"
+              component={DeviceDetailScreen}
+              options={{ title: '' }}
+            />
+            <Stack.Screen
+              name="Profile Selection"
+              component={ProfileSelectScreen}
+              options={{ title: '' }}
+            />
+            <Stack.Screen
+              name="Module Configuration"
+              component={ModuleConfigScreen}
+              options={{ title: 'Configure Your Apps' }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </ModuleProvider>

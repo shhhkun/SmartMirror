@@ -26,7 +26,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
     saveDraftConfigToTrueConfig,
     resetConfigsToDefault,
     writeFullConfigToMirror,
-    readFullConfigFromMirror
+    // readFullConfigFromMirror
   } = useContext(ModuleContext);
 
 
@@ -40,19 +40,26 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
     saveDraftConfigToTrueConfig();
   }
 
-  const doUponReadButton = async () => {
-    console.log("Read from mirror button pressed");
-    try {
-      await readFullConfigFromMirror();
-    }
-    catch (error) {
-      console.error("Error reading config from mirror from UI: " + error);
-    }
-  };
+  // not using read right now. hiding.
+  {
+    // const doUponReadButton = async () => {
+    //   console.log("Read from mirror button pressed");
+    //   try {
+    //     await readFullConfigFromMirror();
+    //   }
+    //   catch (error) {
+    //     console.error("Error reading config from mirror from UI: " + error);
+    //   }
+    // };
+  }
 
   const doUponSubmitButton = async () => {
     try {
       // this button will also perform a save to true config
+      // I don't think you're allowed to do this. it seems like the other
+      // functions (like writeFullConfigToMirror) will pull the context state
+      // from when this function was originally called, and not what's updated
+      // after a function call like this.
       saveDraftConfigToTrueConfig();
 
       // do the actual write
@@ -123,11 +130,12 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
           />
         </View>
 
-        <View style={styles.buttonContainer}>
+        {/* read functionality pretty broken rn, so hiding from UI */}
+        {/* <View style={styles.buttonContainer}>
           <ButtonToNavigate onPress={() => doUponReadButton()}
             title="Read from Mirror"
           />
-        </View>
+        </View> */}
 
         <View style={styles.buttonContainer}>
           <ButtonToNavigate onPress={() => doUponSubmitButton()}

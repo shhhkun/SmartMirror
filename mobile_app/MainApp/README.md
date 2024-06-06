@@ -21,9 +21,9 @@ Upon a smart mirror device being found (as determined by UUID somehow?), or any 
 I think the issue I'm seeing of disconnecting after about a minute can be attributed to the Lightblue app. Will wait to worry more about this until I see it happen on the pi.
 
 Next steps:
-- make connection happen with one button.
+- hide the read config button
+- make connection happen with one button. might not be realistic to get this working, though.
 - make changing the config form actually save it.
-- get rid of the read button.
 
 - make the UI more pretty.
 - make a draw.io block diagram of how this app works.
