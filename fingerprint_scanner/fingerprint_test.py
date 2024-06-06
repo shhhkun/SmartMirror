@@ -226,7 +226,7 @@ while True:
     # If failed fingerprints is 2, then it will prompt the user to enroll a new fingerprint
     if failed_attempts == 2:
         failed_attempts = 0 # Reset failed attempts
-        print("ENROLLING")
+        print("ENROLLING", flush=True)
         enroll_finger(get_num())
     if get_fingerprint(): # Will always find a fingerprint first, and then react accordingly
         # Resets counter for failed attempts
@@ -235,7 +235,7 @@ while True:
         print("user", finger.finger_id, "with confidence", finger.confidence) # Debugging only
     else:
         # Prints no user found so js module can detect and prompt if they want to enroll a new user
-        print("READ_FAIL") # Input for ProfileManager
+        print("READ_FAIL", flush=True) # Input for ProfileManager
         failed_attempts += 1
 
 

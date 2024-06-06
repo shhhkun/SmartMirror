@@ -253,11 +253,14 @@ pythonProcess.stdout.on("data", (data) => {
   const match = output.match(/"(user\d+)";/); // regex for the output to see if it matches a found user
   if (match) {
     //DEBUG
-    console.log("3. In match");
+    console.log("3. In match: ", match);
 
     // Change the userID to be the found user ID
     const userID = match[1]; // should capture just the user id
     const newContent = `exports.userId = "${userID}";`;
+
+    //DEBUG
+    console.log("3.5 New content:", newContent);
 
     // Will try to write the new user ID to the userId.js file
     try {
@@ -269,11 +272,11 @@ pythonProcess.stdout.on("data", (data) => {
       console.log("Error writing to userid file");
     }
   } else {
-    console.warn("Unexpected output from fingerpint py file!");
+    console.warn("Unexpected output from fingerpint py file!!!!");
   }
   if (output.includes('READ_FAIL')) {
     // start the countdown timer prompting user if they want to enroll a new fingerprint
-  } else if (output.includes('ONBOARDING')) {
+  } else if (output.includes('ENROLLING')) {
     // Call the onboarding function
   }
 });
