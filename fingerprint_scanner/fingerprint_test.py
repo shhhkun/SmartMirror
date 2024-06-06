@@ -7,6 +7,7 @@ import busio
 from digitalio import DigitalInOut, Direction
 import adafruit_fingerprint
 import os # used to change dirs
+import re # Needed for regex
 
 led = DigitalInOut(board.D13)
 led.direction = Direction.OUTPUT
@@ -28,13 +29,13 @@ finger = adafruit_fingerprint.Adafruit_Fingerprint(uart)
 
 def get_fingerprint():
     """Get a finger print image, template it, and see if it matches!"""
-    print("Waiting for image...", flush=True)
+    print("Waiting for image...")
     while finger.get_image() != adafruit_fingerprint.OK:
         pass
-    print("Templating...", flush=True)
+    print("Templating...")
     if finger.image_2_tz(1) != adafruit_fingerprint.OK:
         return False
-    print("Searching...", flush=True)
+    print("Searching...")
     if finger.finger_search() != adafruit_fingerprint.OK:
         return False
     return True
@@ -44,46 +45,46 @@ def get_fingerprint():
 def get_fingerprint_detail():
     """Get a finger print image, template it, and see if it matches!
     This time, print out each error instead of just returning on failure"""
-    print("Getting image...", end="", flush=True)
+    print("Getting image...", end="")
     i = finger.get_image()
     if i == adafruit_fingerprint.OK:
-        print("Image taken", flush=True)
+        print("Image taken")
     else:
         if i == adafruit_fingerprint.NOFINGER:
-            print("No finger detected", flush=True)
+            print("No finger detected")
         elif i == adafruit_fingerprint.IMAGEFAIL:
-            print("Imaging error", flush=True)
+            print("Imaging error")
         else:
-            print("Other error", flush=True)
+            print("Other error")
         return False
 
-    print("Templating...", end="", flush=True)
+    print("Templating...", end="")
     i = finger.image_2_tz(1)
     if i == adafruit_fingerprint.OK:
-        print("Templated", flush=True)
+        print("Templated")
     else:
         if i == adafruit_fingerprint.IMAGEMESS:
-            print("Image too messy", flush=True)
+            print("Image too messy")
         elif i == adafruit_fingerprint.FEATUREFAIL:
-            print("Could not identify features", flush=True)
+            print("Could not identify features")
         elif i == adafruit_fingerprint.INVALIDIMAGE:
-            print("Image invalid", flush=True)
+            print("Image invalid")
         else:
-            print("Other error", flush=True)
+            print("Other error")
         return False
 
-    print("Searching...", end="", flush=True)
+    print("Searching...", end="")
     i = finger.finger_fast_search()
     # pylint: disable=no-else-return
     # This block needs to be refactored when it can be tested.
     if i == adafruit_fingerprint.OK:
-        print("Found fingerprint!", flush=True)
+        print("Found fingerprint!")
         return True
     else:
         if i == adafruit_fingerprint.NOTFOUND:
-            print("No match found", flush=True)
+            print("No match found")
         else:
-            print("Other error", flush=True)
+            print("Other error")
         return False
 
 
@@ -92,67 +93,67 @@ def enroll_finger(location):
     """Take a 2 finger images and template it, then store in 'location'"""
     for fingerimg in range(1, 3):
         if fingerimg == 1:
-            print("Place finger on sensor...", end="", flush=True)
+            print("Place finger on sensor...", end="")
         else:
-            print("Place same finger again...", end="", flush=True)
+            print("Place same finger again...", end="")
 
         while True:
             i = finger.get_image()
             if i == adafruit_fingerprint.OK:
-                print("Image taken", flush=True)
+                print("Image taken")
                 break
             if i == adafruit_fingerprint.NOFINGER:
-                print(".", end="", flush=True)
+                print(".", end="")
             elif i == adafruit_fingerprint.IMAGEFAIL:
-                print("Imaging error", flush=True)
+                print("Imaging error")
                 return False
             else:
-                print("Other error", flush=True)
+                print("Other error")
                 return False
 
-        print("Templating...", end="", flush=True)
+        print("Templating...", end="")
         i = finger.image_2_tz(fingerimg)
         if i == adafruit_fingerprint.OK:
-            print("Templated", flush=True)
+            print("Templated")
         else:
             if i == adafruit_fingerprint.IMAGEMESS:
-                print("Image too messy", flush=True)
+                print("Image too messy")
             elif i == adafruit_fingerprint.FEATUREFAIL:
-                print("Could not identify features", flush=True)
+                print("Could not identify features")
             elif i == adafruit_fingerprint.INVALIDIMAGE:
-                print("Image invalid", flush=True)
+                print("Image invalid")
             else:
-                print("Other error", flush=True)
+                print("Other error")
             return False
 
         if fingerimg == 1:
-            print("Remove finger", flush=True)
+            print("Remove finger")
             time.sleep(1)
             while i != adafruit_fingerprint.NOFINGER:
                 i = finger.get_image()
 
-    print("Creating model...", end="", flush=True)
+    print("Creating model...", end="")
     i = finger.create_model()
     if i == adafruit_fingerprint.OK:
-        print("Created", flush=True)
+        print("Created")
     else:
         if i == adafruit_fingerprint.ENROLLMISMATCH:
-            print("Prints did not match", flush=True)
+            print("Prints did not match")
         else:
-            print("Other error", flush=True)
+            print("Other error")
         return False
 
-    print("Storing model #%d..." % location, end="", flush=True)
+    print("Storing model #%d..." % location, end="")
     i = finger.store_model(location)
     if i == adafruit_fingerprint.OK:
-        print("Stored", flush=True)
+        print("Stored")
     else:
         if i == adafruit_fingerprint.BADLOCATION:
-            print("Bad storage location", flush=True)
+            print("Bad storage location")
         elif i == adafruit_fingerprint.FLASHERR:
-            print("Flash storage error", flush=True)
+            print("Flash storage error")
         else:
-            print("Other error", flush=True)
+            print("Other error")
         return False
 
     return True
@@ -167,15 +168,42 @@ def change_user():
     # Change dirs to access the file to change users
     os.chdir('../App/js')
 
+# Opens userId.js file and reads the number of users currently enrolled
+def read_num_users(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            for line in file:
+                match = re.search(r'exports\.numUsers\s*=\s*(\d+);', line)
+                if match:
+                    num_users_str = match.group(1)
+                    return int(num_users_str)
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+    return None  # Return None if the file wasn't found or the number wasn't found
+
+# My edited code to assign a number to each new user
 def get_num():
     """Use input() to get a valid number from 1 to 127. Retry till success!"""
     i = 0
     while (i > 127) or (i < 1):
         try:
-            i = int(input("Enter ID # from 1-127: "))
+            i = read_num_users('../App/js/userId.js') # will open userId.js and read the number of users
+            if i == None:
+                print("Error reading number of users")
         except ValueError:
             pass
+    print("i is: ", i)
     return i
+
+# def get_num():
+#     """Use input() to get a valid number from 1 to 127. Retry till success!"""
+#     i = 0
+#     while (i > 127) or (i < 1):
+#         try:
+#             i = int(input("Enter ID # from 1-127: "))
+#         except ValueError:
+#             pass
+#     return i
 
 # My code that will always run to detect new fingerprints
 # This is meant to work with the electron.js program for MM. This will output to console so that
@@ -193,6 +221,7 @@ def get_num():
 # it will print "User not found" to the console twice so that the electron.js program can detect 2
 # negatives and create a new user.
 while True:
+    time.sleep(1) # Will sleep the counter to not spam consoled
     # Initial check to make sure it can find fingerprints
     if finger.read_templates() != adafruit_fingerprint.OK:
         raise RuntimeError("Failed to read templates")
@@ -201,12 +230,13 @@ while True:
     if failed_attempts == 2:
         failed_attempts = 0 # Reset failed attempts
         print("ENROLLING", flush=True)
+
         enroll_finger(get_num())
     if get_fingerprint(): # Will always find a fingerprint first, and then react accordingly
         # Resets counter for failed attempts
         failed_attempts = 0
         # Prints to console for node.js module to detect and switch user accordingly
-        print("user", finger.finger_id, "with confidence", finger.confidence, flush=True) # Debugging only
+        print("user", finger.finger_id, "with confidence", finger.confidence) # Debugging only
     else:
         # Prints no user found so js module can detect and prompt if they want to enroll a new user
         print("READ_FAIL", flush=True) # Input for ProfileManager
@@ -214,14 +244,14 @@ while True:
 
 
 # while True:
-#     print("----------------", flush=True)
+#     print("----------------")
 #     if finger.read_templates() != adafruit_fingerprint.OK:
 #         raise RuntimeError("Failed to read templates")
-#     print("Fingerprint templates:", finger.templates, flush=True)
-#     print("e) enroll print", flush=True)
-#     print("f) find print", flush=True)
-#     print("d) delete print", flush=True)
-#     print("----------------", flush=True)
+#     print("Fingerprint templates:", finger.templates)
+#     print("e) enroll print")
+#     print("f) find print")
+#     print("d) delete print")
+#     print("----------------")
 #     c = input("> ")
 
 #     if c == "e":
@@ -229,11 +259,11 @@ while True:
 #     if c == "f":
 #         if get_fingerprint():
 #             # Prints to console for node.js module to detect and switch user accordingly
-#             print("Detected #", finger.finger_id, "with confidence", finger.confidence, flush=True)
+#             print("Detected #", finger.finger_id, "with confidence", finger.confidence)
 #         else:
-#             print("User not found", flush=True) # Print error message to stdout for
+#             print("User not found") # Print error message to stdout for
 #     if c == "d":
 #         if finger.delete_model(get_num()) == adafruit_fingerprint.OK:
-#             print("Deleted!", flush=True)
+#             print("Deleted!")
 #         else:
-#             print("Failed to delete", flush=True)
+#             print("Failed to delete")
