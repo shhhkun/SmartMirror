@@ -251,6 +251,11 @@ pythonProcess.stdout.on("data", (data) => {
 
   // Logic for calling commands
   const match = output.match(/"(user\d+)";/); // regex for the output to see if it matches a found user
+
+  //debug
+  console.log("2.5 Output:", output);
+  console.log("2.6 Match:", match);
+
   if (match) {
     //DEBUG
     console.log("3. In match: ", match);
