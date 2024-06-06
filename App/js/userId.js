@@ -1,4 +1,4 @@
-exports.userId = "user 1";
+exports.userId = "defaultStart";
 exports.existingUsers = [
   "defaultStart",
   "default",
@@ -10,4 +10,3 @@ exports.existingUsers = [
   "user 1"
 ];
 exports.numUsers = 8;
-// random text
