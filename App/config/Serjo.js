@@ -20,14 +20,14 @@ var config = {
     {
       // clock
       module: "clock",
-      position: "top_right", // clock position
+      position: "top_left", // clock position
       disabled: 0 // clock disabled
     },
     {
       // calendar
       module: "calendar",
       header: "Calendar",
-      position: "top_right", // calendar position
+      position: "top_left", // calendar position
       config: {
         calendars: [
           {
@@ -36,18 +36,18 @@ var config = {
           }
         ]
       },
-      disabled: 0 // calendar disabled
+      disabled: 1 // calendar disabled
     },
     {
       // compliments
       module: "compliments",
-      position: "bottom_bar", // compliments position
+      position: "top_left", // compliments position
       disabled: 0 // compliments disabled
     },
     {
       // weather
       module: "weather",
-      position: "bottom_bar", // weather position
+      position: "top_right", // weather position
       config: {
         weatherProvider: "openweathermap",
         type: "current",
@@ -73,7 +73,7 @@ var config = {
         broadcastNewsFeeds: true,
         broadcastNewsUpdates: true
       },
-      disabled: 1 // news disabled
+      disabled: 0 // news disabled
     },
     {
       // counter
