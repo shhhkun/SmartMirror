@@ -24,7 +24,8 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     getBondedDevice,
     connectToBondedDevice,
     getSystemConnectedDeviceInfo,
-    appConnectFromBonded
+    connectAndGetAppConnectedDeviceInfo,
+    // appConnectFromBonded // broken so not using rn
   } = useContext(BluetoothContext);
 
 
@@ -53,26 +54,40 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
-  const doUponFullConnectionButton = async (): Promise<void> => {
-    // this function really doesn't work
+  const doUponServicesButtonPress = async (): Promise<void> => {
+    try {
+      await connectAndGetAppConnectedDeviceInfo();
+      console.log('Connected to device and got services in DeviceDetailScreen');
 
-    // try {
-    //   await appConnectFromBonded();
-    // } catch (error) {
-    //   console.error('Error doing full connection in UI:', error);
-    // }
-
-    // extremely cursed: just calling the other button functions with this
-    await doUponGetBondedDevicesButton();
-
-    await new Promise(r => setTimeout(r, 1000));
-
-    await doUponConnectToBondedDeviceButton();
-
-    await new Promise(r => setTimeout(r, 1000));
-
-    await BluetoothService.getSystemConnectedPeripherals();
+    }
+    catch (error) {
+      console.error('Error retrieving services:', error);
+    }
   };
+
+  // doUponFullConnectionButton really doesn't work, so hidden for now
+  {
+    // const doUponFullConnectionButton = async (): Promise<void> => {
+    //   // this function really doesn't work
+
+    //   // try {
+    //   //   await appConnectFromBonded();
+    //   // } catch (error) {
+    //   //   console.error('Error doing full connection in UI:', error);
+    //   // }
+
+    //   // extremely cursed: just calling the other button functions with this
+    //   await doUponGetBondedDevicesButton();
+
+    //   await new Promise(r => setTimeout(r, 1000));
+
+    //   await doUponConnectToBondedDeviceButton();
+
+    //   await new Promise(r => setTimeout(r, 1000));
+
+    //   await BluetoothService.getSystemConnectedPeripherals();
+    // };
+  }
 
 
   // UI stuff here
@@ -94,7 +109,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponConnectToBondedDeviceButton()}
-          title="Connect to Bonded Device" />
+          title="Connect to Device" />
       </View>
 
       {/* this function doesn't really work, so hiding from the UI for now */}
@@ -105,7 +120,12 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponSystemConnectedDevicesButton()}
-          title="Get Info About System Connected Device" />
+          title="Get System Device" />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <ButtonToNavigate onPress={() => doUponServicesButtonPress()}
+          title="Get Services" />
       </View>
 
       <View style={styles.buttonContainer}>

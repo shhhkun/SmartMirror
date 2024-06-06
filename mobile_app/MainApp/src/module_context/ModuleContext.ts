@@ -83,30 +83,34 @@ const defaultModuleConfiguration: FullModuleConfiguration = {
     moduleEnabled: true,
     modulePosition: 'Top Left'
   },
-  // calendar: {
-  //   moduleInternalName: "calendar",
-  //   moduleDisplayName: "Calendar",
-  //   moduleEnabled: true,
-  //   modulePosition: 'Top Left'
-  // },
-  // compliments: {
-  //   moduleInternalName: "compliments",
-  //   moduleDisplayName: "Compliments",
-  //   moduleEnabled: true,
-  //   modulePosition: 'Top Left'
-  // },
+  calendar: {
+    moduleInternalName: "calendar",
+    moduleDisplayName: "Calendar",
+    moduleEnabled: true,
+    modulePosition: 'Top Left'
+  },
+  compliments: {
+    moduleInternalName: "compliments",
+    moduleDisplayName: "Compliments",
+    moduleEnabled: true,
+    modulePosition: 'Top Left'
+  },
+  // weather enablement characteristic doesn't work rn.
+  // will just not allow weather config for now.
+
   // weather: {
   //   moduleInternalName: "weather",
   //   moduleDisplayName: "Weather",
   //   moduleEnabled: true,
   //   modulePosition: 'Top Left'
   // },
-  // newsfeed: {
-  //   moduleInternalName: "newsfeed",
-  //   moduleDisplayName: "News",
-  //   moduleEnabled: true,
-  //   modulePosition: 'Top Left'
-  // }
+
+  newsfeed: {
+    moduleInternalName: "newsfeed",
+    moduleDisplayName: "News",
+    moduleEnabled: true,
+    modulePosition: 'Top Left'
+  }
 };
 
 export const defaultModuleContext: ModuleContextType = {

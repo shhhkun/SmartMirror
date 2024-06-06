@@ -87,6 +87,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
         {/* Make module config bars for all the modules in draft config. */}
         {Object.entries(trueModuleConfiguration).map(([moduleName, moduleConfig]) => (
           <ModuleConfigBar
+            // this key thing is needed for efficient re-rendering stuff
             key={moduleName}
 
             title={moduleConfig.moduleDisplayName}

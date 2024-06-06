@@ -66,25 +66,23 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       prepareDataToSend(singleModule.moduleEnabled, singleModule.modulePosition);
 
     try {
+      console.log("---------------------------------");
+
       // write the enablement
+      console.log("Attemoting to write " + moduleName + " enablement:");
       await writeByteArrayToAnyCharacteristic(
         dataToSend.get('enable') as number[],
         characteristics.get('enable') as string
       );
 
       // write the position
+      console.log("Attemoting to write " + moduleName + " position:");
       await writeByteArrayToAnyCharacteristic(
         dataToSend.get('position') as number[],
         characteristics.get('position') as string
       );
 
-      // printout for successfull write
-      {
-        console.log(moduleName + " updated via chars " +
-          JSON.stringify([...characteristics]) + " and data " +
-          JSON.stringify([...dataToSend]));
-        console.log("---------------------------------");
-      }
+      console.log("---------------------------------");
 
     } catch (error) {
       console.error("Error writing single module config to mirror", error);

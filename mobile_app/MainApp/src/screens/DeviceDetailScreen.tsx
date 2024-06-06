@@ -17,9 +17,8 @@ import { BluetoothContext } from '../ble/BluetoothContext';
 
 
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
-  // stuff needed from the context provider
+  // stuff needed from the context provider. just have these in from when I was testing.
   const {
-    connectAndGetAppConnectedDeviceInfo,
     readFromCharacteristic,
     writeDataToCharacteristic,
   } = useContext(BluetoothContext);
@@ -28,40 +27,34 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
   const [readData, setReadData] = useState<any>(null);
 
 
+  // not using pure read function for now
+  {
+    // const doUponReadButtonPress = async (): Promise<void> => {
+    //   try {
+    //     const returnedData: number[] = await readFromCharacteristic();
+    //     setReadData(returnedData);
+    //     console.log('Read from characteristic button pressed');
+    //   }
+    //   catch (error) {
+    //     console.error('Error reading from characteristic:', error);
+    //   }
+    // };
+  }
 
-  const doUponServicesButtonPress = async (): Promise<void> => {
-    try {
-      await connectAndGetAppConnectedDeviceInfo();
-      console.log('Connected to device and got services in DeviceDetailScreen');
+  // not using pure write function for now
+  {
+    // const doUponWriteButtonPress = async (): Promise<void> => {
+    //   const dataValue: number = 80;
 
-    }
-    catch (error) {
-      console.error('Error retrieving services:', error);
-    }
-  };
-
-  const doUponReadButtonPress = async (): Promise<void> => {
-    try {
-      const returnedData: number[] = await readFromCharacteristic();
-      setReadData(returnedData);
-      console.log('Read from characteristic button pressed');
-    }
-    catch (error) {
-      console.error('Error reading from characteristic:', error);
-    }
-  };
-
-  const doUponWriteButtonPress = async (): Promise<void> => {
-    const dataValue: number = 80;
-
-    try {
-      await writeDataToCharacteristic(dataValue);
-      console.log('Write to characteristic button pressed');
-    }
-    catch (error) {
-      console.error('Error writing to characteristic from UI:', error);
-    }
-  };
+    //   try {
+    //     await writeDataToCharacteristic(dataValue);
+    //     console.log('Write to characteristic button pressed');
+    //   }
+    //   catch (error) {
+    //     console.error('Error writing to characteristic from UI:', error);
+    //   }
+    // };
+  }
 
 
 
@@ -72,33 +65,34 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 
       <View style={styles.mainStyle}>
         <NiceTextArea title="Connected Device Details">
-          Press buttons below.
+          Press buttons below. Serial number (basically just the BLE device ID)
+          could go here.
+
+          {/* Could have some content in here that prints out serial number or something */}
         </NiceTextArea>
       </View>
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponServicesButtonPress()}
-          title="App-Pair and Get Services" />
-      </View>
 
-      <View style={styles.buttonContainer}>
+      {/* hiding the testing read and write buttons. */}
+      {/* <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponReadButtonPress()}
           title="Read from Characteristic" />
       </View>
-
       <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponWriteButtonPress()}
           title="Write to Characteristic" />
-      </View>
+      </View> */}
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => navigation.navigate("Profile Selection")}
-          title="Go to Profile Switcher" />
-      </View>
+      <View style={styles.button}>
+        <View style={styles.button}>
+          <ButtonToNavigate onPress={() => navigation.navigate("Profile Selection")}
+            title="Manually Change Profiles" />
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => navigation.navigate('Module Configuration')}
-          title="Go To Module Config" />
+        <View style={styles.button}>
+          <ButtonToNavigate onPress={() => navigation.navigate('Module Configuration')}
+            title="Configure Apps" />
+        </View>
       </View>
 
     </SafeAreaView >
@@ -113,7 +107,12 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    paddingTop: 0,
+    // this top pading doesn't seem to be working rn.
+    paddingTop: 10,
+  },
+
+  button: {
+    paddingTop: 5,
     paddingBottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
