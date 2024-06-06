@@ -245,35 +245,47 @@ function watchFiles() {
 
 // This will run the fingerprint python script and watch its output
 const userIdPath = path.join(__dirname, 'userId.js');
-const pythonScriptPath = path.join(__dirname, "..", "..","fingerprint_scanner", "fingerprint_test.py");
+const pythonScriptPath = path.join(__dirname, "..", "..", "fingerprint_scanner", "fingerprint_test.py");
+//DEBUG
+console.log("Python script path:", pythonScriptPath);
 const pythonProcess = spawn("python3", [pythonScriptPath]);
+
+//DEBUG
+console.log("1.Post const definitions");
 
 // The logic for the python fingerprint, read outputs and looks for keywords
 pythonProcess.stdout.on("data", (data) => {
-  const output = data.toString().trim(); // Converts Buffer to string and removes leading/trailing whitespace
+  //DEBUG
+  console.log("2. In stdout.on");
 
-  console.log("Received output from Python script:", output); // Log the actual output
+  const output = data.toString(); // Converts Buffer to string
 
   // Logic for calling commands
-  const match = output.match(/(user\d+)/);
+  const match = output.match(/(user\d+)/); // regex for the output to see if it matches a found user
   if (match) {
+    //DEBUG
+    console.log("3. In match");
+
     // Change the userID to be the found user ID
-    const userID = match[1]; // should capture the entire user ID, including 'user' prefix
+    const userID = match[1]; // should capture the entire user ID, including 'user' prefix and number
     const newContent = `exports.userId = "${userID}";`;
 
     // Will try to write the new user ID to the userId.js file
     try {
-      fs.writeFileSync(userIdPath, newContent);
+      //DEBUG
+      console.log("4. In try");
+      fs.writeFileSync(userIdPath, newContent); // NOTE: do I need utf-8? lets try without it first
       console.log("Wrote to userid file");
     } catch (error) {
       console.log("Error writing to userid file");
     }
-  } else if (output.includes('READ_FAIL')) {
+  } else {
+    console.warn("Unexpected output from fingerpint py file!");
+  }
+  if (output.includes('READ_FAIL')) {
     // start the countdown timer prompting user if they want to enroll a new fingerprint
   } else if (output.includes('ONBOARDING')) {
     // Call the onboarding function
-  } else {
-    console.warn("Unexpected output from fingerprint py file!");
   }
 });
 

@@ -4,47 +4,49 @@ var config = {
 	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"],
 	language: "en",
 	timeFormat: 24,
-	units: "imperial",
+	units: "metric",
 	modules: [
 	  {
 		// alert
 		module: "alert",
-		disabled: 0 // alert disabled
+		disabled: 0 // 0 or 1
 	  },
     {
       module: "MMM-NowPlayingOnSpotify",
       position: "top_left",
+      disabled: 1,
+      showCoverArt: true,
     
       config: {
-        clientID: "d8264bf147e445f4b36ccbdef94e4024",
-        clientSecret: "6f6d58b29297488495419155630023e0",
-        accessToken: "BQAPCg4Rd8yQdYvxQe02-osipY7mwweBJDH2CFXKbIR438D6ENlBXAArHuvpf2tnzQM9jYuSrkodlV2M7d_Jc-UQYj87QhKAVO8zJeI5bZUrK-6OJCszuTVzgGALv9SjoiPxZXAbGkj-BfIsgCNQB9O7bScRNZCG2XT-Kemb8Neu0dDmEL7_4QIScTLDOg",
-        refreshToken: "AQBWRAJuTVrJ7d8pxnEwmoDxPYnJJOMnXH220490DX8n5cDYfVGxIbpFaIXraMqp8N9gFdvknK7u2Ti396cV--gT2ZddKYyt43DMTzRw0Btg9ZMKGxGLdtpFifLq1jUGxlc"
+        clientID: "",
+        clientSecret: "",
+        accessToken: "",
+        refreshToken: ""
       }
-    },
+    }, 
 	  {
 		// updatenotification
 		module: "updatenotification",
-		position: "top_bar", // updatenotification position
-		disabled: 69 // updatenotification disabled
+		position: "top_bar",
+		disabled: 0 // 0 or 1
 	  },
 	  {
 		// clock
 		module: "clock",
-		position: "bottom_bar", // clock position
-		disabled: 2 // clock disabled
+		position: "top_left",
+		disabled: 0 // 0 or 1
 	  },
 	  {
 		// calendar
 		module: "calendar",
-		header: "Daniels Calendar",
-		position: "top_left", // calendar position
-		disabled: 0, // calendar disabled
+		header: "US Holidays",
+		position: "top_left",
+		disabled: 0, // 0 or 1
 		config: {
 		  calendars: [
 			{
 			  symbol: "calendar-check",
-			  url: "https://calendar.google.com/calendar/ical/dsarni%40ucsc.edu/public/basic.ics"
+			  url: "webcal://www.calendarlabs.com/ical-calendar/ics/76/US_Holidays.ics"
 			}
 		  ]
 		}
@@ -52,14 +54,14 @@ var config = {
 	  {
 		// compliments
 		module: "compliments",
-		position: "lower_third", // compliments position
-		disabled: 0 // compliments disabled
+		position: "lower_third",
+		disabled: 0 // 0 or 1
 	  },
 	  {
 		// weather
 		module: "weather",
-		position: "top_right", // weather position
-		disabled: 0, // weather disabled
+		position: "top_right",
+		disabled: 0, // 0 or 1
 		config: {
 		  weatherProvider: "openweathermap",
 		  type: "current",
@@ -71,8 +73,8 @@ var config = {
 	  {
 		// newsfeed
 		module: "newsfeed",
-		position: "bottom_bar", // news position
-		disabled: 0, // news disabled
+		position: "bottom_bar",
+		disabled: 0, // 0 or 1
 		config: {
 		  feeds: [
 			{
