@@ -7,6 +7,8 @@ const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process"); // used to spawn fingerprint py file as a child process
 
+numFailures = 0; // Number of failures to read the fingerprint
+
 let config = process.env.config ? JSON.parse(process.env.config) : {};
 const userConfig = {
   config: {}
@@ -283,7 +285,6 @@ function watchFiles() {
   watchUserConfig();
 }
 // This will run the fingerprint python script and watch its output
-numFailures = 0;
 const userIdPath = path.join(__dirname, "userId.js");
 const pythonScriptPath = path.join(
   __dirname,
@@ -305,7 +306,6 @@ pythonProcess.stdout.on("data", (data) => {
   console.log("2. In stdout.on");
 
   const output = data.toString(); // Converts Buffer to string
-  numFailures = 0; // Number of failures to read the fingerprint
 
   // Logic for calling commands
   const userMatch = output.match(/(user\d+)/); // regex for the output to see if it userMatches a found user
