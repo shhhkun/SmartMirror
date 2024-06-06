@@ -193,6 +193,8 @@ def get_num():
         except ValueError:
             pass
     i += 1
+    #DEBUG
+    i = int(input("Enter ID # from 1-127: "))
     print("i is: ", i)
     return i
 
