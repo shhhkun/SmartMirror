@@ -194,7 +194,7 @@ def get_num():
             pass
     i += 1
     #DEBUG
-    i = int(input("Enter ID # from 1-127: "))
+    # i = int(input("Enter ID # from 1-127: "))
     print("i is: ", i)
     return i
 
