@@ -25,23 +25,9 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     appConnectFromBonded
   } = useContext(BluetoothContext);
 
-  // page-specific state stuff
-  const [lastDeviceCheckTime, setLastDeviceCheckTime] = useState('never');
-
 
   // function to retireve connected devices upon button press
-  const doUponSystemConnectedDevicesButton = async (): Promise<void> => {
-    try {
-      await getSystemConnectedDeviceInfo();
-      setLastDeviceCheckTime(new Date().toLocaleTimeString());
-
-    } catch (error) {
-      console.error('Error checking for connected devices:', error);
-      setLastDeviceCheckTime(`Error: ${new Date().toLocaleTimeString()}`);
-    }
-  };
-
-  const doUponBondedDeviceButton = async (): Promise<void> => {
+  const doUponGetBondedDevicesButton = async (): Promise<void> => {
     try {
       await getBondedDevice();
     } catch (error) {
@@ -57,8 +43,15 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     }
   };
 
-  // have this functionality removed for now
-  const doUponFullConnection = async (): Promise<void> => {
+  const doUponSystemConnectedDevicesButton = async (): Promise<void> => {
+    try {
+      await getSystemConnectedDeviceInfo();
+    } catch (error) {
+      console.error('Error checking for connected devices:', error);
+    }
+  };
+
+  const doUponFullConnectionButton = async (): Promise<void> => {
     try {
       await appConnectFromBonded();
     } catch (error) {
@@ -80,7 +73,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponBondedDeviceButton()}
+        <ButtonToNavigate onPress={() => doUponGetBondedDevicesButton()}
           title="Get Bonded Devices" />
       </View>
 
@@ -91,7 +84,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 
       {/* haven't seen this function work yet, so removing from UI for now */}
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponFullConnection()}
+        <ButtonToNavigate onPress={() => doUponFullConnectionButton()}
           title="Do Full Connection" />
       </View>
 

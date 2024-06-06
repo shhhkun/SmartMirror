@@ -437,10 +437,14 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   };
 
-  // haven't seen appConnectFromBonded work yet. not using rn.
+  // haven't seen appConnectFromBonded work yet
   const appConnectFromBonded = async (): Promise<void> => {
     // this failed when I tried it. however, the indivudual steps work when
     // triggered from buttons. maybe need to have delays between.
+
+    // system connected info is not returning anything. that seems
+    // to be the problem.
+
     try {
       console.log('Calling connectToBondedDevice');
       await connectToBondedDevice();
@@ -449,21 +453,23 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       console.log('Calling getSystemConnectedDeviceInfo');
+
+      // !!!!!! this is getting an empty array right now for some reason !!!!!!
       await getSystemConnectedDeviceInfo();
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 5000));
 
-      // try calling connect to bonded device again, because idk
-      console.log('Calling connectToBondedDevice again');
-      await connectToBondedDevice();
+      // // try calling connect to bonded device again, because idk
+      // console.log('Calling connectToBondedDevice again');
+      // await connectToBondedDevice();
 
-      console.log('long delay to let connection settle');
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      // console.log('long delay to let connection settle');
+      // await new Promise((resolve) => setTimeout(resolve, 5000));
 
-      // try call system connected again, because idk
-      console.log('Calling getSystemConnectedDeviceInfo again');
-      await getSystemConnectedDeviceInfo();
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // // try call system connected again, because idk
+      // console.log('Calling getSystemConnectedDeviceInfo again');
+      // await getSystemConnectedDeviceInfo();
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // !!!!!! this is what's failing !!!!!!
       console.log('Calling connectAndGetAppConnectedDeviceInfo');
