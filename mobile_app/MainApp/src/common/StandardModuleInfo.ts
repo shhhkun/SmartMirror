@@ -31,14 +31,12 @@ export const modulePositionDisplayOptions = [
   'Fullscreen Below'
 ];
 
-
-const standardModuleNames: string[] = [
-  // not using this for anything for now. just have it here for ref.
-  "alert",
-  "updatenotification",
-  "clock",
-  "calendar",
-  "compliments",
-  "weather",
-  "newsfeed"
-];
+export const usersMap: { [key: string]: number } = {
+  "Unknown": 0,
+  "Daniel": 1,
+  "Erick": 2,
+  "Erik": 3,
+  "Serjo": 4,
+  "Andy": 5,
+  "Evan": 6,
+};

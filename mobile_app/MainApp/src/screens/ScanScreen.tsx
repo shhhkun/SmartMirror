@@ -95,6 +95,8 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
 
+
+
       <View style={styles.mainStyle}>
         <NiceTextArea title="Device Pairing">
           Pair to your mirror in your device settings, then return here and
@@ -103,34 +105,36 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponGetBondedDevicesButton()}
-          title="Get Bonded Devices" />
-      </View>
+        <View style={styles.button}>
+          <ButtonToNavigate onPress={() => doUponGetBondedDevicesButton()}
+            title="Get Bonded Devices" />
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponConnectToBondedDeviceButton()}
-          title="Connect to Device" />
-      </View>
+        <View style={styles.button}>
+          <ButtonToNavigate onPress={() => doUponConnectToBondedDeviceButton()}
+            title="Connect to Device" />
+        </View>
 
-      {/* this function doesn't really work, so hiding from the UI for now */}
-      {/* <View style={styles.buttonContainer}>
+        {/* this function doesn't really work, so hiding from the UI for now */}
+        {/* <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponFullConnectionButton()}
           title="Do Full Connection" />
       </View> */}
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponSystemConnectedDevicesButton()}
-          title="Get System Device" />
-      </View>
+        <View style={styles.button}>
+          <ButtonToNavigate onPress={() => doUponSystemConnectedDevicesButton()}
+            title="Get System Device" />
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponServicesButtonPress()}
-          title="Get Services" />
-      </View>
+        <View style={styles.button}>
+          <ButtonToNavigate onPress={() => doUponServicesButtonPress()}
+            title="Get Services" />
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => navigation.navigate("DeviceDetail")}
-          title="Go to Device Detail Page" />
+        <View style={styles.button}>
+          <ButtonToNavigate onPress={() => navigation.navigate("DeviceDetail")}
+            title="Go to Device Detail Page" />
+        </View>
       </View>
 
     </SafeAreaView >
@@ -145,9 +149,12 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    // flex: 1, // using flexbox here is cursed; don't do
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingTop: 40,
+  },
+
+  button: {
+    paddingTop: 0,
+    paddingBottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: GlobalStyles.lightBackground,

@@ -15,40 +15,58 @@ import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 import { BluetoothContext } from '../ble/BluetoothContext';
+import { usersMap } from '../common/StandardModuleInfo';
 
 
 
 const ProfileSelectScreen = ({ navigation }: { navigation: any }) => {
   // context provider stuff needed for this screen
-  const { readFromCharacteristic, writeDataToCharacteristic }
-    = useContext(BluetoothContext);
+  const {
+    readFromCharacteristic,
+    writeDataToCharacteristic
+  } = useContext(BluetoothContext);
 
   // state stuff for this screen
   const [readData, setReadData]
-    = useState<number>(0);
+    = useState<string>("Unknown");
 
 
+  const sendUserNumberToMirror = async (personName: string): Promise<void> => {
+    if (!usersMap[personName]) {
+      console.error('User not currently registered with an ID');
+      return;
+    }
 
-  const profileOneButton = async () => {
-    console.log("Button 1 pressed");
-    await writeDataToCharacteristic(1);
+    try {
+      await writeDataToCharacteristic(usersMap[personName]);
+    }
+    catch (error) {
+      console.error('Error writing to characteristic from UI:', error);
+    }
   };
 
-  const profileTwoButton = async () => {
-    console.log("Button 2 pressed");
-    await writeDataToCharacteristic(2);
-  }
+  const getUsersNameFromNumber = (number: number): string => {
+    for (const [key, value] of Object.entries(usersMap)) {
+      if (value === number) {
+        return key;
+      }
+    }
+    return 'Unknown';
+  };
 
-  const doUponReadButtonPress = async (): Promise<void> => {
+  const readUserFromMirror = async (): Promise<void> => {
     try {
       const returnedData: number[] = await readFromCharacteristic();
-      setReadData(returnedData[0]);
-      console.log('Read from characteristic button pressed');
+      const usersName: string = getUsersNameFromNumber(returnedData[0]);
+      setReadData(usersName);
     }
     catch (error) {
       console.error('Error reading from characteristic:', error);
+      setReadData('Unknown');
     }
-  }
+  };
+
+
 
 
 
@@ -57,27 +75,39 @@ const ProfileSelectScreen = ({ navigation }: { navigation: any }) => {
       <StatusBar></StatusBar>
 
       <View style={styles.mainStyle}>
-        <NiceTextArea title="Profile Switcher">
-          Select from your options below.
+        <NiceTextArea title="Change Profiles">
+          Select one of your saved profiles below.
         </NiceTextArea>
       </View>
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => profileOneButton()} title="User 1" />
+      <View style={styles.userSelectButtonContainer}>
+        <View style={styles.button}>
+          <ButtonToNavigate onPress={() => sendUserNumberToMirror("Daniel")} title="Daniel" />
+        </View>
+
+        <View style={styles.button}>
+          <ButtonToNavigate onPress={() => sendUserNumberToMirror("Erick")} title="Erick" />
+        </View>
+
+        <View style={styles.button}>
+          <ButtonToNavigate onPress={() => sendUserNumberToMirror("Erik")} title="Erik" />
+        </View>
+
+        <View style={styles.button}>
+          <ButtonToNavigate onPress={() => sendUserNumberToMirror("Serjo")} title="Serjo" />
+        </View>
       </View>
 
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => profileTwoButton()} title="User 2" />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponReadButtonPress()}
+      <View style={styles.button}>
+        <ButtonToNavigate onPress={() => readUserFromMirror()}
           title="Read from Characteristic" />
       </View>
 
       <View style={styles.mainStyle}>
-        <NiceTextArea title="Read Data">
-          {JSON.stringify(readData, null, 2)}
+        <NiceTextArea title="Current Logged In User:">
+
+          {readData}
+
         </NiceTextArea>
       </View>
 
@@ -91,15 +121,17 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.lightBackground,
   },
 
-  buttonContainer: {
-    // flex: 1, // using flexbox here is cursed; don't do
-    paddingTop: 15,
-    paddingBottom: 5,
+  userSelectButtonContainer: {
+    paddingTop: 10,
+  },
+
+  button: {
+    paddingTop: 0,
+    paddingBottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: GlobalStyles.lightBackground,
   },
-
 });
 
 

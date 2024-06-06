@@ -83,7 +83,7 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
           title="Write to Characteristic" />
       </View> */}
 
-      <View style={styles.button}>
+      <View style={styles.buttonContainer}>
         <View style={styles.button}>
           <ButtonToNavigate onPress={() => navigation.navigate("Profile Selection")}
             title="Manually Change Profiles" />
@@ -107,12 +107,11 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    // this top pading doesn't seem to be working rn.
-    paddingTop: 10,
+    paddingTop: 40,
   },
 
   button: {
-    paddingTop: 5,
+    paddingTop: 0,
     paddingBottom: 0,
     justifyContent: 'center',
     alignItems: 'center',

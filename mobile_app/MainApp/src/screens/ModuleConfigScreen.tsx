@@ -94,7 +94,6 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
 
             sliderValue={moduleConfig.moduleEnabled}
             onSliderChange={(value: boolean) =>
-              // set the draft config to the new value
               setTrueModuleConfiguration({
                 ...trueModuleConfiguration,
                 [moduleName]: {
@@ -121,7 +120,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
       </ScrollView>
 
       <View style={styles.allButtonsContainer}>
-        <View style={styles.buttonContainer}>
+        <View style={styles.button}>
           <ButtonToNavigate onPress={() => doUponResetButton()}
             title="Reset to Default"
           />
@@ -141,7 +140,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
           />
         </View> */}
 
-        <View style={styles.buttonContainer}>
+        <View style={styles.button}>
           <ButtonToNavigate onPress={() => doUponSubmitButton()}
             title="Send Changes to Mirror"
           />
@@ -166,12 +165,12 @@ const styles = StyleSheet.create({
   },
 
   allButtonsContainer: {
-    paddingTop: 10,
+    paddingTop: 35,
   },
 
-  buttonContainer: {
-    paddingTop: 10,
-    paddingBottom: 10,
+  button: {
+    paddingTop: 0,
+    paddingBottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: GlobalStyles.lightBackground,

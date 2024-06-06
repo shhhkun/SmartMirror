@@ -87,7 +87,7 @@ export interface BluetoothContextType {
 
   readFromCharacteristic: () => Promise<number[]>;
   readFromAnyCharacteristic: (characteristicUUID: string) => Promise<number[]>;
-  writeDataToCharacteristic: (data: any) => Promise<void>;
+  writeDataToCharacteristic: (data: number) => Promise<void>;
   writeByteArrayToAnyCharacteristic: (data: number[],
     characteristicUUID: string) => Promise<void>;
 }
