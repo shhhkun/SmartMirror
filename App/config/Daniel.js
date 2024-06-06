@@ -14,6 +14,7 @@ var config = {
     {
       module: "MMM-NowPlayingOnSpotify",
       position: "top_left",
+      disabled: 1,
     
       config: {
         clientID: "d8264bf147e445f4b36ccbdef94e4024",
