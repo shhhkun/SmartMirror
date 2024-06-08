@@ -12,17 +12,17 @@ import {
 
 
 const serializeEnableData = (enableData: boolean): number[] => {
-  // convert this bool into a "disabled" int
+  // convert this "enabled" bool into a "disabled" [int]
 
   const disabledValue: boolean = !enableData;
 
-  const outputValue: number = disabledValue ? 1 : 0;
-  return [outputValue];
+  const outputInt: number = disabledValue ? 1 : 0;
+  return [outputInt];
 };
 
 const serializePositionData = (
   positionDisplayString: string): number[] => {
-  // serialize this position string to an int, based on the positions map
+  // convert this position string to an int, based on the positions map
 
   if (!(positionDisplayString in modulePositionsMap)) {
     throw new Error("Don't have a saved position for display string " +
@@ -81,8 +81,9 @@ const deserializeEnableData = (enableData: number[]): boolean => {
   return outputValue;
 };
 
-// need to fix this based on the new enum
 const deserializePositionData = (positionData: number[]): string => {
+  // need to fix this based to use the new map (no longer enum)
+
   // deserialize this position int based on the position options enum
 
   const positionPureNumber: number = positionData[0];
@@ -96,6 +97,9 @@ const deserializePositionData = (positionData: number[]): string => {
 
 const getInternalNameFromDisplayName = (
   displayName: string, trueModuleConfig: FullModuleConfiguration): string => {
+  // should just stop using this and only use display names.
+  // doesn't sound like we're ever going to be getting internal names
+  // from the mirror.
 
   // iterate over each module in the trueModuleConfiguration
   for (const [moduleObjectName, moduleSingleConfig] of
@@ -104,7 +108,6 @@ const getInternalNameFromDisplayName = (
     if (moduleSingleConfig.moduleDisplayName === displayName) {
       return moduleObjectName;
     }
-
   }
 
   throw new Error("Couldn't find internal module name for this display name");
@@ -117,7 +120,7 @@ export const deserializeReceivedData = (
   // takes in serialized data for enable and position, and the name
   // of the module these characteristics correspond to. returns a
   // SingleModuleConfiguration object.
-  // needs to trueModuleConfig to look up the internal name from the display
+  // needs trueModuleConfig to look up the internal name from the display
   // name, which is pretty jank. would want to refactor eventually.
 
   const deserializedEnableData: boolean = deserializeEnableData(enableData);

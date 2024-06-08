@@ -109,6 +109,8 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   };
 
   const updateDraftConfigWithSingleModule = async (
+    // the issue with read from mirror into config is probably in here.
+
     singleModule: SingleModuleConfiguration): Promise<void> => {
 
     // assume we're using display name in the mobile-app-side config file
@@ -166,10 +168,11 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     return newSingleModuleConfig;
   };
 
+  // kinda broken right now.
   const readFullConfigFromMirror = async (): Promise<void> => {
     // read all the module configs from the mirror sequentially.
     // write them to draftModuleConfiguration. then upon all of them succeeding,
-    // write them to trueModuleConfiguration and reset draftModuleConfiguration.
+    // write them to trueModuleConfiguration.
 
     // this reads the fullModuleConfig into the trueModuleConfig. but the draft
     // module config is what's exposed in the UI form. that's a little jank.
@@ -191,20 +194,7 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
         const singleConfigCreatedFromRead: SingleModuleConfiguration =
           await readSingleModuleConfigFromMirror(thisModulesDisplayName);
 
-        // printout for testing with Notifications
-        // if (singleConfigCreatedFromRead.moduleDisplayName === "Notifications") {
-        //   console.log("Read module: " + thisModulesDisplayName +
-        //     " with enable data: " + singleConfigCreatedFromRead.moduleEnabled +
-        //     " and position data: " + singleConfigCreatedFromRead.modulePosition);
-        // }
-
         await updateDraftConfigWithSingleModule(singleConfigCreatedFromRead);
-
-        // another printout for testing with Notifications
-        // if (singleConfigCreatedFromRead.moduleDisplayName === "Notifications") {
-        //   console.log("Draft config after updating with alerts: " +
-        //     JSON.stringify(draftModuleConfiguration.alert));
-        // }
 
       } catch (error) {
         console.error("Error reading a single module config from mirror", error);
@@ -215,9 +205,6 @@ const ModuleProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     // assuming all the reads succeeded, save the draft config to the true config
     console.log("All modules read from mirror successfully. Saving to true config.");
     saveDraftConfigToTrueConfig();
-
-    console.log("Upon finishing full modules read, draft config is: " +
-      JSON.stringify(draftModuleConfiguration.alert));
     console.log("---------------------------------");
   };
 
