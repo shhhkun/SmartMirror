@@ -1,7 +1,4 @@
-import React, {
-  useContext,
-  useState,
-} from 'react';
+import React from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -12,53 +9,10 @@ import {
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
-import { BluetoothContext } from '../ble/BluetoothContext';
-
 
 
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
-  // stuff needed from the context provider. just have these in from when I was testing.
-  const {
-    readFromTargetCharacteristic,
-    writeDataToCharacteristic,
-  } = useContext(BluetoothContext);
 
-  // page-specific state stuff
-  const [readData, setReadData] = useState<any>(null);
-
-
-  // not using pure read function for now
-  {
-    // const doUponReadButtonPress = async (): Promise<void> => {
-    //   try {
-    //     const returnedData: number[] = await readFromTargetCharacteristic();
-    //     setReadData(returnedData);
-    //     console.log('Read from characteristic button pressed');
-    //   }
-    //   catch (error) {
-    //     console.error('Error reading from characteristic:', error);
-    //   }
-    // };
-  }
-
-  // not using pure write function for now
-  {
-    // const doUponWriteButtonPress = async (): Promise<void> => {
-    //   const dataValue: number = 80;
-
-    //   try {
-    //     await writeDataToCharacteristic(dataValue);
-    //     console.log('Write to characteristic button pressed');
-    //   }
-    //   catch (error) {
-    //     console.error('Error writing to characteristic from UI:', error);
-    //   }
-    // };
-  }
-
-
-
-  // UI stuff here
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
@@ -72,24 +26,13 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
         </NiceTextArea>
       </View>
 
-
-      {/* hiding the testing read and write buttons. */}
-      {/* <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponReadButtonPress()}
-          title="Read from Characteristic" />
-      </View>
-      <View style={styles.buttonContainer}>
-        <ButtonToNavigate onPress={() => doUponWriteButtonPress()}
-          title="Write to Characteristic" />
-      </View> */}
-
       <View style={styles.buttonContainer}>
         <View style={styles.button}>
           <ButtonToNavigate onPress={() => navigation.navigate("Profile Selection")}
             title="Manually Change Profiles" />
         </View>
 
-        {/* hiding this for now */}
+        {/* system settings page button will go in here */}
         {/* <View style={styles.button}>
           <ButtonToNavigate onPress={() => navigation.navigate("System Settings")}
             title="Configure System Settings" />
@@ -106,16 +49,13 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
 };
 
 
-
 const styles = StyleSheet.create({
   mainStyle: {
     backgroundColor: GlobalStyles.lightBackground,
   },
-
   buttonContainer: {
     paddingTop: 40,
   },
-
   button: {
     paddingTop: 0,
     paddingBottom: 0,

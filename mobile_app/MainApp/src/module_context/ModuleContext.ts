@@ -9,6 +9,7 @@ export interface SystemSettingsFullConfiguration {
 }
 
 export interface SingleModuleConfiguration {
+
   // these internal names are not used for anything right now, since we
   // actually aren't getting some kind of mapping of modules to chars from
   // the mirror. But will keep in for now.
@@ -33,6 +34,7 @@ export interface FullModuleConfiguration {
   [moduleName: string]: SingleModuleConfiguration;
 }
 
+// unused right now
 export interface FullSingleUserConfiguration {
   // all of the specific settings for a single user.
   usersSystemSettings: SystemSettingsFullConfiguration;
@@ -56,7 +58,7 @@ interface ModuleContextType {
   // eventually could have an attribute for last read/written config.
   // and then the send to mirror command would only send things that have
   // changed. not going to implement for now, but could do if latency on writes
-  // is an issue.
+  // was somehow an issue.
 
   saveDraftConfigToTrueConfig: () => void;
   resetConfigsToDefault: () => void;
@@ -70,6 +72,8 @@ const defaultSystemSettings: SystemSettingsFullConfiguration = {
 };
 
 const defaultModuleConfiguration: FullModuleConfiguration = {
+  // might make sense to move this into StandardModuleInfo
+
   // not supporting changing alerts at the moment
   // alert: {
   //   moduleInternalName: "alert",
@@ -101,8 +105,11 @@ const defaultModuleConfiguration: FullModuleConfiguration = {
     moduleEnabled: true,
     modulePosition: 'Top Left'
   },
+
   // weather enablement characteristic doesn't work rn.
-  // will just not allow weather config for now.
+  // need to check or have serjo check that writing to that specific char is
+  // actually allowed.
+  // just going to hide for the demo.
 
   // weather: {
   //   moduleInternalName: "weather",
@@ -123,6 +130,8 @@ export const defaultModuleContext: ModuleContextType = {
   systemSettings: defaultSystemSettings,
   trueModuleConfiguration: defaultModuleConfiguration,
   draftModuleConfiguration: defaultModuleConfiguration,
+
+  // ugly and not DRY to make default funcs like this, but will do for now.
   setTrueModuleConfiguration: () => {
     throw new Error("setTrueModuleConfiguration not ready yet.");
   },

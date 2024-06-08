@@ -1,5 +1,5 @@
 import {
-  betterPositionsMap
+  modulePositionsMap
 } from '../common/StandardModuleInfo';
 import {
   moduleCharacteristicsHardCoded
@@ -24,12 +24,12 @@ const serializePositionData = (
   positionDisplayString: string): number[] => {
   // serialize this position string to an int, based on the positions map
 
-  if (!(positionDisplayString in betterPositionsMap)) {
+  if (!(positionDisplayString in modulePositionsMap)) {
     throw new Error("Don't have a saved position for display string " +
       positionDisplayString);
   }
 
-  const positionEnumValue: number = betterPositionsMap[positionDisplayString];
+  const positionEnumValue: number = modulePositionsMap[positionDisplayString];
 
   return [positionEnumValue];
 };
@@ -88,8 +88,8 @@ const deserializePositionData = (positionData: number[]): string => {
   const positionPureNumber: number = positionData[0];
 
   // look up the string corresponding to this number in the positions map
-  const positionString: string = Object.keys(betterPositionsMap).find(
-    key => betterPositionsMap[key] === positionPureNumber) || '';
+  const positionString: string = Object.keys(modulePositionsMap).find(
+    key => modulePositionsMap[key] === positionPureNumber) || '';
 
   return positionString;
 };

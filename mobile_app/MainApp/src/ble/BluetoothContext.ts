@@ -123,6 +123,7 @@ export const defaultBluetoothContext: BluetoothContextType = {
   targetInfos: defaultTargetInfos,
   characteristicsMap: defaultCharacteristicsMap,
 
+  // there's probably a more DRY way of doing this but whatever
   promptUserForPermissions: async () => {
     throw new Error('askForBluetoothPermissions function is not initialized yet');
   },

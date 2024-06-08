@@ -1,11 +1,16 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  View
+} from 'react-native';
 import { GlobalStyles } from '../common/GlobalStyles';
 
+
 interface ButtonToNavigate {
-  onPress: () => void; // Function to be called when the button is pressed
-  title: string; // Text displayed on the button
-  color?: string; // Optional color for the button background
+  onPress: () => void;
+  title: string;
 }
 
 const ButtonToNavigate: React.FC<ButtonToNavigate> = ({ onPress, title }) => {

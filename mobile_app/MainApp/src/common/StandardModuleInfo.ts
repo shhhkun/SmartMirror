@@ -1,4 +1,5 @@
-export const betterPositionsMap: Record<string, number> = {
+export const modulePositionsMap: Record<string, number> = {
+  // enums are weird in typescript, so switched this to a map
   'Top Bar': 0,
   'Top Left': 1,
   'Top Center': 2,
@@ -14,11 +15,10 @@ export const betterPositionsMap: Record<string, number> = {
   'Fullscreen Below': 12
 };
 
-
-export const modulePositionDisplayOptions: string[] = Object.keys(betterPositionsMap);
-
+export const modulePositionDisplayOptions: string[] = Object.keys(modulePositionsMap);
 
 export const usersMap: { [key: string]: number } = {
+  // kinda whack to have this hard coded, but just doing for demo
   "Daniel": 0,
   "Erick": 1,
   "Erik": 2,
@@ -28,16 +28,16 @@ export const usersMap: { [key: string]: number } = {
   "Unknown": 9,
 };
 
-// not right values in here rn
 export const languageMap: { [key: string]: number } = {
+  // need to check if these values are right according to the mirror side
   "English": 0,
   "Spanish": 1,
   "Russian": 2,
   "Unknown": 9,
 };
 
-// not right values in here rn
 export const unitsMap: { [key: string]: number } = {
+  // need to check if these values are right according to the mirror side
   "Metric": 0,
   "Imperial": 1,
   "Unknown": 9,

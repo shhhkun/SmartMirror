@@ -17,7 +17,6 @@ import {
 } from '../common/GlobalStyles';
 
 
-
 interface ModuleConfigBarProps {
   title: string;
   dropdownValue: string;
@@ -75,9 +74,9 @@ const ModulePositionsDropdown: React.FC<ModulePositionsDropdownProps> = ({
         onValueChange={(itemValue: string) =>
           onDropdownChange(itemValue)}
       >
-        {
-          // make a dropdown option for each item in modulePositionsOptions
 
+        {
+          // make a dropdown option for each item in modulePositionDisplayOptions
           modulePositionDisplayOptions.map((option, index) => (
             <Picker.Item key={index} label={option} value={option} />
           ))
