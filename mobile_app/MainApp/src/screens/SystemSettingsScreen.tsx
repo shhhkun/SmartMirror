@@ -30,7 +30,7 @@ import {
 const SystemSettingsScreen = ({ navigation }: { navigation: any }) => {
   // bluetooth context stuff needed for this screen
   const {
-    readFromCharacteristic,
+    readFromTargetCharacteristic,
     writeDataToCharacteristic,
   } = useContext(BluetoothContext);
 
@@ -70,7 +70,7 @@ const SystemSettingsScreen = ({ navigation }: { navigation: any }) => {
 
   // const readUserFromMirror = async (): Promise<void> => {
   //   try {
-  //     const returnedData: number[] = await readFromCharacteristic();
+  //     const returnedData: number[] = await readFromTargetCharacteristic();
   //     const usersName: string = getUsersNameFromNumber(returnedData[0]);
   //     setReadData(usersName);
   //   }

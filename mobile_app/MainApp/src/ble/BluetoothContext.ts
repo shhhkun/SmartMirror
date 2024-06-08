@@ -85,7 +85,7 @@ export interface BluetoothContextType {
   connectAndGetAppConnectedDeviceInfo: () => Promise<void>;
   appConnectFromBonded: () => Promise<void>;
 
-  readFromCharacteristic: () => Promise<number[]>;
+  readFromTargetCharacteristic: () => Promise<number[]>;
   readFromAnyCharacteristic: (characteristicUUID: string) => Promise<number[]>;
   writeDataToCharacteristic: (data: number) => Promise<void>;
   writeByteArrayToAnyCharacteristic: (data: number[],
@@ -141,8 +141,8 @@ export const defaultBluetoothContext: BluetoothContextType = {
   appConnectFromBonded: async () => {
     throw new Error('appConnectFromBonded function is not initialized yet');
   },
-  readFromCharacteristic: async () => {
-    throw new Error('readFromCharacteristic function is not initialized yet');
+  readFromTargetCharacteristic: async () => {
+    throw new Error('readFromTargetCharacteristic function is not initialized yet');
   },
   readFromAnyCharacteristic: async () => {
     throw new Error('readFromAnyCharacteristic function is not initialized yet');

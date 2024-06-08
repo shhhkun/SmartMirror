@@ -22,7 +22,7 @@ import { usersMap } from '../common/StandardModuleInfo';
 const ProfileSelectScreen = ({ navigation }: { navigation: any }) => {
   // context provider stuff needed for this screen
   const {
-    readFromCharacteristic,
+    readFromTargetCharacteristic,
     writeDataToCharacteristic
   } = useContext(BluetoothContext);
 
@@ -56,7 +56,7 @@ const ProfileSelectScreen = ({ navigation }: { navigation: any }) => {
 
   const readUserFromMirror = async (): Promise<void> => {
     try {
-      const returnedData: number[] = await readFromCharacteristic();
+      const returnedData: number[] = await readFromTargetCharacteristic();
       const usersName: string = getUsersNameFromNumber(returnedData[0]);
       setReadData(usersName);
     }

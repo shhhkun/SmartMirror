@@ -347,10 +347,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     const systemConnectedDeviceInfo: DeviceInfos = {
-
-      // leave bonded device info as it was
-      bondedDeviceInfo:
-        deviceInfos.bondedDeviceInfo,
+      ...deviceInfos,
 
       // for now, just assume we want the first connected device
       // todo: might want to eventaully make a filtering function in utils
@@ -371,10 +368,12 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const connectAndGetAppConnectedDeviceInfo = async (): Promise<void> => {
-    // iniates the app-specific connection, retrieves services, and updates context
-    // with all the info needed to read/write to the device. need to have
-    // system connected device info before calling this, since uses the stored
-    // system device device ID.
+    // iniates the app-specific connection, retrieves services, and updates
+    // context with all the info needed to read/write to the device.
+    // need to havesystem connected device info before calling this,
+    // since uses the stored system device device ID.
+    // this function can be called after connecting in lightblue or nrf and
+    // just calling getSystemConnectedDeviceInfo.
 
     // make sure we're still system connected
     try {
@@ -404,7 +403,10 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
 
   };
 
+  // broken right now:
   const appConnectFromBonded = async (): Promise<void> => {
+    // broken right now!!
+
     // this works if you first press > get bonded > connect to bonded >
     // get system connected info > this. in that case, it does get a non-empty
     // array back from system connected info.
@@ -412,26 +414,28 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // however, if you do get bonded > this, then system connected info returns
     // an empty array. so that's the problem.
 
-    // I think the issue in here is how state stuff is modified within a function.
+    // maybe the issue in here is how state stuff is modified within a function.
     // I'm writing a new state in here, then trying to read that state.
     // But it's probably pulling the old state from when the function was
-    // originally called.
+    // originally called?
+    // although even when I tried calling the "get connected devices" function
+    // straight from react-native-ble-manager, it still returned an empty array.
 
     try {
       console.log('Calling connectToBondedDevice');
       await connectToBondedDevice();
 
-      // putting in some delays between each step to see if that helps anything.
+      // 5 sec delay, just to be safe
       await new Promise((resolve) => setTimeout(resolve, 5000));
-
-      console.log('Calling getSystemConnectedDeviceInfo');
 
       // !!!!!! this is getting an empty array right now for some reason !!!!!!
+      console.log('Calling getSystemConnectedDeviceInfo');
       await getSystemConnectedDeviceInfo();
 
+      // another 5 sec delay, just to be safe
       await new Promise((resolve) => setTimeout(resolve, 5000));
 
-
+      // this part seems to work fine if system connected info is not empty
       console.log('Calling connectAndGetAppConnectedDeviceInfo');
       await connectAndGetAppConnectedDeviceInfo();
 
@@ -441,31 +445,8 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
-  // todo: rename to read from target characteristic. and have it just call the below fuction.
-  const readFromCharacteristic = async (): Promise<number[]> => {
-    // returns a byte array (which probably needs to be deserialized)
-
-    if (! await checkIfDeviceIsReadWritable()) {
-      console.error('Device not read-writable (readFromCharacteristic)');
-      return [];
-    }
-
-    // do the actual read operation
-    try {
-      // use the targets stored in the target states
-      const returnedData: number[] = await BluetoothService.read(
-        targetInfos.targetDeviceID,
-        targetInfos.targetServiceUUID,
-        targetInfos.targetCharacteristicUUID);
-
-      console.log('Read data: ', returnedData);
-
-      return returnedData;
-    }
-    catch (error) {
-      console.error('Error reading from characteristic in provider:', error);
-      throw error;
-    }
+  const readFromTargetCharacteristic = async (): Promise<number[]> => {
+    return await readFromAnyCharacteristic(targetInfos.targetCharacteristicUUID);
   };
 
   const readFromAnyCharacteristic = async (
@@ -481,7 +462,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     // do the actual read operation
     try {
       // use the targets stored in the target states
-      const returnedData: number[] = await BluetoothService.read(
+      const returnedData: number[] = await BluetoothService.readFromDevice(
         targetInfos.targetDeviceID,
         targetInfos.targetServiceUUID,
         characteristicUUID);
@@ -498,36 +479,16 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
-  // make this function call the below function
+  // this should be renamed to writeIntToTargetCharacteristic
   const writeDataToCharacteristic = async (data: number): Promise<void> => {
-    // not really using this function for now. using byte arrays from now on.
 
-    const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();
-    if (!okToReadWrite) {
-      console.error('Device not read-writable (writeDataToCharacteristic)');
-      return;
-    }
-
-    try {
-      await BluetoothService.writeInt(
-        targetInfos.targetDeviceID,
-        targetInfos.targetServiceUUID,
-        targetInfos.targetCharacteristicUUID,
-        data);
-
-      console.log('Wrote data: ', data);
-
-    } catch (error) {
-      console.error('Error writing to char in writeDataToCharacteristic:', error);
-    }
+    return await writeByteArrayToAnyCharacteristic([data],
+      targetInfos.targetCharacteristicUUID);
   };
 
   const writeByteArrayToAnyCharacteristic = async (data: number[],
     characteristicUUID: string): Promise<void> => {
     // this fucntion now throws errors! changed on 5-29-24. didn't previously.
-
-    // should eventually consolidate this and the other write function into one.
-    // for now, just duplicated code pretty much.
 
     const okToReadWrite: boolean = await checkIfDeviceIsReadWritable();
     if (!okToReadWrite) {
@@ -570,7 +531,7 @@ const BluetoothProvider: FC<PropsWithChildren> = ({ children }) => {
     getSystemConnectedDeviceInfo,
     connectAndGetAppConnectedDeviceInfo,
     appConnectFromBonded,
-    readFromCharacteristic,
+    readFromTargetCharacteristic,
     readFromAnyCharacteristic,
     writeDataToCharacteristic,
     writeByteArrayToAnyCharacteristic

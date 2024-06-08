@@ -1,4 +1,3 @@
-// wrapper class for react-native-ble-manager
 import {
   PermissionsAndroid,
   PermissionStatus,
@@ -11,6 +10,8 @@ import BleManager, {
 
 
 
+// wrapper class for react-native-ble-manager.
+// any failed functions in here will re-throw to the caller.
 
 class BluetoothService {
   static async initializeBLEManager(): Promise<void> {
@@ -80,8 +81,8 @@ class BluetoothService {
           permissionPopupContent
         );
 
-      // for some reason, conditioning on "granted" doesn't work, but this does
-      // work if I convert the PermissionStatus to a bool.
+      // for some reason, conditioning on equals "granted" doesn't work,
+      // but this does work if I convert the PermissionStatus to a bool.
       const permissionRequestResultBool: boolean = Boolean(permissionRequestResult);
 
       if (permissionRequestResultBool) {
@@ -130,7 +131,6 @@ class BluetoothService {
 
     } catch (error) {
       console.error('Error getting connected peripherals:', error);
-
       throw error;
     }
   }
@@ -144,8 +144,7 @@ class BluetoothService {
 
     } catch (error) {
       console.error('Error checking if connected:', error);
-
-      throw error; // Re-throw the error to propagate it to the caller
+      throw error;
     }
   }
 
@@ -156,7 +155,7 @@ class BluetoothService {
 
     catch (error) {
       console.error('Error app connecting to device:', error);
-      throw error; // Re-throw the error to propagate it to the caller
+      throw error;
     }
   }
 
@@ -174,7 +173,7 @@ class BluetoothService {
     }
   }
 
-  static async read(
+  static async readFromDevice(
     deviceID: string, serviceUUID: string, characteristicUUID: string):
     Promise<number[]> {
 
@@ -198,36 +197,12 @@ class BluetoothService {
   static async writeInt(deviceID: string, serviceUUID: string,
     characteristicUUID: string, intInput: number): Promise<void> {
 
-    // make sure we're still connected
-    try {
-      if (!await BluetoothService.checkIfDeviceIsSystemConnected(deviceID)) {
-        console.error('Tried to write to disconnected device');
-        return;
-      }
-    } catch (error) {
-      console.error('Error checking if device is connected:', error);
-      throw error;
-    }
-
-    // write requires a numbers array, so change type here
-    const dataValue: number[] = [intInput];
-
-    try {
-      await BleManager.write(deviceID, serviceUUID, characteristicUUID,
-        dataValue);
-
-      // console.log('Write to characteristic succeeded');
-    }
-    catch (error) {
-      console.error('Error writing to characteristic in writeInt:', error);
-      throw error;
-    }
+    return BluetoothService.writeByteArray(
+      deviceID, serviceUUID, characteristicUUID, [intInput]);
   }
-  // consolidate these 2 write functions into one!
+
   static async writeByteArray(deviceID: string, serviceUUID: string,
     characteristicUUID: string, byteArray: number[]): Promise<void> {
-    // this is just duplicated code from above for now pretty much.
-    // sshould consolidate later to make prettier.
 
     // make sure we're still connected
     try {
@@ -243,8 +218,6 @@ class BluetoothService {
     try {
       await BleManager.write(deviceID, serviceUUID, characteristicUUID,
         byteArray);
-
-      // console.log('Write to characteristic succeeded');
     }
     catch (error) {
       console.error('Error writing to characteristic in writeByteArray:', error);

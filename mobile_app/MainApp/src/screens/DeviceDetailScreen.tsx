@@ -19,7 +19,7 @@ import { BluetoothContext } from '../ble/BluetoothContext';
 const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
   // stuff needed from the context provider. just have these in from when I was testing.
   const {
-    readFromCharacteristic,
+    readFromTargetCharacteristic,
     writeDataToCharacteristic,
   } = useContext(BluetoothContext);
 
@@ -31,7 +31,7 @@ const DeviceDetailScreen = ({ navigation }: { navigation: any }) => {
   {
     // const doUponReadButtonPress = async (): Promise<void> => {
     //   try {
-    //     const returnedData: number[] = await readFromCharacteristic();
+    //     const returnedData: number[] = await readFromTargetCharacteristic();
     //     setReadData(returnedData);
     //     console.log('Read from characteristic button pressed');
     //   }
