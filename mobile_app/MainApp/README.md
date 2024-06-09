@@ -6,44 +6,48 @@ http://innoveit.github.io/react-native-ble-manager/methods/#startoptions
 
 # ----------
 
-Description of functionality:
+Todos
 
-Pressing "enable bluetooth" from home screen will initialize the bluetooth manager. This might trigger some system popup for bluetooth permission.
+Broken and need to fix:
+- "do full connection" usually doens't work. but the underlying steps in it (get bonded, connect to bonded, get connected, get services) all work individually.
+   - for demo, just going to start with the phone already connected. or do the 4 separate connection buttons sequentially.
+   - tried having this function call the exact 4 separate buttons that do work. even put delays between and await-ing. didn't fix.
+   - actual library "get connected devices" array is coming back empty, even if there's a long delay after connection.
+   - likely some state issue on/after connecting, or I'm doing something weird with my "gey system connected devices" function.
+- writing to the "weather enable" characteristic always fails.
+   - just going to not write to weather for the demo.
+   - I checked that the hard-coded characteristic for this matches what's in Serjo's peripheral. seems ok.
+   - might want to make sure in lightblue that this chracgeristic is indeed writable. reads are successul on it.
+- read full config from mirror has some state issue. sometimes works for some modules.
+   - not a very necessary feature for operation, so just going to hide this functionality for the demo.
+   - this functionality isn't that necessary, since the mirror should have no way of getting into a state that wasn't set by the phone. this is really just for testing and if the user lost their phone and needed to pull the settings onto their phone.
 
-Next screen has a button that checks for currently connected devices. It is assumed that the user will have paired to a device in their device settings, then will come back here.
+High priority refactors / features:
+- add in page for confguring language and units. I don't think people have actually verified this works on the mirror side yet.
+- don't just hard-code the characteristics for each module. this requires a big refactor or new feature on the mirror side.
+   - ideally want each characteristic's description to be something like "clock enable". and then uppon getting services, we populate the characteristics map in BLE context to hold that mapping.
+- probably should get rid of all places where I'm using "module internal name". and all the jank mapping back and forth.
+   - can reimplement if we end up getting internal names from the mirror somehow.
 
-MTU between the two devices can be negotiated up. But should be ok just to write data as multiple packets.
-
-Upon a smart mirror device being found (as determined by UUID somehow?), or any device for now, the user can send it data via a form.
+Low prioirty refactors / features:
+- add an event handeler for the actual events in the ble manager library. just to make connection state stuff more stable.
+- add some top right status icon for connection status.
+   - no real visual indicator for this except for the error popups if you try to write/read while disconnected or without device info.
+- if dropped connections are still a problem, could have something that polls the mirror (maybe the current user char) every 5-10 seconds.
+   - not battery efficient and kinda jank, but I'm curious if this would make connections persist better.
+- support for multiple user's configs in the module context.
+   - this is started with the FullSingleUserConfiguration and AllUsersFullConfigurations interfaces right now - would just need to finish.
+   - probably add some UI dropdown for changing the user. coudld make a new field for "current user" in module context, and have that listen to the read current user thing.
+- persist the last configuration a user specified "to disk". so would persist across app closes and get loaded into the module context upon app open.
 
 # ----------
 
-Functional stuff to fix:
-- make connection happen with one button. if I can't get it working, then oh well. can just do the 4-button connection in demo, or have it connected beforehand.
-- add lang and units config page
-- get weather modify working. not essential. literally just that configuration is failing.
+To change over from lightblue testing to raspi testing:
 
-
-
-Could not do, if needed, below here:
-- get read module stuff to config working + form state updating correctly. sliders and dropdowns not updating correctly for now. might not have for demo though.
-- put in a UI page for messing with langauge and units.
-
-Eventually but probably won't implement:
-- persist a user's config to disk
-- want to refactor module context stuff. that was all a bit rushed and jank. also not sure where it would make sense to hold on to characteristics - in the BLE context chars map, or somehwere in modules.
-- add event handeler for disconnect events in the ble manager.
-- maybe make a top right status menu/icon that shows connection status stuff. could also be a button that takes you to a dedicated status page.
-- if dropped connections are still a problem, could have something that polls the mirror every x seconds. as a keep connection alive type thing.
-
-# ----------
-
-To go from lightblue testing to raspi testing:
-- in bluetooth utils:
--     change which service ID I'm using from the saved struct
--     change savedDeviceNames to comment out all but this device
--     change moduleCharacteristicsHardCoded to the correct one
--
+In bluetooth utils:
+   - change which service ID I'm using from the saved struct
+   - change savedDeviceNames to comment out all but this device
+   - change moduleCharacteristicsHardCoded to the correct one
 
 # ----------
 
@@ -61,7 +65,7 @@ from MainApp directory, run
 
 To run on Erik's physical android device:
 
-check that connected evice is recognized. run
+check that connected device is recognized. run
    adb devices
 
 run
@@ -75,10 +79,11 @@ or if neither of those work, try deleting the app and flashing again
 # ----------
 
 Future enhancements not implemented in protoype, but for the final sellable product:
+- Add another black characterstic that allows write on the mirror side. For the purpose of if there's ever functionality to add a new module to the mirror, not just unhide existing ones.
 - Have the user be able to drag and drop rectangles on the screen, instead of the form submit.
-- This app only works if there is one BLE device connected. Things will probably break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned. In the future, we could have it only detect connected devices that match a certain ID signature for our smart mirrors. Overall I bet things will break if multiple devices are connected.
-- Support for more modulec configuration other than position and enable. Something like weather location.
+- This app only works if there is one BLE device connected. Things will probably break if the user also has a pair of headphones connected. This is because I'm just taking the first item from the connectedPeripheralsArray that gets returned. In the future, we could have it only detect connected devices that match a certain ID signature for our smart mirrors.
+- Support for more module configuration other than position and enable. Something like weather location.
 - A way for the user to authenticate for their apps. Like have this app make a call to a web server of ours, that server goes and gets a token for some site, gives us the token, and we pass that token along with BLE to the Raspi.
-- iOS compatability. Permission stuff doesn't work at the moment. Theoretically, most of it should work. Except for the getBondedPeripherals() method in the library. But I doubt the flow of bonded > system connected > connected that kind of happens in this app right now would be the same on iOS. And the connect() function in the library doesn't time out on iOS, so would need a timer here.
-- Discoverability of characteristics. Instead of having them hard coded. Maybe have one characteristic that is fixed or gets discovered via its position or description. And then that is read-only and cha display some kind of array/map of the other characteristics and their associated modules.
-- Add support for multiple users, maybe with a login function in the app. And a web server to store data.
+- Make sure we're actually using encrypted BLE. I think it might be doing that under the hood right now, but not sure.
+- iOS compatability. Permission stuff doesn't work at the moment. Theoretically, most of it should work, since for anything that's android or ios only, I wrapped that with a conditional for ios/android.
+- Better support for multiple users, maybe with a login function in the app. Perhaps a web server and database to store data.
