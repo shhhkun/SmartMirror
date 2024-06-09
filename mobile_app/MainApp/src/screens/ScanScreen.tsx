@@ -14,7 +14,6 @@ import NiceTextArea from '../components/NiceTextArea';
 import { BluetoothContext } from '../ble/BluetoothContext';
 
 
-
 const ScanScreen = ({ navigation }: { navigation: any }) => {
   // stuff from the BLE context provider we need in this screen
   const {
@@ -92,8 +91,6 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
 
-
-
       <View style={styles.mainStyle}>
         <NiceTextArea title="Device Pairing">
           Pair to your mirror in your device settings, then return here and
@@ -112,7 +109,7 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
             title="Connect to Device" />
         </View>
 
-        {/* this function doesn't really work, so hiding from the UI for now */}
+        {/* full connect doesn't really work, so hiding from the UI for now */}
         {/* <View style={styles.buttonContainer}>
         <ButtonToNavigate onPress={() => doUponFullConnectionButton()}
           title="Do Full Connection" />
@@ -139,7 +136,6 @@ const ScanScreen = ({ navigation }: { navigation: any }) => {
 };
 
 
-
 const styles = StyleSheet.create({
   mainStyle: {
     backgroundColor: GlobalStyles.lightBackground,
@@ -155,7 +151,5 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.lightBackground,
   },
 });
-
-
 
 export default ScanScreen;

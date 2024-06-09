@@ -1,7 +1,5 @@
-// library imports
 import React, {
   useContext,
-  useState
 } from 'react';
 import {
   StatusBar,
@@ -10,22 +8,17 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-// my imports
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import NiceTextArea from '../components/NiceTextArea';
 import { BluetoothContext } from '../ble/BluetoothContext';
 import { ModuleContext } from '../module_context/ModuleContext';
-import {
-  languageMap,
-  unitsMap
-} from '../common/StandardModuleInfo';
-
-// probably want a picker thing in here to select options.
-// and then just call the write to any characteristic with a hard coded
-// UUID in here.
+import { languageMap, unitsMap } from '../common/StandardModuleInfo';
 
 
+// this page isn't done.
+// this is to eventually support changing units and language settings
+// on the mirror.
 
 const SystemSettingsScreen = ({ navigation }: { navigation: any }) => {
   // bluetooth context stuff needed for this screen
@@ -81,24 +74,24 @@ const SystemSettingsScreen = ({ navigation }: { navigation: any }) => {
   // };
 
 
-
-
+  // probably want a picker thing in here to select options.
+  // and then just call the write to any characteristic with a hard coded
+  // UUID in here for now.
 
   return (
     <SafeAreaView style={styles.mainStyle}>
       <StatusBar></StatusBar>
 
       <View style={styles.mainStyle}>
-        <NiceTextArea title="Change Profiles">
-          Select one of your saved profiles below.
+        <NiceTextArea title="System Settings">
+          todo
         </NiceTextArea>
       </View>
 
       <View style={styles.userSelectButtonContainer}>
         <View style={styles.button}>
-          <ButtonToNavigate onPress={() => console.log("Daniel")} title="Daniel" />
+          <ButtonToNavigate onPress={() => console.log("User")} title="User" />
         </View>
-
       </View>
 
       <View style={styles.readButton}>
@@ -136,6 +129,5 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.lightBackground,
   },
 });
-
 
 export default SystemSettingsScreen;

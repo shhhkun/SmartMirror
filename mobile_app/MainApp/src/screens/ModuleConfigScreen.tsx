@@ -1,4 +1,3 @@
-// library imports
 import React, {
   useContext,
 } from 'react';
@@ -10,12 +9,10 @@ import {
   ScrollView,
 } from 'react-native';
 
-// my imports
 import { GlobalStyles } from '../common/GlobalStyles';
 import ButtonToNavigate from '../components/ButtonToNavigate';
 import ModuleConfigBar from '../components/ModuleConfigBar';
 import { ModuleContext } from '../module_context/ModuleContext';
-
 
 
 const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
@@ -37,7 +34,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
     resetConfigsToDefault();
   };
 
-  // no longer need save. just using true config now.
+  // no longer need a save from draft function. just using true config now.
   {
     // const doUponSaveButton = () => {
     //   console.log("Saving config button pressed");
@@ -59,16 +56,9 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
   }
 
   const doUponSubmitButton = async () => {
+    // writes from true config now. now no longer need to save draft first.
+
     try {
-      // this button will also perform a save to true config
-      // I don't think you're allowed to do this. it seems like the other
-      // functions (like writeFullConfigToMirror) will pull the context state
-      // from when this function was originally called, and not what's updated
-      // after a function call like this.
-
-      // saveDraftConfigToTrueConfig();
-
-      // do the actual write
       await writeFullConfigToMirror();
     }
     catch (error) {
@@ -126,7 +116,7 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
           />
         </View>
 
-        {/* just using the true config and not the draft config, so don;t need save rn */}
+        {/* just using true config now, so hiding from UI */}
         {/* <View style={styles.buttonContainer}>
           <ButtonToNavigate onPress={() => doUponSaveButton()}
             title="Save Changes"
@@ -147,27 +137,22 @@ const ModuleConfigScreen = ({ navigation }: { navigation: any }) => {
         </View>
       </View>
 
-
     </SafeAreaView >
   );
 };
-
 
 
 const styles = StyleSheet.create({
   mainStyle: {
     backgroundColor: GlobalStyles.lightBackground,
   },
-
   scrollableContainer: {
     height: '70%',
     backgroundColor: GlobalStyles.lessLightBackground,
   },
-
   allButtonsContainer: {
     paddingTop: 35,
   },
-
   button: {
     paddingTop: 0,
     paddingBottom: 0,
