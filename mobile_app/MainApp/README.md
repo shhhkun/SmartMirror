@@ -54,25 +54,35 @@ In bluetooth utils:
 To run in Android Studio emulator on Erik's machine:
 
 run
-   source ~/.zshrc
+```
+source ~/.zshrc
+```
 
 start android studio and have emulator device running
 
 from MainApp directory, run
-   npm start
+```
+npm start
+```
 
 # ----------
 
 To run on Erik's physical android device:
 
 check that connected device is recognized. run
-   adb devices
+```
+adb devices
+```
 
 run
-   npm start
+```
+npm start
+```
 
 or if that doesn't work (gets stuck installing APK), run
-   DEBUG=react-native* npx react-native start
+```
+DEBUG=react-native* npx react-native start
+```
 
 or if neither of those work, try deleting the app and flashing again
 

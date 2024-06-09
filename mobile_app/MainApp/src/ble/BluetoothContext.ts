@@ -9,8 +9,6 @@ import {
 
 
 export interface DeviceStates {
-  // might want some of these to listen to ble manager events
-
   bluetoothPermissionsOK: boolean;
   deviceIsBonded: boolean;
   deviceIsSystemConnected: boolean;
@@ -59,20 +57,19 @@ export interface TargetInfos {
   targetServiceUUID: string;
   targetCharacteristicUUID: string;
   // this "main" target characteristic will point to the characteristic that
-  // shows "current user". upon switching users, we'll need to call
-  // retrieveServices again to get the rest of the characteristics.
+  // shows "current user".
 }
 
 // not actually using the characteristics map for now. would be used if we
 // weren't hard-coding what characteristics correspond to what modules.
 export interface CharacteristicsMap {
-  // a map structure where keys are module names (or module name - attribute)
-  // as strings, and values are the characteristic UUIDs as strings.
+  // a map structure where keys are module names
+  // (or "module name - enable/disable") as strings, and values are the
+  // characteristic UUIDs as strings.
   [module: string]: string;
 }
 
 export interface BluetoothContextType {
-
   deviceStates: DeviceStates;
   deviceInfos: DeviceInfos;
   targetInfos: TargetInfos;
